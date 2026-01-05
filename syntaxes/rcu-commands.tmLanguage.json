@@ -1,0 +1,36 @@
+{
+    "scopeName": "source.python.rcu",
+    "patterns": [
+        {
+            "name": "support.function.rcu",
+            "match": "\\b(rcu\\.\\w+)\\b"
+        },
+        {
+            "name": "support.function.motor",
+            "match": "\\b(motor\\.\\w+)\\b"
+        },
+        {
+            "name": "support.function.sensor",
+            "match": "\\b(sensor\\.\\w+)\\b"
+        },
+        {
+            "name": "support.function.ai",
+            "match": "\\b(ai\\.\\w+)\\b"
+        },
+        {
+            "name": "support.function.trace",
+            "match": "\\b(trace\\.\\w+)\\b"
+        },
+        {
+            "name": "support.function.move",
+            "match": "\\b(move\\.\\w+)\\b"
+        },
+        {
+            "name": "support.function.os",
+            "match": "\\b(os\\.\\w+)\\b"
+        }
+    ],
+    "repository": {},
+    "fileTypes": ["py"],
+    "name": "RCU Commands"
+}

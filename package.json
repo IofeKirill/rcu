@@ -1,0 +1,185 @@
+{
+  "name": "rcu-extension",
+  "displayName": "ZMROBO Russian (Not official)",
+  "description": "Расширение для программирования ZMROBO на Python",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/IofeKirill/Rus_ZMROBO.git"
+  },
+  "version": "3.0.1",
+  "publisher": "IofeKirill",
+  "icon": "images/rcu-icon.png",
+  "engines": {
+    "vscode": "^1.60.0"
+  },
+  "license": "MIT",
+  "categories": [
+    "Other"
+  ],
+  "files": [
+    "stub_libs/**"
+  ],
+  "activationEvents": [
+    "onLanguage:python"
+  ],
+  "main": "./out/extension.js",
+  "keywords": [
+    "zmrobo",
+    "robots",
+    "python",
+    "rcu"
+  ],
+  "contributes": {
+    "grammars": [
+      {
+        "language": "python",
+        "scopeName": "source.python.rcu",
+        "path": "./syntaxes/rcu-commands.tmLanguage.json"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "rcuSidebar",
+          "title": "ZMROBO Russian (Not official)",
+          "icon": "resources/icons/rcu-icon.png"
+        },
+        {
+          "id": "systemCommandsSidebar",
+          "title": "Системные команды",
+          "icon": "resources/icons/system-commands-icon.png"
+        }
+      ]
+    },
+    "views": {
+      "rcuSidebar": [
+        {
+          "id": "systemCommands",
+          "name": "Системные команды",
+          "icon": "resources/icons/rcu-icon.png"
+        },
+        {
+          "id": "rcuCommands",
+          "name": "Команды для робота",
+          "icon": "resources/icons/rcu-icon.png"
+        },
+        {
+          "id": "connectedDevices",
+          "name": "Подключённые устройства",
+          "icon": "resources/icons/rcu-icon.png"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "extension.setErcu",
+        "title": "E6-RCU"
+      },
+      {
+        "command": "extension.setHrcu",
+        "title": "H-RCU"
+      },
+      {
+        "command": "extension.configurePorts",
+        "title": "Настроить порты"
+      },
+      {
+        "command": "extension.createProjectFolder",
+        "title": "Создать папку проекта"
+      },
+      {
+        "command": "extension.createPythonTemplate",
+        "title": "Новый файл"
+      },
+      {
+        "command": "extension.detectDevices",
+        "title": "Обнаружить устройства"
+      },
+      {
+        "command": "extension.testDrivelist",
+        "title": "Тестировать drivelist"
+      },
+      {
+        "command": "device.select",
+        "title": "Выбрать устройство"
+      },
+      {
+        "command": "extension.uploadFile",
+        "title": "Загрузить файл на робота"
+      },
+      {
+        "command": "extension.openExamples",
+        "title": "Примеры программ"
+      },
+      {
+        "command": "extension.showCommandInfo",
+        "title": "Информация о команде",
+        "category": "Extension"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "extension.uploadFileToDevice",
+        "key": "F6",
+        "when": "editorTextFocus"
+      }
+    ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "extension.createProjectFolder",
+          "group": "2_python",
+          "title": "Создать папку проекта"
+        },
+        {
+          "command": "extension.createPythonTemplate",
+          "group": "2_python",
+          "title": "Новый файл"
+        },
+        {
+          "command": "extension.uploadFile",
+          "title": "Загрузить файл на робота"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "extension.setErcu",
+          "when": "view == rcuCommands",
+          "group": "navigation"
+        },
+        {
+          "command": "extension.setHrcu",
+          "when": "view == rcuCommands",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "extension.uploadFile",
+          "when": "viewItem == 'deviceItem'",
+          "group": "inline"
+        },
+        {
+          "command": "extension.showCommandInfo",
+          "when": "view == rcuCommands",
+          "group": "navigation"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.7",
+    "@types/node": "^14.14.37",
+    "@types/vscode": "^1.60.0",
+    "typescript": "^4.0.0",
+    "vscode-test": "^1.4.0"
+  },
+  "dependencies": {
+    "@abandonware/noble": "^1.9.2-25",
+    "drivelist": "^12.0.2"
+  }
+}

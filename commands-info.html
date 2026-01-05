@@ -1,0 +1,2054 @@
+<!DOCTYPE html>
+<html lang="ru">
+<!-- #region Параметры страницы -->
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/monokai.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <title>Команды RCU</title>
+
+    <style>
+        pre,
+        pre code {
+            margin: 0 !important;
+            /* Убираем маржин */
+            padding: 5px 10px !important;
+            /* Устанавливаем нужный паддинг */
+            text-indent: 0 !important;
+            /* Убедитесь, что текстовый отступ отсутствует */
+        }
+
+        body {
+            font-size: 18px;
+            /* Устанавливаем размер шрифта для всего содержимого */
+            font-family: 'Courier New', Courier, monospace;
+            /* Моноширинный шрифт для лучшего отображения кода */
+            margin: 0;
+            /* Убираем отступы страницы */
+            padding: 10px;
+            /* Добавляем немного отступа вокруг содержимого */
+        }
+
+        pre {
+            background-color: #333;
+            /* Темный фон для блока кода */
+            color: #f8f8f2;
+            /* Светлый текст для кода */
+            border: 1px solid #555;
+            /* Тонкая граница вокруг кода */
+            padding: 10px;
+            /* Внутренний отступ вокруг текста кода */
+            margin: 10px 0;
+            /* Отступ сверху и снизу */
+            overflow-x: auto;
+            /* Добавляем горизонтальную прокрутку при необходимости */
+            white-space: pre-wrap;
+            /* Перенос строк в блоке кода */
+            word-wrap: break-word;
+            /* Перенос слов в блоке кода */
+            box-sizing: border-box;
+            /* Включаем в размеры элемента паддинги и бордеры */
+        }
+
+        h1 {
+            color: #66d9ef;
+            /* Цвет заголовка под тему monokai */
+        }
+
+        code {
+            color: #a6e22e;
+            /* Цвет текста кода, для примера использован ярко-зеленый */
+            font-size: 14px;
+            /* Устанавливаем размер шрифта для кода */
+        }
+    </style>
+</head>
+
+<body>
+    <!-- #endregion -->
+    <!-- #region Системные команды -->
+    <div id="extension.uploadFile" style="display: none;">
+        <h1>Загрузка файла на устройство</h1>
+        <p>Команда создаёт копию текущего открытого файла на подключённом устройстве.<br>
+            Чтобы использовать эту функцию, обнаружте устройство при помощи команды в нижней левой панели и выберите его
+            в качестве активного.<br>
+            <strong>Подсказка</strong>: при выполнении команд для работы с устройствами в правом нижнем углу экрана
+            появляются уведомления об успешности операции.
+        </p>
+    </div>
+    <div id="extension.openExamples" style="display: none;">
+        <h1>Открыть примеры</h1>
+        <p>Команда открывает страницу с примерами готовых программ, протестированных на роботе. Их можно загрузить на
+            устройство так же, как и собственные программы.</p>
+    </div>
+    <div id="extension.createProjectFolder" style="display: none;">
+        <h1>Создать папку проекта</h1>
+        <p>Команда создаёт папку для вашего проекта и инициализирует в ней новый проект.</p>
+    </div>
+    <div id="extension.createPythonTemplate" style="display: none;">
+        <h1>Создать файл проекта</h1>
+        <p>Команда создаёт файл проекта на языке Python с готовым шаблоном. Для использования должна быть открыта папка
+            проекта.</p>
+    </div>
+    <!-- #endregion -->
+    <!-- #region Команды моторов E6 -->
+    <div id="motor.SetMotor" style="display: none;">
+        <h1>Установка скорости для мотора</h1>
+        <p><strong>Параметры:</strong> № порта, скорость в %.<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+motor.SetMotor(2, 50)
+# устанавливаем скорость на левом моторе
+motor.SetMotor(4, 50)
+# устанавливаем скорость на правом моторе
+rcu.SetWaitForTime(5)
+# даем моторам время для движения
+</code></pre>
+        </p>
+    </div>
+
+    <div id="motor.SetMotorStop" style="display: none;">
+        <h1>Остановка выбранного мотора</h1>
+        <p><strong>Параметры:</strong> № порта<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+motor.SetMotor(2, 50)
+# устанавливаем скорость на левом моторе
+motor.SetMotor(4, 50)
+# устанавливаем скорость на правом моторе
+rcu.SetWaitForTime(5)
+# даем моторам время для движения
+motor.SetMotorStop(2)
+# останавливаем левый мотор
+motor.SetMotorStop(4)
+# останавливаем правый мотор
+</code></pre>
+        </p>
+    </div>
+
+    <div id="motor.SetMotorCode" style="display: none;">
+        <h1>Сброс показаний энкодера</h1>
+        <p><strong>Параметры:</strong> № порта.<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+motor.SetMotorCode(1) 
+# обнуляем показания энкодера
+motor.SetDisplayString(1, str(motor.GetMotorCode(1)), 0xFFE0, 0x0000) 
+# выводим показания энкодера на экран
+rcu.SetWaitForTime(5)
+# даем время для чтения
+</code></pre>
+        </p>
+    </div>
+
+    <div id="motor.GetMotorCode" style="display: none;">
+        <h1>Прочтение показаний энкодера</h1>
+        <p><strong>Параметры:</strong> № порта.<br>
+            Считывает показания с выбранного энкодера. Обязательно используется как функция, встроенная в другую,
+            например, в функцию вывода на экран.<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+motor.SetMotorCode(1) 
+# обнуляем показания энкодера
+motor.SetDisplayString(1, str(motor.GetMotorCode(1)), 0xFFE0, 0x0000) 
+# выводим показания энкодера на экран
+rcu.SetWaitForTime(5)
+# даем время для чтения
+</code></pre>
+        </p>
+    </div>
+
+    <div id="motor.SetMotorSecond" style="display: none;">
+        <h1>Включение мотора с указанной скоростью на определённое время</h1>
+        <p><strong>Параметры:</strong> № мотора, скорость, время<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+motor.SetMotorSecond(2, 50, 2)
+# поворачиваем 2 мотор со скоростью 50 в течении 2 секунд
+motor.SetMotorStop(2)
+# останавливаем 2 мотор
+</code></pre>
+        </p>
+    </div>
+
+    <div id="motor.SetMotorAngleDelay" style="display: none;">
+        <h1>Включение мотора с указанной скоростью до определённого угла поворота с зависанием, пока не достигнут угол
+        </h1>
+        <p><strong>Параметры:</strong> № порта, скорость, угол<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+motor.SetMotorAngleDelay(2, 50, 90)
+# система ожидает поворота 2 мотора на угол в 90 градусов со скоростью 50
+</code></pre>
+        </p>
+    </div>
+
+    <div id="motor.SetMotorConstSpeed" style="display: none;">
+        <h1>Установка неизменной скорости мотора</h1>
+        <p><strong>Параметры:</strong> № порта, скоростью<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+motor.SetMotorConstSpeed(2, 70)
+# запускаем 2 мотор со скоростью 70
+</code></pre>
+        </p>
+    </div>
+
+    <div id="motor.SetMotorAngle" style="display: none;">
+        <h1>Включение мотора с указанной скоростью до определённого угла поворота</h1>
+        <p><strong>Параметры:</strong> № порта, скорость, энкодер<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+motor.SetMotorAngle(2, 50, 200)
+# включаем 2 мотор со скоростью 50 на 200 по энкодеру
+</code></pre>
+        </p>
+    </div>
+
+    <div id="motor.SetMotorDirection" style="display: none;">
+        <h1>Установка вращения мотора в конкретную сторону</h1>
+        <p><strong>Параметры:</strong> № порта, сторона(0 - по часовой, 1 - против часовой стрелки)<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+motor.SetMotorDirection(2, 1)
+# Запускаем 2 моторо против часовой стрелки
+</code></pre>
+        </p>
+    </div>
+    <!-- #endregion -->
+    <!-- #region Команды Move E6 -->
+
+    <div id="move.SetMoveInitialize" style="display: none;">
+        <h1>Инициализация системы управления двумя моторами</h1>
+        <p><strong>Параметры:</strong> № левого мотора, № правого мотора, реверс<br>
+            Основная команда библиотеки move. Её необходимо выполнить в начале программы однократно, если планируется
+            использование системы управления двумя моторами.<br>
+            Параметры для реверса (писать кавычки <b>обязательно</b>):<br>
+            "left_reversal" - левый мотор развёрнут<br>
+            "right_reversal" - правый мотор развёрнут<br>
+            "all_reversal" - оба мотора развёрнуты<br>
+            "no_reversal" - моторы не развёрнуты<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+move.SetMoveInitialize(2, 4, "no_reversal")
+# Инициализируем систему управления двумя моторами move. Левый мотор на порту 2, правый мотор на порту 4, реверс отключен
+</code></pre>
+        </p>
+    </div>
+
+    <div id="move.SetMoveRunSecond" style="display: none;">
+        <h1>Запуск двух моторов в указанную сторону с выбранной скоростью на определённое время</h1>
+        <p><strong>Параметры:</strong> направление движения, скорость, время<br>
+            Параметры для направления (писать кавычки <b>обязательно</b>):<br>
+            "turnleft" - поворот налево<br>
+            "turnright" - проворот направо<br>
+            "backward" - движение назад<br>
+            "forward" - движение вперёд<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+move.SetMoveRunSecond("forward", 50, 1)
+# Запускаем робота вперёд со скоростью 50 на 1 секунду
+</code></pre>
+        </p>
+    </div>
+
+    <div id="move.SetMoveRunAngle" style="display: none;">
+        <h1>Запуск двух моторов в указанную сторону с выбранной скоростью на определённый градус поворота</h1>
+        <p><strong>Параметры:</strong> направление движения, скорость, расстояние<br>
+            Параметры для направления (писать кавычки <b>обязательно</b>):<br>
+            "turnleft" - поворот налево<br>
+            "turnright" - проворот направо<br>
+            "backward" - движение назад<br>
+            "forward" - движение вперёд<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+move.SetMoveRunAngle("forward", 50, 180)
+# Запускаем робота вперёд со скоростью 50 на 180 по энкодеру
+</code></pre>
+        </p>
+    </div>
+
+    <div id="move.SetMoveRun" style="display: none;">
+        <h1>Запуск двух моторов в указанную сторону с выбранной скоростью</h1>
+        <p><strong>Параметры:</strong> направление движения, скорость<br>
+            Параметры для направления (писать кавычки <b>обязательно</b>):<br>
+            "turnleft" - поворот налево<br>
+            "turnright" - проворот направо<br>
+            "backward" - движение назад<br>
+            "forward" - движение вперёд<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+move.SetMoveRun("forward", 50)
+# Запускаем робота вперёд со скоростью 50
+</code></pre>
+        </p>
+    </div>
+
+    <div id="move.SetMoveSpeedSecond" style="display: none;">
+        <h1>Запуск двух моторов с различной скоростью на определённое время</h1>
+        <p><strong>Параметры:</strong> скорость левого мотора, скорость правого мотора, время<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+move.SetMoveSpeedSecond(30, 50, 1)
+# Запускаем моторы со скоростью 30 на левом, 50 на правом на 1 секунду
+</code></pre>
+        </p>
+    </div>
+
+    <div id="move.SetMoveSpeed" style="display: none;">
+        <h1>Запуск двух моторов с различной скоростью</h1>
+        <p><strong>Параметры:</strong> скорость левого мотора, скорость правого мотора<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+move.SetMoveSpeed(30, 50)
+# Запускаем моторы со скоростью 30 на левом, 50 на правом
+</code></pre>
+        </p>
+    </div>
+
+    <div id="move.SetMovePower" style="display: none;">
+        <h1>Запуск двух моторов с различной мощностью</h1>
+        <p><strong>Параметры:</strong> мощность левого мотора, мощность правого мотора<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+move.SetMovePower(30, 50)
+# Запускаем моторы с мощность 30% на левом, 50% на правом
+</code></pre>
+        </p>
+    </div>
+
+    <div id="move.SetMotorPower" style="display: none;">
+        <h1>Установка ограничений мощности для моторов</h1>
+        <p><strong>Параметры:</strong> мощность 1 мотора, мощность 2 мотора, мощность 3 мотора, мощность 4 мотора<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+move.SetMotorPower(30, 50, 10, 90)
+# Ограничевам мощность на моторах. 30% на 1, 50% на 2, 10% на 3, 90% на 4 
+</code></pre>
+        </p>
+    </div>
+
+    <div id="move.SetMoveStop" style="display: none;">
+        <h1>Остановка робота</h1>
+        <br><strong>Пример:</strong><br>
+        <pre><code>
+move.SetMoveStop()
+# Останавливаем робота
+</code></pre>
+        </p>
+    </div>
+    <!-- #endregion -->
+    <!-- #region Команды контроллера E6 -->
+
+    <div id="rcu.SetData" style="display: none;">
+        <h1>Запись данных</h1>
+        <p><strong>Параметры:</strong> адрес, данные<br>
+            Записать в указанную ячейку памяти указанное число.<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+rcu.SetData(10, 50)
+# записывает в 10 ячейку число 50<br>
+</code></pre>
+        </p>
+    </div>
+
+    <div id="rcu.GetData" style="display: none;">
+        <h1>Чтение данных</h1>
+        <p><strong>Параметры:</strong> адрес<br>
+            Прочитывает число из указанной ячейки.<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+rcu.GetData(10)
+# читает данные из 10 ячейки<br>
+</code></pre>
+        </p>
+    </div>
+
+    <div id="rcu.SetUartData" style="display: none;">
+        <h1>Отправка Serial-данных</h1>
+        <p><strong>Параметры:</strong> данные, скорость в бод<br>
+            Записывает число на указанной скорости через Serial-порт.<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+rcu.SetUartData(255, 9600)
+# отправляет число 255 на скорости 9600 через Serial-порт<br>
+</code></pre>
+        </p>
+    </div>
+
+    <div id="rcu.GetUartData" style="display: none;">
+        <h1>Приём Serial-данных</h1>
+        <p><strong>Параметры:</strong> скорость в бод<br>
+            Прочитывает данные на указанной скорости через Serial-порт.<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+rcu.GetUartData(9600)
+# читает данные на скорости 9600 через Serial-порт<br>
+</code></pre>
+        </p>
+    </div>
+
+    <div id="rcu.GetInMic" style="display: none;">
+        <h1>Чтение данных с мирофона</h1>
+        Чтение уровня громкости микрофона от 0 до 4096.<br>
+        <br><strong>Пример:</strong><br>
+        <pre><code>
+rcu.SetDisplayString(1,str(rcu.GetInMic()),0xFFE0,0x0000) 
+# выводим показания громкости микрофона на экран
+rcu.SetWaitForTime(5)
+# даем время для чтения
+</code></pre>
+        </p>
+    </div>
+
+    <div id="rcu.GetInVotage" style="display: none;">
+        <h1>Чтение данных с батареи</h1>
+        Чтение уровня заряда батареи в вольтах.<br>
+        <br><strong>Пример:</strong><br>
+        <pre><code>
+rcu.SetDisplayString(1,str(rcu.GetInVotage()),0xFFE0,0x0000) 
+# выводим показания заряда батареи на экран
+rcu.SetWaitForTime(5)
+# даем время для чтения
+</code></pre>
+        </p>
+    </div>
+
+    <div id="rcu.GetLeftButton" style="display: none;">
+        <h1>Чтение данных с левой кнопки</h1>
+        Проверка нажатия левой кнопки.<br>
+        <br><strong>Пример:</strong><br>
+        <pre><code>
+while True:
+    if (rcu.GetLeftButton() == 1):
+        rcu.SetInBeep(1)
+# если левая кнопка нажата, включаем пищалку
+    else:
+        rcu.SetInBeep(0)
+# иначе выключаем пищалку
+    SetWaitForTime(0.001)
+# задержка в цикле
+</code></pre>
+        </p>
+    </div>
+
+    <div id="rcu.WaitLeftButtonPressed" style="display: none;">
+        <h1>Ожидание нажатия левой кнопки</h1>
+        Дождитесь отпускания левой кнопки контроллера.<br>
+        <br><strong>Пример:</strong><br>
+        <pre><code>
+rcu.WaitLeftButtonPressed()
+rcu.SetDisplayString(1,'pressed',0xFFE0,0x0000)
+</code></pre>
+        </p>
+    </div>
+
+    <div id="rcu.WaitLeftButtonReleased" style="display: none;">
+        <h1>Ожидание отпускания левой кнопки</h1>
+        Дождитесь отпускания левой кнопки контроллера.<br>
+        <br><strong>Пример:</strong><br>
+        <pre><code>
+while True:
+    if rcu.GetLeftButton():
+        rcu.SetDisplayString(1,'pressed',0xFFE0,0x0000)
+        rcu.WaitLeftButtonReleased()
+        rcu.SetDisplayString(1,'released',0xFFE0,0x0000)
+</code></pre>
+        </p>
+    </div>
+
+    <div id="rcu.GetRightButton" style="display: none;">
+        <h1>Чтение данных с правой кнопки</h1>
+        Проверка нажатия правой кнопки.<br>
+        <br><strong>Пример:</strong><br>
+        <pre><code>
+while True:
+    if (rcu.GetRightButton() == 1):
+        rcu.SetInBeep(1)
+# если правая кнопка нажата, включаем пищалку
+    else:
+        rcu.SetInBeep(0)
+# иначе выключаем пищалку
+    SetWaitForTime(0.001)  
+# задержка в цикле
+</code></pre>
+        </p>
+    </div>
+
+
+    <div id="rcu.WaitRightButtonPressed" style="display: none;">
+        <h1>Ожидание нажатия правой кнопки</h1>
+        Дождитесь отпускания правой кнопки контроллера.<br>
+        <br><strong>Пример:</strong><br>
+        <pre><code>
+rcu.WaitRightButtonPressed()
+rcu.SetDisplayString(1,'pressed',0xFFE0,0x0000)
+</code></pre>
+        </p>
+    </div>
+
+    <div id="rcu.WaitRightButtonReleased" style="display: none;">
+        <h1>Ожидание отпускания правой кнопки</h1>
+        Дождитесь отпускания правой кнопки контроллера.<br>
+        <br><strong>Пример:</strong><br>
+        <pre><code>
+while True:
+    if rcu.GetRightButton():
+        rcu.SetDisplayString(1,'pressed',0xFFE0,0x0000)
+        rcu.WaitRightButtonReleased()
+        rcu.SetDisplayString(1,'released',0xFFE0,0x0000)
+</code></pre>
+        </p>
+    </div>
+
+    <div id="rcu.SetSysTime" style="display: none;">
+        <h1>Обнуление времени контроллера</h1>
+        Сбрасывает системный таймер.<br>
+        <br><strong>Пример:</strong><br>
+        <pre><code>
+rcu.SetSysTime()
+# сбрасывает таймер
+while (rcu.GetSysTime() < 2000):
+# пока таймер меньше 2 секнуд
+    rcu.SetMotor(2, 50)
+    rcu.SetMotor(4, 50)
+# едем вперёд
+    SetWaitForTime(0.001)  
+# задержка в цикле
+rcu.SetMotor(2, 0)
+rcu.SetMotor(4, 0)
+# выключаем моторы после цикла
+</code></pre>
+        </p>
+    </div>
+
+    <div id="rcu.GetSysTime" style="display: none;">
+        <h1>Прочтение времени контроллера</h1>
+        Прочитывает системный таймер.<br>
+        <br><strong>Пример:</strong><br>
+        <pre><code>
+rcu.SetSysTime()
+# сбрасывает таймер
+while (rcu.GetSysTime() < 2000):
+# пока таймер меньше 2 секнуд
+    rcu.SetMotor(2, 50)
+    rcu.SetMotor(4, 50)
+# едем вперёд
+    SetWaitForTime(0.001)  
+# задержка в цикле
+rcu.SetMotor(2, 0)
+rcu.SetMotor(4, 0)
+# выключаем моторы после цикла
+</code></pre>
+        </p>
+    </div>
+
+    <div id="rcu.SetWaitForTime" style="display: none;">
+        <h1>Таймер в секундах</h1>
+        Дает время на исполнение роботом любых действий.<br>
+        <br><strong>Пример:</strong><br>
+        <pre><code>
+rcu.setWaitForTime(0.555)
+# жди 555 миллисекунд
+</code></pre>
+        </p>
+    </div>
+
+    <div id="rcu.SetRcuStop" style="display: none;">
+        <h1>Остановка всех функция контроллера</h1>
+        <br><strong>Пример:</strong><br>
+        <pre><code>
+rcu.SetDisplayString(1, 'ZM', 0xFFE0, 0x0000)
+rcu.WaitForTime(1)
+rcu.SetRcuStop()
+</code></pre>
+        </p>
+    </div>
+
+    <div id="rcu.GetRandom" style="display: none;">
+        <h1>Рандом</h1>
+        <p><strong>Параметры:</strong> мин, макс<br>
+            Генерация случайного числа в указанном диапазоне<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+data = rcu.GetRandom(1,100)
+rcu.SetDisplayVar(1, data, 0xFFE0, 0x0000)
+</code></pre>
+        </p>
+    </div>
+
+    <div id="rcu.GetRGB" style="display: none;">
+        <h1>Получить цвет</h1>
+        <p><strong>Параметры:</strong> красный, зелёный, синий<br>
+            Задайте три цвета в диапазоне от 0 до 255 и получите любой оттенок<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+data = rcu.GetRGB(255,255,255)
+rcu.SetDisplayVar(1, data, 0xFFE0, 0x0000)
+</code></pre>
+        </p>
+    </div>
+
+    <div id="rcu.GetSysLanguage" style="display: none;">
+        <h1>Получить язык системы контроллера</h1>
+        <br><strong>Пример:</strong><br>
+        <pre><code>
+data = rcu.GetSysLanguage()
+rcu.SetDisplayString(1,data,0xFFE0,0x0000)
+</code></pre>
+        </p>
+    </div>
+
+    <div id="rcu.GetSysVersion" style="display: none;">
+        <h1>Получить номер версии прошивки контроллера</h1>
+        <br><strong>Пример:</strong><br>
+        <pre><code>
+data = rcu.GetSysVersion()
+rcu.SetDisplayString(1,data,0xFFE0,0x0000)
+</code></pre>
+        </p>
+    </div>
+
+    <div id="rcu.GetMcuID" style="display: none;">
+        <h1>Получить идентификатор чипа контроллера</h1>
+        <br><strong>Пример:</strong><br>
+        <pre><code>
+data = rcu.GetMcuID()
+rcu.SetDisplayString(1,data,0xFFE0,0x0000)
+</code></pre>
+        </p>
+    </div>
+    <!-- #endregion -->
+    <!-- Команды датчиков E6 -->
+    <!-- #region Команды датчиков света -->
+    <div id="sensor.Set3CLed" style="display: none;">
+        <h1>Управление лампой</h1>
+        <p><strong>Параметры:</strong> порт, цвет<br>
+            Включает лампу на определенный цвет.<br>
+            <br><strong>Цвета:</strong><br>
+            0 - Выкл<br>
+            1 - Красный<br>
+            2 - Зеленый<br>
+            3 - Синий<br>
+            4 - Жёлтый<br>
+            5 - Фиолетовый<br>
+            6 - Голубой<br>
+            7 - Белый<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+    sensor.Set3CLed(3, 2)
+# включает на лампе зеленый свет<br>
+</code></pre>
+        </p>
+    </div>
+
+    <div id="sensor.SetLightSensorLed" style="display: none;">
+        <h1>Подстветка на датчике освещенности</h1>
+        <p><strong>Параметры:</strong> порт, состояние<br>
+            Включает или отключает подсветку на датчике освещенности.<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+    sensor.SetLightSensorLed(2, 1)
+# включаем подсветку на датчике, установленном на 2 порту
+</code></pre>
+        </p>
+    </div>
+
+    <div id="sensor.GetLightSensor" style="display: none;">
+        <h1>Датчик света</h1>
+        <p><strong>Параметры:</strong> порт<br>
+            Читает показания с датчика света. Показания от 0 до +- 4000.<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+while True:
+    if (sensor.GetLightSensor(2) > 900):
+        motor.SetMotor(1, 50)
+        motor.SetMotor(2, 0)
+# если датчик света видит больше, чем серый, то включаем первый мотор, выключаем второй
+    else:
+        motor.SetMotor(1, 0)
+        motor.SetMotor(2, 50)
+# иначе наоборот
+    rcu.SetWaitForTime(0.001)  
+# задержка в цикле
+</code></pre>
+        </p>
+    </div>
+
+    <div id="sensor.GetLightSensorData" style="display: none;">
+        <h1>Пороговые показания датчика света</h1>
+        <p><strong>Параметры:</strong> порт<br>
+            Определяет, меньше ли глубина цвета объекта, обнаруженного датчиком, порогового значения.<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+while True:
+    if (sensor.GetLightSensorData(1)):
+        rcu.SetInBeep(1)
+# если меньше, включаем пищалку
+    else:
+        rcu.SetInBeep(0)
+# иначе выключаем пищалку
+    rcu.SetWaitForTime(0.001)  
+# задержка в цикле     
+</code></pre>
+        </p>
+    </div>
+
+    <div id="sensor.GetColorSensor" style="display: none;">
+        <h1>Датчик цвета</h1>
+        <p><strong>Параметры:</strong> порт, режим<br>
+            Читает показание с датчика цвета в нужном режиме.<br>
+            <strong>Режимы:</strong><br>
+            1~3: Считать значения RGB (по отдельности).<br>
+            4: Распознанный цвет (соответствие результата и цвета): 1 — красный, 2 — зелёный, 3 — синий, 4 — жёлтый, 5 —
+            чёрный, 6 — белый<br>
+            5: Прочитать данные в формате RGB888.<br>
+            6~8: Прочитать исходные данные RGB.<br>
+            9~11: Значение имитированного освещения RGB.<br>
+            12~14: Значения соотношения баланса белого.<br>
+            15: Оттенок (Hue).<br>
+            16: Насыщенность (Saturation).<br>
+            17: Яркость (Brightness).<br>
+            18: Зарезервировано.<br>
+            19: Максимальное выходное значение.<br>
+            20~60: Команды настройки.<br>
+            61~66: Эталонные значения расширения цвета.<br>
+            67: Эталонное значение белого.<br>
+            68: Эталонное значение чёрного.<br>
+            Значение 999 означает, что данные не считаны или произошла ошибка при считывании.<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+while True:
+    if (sensor.GetColorSensor(2, 4) == 2):
+        rcu.SetInBeep(1)
+# если в режиме цвета виден зелёный, включаем пищалку
+    else:
+        rcu.SetInBeep(0)
+# иначе выключаем пищалку
+    rcu.SetWaitForTime(0.001)  
+# задержка в цикле     
+</code></pre>
+        </p>
+    </div>
+    <!-- #endregion -->
+    <!-- #region Команды датчиков расстояния -->
+    <div id="sensor.GetTouch" style="display: none;">
+        <h1>Датчик нажатия</h1>
+        <p><strong>Параметры:</strong> порт<br>
+            Читает показания с датчика нажатия.<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+while True:
+    if (sensor.GetTouch(6) == 1):
+        rcu.SetInBeep(1)
+# если датчик нажат, включаем пищалку
+    else:
+        rcu.SetInBeep(0)
+# иначе выключаем пищалку
+    rcu.SetWaitForTime(0.001)  
+# задержка в цикле   
+</code></pre>
+        </p>
+    </div>
+
+    <div id="sensor.GetUltrasound" style="display: none;">
+        <h1>Ультразвуковой датчик расстояния</h1>
+        <p><strong>Параметры:</strong> порт<br>
+            Читает показания с ультразвукового датчика расстояния. Показания в см.<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+while True:
+    if (sensor.GetUltrasound(4) < 20):
+        rcu.SetInBeep(1)
+# если датчик нажат, включаем пищалку
+    else:
+        rcu.SetInBeep(0)
+# иначе выключаем пищалку
+    rcu.SetWaitForTime(0.001)  
+# задержка в цикле   
+</code></pre>
+        </p>
+    </div>
+
+    <div id="sensor.SetUltrasoundled" style="display: none;">
+        <h1>Установка цвета УЗ датчика расстояния</h1>
+        <p><strong>Параметры:</strong> порт, цвет (1-8)<br>
+            Извеняет подцветку датчика<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+rcu.SetUltrasoundled(1,1) 
+</code></pre>
+        </p>
+    </div>
+
+    <div id="rcu.GetShortIRDist" style="display: none;">
+        <h1>Инфрокрасный датчик расстояния</h1>
+        <p><strong>Параметры:</strong> порт<br>
+            Читает показания с инфрокрасного датчика расстояния. Показания в см.<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+while True:
+    if (sensor.GetShortIRDist(4) < 20):
+        rcu.SetInBeep(1)
+# если датчик нажат, включаем пищалку
+    else:
+        rcu.SetInBeep(0)
+# иначе выключаем пищалку
+    rcu.SetWaitForTime(0.001)  
+# задержка в цикле   
+</code></pre>
+        </p>
+    </div>
+
+    <div id="sensor.GetLaserDist" style="display: none;">
+        <h1>Лазерный датчик расстояния</h1>
+        <p><strong>Параметры:</strong> порт, режим<br>
+            Читает показания с лазерного датчика расстояния. Показания в мм.<br>
+            <strong>Режимы:</strong><br>
+            1 - Обычное расстояние<br>
+            2 - Большое расстояние<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+while True:
+    if (sensor.GetLaserDist(4) < 200):
+        rcu.SetInBeep(1)
+# если датчик нажат, включаем пищалку
+    else:
+        rcu.SetInBeep(0)
+# иначе выключаем пищалку
+    rcu.SetWaitForTime(0.001)  
+# задержка в цикле   
+</code></pre>
+        </p>
+    </div>
+    <!-- #endregion -->
+    <!-- #region Команды гироскопа -->
+
+    <div id="sensor.GetAHRS" style="display: none;">
+        <h1>Чтение гироскопа</h1>
+        <p><strong>Параметры:</strong> порт, режим, пустой<br>
+            Чтение показаний гироскопа с выбранной оси.<br>
+            <strong>ВАЖНО!</strong> Поворот на 90 градусов - это 900, а не 90.<br>
+            <strong>Режимы:</strong><br>
+            1 - Крен<br>
+            2 - Наклон<br>
+            3 - Рысканье<br>
+            4 - aX<br>
+            5 - aY<br>
+            6 - aZ<br>
+            7 - gX<br>
+            8 - gY<br>
+            9 - gZ<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+sensor.SetAHRS(4, 1)
+# сброс показаний перед циклом
+while (sensor.GetAHRS(4, 3, 0) < 900):
+    motor.SetMotor(1, 50)
+    motor.SetMotor(2, -50)
+# Пока на гироскопе меньше 90 градусов поворачивай
+    rcu.SetWaitForTime(0.001)
+# задержка в цикле 
+motor.SetMotor(1, 0)
+motor.SetMotor(2, 0)
+# обязательная остановка после поворота!
+</code></pre>
+        </p>
+    </div>
+
+    <div id="sensor.SetAHRS" style="display: none;">
+        <h1>Калибровка гироскопа</h1>
+        <p><strong>Параметры:</strong> порт, режим<br>
+            Обнуление показаний гироскопа<br>
+            <strong>Режимы:</strong><br>
+            1 - Исправление<br>
+            2 - Сброс<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+sensor.SetAHRS(4, 1)
+# сброс показаний перед циклом
+rcu.SetWaitForTime(2)
+# 2 секунды нужно гироскопу, чтобы совершить калибровку
+while (sensor.GetAHRS(4, 3, 0) < 900):
+    motor.SetMotor(1, 50)
+    motor.SetMotor(2, -50)
+# Пока на гироскопе меньше 90 градусов поворачивай
+    rcu.SetWaitForTime(0.001)
+# задержка в цикле 
+motor.SetMotor(1, 0)
+motor.SetMotor(2, 0)
+# обязательная остановка после поворота!
+</code></pre>
+        </p>
+    </div>
+    <!-- #endregion -->
+    <!-- #region Команды альтрнативного гироскопа -->
+
+    <div id="Create_object_gyro" style="display: none;">
+        <h1>Создание объекта для гироскопа</h1>
+        Создаёт объект класса gyro_lib. Вызывает калибровку гироскопа<br>
+        <strong>ВАЖНО!</strong> Это не родная библиотека ZMROBO, а созданная мной для увеличения точности прочтения
+        гироскопа.<br>
+        Для использования библиотеки необходимо в начале программы её вызвать командой import gyro_lib. Тогда система
+        загрузит библиотку в корневую папку Вашего робота.<br>
+        Команда CalibrateGyro() проводит 100 измерений гироскопа при старте и высчитывает погрешность работы датчика,
+        после чего вносит её во все измерения, за счет чего он работает намного лучше.<br>
+        Команда ReadGyro() читает угловую скорость гироскопа, вычитает погрешность, после чего преобразует данные в
+        точный угол поворота.<br>
+        <br><strong>Пример:</strong><br>
+        <pre><code>
+import rcu
+import gyro_lib
+import motor
+
+gyro = gyro_lib.Gyro(1)          # гироскоп на 1-м порту
+gyro.CalibrateGyro()          # калибровка
+
+def task1():
+    while True:
+        angle = gyro.ReadGyro()   # чтение угла
+        rcu.SetDisplayString(1, "Angle = " + str(angle), 0xFFE0, 0x0000)
+        rcu.SetWaitForTime(0.05)
+
+task1()
+</code></pre>
+        </p>
+    </div>
+
+    <div id="gyro.ReadGyro" style="display: none;">
+        <h1>Чтение показания с гироскопа</h1>
+        <strong>ВАЖНО!</strong> Это не родная библиотека ZMROBO, а созданная мной для увеличения точности прочтения
+        гироскопа.<br>
+        Команда CalibrateGyro() проводит 100 измерений гироскопа при старте и высчитывает погрешность работы датчика,
+        после чего вносит её во все измерения, за счет чего он работает намного лучше.<br>
+        Команда ReadGyro() читает угловую скорость гироскопа, вычитает погрешность, после чего преобразует данные в
+        точный угол поворота.<br>
+        <br><strong>Пример:</strong><br>
+        <pre><code>
+import rcu
+import gyro
+import motor
+
+gyro = gyro.Gyro(1)          # гироскоп на 1-м порту
+gyro.CalibrateGyro()          # калибровка
+
+while True:
+    angle = gyro.ReadGyro()   # чтение угла
+    rcu.SetDisplayString(1, "Angle = " + str(angle), 0xFFE0, 0x0000)
+    rcu.SetWaitForTime(0.05)
+</code></pre>
+        </p>
+    </div>
+    <!-- #endregion -->
+    <!-- #region Команды датчика жестов-->
+
+    <div id="sensor.GetGesture" style="display: none;">
+        <h1>Показания с датчика жестов</h1>
+        <p><strong>Параметры:</strong> порт<br>
+            <strong>Жесты:</strong><br>
+            1 - Взмах вверх<br>
+            2 - Взмах вниз<br>
+            3 - Взмах влево<br>
+            4 - Взмах вправо<br>
+            5 - Взмах вперед<br>
+            6 - Взмах назад<br>
+            7 - По часовой стрелке<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+while True:
+    if (sensor.GetGesture(4) == 2):
+        rcu.SetInBeep(1)
+# Если увидел взмах вниз, включи зуммер
+    rcu.SetWaitForTime(0.001)  
+# Задержка в цикле   
+</code></pre>
+        </p>
+    </div>
+    <!-- #endregion -->
+    <!-- #region Команды датчика давления -->
+    <div id="sensor.GetAirPressure" style="display: none;">
+        <h1>Показания с датчика давления воздуха</h1>
+        <p><strong>Параметры:</strong> порт<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+while True:
+    if (sensor.GetAirPressure(2) > 500):
+    # Если давление больше 500
+        rcu.SetInBeep(1)
+        # Включи зуммер
+    else:
+        rcu.SetInBeep(0)
+        # Иначе выключи зуммер
+    rcu.SetWaitForTime(0.001)  
+# задержка в цикле   
+</code></pre>
+        </p>
+    </div>
+    <!-- #endregion -->
+    <!-- #region Команды датчика температуры и влажности -->
+    <div id="sensor.GetSht30" style="display: none;">
+        <h1>Показания с датчика влажности и температуры воздуха</h1>
+        <p><strong>Параметры:</strong> порт, режим<br>
+            <strong>Режимы:</strong><br>
+            0 - Температура<br>
+            1 - Влажность<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+while True:
+    if (sensor.GetSht30(3, 0) < 40 or sensor.GetSht30(3, 1) < 30):
+    # Если температура воздуха меньше 40 градусов или влажность почвы меньше 30%
+        rcu.SetInBeep(1)
+        # Включи зуммер
+    else:
+        rcu.SetInBeep(0)
+        # Иначе выключи зуммер
+    rcu.SetWaitForTime(0.001)  
+# задержка в цикле   
+</code></pre>
+        </p>
+    </div>
+
+    <!-- #endregion -->
+    <!-- #region Команды датчика магнитного поля -->
+    <div id="sensor.GetMagnetic" style="display: none;">
+        <h1>Показания с датчика магнитного поля</h1>
+        <p><strong>Параметры:</strong> порт, режим<br>
+            <strong>Режимы:</strong><br>
+            0 - сила магнитного поля<br>
+            1 - направление магнитного поля (0 - отсутствует, 1 - N pole, 2 - S pole)<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+while True:
+    if (sensor.GetMagnetic(1, 0) > 0.5 and sensor.GetMagnetic(1, 1) == 1):
+    # Если сила магнитного поля больше 0.5 и оно направлено на север
+        rcu.SetInBeep(1)
+        # Включи зуммер
+    else:
+        rcu.SetInBeep(0)
+        # Иначе выключи зуммер
+    rcu.SetWaitForTime(0.001)  
+# задержка в цикле   
+</code></pre>
+        </p>
+    </div>
+    <!-- #endregion -->
+    <!-- #region Команды для умного глаза -->
+    <div id="sensor.SetSmartEyeMode" style="display: none;">
+        <h1>Режим подсветки Умного глаза</h1>
+        <p><strong>Параметры:</strong> порт, режим(1-9), цвет<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+sensor.SetSmartEyeMode(1, 9, 0xFF0000)
+# Включение на Умном глазу 9 режима подсветки красным цветом
+</code></pre>
+        </p>
+    </div>
+
+    <div id="sensor.SetSmartEyeAllLed" style="display: none;">
+        <h1>Режим подсветки Умного глаза</h1>
+        <p><strong>Параметры:</strong> порт, цвет 1, цвет 2, цвет 3, цвет 4, цвет 5, цвет 6, цвет 7, цвет 8<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+sensor.SetSmartEyeAllLed(1, 0xEE000, 0xF00000, 0xFFF000, 0xFFFF00, 0xFFFFF0, 0xFFFFFF, 0xFFEE00, 0xFF00EE)
+# Включение на Умном глазу разных цветов на 8 светодиодах
+</code></pre>
+        </p>
+    </div>
+
+    <div id="sensor.SetSmartEyeIRcode" style="display: none;">
+        <h1>Отправка кода через ИК светодиод Умного глаза</h1>
+        <p><strong>Параметры:</strong> порт, код<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+sensor.SetSmartEyeIRcode(1, 50)
+# Отправка числа 50
+</code></pre>
+        </p>
+    </div>
+
+    <div id="sensor.GetSmartEyeIRcode" style="display: none;">
+        <h1>Приём кода через ИК приёмник Умного глаза</h1>
+        <p><strong>Параметры:</strong> порт, код<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+while (sensor.GetSmartEyeIRcode(1) != 50):
+    rcu.SetWaitForTime(0.001)
+# Ожидание получения числа 50 через ИК приёмник
+</code></pre>
+        </p>
+    </div>
+
+    <div id="sensor.GetSmartEyeDist" style="display: none;">
+        <h1>Приём кода через ИК приёмник Умного глаза</h1>
+        <p><strong>Параметры:</strong> порт, код<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+while (sensor.GetSmartEyeDist(1) > 100):
+    rcu.SetWaitForTime(0.001)
+# Ожидание, пока расстояние до источника ИК сигнала больше 50
+</code></pre>
+        </p>
+    </div>
+    <!-- #endregion -->
+    <!-- #region Команды для камеры -->
+    <div id="ai.SetAICamData" style="display: none;">
+        <h1>Управление режимами</h1>
+        <p>
+            <strong>Основная команда управления режимами работы камеры</strong><br>
+            <strong>Параметры:</strong> режим, параметр выбранного режима<br>
+            <br><strong>Режимы камеры (режми, параметры):</strong><br>
+            1 - <b>Пустой</b>, 0 - вкл. режим<br>
+            2 - <b>Распознание цвета</b>, 0 - вкл. режим<br>
+            3 - <b>Распознание QR-кода</b>, 0 - вкл. режим<br>
+            4 - <b>Распознание мяча</b>, 0 - красный / 1 - зелёный / 2 - синий / 3 - жёлтый<br>
+            5 - <b>Распознание линии</b>, 0 <br>
+            6 - <b>Распознание лиц</b>, 0 - вкл. режим<br>
+            7 - <b>Классификация изображений</b>, 0 - вкл. режим<br>
+            8 - <b>Идентификация кода метки</b>, 0 - вкл. режим<br>
+            9 - <b>Обучение распознанию цвета</b>, 0 - вкл. режим, 1 - учиться один раз, 2 - очистить данные<br>
+            10 - <b>Обучение распознанию лиц</b>, 0 - вкл. режим, 1 - учиться один раз, 2 - очистить данные<br>
+            11 - <b>Распознание жестов</b>, 0 - вкл. режим<br>
+            12 - <b>Изучение классификации изображений</b>, 0 - вкл. режим, 1 - учиться один раз, 2 - очистить данные, 3
+            - начинаем тренировки<br>
+            13 - <b>Распознание дорожных знаков</b>, 0 - вкл. режим<br>
+            14 - <b>Пятиканальный поиск линии</b>, 0 - вкл. режим<br>
+        </p>
+    </div>
+
+    <div id="ai.SetWaitForAICamData" style="display: none;">
+        <h1>Ожидание переключения камеры в новый режим</h1>
+        <p>
+            <strong>Параметры:</strong> режим, параметр выбранного режима<br>
+            Ожидание, пока камера переключится в указанный режим<br>
+            <br><strong>Режимы камеры:</strong><br>
+            1 - Пустой<br>
+            2 - Распознание цвета<br>
+            3 - Распознание QR-кода<br>
+            4 - Распознание мяча<br>
+            5 - Распознание линии <br>
+            6 - Распознание лиц<br>
+            7 - Классификация изображений<br>
+            8 - Идентификация кода метки<br>
+            9 - Обучение распознанию цвета<br>
+            10 - Обучение распознанию лиц<br>
+            11 - Распознание жестов<br>
+            12 - Обучение классификации изображений <br>
+            13 - Распознание дорожных знаков<br>
+            14 - Пятиканальный поиск линии<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+ai.SetAICamData(5,0)
+# переключаем камеру в режим движения по линии
+ai.SetWaitForAICamData(5,0) 
+# ожидаем завершения переключения режима камеры
+</code></pre>
+        </p>
+    </div>
+
+    <div id="ai.SetAICamLED" style="display: none;">
+        <h1>Подстветка камеры</h1>
+        <p><strong>Параметры:</strong> Режим<br>
+            Включение и отключение подсветки на камере.<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+ai.SetAICamData(5,0)
+# переключаем камеру в режим движения по линии
+ai.SetWaitForAICamData(5,0) 
+# ожидаем завершения переключения режима камеры
+ai.SetAICamLED(1)
+# включаем подсветку, чтобы лучше видеть линию
+</code></pre>
+        </p>
+    </div>
+
+    <div id="ai.GetAICamVoice" style="display: none;">
+        <h1>Распознание речи</h1>
+        <p><strong>Параметры:</strong> Код<br>
+            Распознание речи. При распознание возвращает True, иначе False. Код - заложенный звук. Список звуков можно
+            найти в оригинальной программе ZMROBO3.<br>
+            <strong>У меня эта команда не работает!</strong><br>
+        </p>
+    </div>
+
+    <div id="ai.GetAICamData" style="display: none;">
+        <h1>Чтения показаний с камеры</h1>
+        <p>
+            Полученные данные напрямую зависят от того, какой режим установлен командой SetAICamData()<br>
+            <strong>Параметр:</strong> <br>
+            В данном случае параметр указывает, что именно читать с камеры в каждом из режимов:<br>
+            1 - <b>Пустой</b><br>
+            2 - <b>Распознание цвета</b> (количество объектов каждого цвета): 1 - Красный, 2 - Зеленый, 3 - Синий, 4 -
+            Жёлтый<br>
+            3 - <b>Распознание QR-кода</b>: 1 - Идентификатор QR-кода, 2 - Координата Х (0 - 240), 3 - Координата У(0 -
+            240), 4 - Размер (0 - 100)<br>
+            4 - <b>Распознание мяча</b>: 1 - Координата Х (0 - 240), 2 - Координата У (0 - 240), 3 - Размер (0 -
+            100)<br>
+            5 - <b>Распознание линии</b>: 1 - Значение смещения (0 - 240), центральное положение линии 120<br>
+            6 - <b>Распознание лиц</b>: 1 - Координата Х (0 - 240), 2 - Координата У (0 - 240), 3 - Размер (0 - 100)<br>
+            7 - <b>Классификация изображений</b> (нужно заранее записать изображения): 1 - ID(0/1/2/3)<br>
+            8 - <b>Идентификация кода метки</b>: 1 - ID, 2 - Координата Х (0 - 240), 3 - Координата У(0 - 240), 4 -
+            Размер (0 - 100)<br>
+            9 - <b>Обучение распознанию цвета</b>(нужно заранее изучить цвета): 1 - ID1, 2 - ID2, 3 - ID3, 4 - ID4<br>
+            10 - <b>Обучение распознанию лиц</b>(нужно заранее записать лица): 1 - ID, 2 - Координата Х, 3 - Координата
+            У, 4 - Размер<br>
+            11 - <b>Распознание жестов</b>: 1 - ID(1 - бумага, 2 - камень, 3 - ножницы), 2 - Координата Х, 3 -
+            Координата У, 4 - Размер<br>
+            12 - <b>Обучение классификации изображений</b>(нужно заранее записать изображения): 1 - ID
+            13 - <b>Распознание дорожных знаков</b>: 1 - ID, 2 - Координата Х, 3 - Координата У, 4 - Размер<br>
+            14 - <b>Пятиканальный поиск линии</b>: 1 канал, 2 канал, 3 канал, 4 канал, 5 канал<br>
+            Подробные данные о работе камеры можно прочитать в ТГ канале <b>ZMROBO Russia</b>(<u>t.me/zmrobo</u>), чат
+            <b>Инструкции</b>, файл <b>BE-1743_module_AI_firmawre_RUS.pdf</b>
+        </p>
+    </div>
+
+    <!-- #endregion -->
+    <!-- #region Команды дял модуля линии -->
+    <div id="trace.GetTraceV2I2C" style="display: none;">
+        <h1>Получение показаний с конкретного датчика модуля линии</h1>
+        <p><strong>Параметры:</strong> порт, целевой датчик<br>
+            Читает показания с конкретного датчика модуля линии. Датчики считаются слева направо с 1 по 7.<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+while True:
+    if (trace.GetTraceV2I2C(4, 2) < 50):
+        rcu.SetInBeep(1)
+# если 2 датчик модуля видит меньше серого цвета включаем пищалку
+    else:
+        rcu.SetInBeep(0)
+# иначе выключаем пищалку
+    rcu.SetWaitForTime(0.001)  
+# задержка в цикле   
+</code></pre>
+        </p>
+    </div>
+
+    <div id="trace.GetTraceV2I2CState" style="display: none;">
+        <h1>Получение состояний с конкретного датчика модуля линии</h1>
+        <p><strong>Параметры:</strong> порт, целевой датчик<br>
+            Читает состояния с конкретного датчика модуля линии. Датчики считаются слева направо с 1 по 7.<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+while True:
+    if (trace.GetTraceV2I2CState(4, 2) == 1):
+        rcu.SetInBeep(1)
+# если 2 датчик модуля видит линию включаем пищалку
+    else:
+        rcu.SetInBeep(0)
+# иначе выключаем пищалку
+    rcu.SetWaitForTime(0.001)  
+# задержка в цикле   
+</code></pre>
+        </p>
+    </div>
+
+    <div id="trace.GetTraceV2I2CChxState" style="display: none;">
+        <h1>Получение состояний модуля линии</h1>
+        <p><strong>Параметры:</strong> порт, режим<br>
+            Читает показания нужного режима модуля линии.<br>
+            <br><strong>Режимы:</strong><br>
+            1 - Боковые датчики<br>
+            2 - Слева<br>
+            3 - Справа<br>
+            4 - В центре<br>
+            5 - 11 конкретные датчики слева направо <br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+while True:
+    if trace.GetTraceV2I2CChxState(4, 2):
+        motor.SetMotor(1, 50)
+        motor.SetMotor(2, 0)
+# если слева видна линия, то включаем левый мотор, отключаем правый
+    elif (trace.GetTraceV2I2CChxState(4, 3)):
+        motor.SetMotor(1, 0)
+        motor.SetMotor(2, 50)
+# если справа видна линия, то включаем правый мотор, отключаем левый
+    else:
+        motor.SetMotor(1,50)
+        motor.SetMotor(2,50)
+# иначе включаем оба мотора
+    rcu.SetWaitForTime(0.001)
+# задержка в цикле   
+</code></pre>
+        </p>
+    </div>
+
+    <div id="trace.SetTraceV2I2Color" style="display: none;">
+        <h1>Включение подсветки на каждом из датчиков модуля линии</h1>
+        <p><strong>Параметры:</strong> порт, цвет1, цвет2, цвет3, цвет4, цвет5, цвет6, цвет7<br>
+            Устанавливает подсветку на каждом из датчиков модуля линии.<br>
+            <strong>Цвета:</strong><br>
+            1 - Красный<br>
+            2 - Зеленый<br>
+            3 - Синий<br>
+            4 - Жёлтый<br>
+            5 - Фиолетовый<br>
+            6 - Голубой<br>
+            7 - Белый<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+trace.SetTraceV2I2Color(4, 1, 2, 3, 4, 5, 6, 7)
+# включаем на всей линейке разные цвета
+</code></pre>
+        </p>
+    </div>
+
+    <div id="trace.SetTraceV2I2AllColor" style="display: none;">
+        <h1>Общая подсветка модуля линии</h1>
+        <p><strong>Параметры:</strong> порт, цвет<br>
+            Устанавливает подсветку сразу на всех датчиках модуля линии.<br>
+            <strong>Цвета:</strong><br>
+            1 - Красный<br>
+            2 - Зеленый<br>
+            3 - Синий<br>
+            4 - Жёлтый<br>
+            5 - Фиолетовый<br>
+            6 - Голубой<br>
+            7 - Белый<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+trace.SetTraceV2I2AllColor(4, 2)
+# включаем на всей линейке зелёный цвет
+</code></pre>
+        </p>
+    </div>
+
+    <div id="trace.SetTraceV2I2Threshold" style="display: none;">
+        <h1>Автоматическая установка порога на заданное время</h1>
+        <p><strong>Параметры:</strong> порт, время<br>
+            Автоматическая установка порога на заданное время.<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+trace.SetTraceV2I2Threshold(4, 5)
+# устанавливаем порог в 5 секунд
+</code></pre>
+        </p>
+    </div>
+
+    <div id="trace.LineIntersectionStop" style="display: none;">
+        <h1>Движение по линии на заданной скорости до перекрёстка определённого типа</h1>
+        Требует предварительной настройки командой LineSetInitialize()!<br>
+        <p><strong>Параметры:</strong> скорость, тип перекрёстка<br>
+            Типы перекрёстков:<br>
+            1 - правый "Т"-образный<br>
+            7 - левый "Т"-образный<br>
+            17 - "Т"-образный<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+trace.LineIntersectionStop(70, 17)
+# движение по линии со скоростью 70 до Т-образного перекрёстка
+</code></pre>
+        </p>
+    </div>
+
+    <div id="trace.LineMillisecond" style="display: none;">
+        <h1>Движение по линии на заданной скорости определённое время</h1>
+        Требует предварительной настройки командой LineSetInitialize()!<br>
+        <p><strong>Параметры:</strong> скорость, время<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+trace.LineMillisecond(70, 5000)
+# движение по линии со скоростью 70 в течении 5 секунд
+</code></pre>
+        </p>
+    </div>
+
+    <div id="trace.LineForBmp" style="display: none;">
+        <h1>Движение по линии на заданной скорости до угла поворота энкодера</h1>
+        Требует предварительной настройки командой LineSetInitialize()!<br>
+        <p><strong>Параметры:</strong> скорость, угол энкодера<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+trace.LineForBmp(70, 360)
+# движение по линии со скоростью 70 до поворота энкодера на 360 градусов
+</code></pre>
+        </p>
+    </div>
+
+    <div id="trace.LineTurnEncounterline" style="display: none;">
+        <h1>Поворот по линейке датчиков, пока конкретный датчик не увидит линию</h1>
+        Требует предварительной настройки командой LineSetInitialize()!<br>
+        <p><strong>Параметры:</strong> скорость левого мотора, скорость правого мотора, № датчика<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+trace.LineTurnEncounterline(70, 20, 1)
+# поворачивайся со скоростью 70/20, пока 1 датчик на линейке не увидит линию
+</code></pre>
+        </p>
+    </div>
+
+    <div id="trace.LineBasis" style="display: none;">
+        <h1>Движение по линии на заданной скорости</h1>
+        Требует предварительной настройки командой LineSetInitialize()!<br>
+        <p><strong>Параметры:</strong> скорость<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+trace.LineBasis(70)
+# движение по линии со скоростью 70
+</code></pre>
+        </p>
+    </div>
+
+    <div id="trace.LineSetInitialize" style="display: none;">
+        <h1>Инициализация линейки датчиков света</h1>
+        Основная команда для работы с линейкой датчиков света. Однократно вызывается в начале программы.<br>
+        <p><strong>Параметры:</strong> порт, цвет линии, тип колёс<br>
+            Цвет линии (кавычки писать обязательно):<br>
+            "black"<br>
+            "white"<br>
+            Тип колёс (кавычки писать обязательно):<br>
+            "wheeledchassis"<br>
+            "mecanumchassis"<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+trace.LineSetInitialize(1, "black", "wheeledchassis")
+# Инициализируем модуль линии на 1 порту, цвет линии Чёрный, тип колёс Обычные
+</code></pre>
+        </p>
+    </div>
+
+    <!-- #endregion -->
+    <!-- #region Команды звука E6 -->
+    <div id="rcu.SetInSound" style="display: none;">
+        <h1>Проиграть конкретную ноту в течении указанного времени</h1>
+        <p><strong>Параметры:</strong> частота, время(в секундах)<br>
+            Ноты:<br>
+            Высокая До - 1047<br>
+            Высокая Ре - 1175<br>
+            Высокая Ми - 1319<br>
+            Высокая Фа - 1397<br>
+            Высокая Соль - 1568<br>
+            Высокая Ля - 1760<br>
+            Высокая Си - 1976<br>
+            <br>
+            До - 523<br>
+            Ре - 587<br>
+            Ми - 659<br>
+            Фа - 698<br>
+            Соль - 784<br>
+            Ля - 880<br>
+            Си - 988<br>
+            <br>
+            Низкая До - 262<br>
+            Низкая Ре - 294<br>
+            Низкая Ми - 330<br>
+            Низкая Фа - 349<br>
+            Низкая Соль - 392<br>
+            Низкая Ля - 440<br>
+            Низкая Си - 494<br>
+        </p>
+    </div>
+
+    <div id="rcu.SoundStartBeep" style="display: none;">
+        <h1>Проиграть простой звук</h1>
+        <p><strong>Параметры:</strong> звук<br>
+            Звуки:<br>
+            1 - light<br>
+            2 - siren<br>
+            3 - deep<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+rcu.SoundStartBeep(1)
+# играем звук light
+</code></pre>
+        </p>
+    </div>
+
+    <div id="rcu.SetInBeep" style="display: none;">
+        <h1>Зуммер</h1>
+        <p><strong>Параметры:</strong> состояние<br>
+            Включает или отключает пищалку.<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+rcu.SetInBeep(1)
+# включаем пищалку
+rcu.SetWaitForTime(1)
+# даем пищалке время для звучания
+</code></pre>
+        </p>
+    </div>
+
+    <div id="rcu.SoundMp3" style="display: none;">
+        <h1>Проиграть звук в течении указанного времени</h1>
+        <p><strong>Параметры:</strong> папка, звук, время в секундах<br>
+            Проигрывает записанный звук. В папке 1 лежат 14 базовых звуков (список СМ в ZMROBO3).<br>
+            2 - 99 папки со своими звуками можно создать, нажав специальную кнопку на блоке. из них можно играть свою
+            музыку.
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+rcu.SetMp3Sound(20)
+# устанавливаем громкость 20
+rcu.SoundMp3(1, 1, 1)
+# играет звук "ВОРОНА" в течении 1 секунды
+</code></pre>
+        </p>
+    </div>
+
+    <div id="rcu.SetMp3Play" style="display: none;">
+        <h1>Проиграть звук</h1>
+        <p><strong>Параметры:</strong> папка, звук<br>
+            Проигрывает записанный звук. В папке 1 лежат 14 базовых звуков (список СМ в ZMROBO3).<br>
+            2 - 99 папки со своими звуками можно создать, нажав специальную кнопку на блоке. из них можно играть свою
+            музыку.
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+rcu.SetMp3Sound(20)
+# устанавливаем громкость 20
+rcu.SetMp3Play(1, 1)
+# играет звук "ВОРОНА"
+</code></pre>
+        </p>
+    </div>
+
+    <div id="rcu.SetMp3Suspend" style="display: none;">
+        <h1>Выключить звук</h1>
+        <p><strong>Параметры:</strong> папка, звук<br>
+            Заканчивает играть звук.<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+rcu.SetMp3Sound(20)
+# устанавливаем громкость 20
+rcu.SetMp3Play(1, 1)
+# играет звук "ВОРОНА"
+</code></pre>
+        </p>
+    </div>
+
+    <div id="rcu.SetMp3Sound" style="display: none;">
+        <h1>Громкость звука</h1>
+        <p><strong>Параметры:</strong> папка, звук<br>
+            Устанавливает громкость звука.<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+rcu.SetMp3Sound(20)
+# устанавливаем громкость 20
+rcu.SetMp3Play(1, 1)
+# играет звук "ВОРОНА"
+</code></pre>
+        </p>
+    </div>
+
+    <!-- #endregion -->
+    <!-- #region Команды для экрана E6 -->
+    <div id="rcu.GetTouchScreen" style="display: none;">
+        <h1>Проверка касания экрана</h1>
+        <p>Проверяет, было ли касание экрана. возвращает True или False<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+while True:
+    if rcu.GetTouchScreen():
+        rcu.SetDisplayString(1,str("".join(("X = ",str(rcu.GetTouchScreenX())))),0xFFE0,0x0000)
+        rcu.SetDisplayString(2,str("".join(("Y = ",str(rcu.GetTouchScreenY())))),0xFFE0,0x0000)
+# Если коснулись экрана, то выводит в первой строке X-координату косания, а во второй Y-координату касания
+</code></pre>
+        </p>
+    </div>
+
+    </div>
+    <div id="rcu.GetTouchScreenX" style="display: none;">
+        <h1>X-координата касания экрана</h1>
+        <p>Возвращает X-координату касания экрана.<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+while True:
+    if rcu.GetTouchScreen():
+        rcu.SetDisplayString(1,str("".join(("X = ",str(rcu.GetTouchScreenX())))),0xFFE0,0x0000)
+        rcu.SetDisplayString(2,str("".join(("Y = ",str(rcu.GetTouchScreenY())))),0xFFE0,0x0000)
+# Если коснулись экрана, то выводит в первой строке X-координату косания, а во второй Y-координату касания
+</code></pre>
+        </p>
+    </div>
+
+    <div id="rcu.GetTouchScreenY" style="display: none;">
+        <h1>Y-координата касания экрана</h1>
+        <p>Возвращает Y-координату касания экрана.<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+while True:
+    if rcu.GetTouchScreen():
+        rcu.SetDisplayString(1,str("".join(("X = ",str(rcu.GetTouchScreenX())))),0xFFE0,0x0000)
+        rcu.SetDisplayString(2,str("".join(("Y = ",str(rcu.GetTouchScreenY())))),0xFFE0,0x0000)
+# Если коснулись экрана, то выводит в первой строке X-координату косания, а во второй Y-координату касания
+</code></pre>
+        </p>
+    </div>
+
+    <div id="rcu.SetLCDBack" style="display: none;">
+        <h1>Включение и отключение экрана</h1>
+        <p><strong>Параметры:</strong> состояние (0-1)<br>
+        <p>Включает или отключает экран контроллера<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+while True:
+    data = rcu.GetTouchScreen()
+    if data == 1:
+        rcu.SetLCDBack(1)
+        rcu.SetDisplayString(1, 'turn on', 0xFFE0, 0x0000)
+    else :
+        rcu.SetLCDBack(0)
+</code></pre>
+        </p>
+    </div>
+
+    <div id="rcu.SetLCDClear" style="display: none;">
+        <h1>Очистка экрана</h1>
+        <p><strong>Параметры:</strong> цвет<br>
+            Очищает экран выбранным цветом. Цвет указывается в шестнадцатиричной системе.<br>
+            В примере показано, как выполнять очистку экрана не на каждой итерации цикла, чтобы избежать излишнего
+            мерцания и сохранить видимость элементов на экране.<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+timeClear = 0
+# обнуляем таймер очистки
+while True:
+    timeClear = timeClear + 1
+# прибавляем к таймеру 1
+    if (timeClear == 15):
+        rcu.SetLCDClear(0x0000)
+        timeClear = 0
+# если таймер равен 15, то очищаем дисплей и обнуляем таймер
+</code></pre>
+        </p>
+    </div>
+
+    <div id="rcu.SetFontSize" style="display: none;">
+        <h1>Установка размера шрифта.</h1>
+        <p><strong>Параметры:</strong> размер (0-4)<br>
+            Устанавливает размер шрифта.<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+rcu.SetFontSize(2)
+# устанавливаем средний шрифт
+</code></pre>
+        </p>
+    </div>
+
+    <div id="rcu.SetDisplayVar" style="display: none;">
+        <h1>Вывод числа в строке</h1>
+        <p><strong>Параметры:</strong> № строки, число, цвет текста, цвет фона<br>
+            Выводит число в указанной строке. Цвет указывается в шестнадцатиричной системе.<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+rcu.SetDisplayVar(1, 10, 0xFFE0, 0x0000)
+# выводим число 10 в 1 строке. Цвет текста жёлтый, фон чёрный
+</code></pre>
+        </p>
+    </div>
+
+    <div id="rcu.SetDisplayString" style="display: none;">
+        <h1>Вывод текста в строке</h1>
+        <p><strong>Параметры:</strong> № строки, число, цвет текста, цвет фона<br>
+            Выводит текст в указанной строке. Цвет указывается в шестнадцатиричной системе.<br>
+            Это одна из основных команд для работы с роботами, через неё удобно выводить на экран любые показания с
+            робота.<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+rcu.SetDisplayString(1, "Speed = " + str(50), 0xFFE0, 0x0000)
+# выводим в первой строке надпись: Speed = 50. Цвет текста жёлтый, фон чёрный
+# Подобным образом можно выводить не только числа, но и переменные, для этого замените str(50) на str(*любая переменная*)
+</code></pre>
+        </p>
+    </div>
+
+    <div id="rcu.SetDisplayPicture" style="display: none;">
+        <h1>Вывод картинки на экран</h1>
+        <p><strong>Параметры:</strong> x, y, картинка, масштаб<br>
+            Выводит картинку на экран от указанной координаты. Картинка должна быть загружена на робота.<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+rcu.SetDisplayPicture(10, 10, "dog.jpg", 0)
+# выводит от координаты 10, 10 картинку с пёсиком
+</code></pre>
+        </p>
+    </div>
+
+    <div id="rcu.SetDisplayVarXY" style="display: none;">
+        <h1>Вывод числа по координатам</h1>
+        <p><strong>Параметры:</strong> x, y, число, цвет текста, цвет фона<br>
+            Выводит число в указанных координатах. Цвет указывается в шестнадцатиричной системе.<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+rcu.SetDisplayVarXY(1, 1, 10, 0xFFE0, 0x0000)
+# в координате 1, 1 выводит число 10. Цвет текста жёлтый, фон чёрный
+</code></pre>
+        </p>
+    </div>
+
+    <div id="rcu.SetDisplayStringXY" style="display: none;">
+        <h1>Вывод текста по координатам</h1>
+        <p><strong>Параметры:</strong> x, y, текст, цвет текста, цвет фона<br>
+            Выводит текст в указанных координатах. Цвет указывается в шестнадцатиричной системе.<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+rcu.SetDisplayStringXY(1, 1, "Hello", 0xFFE0, 0x0000, 1)
+# в координате 1, 1 выводит слово Hello. Цвет текста жёлтый, фон чёрный
+
+</code></pre>
+        </p>
+    </div>
+
+    <div id="rcu.SetDisplayVarU32" style="display: none;">
+        <h1>Вывод 10-значного числа</h1>
+        <p><strong>Параметры:</strong> строка, число, цвет текста, цвет фона<br>
+            Вывод 10-значного числа на экран в строке.<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+rcu.SetDisplayVarU32(1, 1234567890, 0xFFE0, 0x0000)
+# в 1 строке выводим число 1234567890. Цвет текста жёлтый, фон чёрный
+</code></pre>
+        </p>
+    </div>
+
+    <div id="rcu.SetLCDDot" style="display: none;">
+        <h1>Рисование точки</h1>
+        <p><strong>Параметры:</strong> x, y, цвет<br>
+            Рисование точки по координатам.<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+rcu.SetLCDDot(10, 10, 0xFFE0)'
+# рисуем жёлтую точку в координате 10, 10
+</code></pre>
+        </p>
+    </div>
+
+    <div id="rcu.SetLCDSolidCircle" style="display: none;">
+        <h1>Рисование круга</h1>
+        <p><strong>Параметры:</strong> x, y, радиус, цвет<br>
+            Рисование круга по координатам.<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+rcu.SetLCDSolidCircle(10, 10, 5, 0xFFE0)
+# рисуем жёлтый круг радиусом 5 в координате 10, 10
+</code></pre>
+        </p>
+    </div>
+
+    <div id="rcu.SetLCDLine" style="display: none;">
+        <h1>Рисование линии</h1>
+        <p><strong>Параметры:</strong> x, y, угол, длина, цвет<br>
+            Рисование линии по координатам.<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+rcu.SetLCDLine(10, 10, 45, 10, 0xFFE0)
+# рисуем жёлтую линию от координаты 10, 10 под углом в 45 градусов, длиной в 10
+</code></pre>
+        </p>
+    </div>
+
+    <div id="rcu.SetLCDFilledRectangle2" style="display: none;">
+        <h1>Рисование сплошного прямоугольника</h1>
+        <p><strong>Параметры:</strong> x, y, ширина, высота, цвет<br>
+            Рисование сплошного прямоугольника по координатам.<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+rcu.SetLCDFilledRectangle2(10, 10, 20, 50, 0xFFE0)
+# рисуем залитый цветом жёлтый прямоугольник от координаты 10, 10 шириной в 20, длиной в 50
+</code></pre>
+        </p>
+    </div>
+
+    <div id="rcu.SetLCDRectangle2" style="display: none;">
+        <h1>Рисование прямоугольника</h1>
+        <p><strong>Параметры:</strong> x, y, ширина, высота, толщина линии, цвет<br>
+            Рисование прямоугольника по координатам.<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+rcu.SetLCDRectangle2(10, 10, 50, 50, 2, 0xFFE0)
+# рисуем не залитый цветом жёлтый прямоугольник от координаты 10, 10 шириной в 20, длиной в 50
+</code></pre>
+        </p>
+    </div>
+    <!-- #endregion -->
+    <!-- #region Команды для Bluetooth E6 -->
+    <div id="rcu.SetBluetoothData" style="display: none;">
+        <h1>Отправка данных по Bluetooth</h1>
+        <p><strong>Параметры:</strong> данные<br>
+            Отправка данных по Bluetooth на сопряжённое устройство.<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+rcu.SetBluetoothData(50)
+# отправляем число 50 по Bluetooth на сопряжённое устройство
+</code></pre>
+        </p>
+    </div>
+
+    <div id="rcu.GetBluetoothData" style="display: none;">
+        <h1>Получение данных по Bluetooth</h1>
+        <p>Получение данных по Bluetooth от сопряжённого устройства.<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+a = rcu.GetBluetoothData()
+# пишем в переменную a число, полученное по Bluetooth от сопряжённого устройства
+</code></pre>
+        </p>
+    </div>
+
+    <div id="rcu.GetBluetoothControl" style="display: none;">
+        <h1>Получить код ключа Bluetooth</h1>
+        <p>Получение кода ключа по Bluetooth от сопряжённого устройства.<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+a = rcu.GetBluetoothControl()
+# пишем в переменную a код ключа Bluetooth, полученный от сопряжённого устройства
+</code></pre>
+        </p>
+    </div>
+
+    <div id="rcu.GetBluetoothControlData" style="display: none;">
+        <h1>Получить ключ по Bluetooth</h1>
+        <p>Получение значение ключа от Bluetooth-пульта.<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+a = rcu.GetBluetoothControlData()
+# пишем в переменную a значение ключа Bluetooth, полученный от сопряжённого устройства
+</code></pre>
+        </p>
+    </div>
+
+    <div id="rcu.GetBTModuleRemoteButton" style="display: none;">
+        <h1>Получить значение ключа Bluetooth-пульта</h1>
+        <p>Получение значение ключа от Bluetooth-пульта.<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+a = rcu.GetBTModuleRemoteButton()
+# пишем в переменную a значение ключа Bluetooth, полученное от пульта
+</code></pre>
+        </p>
+    </div>
+
+    <div id="rcu.GetBTModuleRemoteCode" style="display: none;">
+        <h1>Получить код ключа Bluetooth-пульта</h1>
+        <p>Получить код ключа Bluetooth-пульта.<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+a = rcu.GetBTModuleRemoteCode()
+# пишем в переменную a код ключа Bluetooth, полученный от пульта
+</code></pre>
+        </p>
+    </div>
+
+    <div id="rcu.GetBTModuleRemoteRocker" style="display: none;">
+        <h1>Получение направление джойстика от Bluetooth-пульта</h1>
+        <p><strong>Параметры:</strong> джойстик (0 - левый, 1 - правый), направление (0 - вправо-влево, 1 -
+            вверх-вниз)<br>
+            Получить направление джойстика Bluetooth-пульта.<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+rcu.SetDisplayString(1, str(rcu.GetBTModuleRemoteRocker(0, 0)), 0xFFE0, 0x0000)
+# выводим в 1 строку показание с оси Х левого джойстика
+rcu.SetDisplayString(3, str(rcu.GetBTModuleRemoteRocker(0, 1)), 0xFFE0, 0x0000)
+# выводим в 3 строку показание с оси У левого джойстика
+
+</code></pre>
+        </p>
+    </div>
+
+    <div id="rcu.GetComVoice" style="display: none;">
+        <h1>Голосовая команда</h1>
+        <p><strong>Параметры:</strong> текст<br>
+            Голосовая команда.<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+rcu.GetComVoice("hello")
+# голосовая команда?
+</code></pre>
+        </p>
+    </div>
+    <!-- #endregion -->
+    <!-- #region Системные команды -->
+    <div id="control.if" style="display: none;">
+        <h1>Условие</h1>
+        <p>Выполняет код, если условие истинно.<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+if (x > 0):
+    motor.SetMotor(1, 50)
+    motor.SetMotor(2, 50)
+# если х > 0, то включи моторы
+</code></pre>
+        </p>
+    </div>
+
+    <div id="control.ifelse" style="display: none;">
+        <h1>Условие с двумя вариантами действий</h1>
+        <p>Выполняет один блок кода, если условие истинно, и другой блок — если ложное.<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+if (x > 0):
+    motor.SetMotor(1, 50)
+    motor.SetMotor(2, 50)
+else:
+    motor.SetMotor(1, 0)
+    motor.SetMotor(2, 0)
+# если х > 0, то включи моторы, иначе выключи моторы
+</code></pre>
+        </p>
+    </div>
+
+    <div id="control.ifelifelse" style="display: none;">
+        <h1>Несколько условие подряд</h1>
+        <p>Проверяет несколько условий поочерёдно. Выполняет код для первого истинного условия или запускает код в блоке
+            else, если все условия ложны.<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+if (x > 0):
+    motor.SetMotor(1, 50)
+    motor.SetMotor(2, 50)
+elif (x < 0):
+    motor.SetMotor(1, -50)
+    motor.SetMotor(2, -50)
+else:
+    motor.SetMotor(1, 0)
+    motor.SetMotor(2, 0)
+# если х > 0, то включи моторы, если х < 0, то включи моторы назад, иначе выключи моторы
+</code></pre>
+        </p>
+    </div>
+
+    <div id="control.while" style="display: none;">
+        <h1>Цикл с условием</h1>
+        <p>Повторяет выполнение кода, пока условие остаётся истинным.<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+while x > 0:
+    motor.SetMotor(1, 50)
+    motor.SetMotor(2, 50)
+    rcu.SetWaitForTime(0.001)
+# пока х > 0 двигайся вперед
+</code></pre>
+        </p>
+    </div>
+
+    <div id="control.whiletrue" style="display: none;">
+        <h1>Бесконечный цикл</h1>
+        <p>Создаёт бесконечный цикл, который будет выполняться постоянно.<br>
+            <br><strong>Пример:</strong><br>
+        <pre><code>
+while True:
+    motor.SetMotor(1, 50)
+    motor.SetMotor(2, 50)
+    rcu.SetWaitForTime(0.001)
+# двигайся вперед вечно
+</code></pre>
+        </p>
+    </div>
+
+    <div id="control.for" style="display: none;">
+        <h1>Итерационный цикл</h1>
+        <p>Цикл, который итерируется по элементам последовательности (например, списка, строки, множества или диапазона)
+            и выполняет заданный блок кода для каждого элемента. <br>
+            Он автоматически завершает выполнение, когда переберёт все элементы последовательности.<br>
+            В Python цикл for удобен для перебора любых итерируемых объектов, таких как списки, строки, кортежи, словари
+            и множества.<br>
+            <br><strong>Пример 1:</strong><br>
+        <pre><code>
+numbers = [1, 2, 3, 4]
+for num in numbers:
+    print(num)
+# В этом примере цикл for проходит по каждому элементу списка numbers и выводит его на экран
+</code></pre>
+        <br><strong>Пример 2:</strong><br>
+        <pre><code>
+for i in range(5):
+    print(i)
+# Этот цикл выполнится 5 раз, выводя числа от 0 до 4
+</code></pre>
+        </p>
+    </div>
+    <!-- #endregion -->
+    <!-- #region Команды для сервоприводов E6 -->
+    <div id="servo.SetSeeringEngine" style="display: none;">
+        <h1>Установка малого серовпривода в указанное положение</h1>
+        Параметры: канал, угол.<br>
+        </p>
+    </div>
+
+    <div id="servo.SetSeeringEngineTime" style="display: none;">
+        <h1>Установка малого серовпривода в указанное положение по времени</h1>
+        Параметры: канал, угол, время.<br>
+        </p>
+    </div>
+
+    <div id="servo.SetServoMotor" style="display: none;">
+        <h1>Поворот малого серовпривода на определённый угол</h1>
+        Параметры: канал, угол.<br>
+        </p>
+    </div>
+
+    <div id="servo.SetServo" style="display: none;">
+        <h1>Установка обычного серовпривода в указанное положение</h1>
+        Параметры: канал, угол.<br>
+        </p>
+    </div>
+
+    <div id="servo.SetServoTime" style="display: none;">
+        <h1>Установка обычного серовпривода в указанное положение по времени</h1>
+        Параметры: канал, угол, время.<br>
+        </p>
+    </div>
+
+    <div id="servo.SetMagneticServoSoftReset" style="display: none;">
+        <h1>Мягкая перезагрузка сервопривода</h1>
+        Параметры: порт.<br>
+        </p>
+    </div>
+
+    <div id="servo.SetMagneticServoState" style="display: none;">
+        <h1>Установка состояния сервопривода</h1>
+        Параметры: порт, перезапуск при включении(1/0), начальная скорость, начальный угол.<br>
+        </p>
+    </div>
+
+    <div id="servo.SetMagneticServoDegreeTime" style="display: none;">
+        <h1>УРежим сервопривода</h1>
+        Параметры: порт, угол, время.<br>
+        </p>
+    </div>
+
+    <div id="servo.SetMagneticServoDegreeSpeed" style="display: none;">
+        <h1>УРежим сервопривода</h1>
+        Параметры: порт, угол, скорость.<br>
+        </p>
+    </div>
+
+    <div id="servo.SetMagneticServoCodeMotor" style="display: none;">
+        <h1>Режим управления по энкодеру</h1>
+        Параметры: порт, угол, скорость.<br>
+        </p>
+    </div>
+
+    <div id="servo.SetMagneticServoMotor" style="display: none;">
+        <h1>Режим мотор-редуктора</h1>
+        Параметры: порт, скорость.<br>
+        </p>
+    </div>
+
+    <div id="servo.SetMagneticServoPowerDown" style="display: none;">
+        <h1>Остановка выходного крутящего момента</h1>
+        Параметры: порт.<br>
+        </p>
+    </div>
+
+    <div id="servo.GetMagneticServoDegree" style="display: none;">
+        <h1>Считать угол сервопривода</h1>
+        Параметры: порт.<br>
+        </p>
+    </div>
+
+    <div id="servo.SetMagneticServoEncoder" style="display: none;">
+        <h1>Сбросить показания энкодера</h1>
+        Параметры: порт.<br>
+        </p>
+    </div>
+
+    <div id="servo.GetMagneticServoEncoder" style="display: none;">
+        <h1>Прочитать показания энкодера</h1>
+        Параметры: порт.<br>
+        </p>
+    </div>
+    <!-- #endregion -->
+
+</body>
+
+</html>
