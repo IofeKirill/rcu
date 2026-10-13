@@ -6,21 +6,51 @@
     "type": "git",
     "url": "https://github.com/IofeKirill/Rus_ZMROBO.git"
   },
-  "version": "3.0.1",
+  "version": "4.0.0",
   "publisher": "IofeKirill",
   "icon": "images/rcu-icon.png",
   "engines": {
-    "vscode": "^1.60.0"
+    "vscode": "^1.60.0",
+    "node": ">=18"
   },
   "license": "MIT",
   "categories": [
     "Other"
   ],
-  "files": [
-    "stub_libs/**"
-  ],
   "activationEvents": [
-    "onLanguage:python"
+    "onLanguage:python",
+    "onView:systemCommands",
+    "onView:rcuCommands",
+    "onView:connectedDevices",
+    "onCommand:extension.setErcu",
+    "onCommand:extension.setHrcu",
+    "onCommand:extension.configurePorts",
+    "onCommand:extension.createPythonTemplate",
+    "onCommand:extension.detectDevices",
+    "onCommand:extension.testDrivelist",
+    "onCommand:device.select",
+    "onCommand:extension.uploadFile",
+    "onCommand:extension.openExamples",
+    "onCommand:extension.showCommandInfo",
+    "onCommand:extension.uploadFileToDevice",
+    "onCommand:extension.setE7",
+    "onCommand:extension.scanBluetooth",
+    "onCommand:extension.connectBluetooth",
+    "onCommand:extension.disconnectBluetooth",
+    "onCommand:extension.uploadBluetooth",
+    "onCommand:extension.playBluetooth",
+    "onCommand:extension.stopBluetooth",
+    "onCommand:extension.showBluetoothLog",
+    "onCommand:extension.installBluetoothDependency",
+    "onView:bluetoothDevices",
+    "onCommand:extension.uploadUSB",
+    "onCommand:extension.connectUSBSerial",
+    "onCommand:extension.playUSB",
+    "onCommand:extension.stopUSB",
+    "onCommand:extension.disconnectUSB",
+    "onCommand:extension.showUSBLog",
+    "onCommand:extension.installUSBDependency",
+    "onCommand:extension.connectUSBDevice"
   ],
   "main": "./out/extension.js",
   "keywords": [
@@ -42,12 +72,7 @@
         {
           "id": "rcuSidebar",
           "title": "ZMROBO Russian (Not official)",
-          "icon": "resources/icons/rcu-icon.png"
-        },
-        {
-          "id": "systemCommandsSidebar",
-          "title": "Системные команды",
-          "icon": "resources/icons/system-commands-icon.png"
+          "icon": "resources/icons/rcu-icon.svg"
         }
       ]
     },
@@ -55,37 +80,34 @@
       "rcuSidebar": [
         {
           "id": "systemCommands",
-          "name": "Системные команды",
-          "icon": "resources/icons/rcu-icon.png"
+          "name": "Системные команды"
         },
         {
           "id": "rcuCommands",
-          "name": "Команды для робота",
-          "icon": "resources/icons/rcu-icon.png"
+          "name": "Команды для робота"
         },
         {
           "id": "connectedDevices",
-          "name": "Подключённые устройства",
-          "icon": "resources/icons/rcu-icon.png"
+          "name": "Устройства USB"
+        },
+        {
+          "id": "bluetoothDevices",
+          "name": "Bluetooth"
         }
       ]
     },
     "commands": [
       {
         "command": "extension.setErcu",
-        "title": "E6-RCU"
+        "title": "E6"
       },
       {
         "command": "extension.setHrcu",
-        "title": "H-RCU"
+        "title": "H"
       },
       {
         "command": "extension.configurePorts",
         "title": "Настроить порты"
-      },
-      {
-        "command": "extension.createProjectFolder",
-        "title": "Создать папку проекта"
       },
       {
         "command": "extension.createPythonTemplate",
@@ -93,7 +115,8 @@
       },
       {
         "command": "extension.detectDevices",
-        "title": "Обнаружить устройства"
+        "title": "Поиск по USB",
+        "icon": "$(search)"
       },
       {
         "command": "extension.testDrivelist",
@@ -104,10 +127,6 @@
         "title": "Выбрать устройство"
       },
       {
-        "command": "extension.uploadFile",
-        "title": "Загрузить файл на робота"
-      },
-      {
         "command": "extension.openExamples",
         "title": "Примеры программ"
       },
@@ -115,6 +134,100 @@
         "command": "extension.showCommandInfo",
         "title": "Информация о команде",
         "category": "Extension"
+      },
+      {
+        "command": "extension.uploadFileToDevice",
+        "title": "Загрузить файл по выбранному подключению (F6)"
+      },
+      {
+        "command": "extension.setE7",
+        "title": "E7"
+      },
+      {
+        "command": "extension.scanBluetooth",
+        "title": "Поиск по Bluetooth",
+        "category": "ZMROBO",
+        "icon": "$(search)"
+      },
+      {
+        "command": "extension.connectBluetooth",
+        "title": "Подключить Bluetooth",
+        "category": "ZMROBO"
+      },
+      {
+        "command": "extension.disconnectBluetooth",
+        "title": "Отключить Bluetooth",
+        "category": "ZMROBO",
+        "icon": "$(debug-disconnect)"
+      },
+      {
+        "command": "extension.uploadBluetooth",
+        "title": "Загрузить файл по Bluetooth",
+        "category": "ZMROBO",
+        "icon": "$(cloud-upload)"
+      },
+      {
+        "command": "extension.playBluetooth",
+        "title": "Play — запустить активный файл",
+        "category": "ZMROBO",
+        "icon": "$(debug-start)"
+      },
+      {
+        "command": "extension.stopBluetooth",
+        "title": "Stop — остановить программу",
+        "category": "ZMROBO",
+        "icon": "$(debug-stop)"
+      },
+      {
+        "command": "extension.showBluetoothLog",
+        "title": "Журнал Bluetooth",
+        "category": "ZMROBO",
+        "icon": "$(output)"
+      },
+      {
+        "command": "extension.installBluetoothDependency",
+        "title": "Установить Bluetooth-зависимость",
+        "category": "ZMROBO"
+      },
+      {
+        "command": "extension.uploadUSB",
+        "title": "Загрузить файл по USB",
+        "category": "ZMROBO",
+        "icon": "$(cloud-upload)"
+      },
+      {
+        "command": "extension.connectUSBSerial",
+        "title": "Подключить USB-отладку",
+        "category": "ZMROBO"
+      },
+      {
+        "command": "extension.playUSB",
+        "title": "Отладка — запуск по USB",
+        "category": "ZMROBO",
+        "icon": "$(debug-start)"
+      },
+      {
+        "command": "extension.stopUSB",
+        "title": "Stop — остановка по USB",
+        "category": "ZMROBO",
+        "icon": "$(debug-stop)"
+      },
+      {
+        "command": "extension.disconnectUSB",
+        "title": "Отключить USB-отладку",
+        "category": "ZMROBO",
+        "icon": "$(debug-disconnect)"
+      },
+      {
+        "command": "extension.showUSBLog",
+        "title": "Журнал USB",
+        "category": "ZMROBO",
+        "icon": "$(output)"
+      },
+      {
+        "command": "extension.installUSBDependency",
+        "title": "Установить USB-зависимость",
+        "category": "ZMROBO"
       }
     ],
     "keybindings": [
@@ -127,59 +240,158 @@
     "menus": {
       "commandPalette": [
         {
-          "command": "extension.createProjectFolder",
-          "group": "2_python",
-          "title": "Создать папку проекта"
-        },
-        {
           "command": "extension.createPythonTemplate",
-          "group": "2_python",
-          "title": "Новый файл"
-        },
-        {
-          "command": "extension.uploadFile",
-          "title": "Загрузить файл на робота"
+          "group": "2_python"
         }
       ],
       "view/title": [
         {
           "command": "extension.setErcu",
           "when": "view == rcuCommands",
-          "group": "navigation"
+          "group": "navigation@2"
         },
         {
           "command": "extension.setHrcu",
           "when": "view == rcuCommands",
-          "group": "navigation"
+          "group": "navigation@1"
+        },
+        {
+          "command": "extension.setE7",
+          "when": "view == rcuCommands",
+          "group": "navigation@3"
+        },
+        {
+          "command": "extension.scanBluetooth",
+          "when": "view == bluetoothDevices",
+          "group": "navigation@1"
+        },
+        {
+          "command": "extension.uploadBluetooth",
+          "when": "view == bluetoothDevices",
+          "group": "navigation@2"
+        },
+        {
+          "command": "extension.playBluetooth",
+          "when": "view == bluetoothDevices",
+          "group": "navigation@3"
+        },
+        {
+          "command": "extension.stopBluetooth",
+          "when": "view == bluetoothDevices",
+          "group": "navigation@4"
+        },
+        {
+          "command": "extension.disconnectBluetooth",
+          "when": "view == bluetoothDevices",
+          "group": "navigation@5"
+        },
+        {
+          "command": "extension.showBluetoothLog",
+          "when": "view == bluetoothDevices",
+          "group": "navigation@6"
+        },
+        {
+          "command": "extension.detectDevices",
+          "when": "view == connectedDevices",
+          "group": "navigation@1"
+        },
+        {
+          "command": "extension.uploadUSB",
+          "when": "view == connectedDevices",
+          "group": "navigation@2"
+        },
+        {
+          "command": "extension.playUSB",
+          "when": "view == connectedDevices",
+          "group": "navigation@3"
+        },
+        {
+          "command": "extension.stopUSB",
+          "when": "view == connectedDevices",
+          "group": "navigation@4"
+        },
+        {
+          "command": "extension.disconnectUSB",
+          "when": "view == connectedDevices",
+          "group": "navigation@5"
+        },
+        {
+          "command": "extension.showUSBLog",
+          "when": "view == connectedDevices",
+          "group": "navigation@6"
         }
       ],
       "view/item/context": [
         {
-          "command": "extension.uploadFile",
-          "when": "viewItem == 'deviceItem'",
-          "group": "inline"
+          "command": "extension.uploadUSB",
+          "when": "view == connectedDevices && viewItem == deviceItem",
+          "group": "navigation"
         },
         {
           "command": "extension.showCommandInfo",
-          "when": "view == rcuCommands",
+          "when": "view == rcuCommands && viewItem == robotCommand",
+          "group": "navigation"
+        },
+        {
+          "command": "extension.uploadBluetooth",
+          "when": "view == bluetoothDevices && viewItem == bluetoothConnected",
+          "group": "navigation"
+        },
+        {
+          "command": "extension.playBluetooth",
+          "when": "view == bluetoothDevices && viewItem == bluetoothConnected",
+          "group": "navigation"
+        },
+        {
+          "command": "extension.stopBluetooth",
+          "when": "view == bluetoothDevices && viewItem == bluetoothConnected",
+          "group": "navigation"
+        },
+        {
+          "command": "extension.disconnectBluetooth",
+          "when": "view == bluetoothDevices && viewItem == bluetoothConnected",
+          "group": "navigation"
+        },
+        {
+          "command": "extension.playUSB",
+          "when": "view == connectedDevices && viewItem == usbDebugConnected",
+          "group": "navigation"
+        },
+        {
+          "command": "extension.stopUSB",
+          "when": "view == connectedDevices && viewItem == usbDebugConnected",
+          "group": "navigation"
+        },
+        {
+          "command": "extension.disconnectUSB",
+          "when": "view == connectedDevices && viewItem == usbDebugConnected",
           "group": "navigation"
         }
       ]
+    },
+    "configuration": {
+      "title": "ZMROBO",
+      "properties": {
+        "zmrobo.bluetooth.pythonPath": {
+          "type": "string",
+          "default": "",
+          "description": "Путь к Python 3.10+ для Bluetooth. Пусто: py в Windows, python3 в других ОС. Указывайте исполняемый файл без аргументов."
+        }
+      }
     }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./"
+    "compile": "tsc -p ./",
+    "test": "npm run compile && node --test tests/*.test.js",
+    "test:bluetooth": "node scripts/test-bluetooth.js"
   },
   "devDependencies": {
-    "@types/mocha": "^10.0.7",
-    "@types/node": "^14.14.37",
-    "@types/vscode": "^1.60.0",
-    "typescript": "^4.0.0",
-    "vscode-test": "^1.4.0"
+    "@types/node": "^14.18.0",
+    "@types/vscode": "1.60.0",
+    "typescript": "~4.9.5"
   },
   "dependencies": {
-    "@abandonware/noble": "^1.9.2-25",
     "drivelist": "^12.0.2"
   }
 }

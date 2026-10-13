@@ -1,156 +1,17 @@
-import * as vscode from 'vscode';
+import { PortRow } from './PortSettings';
+import { escapeHtml, nonce } from './WebviewUtils';
 
-export function getPortConfigurationHtml(panel: vscode.WebviewPanel): string {
-    return `
-        <!DOCTYPE html>
-        <html lang="ru">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Настройка портов</title>
-            <style>
-                :root {
-                    /* Использование переменных темы VSCode */
-                    --background-color: var(--vscode-editor-background);
-                    --foreground-color: var(--vscode-editor-foreground);
-                    --border-color: var(--vscode-editorGroup-border);
-                    --button-background: var(--vscode-button-background);
-                    --button-hover-background: var(--vscode-button-hoverBackground);
-                    --button-foreground: var(--vscode-button-foreground);
-                }
-                body {
-                    font-family: Arial, sans-serif;
-                    margin: 0;
-                    padding: 10px;
-                    background-color: var(--background-color);
-                    color: var(--foreground-color);
-                }
-                .modal {
-                    width: 400px;
-                    margin: 50px auto;
-                    background-color: var(--background-color);
-                    border: 1px solid var(--border-color);
-                    border-radius: 5px;
-                    padding: 20px;
-                    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-                }
-                h1 {
-                    text-align: center;
-                    font-size: 18px;
-                    color: var(--foreground-color);
-                }
-                table {
-                    width: 100%;
-                    border-collapse: collapse;
-                }
-                table th, table td {
-                    border: 1px solid var(--border-color);
-                    padding: 8px;
-                    text-align: center;
-                }
-                table td input[type="text"] {
-                    width: 90%;
-                    background-color: var(--background-color);
-                    color: var(--foreground-color);
-                    border: 1px solid var(--border-color);
-                }
-                .buttons {
-                    display: flex;
-                    justify-content: flex-end;
-                    margin-top: 10px;
-                }
-                .buttons button {
-                    margin-left: 10px;
-                    padding: 5px 10px;
-                    background-color: var(--button-background);
-                    color: var(--button-foreground);
-                    border: none;
-                    border-radius: 3px;
-                    cursor: pointer;
-                }
-                .buttons button:hover {
-                    background-color: var(--button-hover-background);
-                }
-            </style>
-        </head>
-        <body>
-            <div class="modal">
-                <h1>Настройка портов</h1>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Порт</th>
-                            <th>Имя</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${generatePortRows()}
-                    </tbody>
-                </table>
-                <div class="buttons">
-                    <button id="cancel">Отмена</button>
-                    <button id="ok">OK</button>
-                </div>
-            </div>
-            <script>
-                const vscode = acquireVsCodeApi();
-                document.getElementById('ok').addEventListener('click', () => {
-                    const ports = {};
-                    document.querySelectorAll('tr').forEach(row => {
-                        const cells = row.querySelectorAll('td');
-                        if (cells.length > 1) {
-                            const port = cells[0].innerText.trim();
-                            const name = cells[1].querySelector('input').value.trim();
-                            if (name) {
-                                ports[name] = port;
-                            }
-                        }
-                    });
-                    vscode.postMessage({
-                        command: 'savePorts',
-                        data: ports
-                    });
-                    vscode.postMessage({ command: 'close' }); // Мгновенное закрытие окна
-                });
-
-                document.getElementById('cancel').addEventListener('click', () => {
-                    vscode.postMessage({ command: 'close' });
-                });
-            </script>
-        </body>
-        </html>
-    `;
-}
-
-function generatePortRows(): string {
-    const motorPorts = ['Motor 1', 'Motor 2', 'Motor 3', 'Motor 4'];
-    const sensorPorts = ['Sensor 1', 'Sensor 2', 'Sensor 3', 'Sensor 4', 'Sensor 5', 'Sensor 6', 'Sensor 7', 'Sensor 8'];
-
-    let html = '';
-    motorPorts.forEach(port => {
-        html += `
-            <tr>
-                <td>${port}</td>
-                <td><input type="text" placeholder="Имя"></td>
-            </tr>
-        `;
-    });
-
-    // Добавляем пустую строку
-    html += `
-        <tr>
-            <td colspan="2" style="height: 10px; background-color: var(--background-color);"></td>
-        </tr>
-    `;
-
-    sensorPorts.forEach(port => {
-        html += `
-            <tr>
-                <td>${port}</td>
-                <td><input type="text" placeholder="Имя"></td>
-            </tr>
-        `;
-    });
-
-    return html;
+export function getPortConfigurationHtml(rows: PortRow[], fileName: string, cspSource: string): string {
+    const token = nonce();
+    return `<!DOCTYPE html><html lang="ru"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${cspSource} 'nonce-${token}'; script-src 'nonce-${token}';">
+<style nonce="${token}">body{font-family:var(--vscode-font-family);color:var(--vscode-editor-foreground);background:var(--vscode-editor-background);padding:16px}main{max-width:600px;margin:auto}table{width:100%;border-collapse:collapse}td,th{padding:6px;text-align:left;border-bottom:1px solid var(--vscode-panel-border)}input{box-sizing:border-box;width:100%;background:var(--vscode-input-background);color:var(--vscode-input-foreground);border:1px solid var(--vscode-input-border,transparent);padding:6px}button{background:var(--vscode-button-background);color:var(--vscode-button-foreground);border:0;padding:8px 14px;margin:12px 8px 0 0}#error{color:var(--vscode-errorForeground);white-space:pre-wrap}</style></head>
+<body><main><h1>Настройка портов</h1><p>Файл: <strong>${escapeHtml(fileName)}</strong></p><p>Имена устройств вводите заглавными латинскими буквами, например MOTOR_LEFT или SENSOR_FRONT.</p><form id="ports"><table><thead><tr><th>Порт</th><th>Имена устройств</th></tr></thead><tbody>
+${rows.map(row => `<tr><td>${row.kind === 'Motor' ? 'Мотор' : 'Датчик'} ${row.port}</td><td><input aria-label="${row.kind} ${row.port}" data-kind="${row.kind}" data-port="${row.port}" value="${escapeHtml(row.names)}" autocomplete="off"></td></tr>`).join('')}
+</tbody></table><p id="error" role="alert"></p><button id="save" type="submit">Сохранить</button><button id="cancel" type="button">Отмена</button></form></main>
+<script nonce="${token}">const vscode=acquireVsCodeApi();const form=document.getElementById('ports');const save=document.getElementById('save');
+form.addEventListener('submit',event=>{event.preventDefault();save.disabled=true;document.getElementById('error').textContent='';const rows=Array.from(document.querySelectorAll('input')).map(input=>({kind:input.dataset.kind,port:Number(input.dataset.port),names:input.value}));vscode.postMessage({command:'savePorts',rows});});
+document.getElementById('cancel').addEventListener('click',()=>vscode.postMessage({command:'close'}));
+window.addEventListener('message',event=>{if(event.data.command==='error'){save.disabled=false;document.getElementById('error').textContent=event.data.message;}});</script></body></html>`;
 }

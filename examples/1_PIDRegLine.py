@@ -1,84 +1,69 @@
+# ПИД-регулятор по двум датчикам света.
+# До запуска заполните ячейки 1–4; ячейки 5 и 6 — значения нормировки датчиков.
+# Значения нормировки должны быть ненулевыми.
 import rcu  # Основная библиотека для управления роботом.
-import motor # Библиотека для управления моторами.
-import sensor # Библиотека для работы с различными датчиками.
-import math
-
+import motor  # Библиотека для управления моторами.
+import sensor  # Библиотека для работы с датчиками.
 
 # ---------- Настройки моторов и датчиков ----------
-LeftMotor = 1  # устройство подключено на порт Motor 1
-RightMotor = 3  # устройство подключено на порт Motor 3
-LeftLightSensor = 3  # устройство подключено на порт Sensor 3
-RightLightSensor = 4  # устройство подключено на порт Sensor 4
+LEFT_MOTOR = 1  # устройство подключено на порт Motor 1
+RIGHT_MOTOR = 3  # устройство подключено на порт Motor 3
+LEFT_LIGHT = 5  # устройство подключено на порт Sensor 5
+RIGHT_LIGHT = 6  # устройство подключено на порт Sensor 6
 # --------------------------------------------------
 
-
-kP = 0.02
-# коэффициент П-регулятора
-kI = 0.11
-# коэффициент И-регулятора
-kD = 0.75
-# коэффициент Д-регулятора
-lastError = 0
-# прошлая ошибка для Д-регулятора
-iMax = 25
-# максимальное значение для И-регулятора
+lastDeviation = 0
+# Прошлое отклонение для Д-составляющей.
 iReg = 0
-# начальное значение для И-регулятора
-speed = 50
-# общая скорость робота
-timeClear = 0
-# таймер очистки экрана
+# Накопленное значение И-составляющей.
 
-def sgn(num):
-    # Функция возвращает 1, если num положительное, -1, если отрицательное, или оставляет 0
-    if(num > 0): return 1
-    elif (num < 0): return -1
-    else: return 0
+def ReadLight(port):
+    return sensor.GetLightSensor(port) / rcu.GetData(port)
+    # Нормируем показание датчика значением ячейки с номером его порта.
 
-def LinePID():
-    global kP, speed, kI, kD, iMax, lastError, iReg, timeClear
-    # Объявление глобальных переменных
 
-    # Функция для движения по линии
-    rcu.SetDisplayString(1, "LCol = " + str(sensor.GetLightSensor(LeftLightSensor) // 20), 0xFFE0, 0x0000)
-    rcu.SetDisplayString(3,"RCol = " + str(sensor.GetLightSensor(RightLightSensor) // 20), 0xFFE0, 0x0000)
-    # Вывод показаний с датчиков света на экран. Деление на 20 для приведения чувствительности датчиков в диапазон 0-100.
+def LinePIDLight():
+    global lastDeviation, iReg
+    # Только изменяемое состояние между вызовами требует global.
+    speed = rcu.GetData(1)
+    # Общая скорость из ячейки 1.
+    kP = rcu.GetData(2) / 10
+    # Коэффициент П-регулятора: значение ячейки 2 делим на 10.
+    kI = rcu.GetData(3) / 1000
+    # Коэффициент И-регулятора: значение ячейки 3 делим на 1000.
+    kD = rcu.GetData(4)
+    # Коэффициент Д-регулятора из ячейки 4 без делителя.
 
-    
-    error = sensor.GetLightSensor(LeftLightSensor) // 20 - sensor.GetLightSensor(RightLightSensor) // 20
-    # Вычисление отклонения от линии. Деление на 20 для приведения чувствительности датчиков в диапазон 0-100.
-    pReg = error * kP
-    # Вычисление П-регулятора
-    iReg = iReg + error * kI
-    # Вычисление И-регулятора
-    dReg = (error - lastError) * kD
-    # Вычисление Д-регулятора
+    leftLight = ReadLight(LEFT_LIGHT)
+    rightLight = ReadLight(RIGHT_LIGHT)
+    rcu.SetDisplayString(1, str(leftLight), 0xFFE0, 0x0000)
+    rcu.SetDisplayString(3, str(rightLight), 0xFFE0, 0x0000)
+    deviation = leftLight - rightLight
+    # Разность нормированных показаний датчиков света.
 
-    if(abs(iReg) > iMax): iReg = iMax * sgn(iReg)
-    # Ограничение значения И-регулятора
-    lastError = error
-    # Запись текущей ошибки как прошлой
-
+    pReg = deviation * kP
+    # П-составляющая зависит от текущего отклонения.
+    iReg = max(-25, min(25, iReg + deviation * kI))
+    # Накапливаем И-составляющую и ограничиваем её от -25 до 25.
+    dReg = (deviation - lastDeviation) * kD
+    # Д-составляющая зависит от изменения отклонения.
     control = pReg + iReg + dReg
-    # Определение итогового управляющего воздействия регулятора
+    # Итоговое управляющее воздействие ПИД-регулятора.
+    lastDeviation = deviation
+    # Сохраняем отклонение для следующего вызова.
 
     leftSpeed = speed + control
-    # Расчет скорости левого мотора
     rightSpeed = speed - control
-    # Расчет скорости правого мотора
-
-    motor.SetMotor(LeftMotor, leftSpeed)
-    motor.SetMotor(RightMotor, rightSpeed)
-    # Подача скорости на моторы
+    # Подаём рассчитанные скорости на моторы.
+    motor.SetMotor(LEFT_MOTOR, leftSpeed)
+    motor.SetMotor(RIGHT_MOTOR, rightSpeed)
     rcu.SetWaitForTime(0.001)
-    # Небольшая задержка
+    # Небольшая пауза между расчётами.
+
 
 def task1():
-    sensor.SetLightSensorLed(3, 1)
-    sensor.SetLightSensorLed(4, 1)
-    # включение подсветки на датчиках света
+    sensor.SetLightSensorLed(LEFT_LIGHT, 1)
+    sensor.SetLightSensorLed(RIGHT_LIGHT, 1)
     while True:
-        LinePID()
-    # Бесконечный запуск движения по линии
-
+        LinePIDLight()
 task1()

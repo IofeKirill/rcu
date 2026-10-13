@@ -4,66 +4,9 @@
 
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/monokai.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
-    <script>hljs.highlightAll();</script>
     <title>Команды RCU</title>
 
-    <style>
-        pre,
-        pre code {
-            margin: 0 !important;
-            /* Убираем маржин */
-            padding: 5px 10px !important;
-            /* Устанавливаем нужный паддинг */
-            text-indent: 0 !important;
-            /* Убедитесь, что текстовый отступ отсутствует */
-        }
-
-        body {
-            font-size: 18px;
-            /* Устанавливаем размер шрифта для всего содержимого */
-            font-family: 'Courier New', Courier, monospace;
-            /* Моноширинный шрифт для лучшего отображения кода */
-            margin: 0;
-            /* Убираем отступы страницы */
-            padding: 10px;
-            /* Добавляем немного отступа вокруг содержимого */
-        }
-
-        pre {
-            background-color: #333;
-            /* Темный фон для блока кода */
-            color: #f8f8f2;
-            /* Светлый текст для кода */
-            border: 1px solid #555;
-            /* Тонкая граница вокруг кода */
-            padding: 10px;
-            /* Внутренний отступ вокруг текста кода */
-            margin: 10px 0;
-            /* Отступ сверху и снизу */
-            overflow-x: auto;
-            /* Добавляем горизонтальную прокрутку при необходимости */
-            white-space: pre-wrap;
-            /* Перенос строк в блоке кода */
-            word-wrap: break-word;
-            /* Перенос слов в блоке кода */
-            box-sizing: border-box;
-            /* Включаем в размеры элемента паддинги и бордеры */
-        }
-
-        h1 {
-            color: #66d9ef;
-            /* Цвет заголовка под тему monokai */
-        }
-
-        code {
-            color: #a6e22e;
-            /* Цвет текста кода, для примера использован ярко-зеленый */
-            font-size: 14px;
-            /* Устанавливаем размер шрифта для кода */
-        }
-    </style>
+    <style>body{font-family:var(--vscode-font-family,sans-serif);color:var(--vscode-editor-foreground);background:var(--vscode-editor-background);padding:16px;line-height:1.5}pre{padding:12px;overflow:auto;background:var(--vscode-textCodeBlock-background);border:1px solid var(--vscode-panel-border);white-space:pre-wrap}code{font-family:var(--vscode-editor-font-family,monospace)}h1{font-size:1.4em}h2{margin-top:28px}table{border-collapse:collapse;width:100%;margin:16px 0}td,th{border:1px solid var(--vscode-panel-border,#888);padding:8px;text-align:left}</style>
 </head>
 
 <body>
@@ -72,7 +15,7 @@
     <div id="extension.uploadFile" style="display: none;">
         <h1>Загрузка файла на устройство</h1>
         <p>Команда создаёт копию текущего открытого файла на подключённом устройстве.<br>
-            Чтобы использовать эту функцию, обнаружте устройство при помощи команды в нижней левой панели и выберите его
+            Чтобы использовать эту функцию, обнаружьте устройство при помощи команды в нижней левой панели и выберите его
             в качестве активного.<br>
             <strong>Подсказка</strong>: при выполнении команд для работы с устройствами в правом нижнем углу экрана
             появляются уведомления об успешности операции.
@@ -82,10 +25,6 @@
         <h1>Открыть примеры</h1>
         <p>Команда открывает страницу с примерами готовых программ, протестированных на роботе. Их можно загрузить на
             устройство так же, как и собственные программы.</p>
-    </div>
-    <div id="extension.createProjectFolder" style="display: none;">
-        <h1>Создать папку проекта</h1>
-        <p>Команда создаёт папку для вашего проекта и инициализирует в ней новый проект.</p>
     </div>
     <div id="extension.createPythonTemplate" style="display: none;">
         <h1>Создать файл проекта</h1>
@@ -135,7 +74,7 @@ motor.SetMotorStop(4)
         <pre><code>
 motor.SetMotorCode(1) 
 # обнуляем показания энкодера
-motor.SetDisplayString(1, str(motor.GetMotorCode(1)), 0xFFE0, 0x0000) 
+rcu.SetDisplayString(1, str(motor.GetMotorCode(1)), 0xFFE0, 0x0000) 
 # выводим показания энкодера на экран
 rcu.SetWaitForTime(5)
 # даем время для чтения
@@ -146,13 +85,12 @@ rcu.SetWaitForTime(5)
     <div id="motor.GetMotorCode" style="display: none;">
         <h1>Прочтение показаний энкодера</h1>
         <p><strong>Параметры:</strong> № порта.<br>
-            Считывает показания с выбранного энкодера. Обязательно используется как функция, встроенная в другую,
-            например, в функцию вывода на экран.<br>
+            Считывает показания с выбранного энкодера. Результат можно сохранить в переменную или передать другой функции, например для вывода на экран.<br>
             <br><strong>Пример:</strong><br>
         <pre><code>
 motor.SetMotorCode(1) 
 # обнуляем показания энкодера
-motor.SetDisplayString(1, str(motor.GetMotorCode(1)), 0xFFE0, 0x0000) 
+rcu.SetDisplayString(1, str(motor.GetMotorCode(1)), 0xFFE0, 0x0000) 
 # выводим показания энкодера на экран
 rcu.SetWaitForTime(5)
 # даем время для чтения
@@ -422,7 +360,7 @@ rcu.SetWaitForTime(5)
         <br><strong>Пример:</strong><br>
         <pre><code>
 while True:
-    if (rcu.GetLeftButton() == 1):
+    if rcu.GetLeftButton() == 1:
         rcu.SetInBeep(1)
 # если левая кнопка нажата, включаем пищалку
     else:
@@ -465,7 +403,7 @@ while True:
         <br><strong>Пример:</strong><br>
         <pre><code>
 while True:
-    if (rcu.GetRightButton() == 1):
+    if rcu.GetRightButton() == 1:
         rcu.SetInBeep(1)
 # если правая кнопка нажата, включаем пищалку
     else:
@@ -510,8 +448,8 @@ while True:
         <pre><code>
 rcu.SetSysTime()
 # сбрасывает таймер
-while (rcu.GetSysTime() < 2000):
-# пока таймер меньше 2 секнуд
+while rcu.GetSysTime() < 2000:
+# пока таймер меньше 2 секунд
     rcu.SetMotor(2, 50)
     rcu.SetMotor(4, 50)
 # едем вперёд
@@ -531,8 +469,8 @@ rcu.SetMotor(4, 0)
         <pre><code>
 rcu.SetSysTime()
 # сбрасывает таймер
-while (rcu.GetSysTime() < 2000):
-# пока таймер меньше 2 секнуд
+while rcu.GetSysTime() < 2000:
+# пока таймер меньше 2 секунд
     rcu.SetMotor(2, 50)
     rcu.SetMotor(4, 50)
 # едем вперёд
@@ -550,18 +488,18 @@ rcu.SetMotor(4, 0)
         Дает время на исполнение роботом любых действий.<br>
         <br><strong>Пример:</strong><br>
         <pre><code>
-rcu.setWaitForTime(0.555)
+rcu.SetWaitForTime(0.555)
 # жди 555 миллисекунд
 </code></pre>
         </p>
     </div>
 
     <div id="rcu.SetRcuStop" style="display: none;">
-        <h1>Остановка всех функция контроллера</h1>
+        <h1>Остановка всех функций контроллера</h1>
         <br><strong>Пример:</strong><br>
         <pre><code>
 rcu.SetDisplayString(1, 'ZM', 0xFFE0, 0x0000)
-rcu.WaitForTime(1)
+rcu.SetWaitForTime(1)
 rcu.SetRcuStop()
 </code></pre>
         </p>
@@ -663,7 +601,7 @@ rcu.SetDisplayString(1,data,0xFFE0,0x0000)
             <br><strong>Пример:</strong><br>
         <pre><code>
 while True:
-    if (sensor.GetLightSensor(2) > 900):
+    if sensor.GetLightSensor(2) > 900:
         motor.SetMotor(1, 50)
         motor.SetMotor(2, 0)
 # если датчик света видит больше, чем серый, то включаем первый мотор, выключаем второй
@@ -684,7 +622,7 @@ while True:
             <br><strong>Пример:</strong><br>
         <pre><code>
 while True:
-    if (sensor.GetLightSensorData(1)):
+    if sensor.GetLightSensorData(1):
         rcu.SetInBeep(1)
 # если меньше, включаем пищалку
     else:
@@ -721,7 +659,7 @@ while True:
             <br><strong>Пример:</strong><br>
         <pre><code>
 while True:
-    if (sensor.GetColorSensor(2, 4) == 2):
+    if sensor.GetColorSensor(2, 4) == 2:
         rcu.SetInBeep(1)
 # если в режиме цвета виден зелёный, включаем пищалку
     else:
@@ -741,7 +679,7 @@ while True:
             <br><strong>Пример:</strong><br>
         <pre><code>
 while True:
-    if (sensor.GetTouch(6) == 1):
+    if sensor.GetTouch(6) == 1:
         rcu.SetInBeep(1)
 # если датчик нажат, включаем пищалку
     else:
@@ -760,9 +698,9 @@ while True:
             <br><strong>Пример:</strong><br>
         <pre><code>
 while True:
-    if (sensor.GetUltrasound(4) < 20):
+    if sensor.GetUltrasound(4) < 20:
         rcu.SetInBeep(1)
-# если датчик нажат, включаем пищалку
+# если расстояние меньше 20 см, включаем пищалку
     else:
         rcu.SetInBeep(0)
 # иначе выключаем пищалку
@@ -775,24 +713,24 @@ while True:
     <div id="sensor.SetUltrasoundled" style="display: none;">
         <h1>Установка цвета УЗ датчика расстояния</h1>
         <p><strong>Параметры:</strong> порт, цвет (1-8)<br>
-            Извеняет подцветку датчика<br>
+            Изменяет подсветку датчика<br>
             <br><strong>Пример:</strong><br>
         <pre><code>
-rcu.SetUltrasoundled(1,1) 
+sensor.SetUltrasoundled(1,1) 
 </code></pre>
         </p>
     </div>
 
-    <div id="rcu.GetShortIRDist" style="display: none;">
-        <h1>Инфрокрасный датчик расстояния</h1>
+    <div id="sensor.GetShortIRDist" style="display: none;">
+        <h1>Инфракрасный датчик расстояния</h1>
         <p><strong>Параметры:</strong> порт<br>
-            Читает показания с инфрокрасного датчика расстояния. Показания в см.<br>
+            Читает показания с инфракрасного датчика расстояния. Показания в см.<br>
             <br><strong>Пример:</strong><br>
         <pre><code>
 while True:
-    if (sensor.GetShortIRDist(4) < 20):
+    if sensor.GetShortIRDist(4) < 20:
         rcu.SetInBeep(1)
-# если датчик нажат, включаем пищалку
+# если расстояние меньше 20 см, включаем пищалку
     else:
         rcu.SetInBeep(0)
 # иначе выключаем пищалку
@@ -812,7 +750,7 @@ while True:
             <br><strong>Пример:</strong><br>
         <pre><code>
 while True:
-    if (sensor.GetLaserDist(4) < 200):
+    if sensor.GetLaserDist(4) < 200:
         rcu.SetInBeep(1)
 # если датчик нажат, включаем пищалку
     else:
@@ -845,7 +783,7 @@ while True:
         <pre><code>
 sensor.SetAHRS(4, 1)
 # сброс показаний перед циклом
-while (sensor.GetAHRS(4, 3, 0) < 900):
+while sensor.GetAHRS(4, 3, 0) < 900:
     motor.SetMotor(1, 50)
     motor.SetMotor(2, -50)
 # Пока на гироскопе меньше 90 градусов поворачивай
@@ -871,7 +809,7 @@ sensor.SetAHRS(4, 1)
 # сброс показаний перед циклом
 rcu.SetWaitForTime(2)
 # 2 секунды нужно гироскопу, чтобы совершить калибровку
-while (sensor.GetAHRS(4, 3, 0) < 900):
+while sensor.GetAHRS(4, 3, 0) < 900:
     motor.SetMotor(1, 50)
     motor.SetMotor(2, -50)
 # Пока на гироскопе меньше 90 градусов поворачивай
@@ -958,7 +896,7 @@ while True:
             <br><strong>Пример:</strong><br>
         <pre><code>
 while True:
-    if (sensor.GetGesture(4) == 2):
+    if sensor.GetGesture(4) == 2:
         rcu.SetInBeep(1)
 # Если увидел взмах вниз, включи зуммер
     rcu.SetWaitForTime(0.001)  
@@ -974,7 +912,7 @@ while True:
             <br><strong>Пример:</strong><br>
         <pre><code>
 while True:
-    if (sensor.GetAirPressure(2) > 500):
+    if sensor.GetAirPressure(2) > 500:
     # Если давление больше 500
         rcu.SetInBeep(1)
         # Включи зуммер
@@ -997,7 +935,7 @@ while True:
             <br><strong>Пример:</strong><br>
         <pre><code>
 while True:
-    if (sensor.GetSht30(3, 0) < 40 or sensor.GetSht30(3, 1) < 30):
+    if sensor.GetSht30(3, 0) < 40 or sensor.GetSht30(3, 1) < 30:
     # Если температура воздуха меньше 40 градусов или влажность почвы меньше 30%
         rcu.SetInBeep(1)
         # Включи зуммер
@@ -1021,7 +959,7 @@ while True:
             <br><strong>Пример:</strong><br>
         <pre><code>
 while True:
-    if (sensor.GetMagnetic(1, 0) > 0.5 and sensor.GetMagnetic(1, 1) == 1):
+    if sensor.GetMagnetic(1, 0) > 0.5 and sensor.GetMagnetic(1, 1) == 1:
     # Если сила магнитного поля больше 0.5 и оно направлено на север
         rcu.SetInBeep(1)
         # Включи зуммер
@@ -1073,7 +1011,7 @@ sensor.SetSmartEyeIRcode(1, 50)
         <p><strong>Параметры:</strong> порт, код<br>
             <br><strong>Пример:</strong><br>
         <pre><code>
-while (sensor.GetSmartEyeIRcode(1) != 50):
+while sensor.GetSmartEyeIRcode(1) != 50:
     rcu.SetWaitForTime(0.001)
 # Ожидание получения числа 50 через ИК приёмник
 </code></pre>
@@ -1085,7 +1023,7 @@ while (sensor.GetSmartEyeIRcode(1) != 50):
         <p><strong>Параметры:</strong> порт, код<br>
             <br><strong>Пример:</strong><br>
         <pre><code>
-while (sensor.GetSmartEyeDist(1) > 100):
+while sensor.GetSmartEyeDist(1) > 100:
     rcu.SetWaitForTime(0.001)
 # Ожидание, пока расстояние до источника ИК сигнала больше 50
 </code></pre>
@@ -1212,7 +1150,7 @@ ai.SetAICamLED(1)
             <br><strong>Пример:</strong><br>
         <pre><code>
 while True:
-    if (trace.GetTraceV2I2C(4, 2) < 50):
+    if trace.GetTraceV2I2C(4, 2) < 50:
         rcu.SetInBeep(1)
 # если 2 датчик модуля видит меньше серого цвета включаем пищалку
     else:
@@ -1231,7 +1169,7 @@ while True:
             <br><strong>Пример:</strong><br>
         <pre><code>
 while True:
-    if (trace.GetTraceV2I2CState(4, 2) == 1):
+    if trace.GetTraceV2I2CState(4, 2) == 1:
         rcu.SetInBeep(1)
 # если 2 датчик модуля видит линию включаем пищалку
     else:
@@ -1260,7 +1198,7 @@ while True:
         motor.SetMotor(1, 50)
         motor.SetMotor(2, 0)
 # если слева видна линия, то включаем левый мотор, отключаем правый
-    elif (trace.GetTraceV2I2CChxState(4, 3)):
+    elif trace.GetTraceV2I2CChxState(4, 3):
         motor.SetMotor(1, 0)
         motor.SetMotor(2, 50)
 # если справа видна линия, то включаем правый мотор, отключаем левый
@@ -1503,21 +1441,24 @@ rcu.SetMp3Play(1, 1)
 
     <div id="rcu.SetMp3Suspend" style="display: none;">
         <h1>Выключить звук</h1>
-        <p><strong>Параметры:</strong> папка, звук<br>
+        <p><strong>Параметры:</strong> нет<br>
             Заканчивает играть звук.<br>
             <br><strong>Пример:</strong><br>
         <pre><code>
 rcu.SetMp3Sound(20)
 # устанавливаем громкость 20
 rcu.SetMp3Play(1, 1)
-# играет звук "ВОРОНА"
+# начинает воспроизведение
+rcu.SetWaitForTime(1)
+rcu.SetMp3Suspend()
+# останавливаем воспроизведение
 </code></pre>
         </p>
     </div>
 
     <div id="rcu.SetMp3Sound" style="display: none;">
         <h1>Громкость звука</h1>
-        <p><strong>Параметры:</strong> папка, звук<br>
+        <p><strong>Параметры:</strong> громкость<br>
             Устанавливает громкость звука.<br>
             <br><strong>Пример:</strong><br>
         <pre><code>
@@ -1604,7 +1545,7 @@ timeClear = 0
 while True:
     timeClear = timeClear + 1
 # прибавляем к таймеру 1
-    if (timeClear == 15):
+    if timeClear == 15:
         rcu.SetLCDClear(0x0000)
         timeClear = 0
 # если таймер равен 15, то очищаем дисплей и обнуляем таймер
@@ -1706,7 +1647,7 @@ rcu.SetDisplayVarU32(1, 1234567890, 0xFFE0, 0x0000)
             Рисование точки по координатам.<br>
             <br><strong>Пример:</strong><br>
         <pre><code>
-rcu.SetLCDDot(10, 10, 0xFFE0)'
+rcu.SetLCDDot(10, 10, 0xFFE0)
 # рисуем жёлтую точку в координате 10, 10
 </code></pre>
         </p>
@@ -1829,7 +1770,7 @@ a = rcu.GetBTModuleRemoteCode()
     </div>
 
     <div id="rcu.GetBTModuleRemoteRocker" style="display: none;">
-        <h1>Получение направление джойстика от Bluetooth-пульта</h1>
+        <h1>Получение направления джойстика от Bluetooth-пульта</h1>
         <p><strong>Параметры:</strong> джойстик (0 - левый, 1 - правый), направление (0 - вправо-влево, 1 -
             вверх-вниз)<br>
             Получить направление джойстика Bluetooth-пульта.<br>
@@ -1862,7 +1803,7 @@ rcu.GetComVoice("hello")
         <p>Выполняет код, если условие истинно.<br>
             <br><strong>Пример:</strong><br>
         <pre><code>
-if (x > 0):
+if x > 0:
     motor.SetMotor(1, 50)
     motor.SetMotor(2, 50)
 # если х > 0, то включи моторы
@@ -1875,7 +1816,7 @@ if (x > 0):
         <p>Выполняет один блок кода, если условие истинно, и другой блок — если ложное.<br>
             <br><strong>Пример:</strong><br>
         <pre><code>
-if (x > 0):
+if x > 0:
     motor.SetMotor(1, 50)
     motor.SetMotor(2, 50)
 else:
@@ -1887,15 +1828,15 @@ else:
     </div>
 
     <div id="control.ifelifelse" style="display: none;">
-        <h1>Несколько условие подряд</h1>
+        <h1>Несколько условий подряд</h1>
         <p>Проверяет несколько условий поочерёдно. Выполняет код для первого истинного условия или запускает код в блоке
             else, если все условия ложны.<br>
             <br><strong>Пример:</strong><br>
         <pre><code>
-if (x > 0):
+if x > 0:
     motor.SetMotor(1, 50)
     motor.SetMotor(2, 50)
-elif (x < 0):
+elif x < 0:
     motor.SetMotor(1, -50)
     motor.SetMotor(2, -50)
 else:
@@ -2049,6 +1990,476 @@ for i in range(5):
     </div>
     <!-- #endregion -->
 
+
+<div id="sensor.SetNFC"><h1>sensor.SetNFC()</h1><p>Запустить операцию NFC.</p><h2>Параметры</h2><p>Порт датчика (1–8).</p><h2>Пример</h2><pre><code>import sensor
+
+sensor.SetNFC(1)</code></pre></div>
+<div id="sensor.GetNFCStatus"><h1>sensor.GetNFCStatus()</h1><p>Получить статус операции NFC.</p><h2>Параметры</h2><p>Порт датчика (1–8).</p><h2>Результат</h2><p>0 — не запущено; 1 — успешно; 2 — ошибка; 3 — таймаут. Проверяйте статус после запуска, при необходимости в цикле с паузой.</p><h2>Пример</h2><pre><code>import sensor
+
+sensor.SetNFC(1)
+status = sensor.GetNFCStatus(1)
+if status == 1:
+    print(&quot;NFC: успешно&quot;)</code></pre></div>
+<div id="sensor.GetRainfall"><h1>sensor.GetRainfall()</h1><p>Считать значение датчика дождя.</p><h2>Параметры</h2><p>Порт датчика (1–8).</p><h2>Результат</h2><p>Значение датчика. Единицы измерения и диапазон для этой модели пока не подтверждены; не интерпретируйте результат как проценты или физические единицы без документации датчика.</p><h2>Пример</h2><pre><code>import sensor
+
+value = sensor.GetRainfall(1)
+print(value)</code></pre></div>
+<div id="sensor.GetAirQuality"><h1>sensor.GetAirQuality()</h1><p>Считать значение датчика качества воздуха.</p><h2>Параметры</h2><p>Порт датчика (1–8).</p><h2>Результат</h2><p>Значение датчика. Единицы измерения и диапазон для этой модели пока не подтверждены; не интерпретируйте результат как проценты или физические единицы без документации датчика.</p><h2>Пример</h2><pre><code>import sensor
+
+value = sensor.GetAirQuality(1)
+print(value)</code></pre></div>
+<div id="display.SetDisplayLatticePic"><h1>display.SetDisplayLatticePic()</h1><p>Показать изображение на матричном экране.</p><h2>Параметры</h2><p>Порт; строка изображения в шестнадцатеричном формате; яркость.</p><h2>Пример</h2><pre><code>import display
+
+display.SetDisplayLatticePic(1, &quot;00003c3c6666424242420000000000000000000004200c301818f00f00000000&quot;, 10)</code></pre></div>
+<div id="display.SetDisplayLattice"><h1>display.SetDisplayLattice()</h1><p>Показать текст на матричном экране.</p><h2>Параметры</h2><p>Порт; строка; яркость.</p><h2>Пример</h2><pre><code>import display
+
+display.SetDisplayLattice(1, &quot;A&quot;, 10)</code></pre></div>
+<div id="display.SetDisplayLatticeXY"><h1>display.SetDisplayLatticeXY()</h1><p>Управлять точкой матричного экрана.</p><h2>Параметры</h2><p>Порт; координата X; координата Y; состояние точки; яркость. Пример использует состояние 1.</p><h2>Пример</h2><pre><code>import display
+
+display.SetDisplayLatticeXY(1, 10, 10, 1, 10)</code></pre></div>
+<div id="display.SetDisplayLatticeString"><h1>display.SetDisplayLatticeString()</h1><p>Показать движущуюся строку на матричном экране.</p><h2>Параметры</h2><p>Порт; текст; направление (0 — влево, 1 — вправо, 2 — вверх, 3 — вниз); скорость; яркость.</p><h2>Пример</h2><pre><code>import display
+
+display.SetDisplayLatticeString(1, &quot;hello&quot;, 0, 100, 10)</code></pre></div>
+<div id="display.SetDisplayLatticeClear"><h1>display.SetDisplayLatticeClear()</h1><p>Очистить матричный экран.</p><h2>Параметры</h2><p>Порт экрана.</p><h2>Пример</h2><pre><code>import display
+
+display.SetDisplayLatticeClear(1)</code></pre></div>
+<div id="actuator.SetPump"><h1>actuator.SetPump()</h1><p>Управлять насосом.</p><h2>Параметры</h2><p>Порт; состояние (пример: 1 — включение).</p><h2>Пример</h2><pre><code>import actuator
+
+actuator.SetPump(1, 1)</code></pre></div>
+<div id="actuator.SetElectromagnet"><h1>SetElectromagnet() — вкл/выкл</h1><p>Включить или выключить электромагнит.</p><h2>Параметры</h2><p>Порт; состояние: 1 — включить, 0 — выключить.</p><h2>Результат</h2><p>В предоставленных примерах управление состоянием и мощностью использует одно имя функции. Значение 1 также может означать 1% мощности; поведение этих двух вариантов требует проверки на устройстве.</p><h2>Пример</h2><pre><code>import actuator
+
+actuator.SetElectromagnet(1, 1)
+# Для выключения:
+actuator.SetElectromagnet(1, 0)</code></pre></div>
+<div id="actuator.SetElectromagnetPower"><h1>SetElectromagnet() — мощность</h1><p>Установить мощность электромагнита.</p><h2>Параметры</h2><p>Порт; мощность в процентах (0–100).</p><h2>Результат</h2><p>Используется та же функция SetElectromagnet, что в предоставленном примере вкл/выкл. Проверка различия режимов ещё не выполнена.</p><h2>Пример</h2><pre><code>import actuator
+
+actuator.SetElectromagnet(1, 100)</code></pre></div>
+<div id="rf.GetRFModuleRemoteBit"><h1>rf.GetRFModuleRemoteBit()</h1><p>Проверить кнопку радиопульта.</p><h2>Параметры</h2><p>Порт; номер кнопки.</p><h2>Результат</h2><p>1 — кнопка нажата.</p><h2>Пример</h2><pre><code>import rf
+
+pressed = rf.GetRFModuleRemoteBit(1, 1)
+if pressed == 1:
+    print(&quot;Кнопка нажата&quot;)</code></pre></div>
+<div id="rf.GetRFModuleRemoteButton"><h1>rf.GetRFModuleRemoteButton()</h1><p>Получить значение кнопки радиопульта.</p><h2>Параметры</h2><p>Порт.</p><h2>Пример</h2><pre><code>import rf
+
+button = rf.GetRFModuleRemoteButton(1)</code></pre></div>
+<div id="rf.GetRFModuleRemoteCode"><h1>rf.GetRFModuleRemoteCode()</h1><p>Получить код кнопок радиопульта.</p><h2>Параметры</h2><p>Порт.</p><h2>Результат</h2><p>Таблица кодов зависит от пульта; здесь не задана.</p><h2>Пример</h2><pre><code>import rf
+
+code = rf.GetRFModuleRemoteCode(1)</code></pre></div>
+<div id="rf.GetRFModuleRemoteGravity"><h1>rf.GetRFModuleRemoteGravity()</h1><p>Считать компоненту наклона радиопульта.</p><h2>Параметры</h2><p>Порт; ось: X — 0, Y — 1, Z — 2.</p><h2>Результат</h2><p>Единицы и диапазон пока не подтверждены.</p><h2>Пример</h2><pre><code>import rf
+
+x = rf.GetRFModuleRemoteGravity(1, 0)</code></pre></div>
+<div id="rf.GetRFModuleRemoteRocker"><h1>rf.GetRFModuleRemoteRocker()</h1><p>Получить значение оси джойстика радиопульта.</p><h2>Параметры</h2><p>Порт; джойстик: 0 — левый, 1 — правый; ось: 0 — X, 1 — Y.</p><h2>Пример</h2><pre><code>import rf
+
+left_x = rf.GetRFModuleRemoteRocker(1, 0, 0)
+left_y = rf.GetRFModuleRemoteRocker(1, 0, 1)
+right_x = rf.GetRFModuleRemoteRocker(1, 1, 0)
+right_y = rf.GetRFModuleRemoteRocker(1, 1, 1)</code></pre></div>
+<div id="rf.GetRFModuleRemoteKnob"><h1>rf.GetRFModuleRemoteKnob()</h1><p>Получить значение энкодера радиопульта.</p><h2>Параметры</h2><p>Порт.</p><h2>Пример</h2><pre><code>import rf
+
+value = rf.GetRFModuleRemoteKnob(1)</code></pre></div>
+<div id="rf.GetRFModuleByte"><h1>rf.GetRFModuleByte()</h1><p>Получить данные от радиомодуля.</p><h2>Параметры</h2><p>Порт.</p><h2>Пример</h2><pre><code>import rf
+
+value = rf.GetRFModuleByte(1)</code></pre></div>
+<div id="rf.SetRFPassWord"><h1>rf.SetRFPassWord()</h1><p>Задать пароль радиомодуля.</p><h2>Параметры</h2><p>Порт; пароль.</p><h2>Пример</h2><pre><code>import rf
+
+rf.SetRFPassWord(1, 1234567)</code></pre></div>
+<div id="rf.SetRFModuleByte"><h1>rf.SetRFModuleByte()</h1><p>Отправить данные через радиомодуль.</p><h2>Параметры</h2><p>Порт; передаваемое значение.</p><h2>Пример</h2><pre><code>import rf
+
+rf.SetRFModuleByte(1, 255)</code></pre></div>
+<div id="rf.SetRFModuleRemoteKnob"><h1>rf.SetRFModuleRemoteKnob()</h1><p>Установить значение энкодера радиопульта.</p><h2>Параметры</h2><p>Порт; новое значение.</p><h2>Пример</h2><pre><code>import rf
+
+rf.SetRFModuleRemoteKnob(1, 0)</code></pre></div>
+<div id="iot.SetIOTConfig"><h1>iot.SetIOTConfig()</h1><p>Настроить подключение модуля IoT.</p><h2>Параметры</h2><p>Порт; имя Wi-Fi (SSID); пароль Wi-Fi; Iot_id; Iot_pwd; сервер.</p><h2>Пример</h2><pre><code>import iot
+
+iot.SetIOTConfig(1, &quot;WIFI_NAME&quot;, &quot;WIFI_PASSWORD&quot;, &quot;IOT_ID&quot;, &quot;IOT_PASSWORD&quot;, &quot;iot.zmrobo.com&quot;)</code></pre></div>
+<div id="iot.SetIOTTopic"><h1>iot.SetIOTTopic()</h1><p>Задать тему обмена IoT.</p><h2>Параметры</h2><p>Порт; строка темы. Topic_0–Topic_9 в Робокоде — слоты настройки; в Python передаётся строка темы.</p><h2>Пример</h2><pre><code>import iot
+
+iot.SetIOTTopic(1, &quot;class/robot&quot;)</code></pre></div>
+<div id="iot.SetIOTData"><h1>iot.SetIOTData()</h1><p>Отправить число в тему IoT.</p><h2>Параметры</h2><p>Порт; строка темы; число.</p><h2>Пример</h2><pre><code>import iot
+
+iot.SetIOTData(1, &quot;class/robot&quot;, 10)</code></pre></div>
+<div id="iot.SetIOTDataStr"><h1>iot.SetIOTDataStr()</h1><p>Отправить строку в тему IoT.</p><h2>Параметры</h2><p>Порт; строка темы; строка сообщения.</p><h2>Пример</h2><pre><code>import iot
+
+iot.SetIOTDataStr(1, &quot;class/robot&quot;, &quot;hello&quot;)</code></pre></div>
+<div id="iot.GetIOTData"><h1>iot.GetIOTData()</h1><p>Проверить получение указанного сообщения IoT.</p><h2>Параметры</h2><p>Порт; строка темы; ожидаемая строка сообщения.</p><h2>Результат</h2><p>Используется как условие. Это не команда чтения произвольного текста сообщения.</p><h2>Пример</h2><pre><code>import iot
+
+if iot.GetIOTData(1, &quot;class/robot&quot;, &quot;run&quot;):
+    print(&quot;Получено run&quot;)</code></pre></div>
+<div id="aicam.SetAICamCmd"><h1>aicam.SetAICamCmd()</h1><p>Переключить ИИ-камеру в выбранный режим после её загрузки.</p><h2>Параметры</h2><p>Порт P7 или P8; режим — строка в кавычках, в нижнем регистре. camera — камера; face — лица; apriltag — метки AprilTag; qrcode — QR-коды; detector — объекты; color — цвета; road — дорога; gesture — жесты; human — ключевые точки тела; classifier — классификация объектов; image — классификация изображений.</p><h2>Пример</h2><pre><code>import aicam
+
+aicam.SetAICamCmd(7, &quot;face&quot;)</code></pre></div>
+<div id="aicam.SetWaitAICamCmd"><h1>aicam.SetWaitAICamCmd()</h1><p>Дождаться загрузки ИИ-камеры и переключения в выбранный режим. Команда блокирует дальнейшее выполнение до завершения переключения.</p><h2>Параметры</h2><p>Порт P7 или P8; режим — строка в кавычках, в нижнем регистре. camera — камера; face — лица; apriltag — метки AprilTag; qrcode — QR-коды; detector — объекты; color — цвета; road — дорога; gesture — жесты; human — ключевые точки тела; classifier — классификация объектов; image — классификация изображений.</p><h2>Пример</h2><pre><code>import aicam
+
+aicam.SetWaitAICamCmd(7, &quot;face&quot;)</code></pre></div>
+<div id="aicam.GetAICam"><h1>aicam.GetAICam()</h1><p>Получить числовой параметр цели по её номеру на экране.</p><h2>Параметры</h2><p>Порт 7/8; номер цели 1–20 (слева направо); параметр: 1 — ID, 2 — X, 3 — Y, 4 — ширина, 5 — высота, 6 — размер, 7 — уверенность.</p><h2>Результат</h2><p>X: 0–639; Y: 0–479; ширина: 0–639; высота: 0–479; размер и уверенность: 0–100. Результат при отсутствии цели ещё не подтверждён. См. руководство ИИ-камеры.</p><h2>Пример</h2><pre><code>import aicam
+
+target_id = aicam.GetAICam(7, 1, 1)
+x = aicam.GetAICam(7, 1, 2)</code></pre></div>
+<div id="aicam.GetAICamStr"><h1>aicam.GetAICamStr()</h1><p>Получить строку цели по её номеру на экране.</p><h2>Параметры</h2><p>Порт 7/8; номер цели 1–20 (слева направо).</p><h2>Результат</h2><p>Строка: например, название объекта или содержимое QR-кода. Смысл зависит от режима.</p><h2>Пример</h2><pre><code>import aicam
+
+name = aicam.GetAICamStr(7, 1)
+print(name)</code></pre></div>
+<div id="aicam.GetAICamIDData"><h1>aicam.GetAICamIDData()</h1><p>Получить числовой параметр цели с заданным ID.</p><h2>Параметры</h2><p>Порт 7/8; ID цели (в таблице руководства: 1–20); параметр: 1 — X, 2 — Y, 3 — ширина, 4 — высота, 5 — размер, 6 — уверенность. Для AprilTag руководство отдельно указывает ID 0–255; доступ к ним через эту команду требует проверки.</p><h2>Результат</h2><p>X: 0–639; Y: 0–479; ширина: 0–639; высота: 0–479; размер и уверенность: 0–100. Коды отличаются от GetAICam!</p><h2>Пример</h2><pre><code>import aicam
+
+x = aicam.GetAICamIDData(7, 1, 1)
+y = aicam.GetAICamIDData(7, 1, 2)</code></pre></div>
+<div id="aicam.GetAICamIDStr"><h1>aicam.GetAICamIDStr()</h1><p>Получить строку цели с заданным ID.</p><h2>Параметры</h2><p>Порт 7/8; ID цели (в таблице руководства: 1–20).</p><h2>Результат</h2><p>Строковые данные. Результат при отсутствии цели ещё не подтверждён.</p><h2>Пример</h2><pre><code>import aicam
+
+name = aicam.GetAICamIDStr(7, 1)
+print(name)</code></pre></div>
+<div id="control.sgn"><h1>sgn — знак числа</h1><p>Это функция на Python, а не библиотечная команда контроллера. Вставьте определение один раз перед использованием.</p><pre><code>def sgn(value):
+    if value &gt; 0:
+        return 1
+    if value &lt; 0:
+        return -1
+    return 0
+
+print(sgn(-8))  # -1
+print(sgn(0))   # 0
+print(sgn(8))   # 1</code></pre></div>
+<div id="aicam.guide"><h1>ИИ-камера AI CAM: руководство для Е7</h1>
+<p>Это руководство относится к модулю BE-1756 AI CAM (AI Vision Module V2.0) и библиотеке aicam. В расширении раздел «ИИ-камера» доступен в наборе Е7. Старая камера с библиотекой ai остаётся отдельным устройством: её команды нельзя подставлять вместо aicam.</p>
+<p>Источник: https://www.yuque.com/zmrobo-en/hardware/dmlxxlggllouy9fu — руководство производителя, изучено 13 октября 2026 года. Имена Python-функций и строковые режимы сверены с предоставленными пользователем примерами Робокода. Примеры ниже проверены на синтаксис и соответствие описанным вызовам; физическое тестирование этих примеров на камере ещё предстоит.</p>
+<h2>1. Подключение и первый запуск</h2>
+<p>1. Подключите шестиконтактный разъём камеры к P7 или P8 контроллера Е7. Эти порты обеспечивают последовательный обмен. Другой порт может дать питание, но не передавать данные камеры.</p>
+<p>2. Проверьте, что TF-карта камеры установлена: на ней находится операционная система. Без карты камера не загружается.</p>
+<p>3. Дождитесь появления интерфейса камеры. Первый запуск может занять больше времени.</p>
+<p>4. В расширении выберите Е7 и создайте новый файл. Новый файл содержит только <code>import rcu</code> с комментарием. При вставке команды камеры из дерева импорт <code>aicam</code> добавится автоматически, если его ещё нет.</p>
+<p>5. Для начала используйте пример «Проверка связи»: он переключает камеру и печатает результаты. Моторы в нём не используются.</p>
+<p>6. В панели USB или Bluetooth выберите нужный контроллер. Play выполняет текст активного редактора в памяти. Для сохранения программы на контроллере используйте загрузку файла.</p>
+<p>7. Для завершения бесконечного цикла используйте Stop. Вывод смотрите в журнале выбранного подключения.</p>
+<p>В примерах <code>AI_CAM = 7</code> — имя устройства в верхнем регистре, используемое как константа порта. Если камера подключена к P8, замените 7 на 8. Расширение сохраняет введённый регистр имени, не исправляя его автоматически.</p>
+<h2>2. Выбор режима: две разные команды</h2>
+<p><code>aicam.SetAICamCmd(port, mode)</code> отправляет переключение режима. Согласно руководству, команда должна выполняться после полной загрузки камеры. Не считайте, что камера уже готова сразу после отправки.</p>
+<p><code>aicam.SetWaitAICamCmd(port, mode)</code> ждёт запуска камеры и переключения в режим, затем продолжает программу. Это блокирующая операция. Точное время ожидания и наличие внутреннего таймаута в документации не указаны. Если программа зависла здесь, сначала проверьте питание, P7/P8 и готовность камеры.</p>
+<p>Режим — строка в кавычках, в нижнем регистре. Не передавайте числовой индекс режима из таблиц RoboEXP: в наших Python-командах используются строки.</p>
+<table>
+<tr><th>Строка</th><th>Режим</th><th>Что нужно подготовить</th></tr>
+<tr><td><code>&quot;camera&quot;</code></td><td>Камера</td><td>Фото и видео; этот режим не выбирает алгоритм распознавания лиц</td></tr>
+<tr><td><code>&quot;face&quot;</code></td><td>Распознавание лиц</td><td>Обучить лица и сохранить данные на камере</td></tr>
+<tr><td><code>&quot;apriltag&quot;</code></td><td>Метки AprilTag</td><td>Метки семейства TAG36H11</td></tr>
+<tr><td><code>&quot;qrcode&quot;</code></td><td>QR-коды</td><td>QR-код с нужным текстом</td></tr>
+<tr><td><code>&quot;detector&quot;</code></td><td>Распознавание объектов</td><td>Объект из поддерживаемых классов; обучение назначает ему ID</td></tr>
+<tr><td><code>&quot;color&quot;</code></td><td>Распознавание цветов</td><td>Отобрать цвет, обучить и сохранить</td></tr>
+<tr><td><code>&quot;road&quot;</code></td><td>Распознавание дороги</td><td>Одна линия на однотонном фоне, предварительная настройка</td></tr>
+<tr><td><code>&quot;gesture&quot;</code></td><td>Распознавание жестов</td><td>Один из шести поддерживаемых статических жестов</td></tr>
+<tr><td><code>&quot;human&quot;</code></td><td>Ключевые точки тела</td><td>Человек в кадре; камера возвращает координаты точек тела</td></tr>
+<tr><td><code>&quot;classifier&quot;</code></td><td>Классификация объектов</td><td>Обучить свои категории, до пяти</td></tr>
+<tr><td><code>&quot;image&quot;</code></td><td>Классификация изображений</td><td>Один из 11 предусмотренных производителем рисунков</td></tr>
+</table>
+<p>Переключение на пользовательское приложение также описано производителем, но его имя определяется установленным приложением. Не добавляйте выдуманный код режима. На разных прошивках состав приложений может отличаться.</p>
+<h2>3. Номер цели и ID — разные значения</h2>
+<p>Номер цели отвечает на вопрос «какой по порядку объект сейчас виден на экране». Цели нумеруются слева направо, начиная с 1, до 20. Если два объекта поменяются местами, номер цели может измениться.</p>
+<p>ID отвечает на вопрос «какой это обученный объект или распознанный класс/метка». Например, лицо, обученное первым, получает ID1. Оно может быть второй целью на экране, но сохранять ID1. Смысл ID зависит от режима.</p>
+<p>Для выбора по номеру цели:</p>
+<pre><code># Первая цель слева: её ID и координата X.
+target_id = aicam.GetAICam(AI_CAM, 1, 1)
+x = aicam.GetAICam(AI_CAM, 1, 2)
+name = aicam.GetAICamStr(AI_CAM, 1)</code></pre>
+<p>Для выбора по ID:</p>
+<pre><code># Объект с ID1 независимо от его текущего номера на экране.
+x = aicam.GetAICamIDData(AI_CAM, 1, 1)
+name = aicam.GetAICamIDStr(AI_CAM, 1)</code></pre>
+<p>Это отдельные обращения к камере. Документация не обещает, что все последовательные чтения относятся к одному кадру. Для быстро движущихся объектов сначала измерьте устойчивость данных.</p>
+<h2>4. Справочник шести команд</h2>
+<table>
+<tr><th>Команда</th><th>Аргументы</th><th>Назначение</th></tr>
+<tr><td><code>SetAICamCmd(port, mode)</code></td><td>Порт, строка режима</td><td>Переключить режим после загрузки камеры</td></tr>
+<tr><td><code>SetWaitAICamCmd(port, mode)</code></td><td>Порт, строка режима</td><td>Дождаться запуска и переключения</td></tr>
+<tr><td><code>GetAICam(port, target, field)</code></td><td>Порт, номер цели, код параметра</td><td>Получить число по номеру цели</td></tr>
+<tr><td><code>GetAICamStr(port, target)</code></td><td>Порт, номер цели</td><td>Получить строку по номеру цели</td></tr>
+<tr><td><code>GetAICamIDData(port, id, field)</code></td><td>Порт, ID, код параметра</td><td>Получить число по ID</td></tr>
+<tr><td><code>GetAICamIDStr(port, id)</code></td><td>Порт, ID</td><td>Получить строку по ID</td></tr>
+</table>
+<p>Вызовы выполняются с префиксом <code>aicam.</code>. Диапазон номера цели в таблице производителя — 1–20. Для команд по ID там также указано 1–20, хотя описание AprilTag допускает ID 0–255. Доступ к меткам за пределами 1–20 через команды по ID пока требует проверки; для первой проверки используйте чтение по номеру цели.</p>
+<h3>Коды параметров</h3>
+<table>
+<tr><th>Данные</th><th>GetAICam: по номеру</th><th>GetAICamIDData: по ID</th><th>Диапазон в руководстве</th></tr>
+<tr><td>ID</td><td>1</td><td>Не требуется</td><td>Зависит от режима; в общей таблице 1–20</td></tr>
+<tr><td>X</td><td>2</td><td>1</td><td>0–639</td></tr>
+<tr><td>Y</td><td>3</td><td>2</td><td>0–479</td></tr>
+<tr><td>Ширина</td><td>4</td><td>3</td><td>0–639</td></tr>
+<tr><td>Высота</td><td>5</td><td>4</td><td>0–479</td></tr>
+<tr><td>Размер</td><td>6</td><td>5</td><td>0–100</td></tr>
+<tr><td>Уверенность</td><td>7</td><td>6</td><td>0–100</td></tr>
+</table>
+<p>В командах по ID нет поля «ID», поэтому остальные коды сдвинуты на единицу. <code>GetAICam(7, 1, 1)</code> читает ID первой цели, а <code>GetAICamIDData(7, 1, 1)</code> — X объекта с ID1.</p>
+<p>Начало координат — левый верхний угол, X растёт вправо, Y растёт вниз. Из описания нельзя однозначно установить, обозначают ли X/Y центр рамки или другой опорный элемент во всех режимах. Поэтому в примерах они называются координатами, без добавления половины ширины/высоты.</p>
+<p>Размер имеет шкалу 0–100; руководство не объясняет формулу. Не подменяйте его площадью в пикселях или расстоянием до объекта. Уверенность также имеет шкалу 0–100; значения и их стабильность зависят от режима.</p>
+<h3>Строковые результаты</h3>
+<p>Строковые команды возвращают текст, смысл которого зависит от приложения: название объекта, содержимое QR-кода или название точки тела. Не приводите строку к числу без проверки её содержимого. Для первичной диагностики печатайте <code>repr(value)</code>: так видно пустые строки и специальные символы.</p>
+<h3>Что возвращается, если цели нет</h3>
+<p>В руководстве это не определено. Пока нельзя обещать, что камера возвращает 0, -1, пустую строку или прежнее значение. Поэтому нельзя считать любое положительное значение доказательством наличия объекта без проверки.</p>
+<p>Перед управлением моторами проведите опыт: объект в кадре → убрать объект → вернуть → закрыть объектив. Запишите результаты всех полей и строк. Проверьте, обновляются ли данные или сохраняется прошлый кадр. Это требуется отдельно для выбранного режима и прошивки.</p>
+<h2>5. Подготовка режимов на самой камере</h2>
+<h3>Лица</h3>
+<p>В режиме face необученное лицо обводится белой рамкой. Совместите центральный прицел с рамкой и нажмите пользовательскую кнопку. После обучения распознанное лицо получает цветную рамку и ID. Поддерживается до 20 лиц; ID соответствуют порядку обучения.</p>
+<p>Откройте меню внизу слева и выберите Save. Без сохранения обучение может очиститься при выходе из режима. Clear удаляет обученные данные. Для теста ниже обучите одно лицо как ID1 и сохраните.</p>
+<h3>Объекты и классификация</h3>
+<p>Режим detector использует 80 заранее предусмотренных классов COCO. Обучение здесь назначает ID распознаваемому объекту; оно не превращает произвольный предмет в новый класс нейросети. По руководству нельзя повторно обучать одну категорию.</p>
+<p>Режим classifier предназначен для обучения собственных категорий, до пяти. Выберите ID1–ID5, удерживайте пользовательскую кнопку и покажите предмет с разных сторон до подтверждения обучения. Сохраните данные. Эти режимы решают разные задачи: выбирайте подходящий перед написанием программы.</p>
+<h3>Цвета</h3>
+<p>Камера может обучить до 20 цветов. В режиме color нажмите три точки внутри области нужного цвета, проверьте выделение, при необходимости настройте пороги LAB. Поместите прицел внутрь рамки и нажмите пользовательскую кнопку для обучения. Сохраните данные. Не обучайте одну цветовую категорию несколько раз.</p>
+<p>Освещение влияет на результат. После изменения освещения повторно проверьте выделение. Не копируйте ID цвета из чужого проекта: он зависит от вашего порядка обучения.</p>
+<h3>Дорога</h3>
+<p>Режим road рассчитан на одну направляющую линию на однотонном фоне. Руководство явно исключает сложные карты, перекрёстки и несколько линий. Выберите три точки на линии и добейтесь устойчивого зелёного отрезка.</p>
+<p>Камера выдаёт X верхней точки отрезка как цель 1 и X нижней точки как цель 2. Разность этих X можно использовать для оценки направления линии. Сначала смотрите её в журнале; знак будущего поворота зависит от размещения камеры и моторов.</p>
+<h3>Метки, QR-коды и жесты</h3>
+<p>Для AprilTag используйте семейство TAG36H11; диапазон меток в описании — 0–255. Генератор: https://chev.me/arucogen/ . Для первого теста возьмите простую метку с ID1.</p>
+<p>В режиме qrcode предусмотрено чтение QR-кодов с числами, буквами и китайскими символами. Поддержку кириллицы отдельно проверьте на своей камере. Для начала закодируйте простой текст <code>run</code> и считайте строковую команду.</p>
+<p>Режим gesture распознаёт шесть статических жестов обеих рук. Числовое соответствие жестов рисункам не перенесено в наше описание без проверки; выведите ID для каждого жеста и составьте свою таблицу по наблюдениям.</p>
+<h3>Ключевые точки тела</h3>
+<p>Режим human выдаёт 17 точек. В описании обновления прошивки v4.12.5 производитель указывает переход этого приложения к работе с одним человеком.</p>
+<table>
+<tr><th>ID</th><th>Точка</th></tr>
+<tr><td>1</td><td>Нос</td></tr>
+<tr><td>2</td><td>Левый глаз</td></tr>
+<tr><td>3</td><td>Правый глаз</td></tr>
+<tr><td>4</td><td>Левое ухо</td></tr>
+<tr><td>5</td><td>Правое ухо</td></tr>
+<tr><td>6</td><td>Левое плечо</td></tr>
+<tr><td>7</td><td>Правое плечо</td></tr>
+<tr><td>8</td><td>Левый локоть</td></tr>
+<tr><td>9</td><td>Правый локоть</td></tr>
+<tr><td>10</td><td>Левое запястье</td></tr>
+<tr><td>11</td><td>Правое запястье</td></tr>
+<tr><td>12</td><td>Левое бедро</td></tr>
+<tr><td>13</td><td>Правое бедро</td></tr>
+<tr><td>14</td><td>Левое колено</td></tr>
+<tr><td>15</td><td>Правое колено</td></tr>
+<tr><td>16</td><td>Левая лодыжка</td></tr>
+<tr><td>17</td><td>Правая лодыжка</td></tr>
+</table>
+<p>Не считайте автоматически, что «левая» означает левую сторону изображения: это название точки тела. Ориентацию и зеркальность проверьте движением одной руки.</p>
+<h2>6. Готовые примеры в расширении</h2>
+<p>В «Примеры программ» при выбранном Е7 доступны семь файлов. Каждый открывается отдельным несохранённым Python-документом. Сохраните копию в своей папке, задайте порт и используйте Play. Полный текст каждого примера приведён ниже.</p>
+<h3>01 — Проверка связи и чтение всех полей</h3>
+<p>Файл <code>aicam_01_probe.py</code>. После переключения в face выводит поля первой цели и её строку. Проверьте результаты при наличии и отсутствии объекта. Это проверка обмена, а не готовый детектор присутствия.</p>
+<h3>02 — Обученное лицо с ID1</h3>
+<p>Файл <code>aicam_02_face.py</code>. Сначала обучите и сохраните лицо. Программа печатает ID первой цели и сообщает, когда прочитан ID1. Звуковой сигнал и движение здесь не добавлены: сначала проверяем, как меняется ID после исчезновения лица.</p>
+<h3>03 — Содержимое QR-кода</h3>
+<p>Файл <code>aicam_03_qr.py</code>. Выводит <code>repr</code> строки и сравнивает её с <code>run</code>. Сравнение сообщения не следует сразу связывать с запуском моторов: сначала исключите сохранение старых данных после удаления QR-кода.</p>
+<h3>04 — Координаты цвета по ID</h3>
+<p>Файл <code>aicam_04_color.py</code>. После обучения цвета как ID1 выводит X/Y, размер и уверенность. У GetAICamIDData X имеет код 1, Y — 2, размер — 5, уверенность — 6.</p>
+<h3>05 — Две точки линии</h3>
+<p>Файл <code>aicam_05_road.py</code>. Выводит X верхней и нижней точки и их разность. Для обеих целей код X равен 2. Это основа для последующей настройки регулятора; моторы в примере не включаются.</p>
+<h3>06 — Запястья человека</h3>
+<p>Файл <code>aicam_06_human.py</code>. Читает координаты левого запястья с ID10 и правого с ID11. Поднимайте одну руку, наблюдайте изменение X/Y, проверьте ориентацию камеры.</p>
+<p>Во всех примерах предусмотрена пауза 0,2 секунды между чтениями, чтобы журнал оставался читаемым. Это удобная частота первичной проверки, а не заявленная максимальная частота обмена камеры.</p>
+<h2>7. Частые затруднения</h2>
+<p>Камера получает питание, но не переключается: проверьте P7/P8, кабель, полную загрузку камеры и импорт aicam. Убедитесь, что запускаете программу на том контроллере, к которому подключена камера.</p>
+<p>Программа остановилась на SetWaitAICamCmd: команда блокирующая. Проверьте экран камеры и доступность нужного приложения. Внутренний таймаут не документирован; для завершения теста используйте Stop.</p>
+<p>Значения кажутся сдвинутыми: проверьте, какая команда используется. Код X равен 2 для GetAICam и 1 для GetAICamIDData.</p>
+<p>Цель меняется после перемещения: номер цели определяется положением слева направо. Для обученного объекта с постоянным ID используйте команды по ID.</p>
+<p>Распознавание исчезло после выхода из приложения: проверьте сохранение обученных данных через Save.</p>
+<p>Приложение закрывается сразу после запуска: производитель рекомендует проверить Runtime Library в Settings. Если она отсутствует, её установка выполняется через настройки камеры при подключении Wi-Fi.</p>
+<p>Данные остаются после удаления объекта: зафиксируйте результаты, режим и версию прошивки. До выяснения не используйте эти данные как единственное условие движения робота.</p>
+<p>Не виден вывод программы: откройте журнал того подключения, через которое выполнялся Play. Загрузка файла и запуск из памяти — разные действия.</p>
+<h2>8. Что проверяем на устройстве перед следующим этапом</h2>
+<p>Проверка должна подтвердить: запуск шести примеров; переключение режимов; соответствие кодов полей; строковый результат QR; отсутствие/сохранение данных при исчезновении цели; отличие номера и ID при перестановке объектов; знак координат и данных линии. После этого можно добавлять сопровождение объекта, реакцию на метку и движение по линии с остановкой при потере распознавания.</p>
+<h2>9. Полный код примеров</h2>
+<h3>ИИ-камера: проверка связи и всех полей</h3>
+<pre><code># Е7: ИИ-камера BE-1756. Проверочный пример без движения моторов.
+# Результат при отсутствии цели необходимо проверить на вашей прошивке.
+import rcu
+import aicam
+
+AI_CAM = 7  # устройство подключено на порт Sensor 7
+
+def task1():
+    aicam.SetAICamCmd(AI_CAM, &quot;face&quot;)
+    aicam.SetWaitAICamCmd(AI_CAM, &quot;face&quot;)
+    print(&quot;id x y width height size confidence; text&quot;)
+    while True:
+        values = [aicam.GetAICam(AI_CAM, 1, field) for field in range(1, 8)]
+        print(values, repr(aicam.GetAICamStr(AI_CAM, 1)))
+        rcu.SetWaitForTime(0.2)
+
+task1()</code></pre>
+<h3>ИИ-камера: обученное лицо ID1</h3>
+<pre><code># Е7: ИИ-камера BE-1756. Проверочный пример без движения моторов.
+# Результат при отсутствии цели необходимо проверить на вашей прошивке.
+import rcu
+import aicam
+
+AI_CAM = 7  # устройство подключено на порт Sensor 7
+
+def task1():
+    aicam.SetAICamCmd(AI_CAM, &quot;face&quot;)
+    aicam.SetWaitAICamCmd(AI_CAM, &quot;face&quot;)
+    # На камере заранее обучите лицо как ID1 и сохраните через Save.
+    while True:
+        target_id = aicam.GetAICam(AI_CAM, 1, 1)
+        print(&quot;First target ID:&quot;, target_id)
+        if target_id == 1:
+            print(&quot;ID1 read&quot;)
+        # Проверьте, исчезает ли ID1 после удаления лица из кадра.
+        rcu.SetWaitForTime(0.2)
+
+task1()</code></pre>
+<h3>ИИ-камера: чтение QR-кода</h3>
+<pre><code># Е7: ИИ-камера BE-1756. Проверочный пример без движения моторов.
+# Результат при отсутствии цели необходимо проверить на вашей прошивке.
+import rcu
+import aicam
+
+AI_CAM = 7  # устройство подключено на порт Sensor 7
+
+def task1():
+    aicam.SetAICamCmd(AI_CAM, &quot;qrcode&quot;)
+    aicam.SetWaitAICamCmd(AI_CAM, &quot;qrcode&quot;)
+    # Для проверки создайте QR-код с текстом run.
+    while True:
+        text = aicam.GetAICamStr(AI_CAM, 1)
+        print(&quot;QR:&quot;, repr(text))
+        if text == &quot;run&quot;:
+            print(&quot;Message run read&quot;)
+        rcu.SetWaitForTime(0.2)
+
+task1()</code></pre>
+<h3>ИИ-камера: координаты обученного цвета</h3>
+<pre><code># Е7: ИИ-камера BE-1756. Проверочный пример без движения моторов.
+# Результат при отсутствии цели необходимо проверить на вашей прошивке.
+import rcu
+import aicam
+
+AI_CAM = 7  # устройство подключено на порт Sensor 7
+
+def task1():
+    aicam.SetAICamCmd(AI_CAM, &quot;color&quot;)
+    aicam.SetWaitAICamCmd(AI_CAM, &quot;color&quot;)
+    # На камере заранее обучите цвет как ID1 и сохраните через Save.
+    while True:
+        x = aicam.GetAICamIDData(AI_CAM, 1, 1)
+        y = aicam.GetAICamIDData(AI_CAM, 1, 2)
+        size = aicam.GetAICamIDData(AI_CAM, 1, 5)
+        confidence = aicam.GetAICamIDData(AI_CAM, 1, 6)
+        print(&quot;Color ID1:&quot;, x, y, size, confidence)
+        rcu.SetWaitForTime(0.2)
+
+task1()</code></pre>
+<h3>ИИ-камера: две точки направляющей линии</h3>
+<pre><code># Е7: ИИ-камера BE-1756. Проверочный пример без движения моторов.
+# Результат при отсутствии цели необходимо проверить на вашей прошивке.
+import rcu
+import aicam
+
+AI_CAM = 7  # устройство подключено на порт Sensor 7
+
+def task1():
+    aicam.SetAICamCmd(AI_CAM, &quot;road&quot;)
+    aicam.SetWaitAICamCmd(AI_CAM, &quot;road&quot;)
+    # На камере настройте одну линию по трём точкам.
+    while True:
+        upper_x = aicam.GetAICam(AI_CAM, 1, 2)
+        lower_x = aicam.GetAICam(AI_CAM, 2, 2)
+        print(&quot;Line X:&quot;, upper_x, lower_x, &quot;difference:&quot;, upper_x - lower_x)
+        # Моторы пока не включаем: сначала проверьте потерю линии и знак разности.
+        rcu.SetWaitForTime(0.2)
+
+task1()</code></pre>
+<h3>ИИ-камера: координаты запястий</h3>
+<pre><code># Е7: ИИ-камера BE-1756. Проверочный пример без движения моторов.
+# Результат при отсутствии цели необходимо проверить на вашей прошивке.
+import rcu
+import aicam
+
+AI_CAM = 7  # устройство подключено на порт Sensor 7
+
+def task1():
+    aicam.SetAICamCmd(AI_CAM, &quot;human&quot;)
+    aicam.SetWaitAICamCmd(AI_CAM, &quot;human&quot;)
+    while True:
+        left_x = aicam.GetAICamIDData(AI_CAM, 10, 1)
+        left_y = aicam.GetAICamIDData(AI_CAM, 10, 2)
+        right_x = aicam.GetAICamIDData(AI_CAM, 11, 1)
+        right_y = aicam.GetAICamIDData(AI_CAM, 11, 2)
+        print(&quot;Left wrist:&quot;, left_x, left_y, &quot;Right wrist:&quot;, right_x, right_y)
+        rcu.SetWaitForTime(0.2)
+
+task1()</code></pre>
+<h2>10. Простое движение по линии: ПД-регулятор</h2>
+<p>Файл aicam_07_line_follow.py доступен в «Примеры программ» для Е7. Это простой учебный ПД-регулятор: одно измерение нижней точки, П-составляющая, Д-составляющая и две скорости моторов. Отдельный диагностический пример aicam_05_road.py остаётся в списке.</p>
+<h3>Настройки в ячейках памяти</h3>
+<table>
+<tr><th>Ячейка</th><th>Что хранится</th><th>Как используется</th></tr>
+<tr><td>1</td><td>Общая скорость</td><td>speed = rcu.GetData(1)</td></tr>
+<tr><td>2</td><td>П-коэффициент с масштабом 10</td><td>kP = rcu.GetData(2) / 10</td></tr>
+<tr><td>3</td><td>И-коэффициент с масштабом 1000</td><td>kI = rcu.GetData(3) / 1000; в ПД не используется</td></tr>
+<tr><td>4</td><td>Д-коэффициент</td><td>kD = rcu.GetData(4)</td></tr>
+</table>
+<p>Значения читаются внутри функции регулятора на каждой итерации. Поэтому при изменении ячеек во время движения новый коэффициент применяется в следующем расчёте. Программа не перезаписывает ячейки стартовыми значениями.</p>
+<h3>Расчёт управления</h3>
+<p>Нижняя точка имеет номер цели 2. В GetAICam код X равен 2, поэтому читаем aicam.GetAICam(AI_CAM, 2, 2). Отклонение deviation равно (X − 320) / 6.4. Число 320 — середина кадра шириной 640, деление на 6.4 нормирует отклонение.</p>
+<pre><code>pReg = deviation * kP
+dReg = (deviation - lastDeviation) * kD
+control = pReg + dReg
+lastDeviation = deviation</code></pre>
+<p>П-составляющая зависит от текущего смещения линии. Д-составляющая зависит от изменения смещения за одну итерацию. Управление прибавляется к общей скорости левого мотора и вычитается из скорости правого. Скорости передаются напрямую в SetMotor. На Е7 левому мотору подаётся отрицательное значение: motor.SetMotor(LEFT_MOTOR, -leftSpeed), правому — положительное rightSpeed.</p>
+<p>В global оставлено только lastDeviation: оно изменяется в функции и должно сохраняться до следующего вызова. speed, kP, kD, pReg, dReg и control — локальные переменные одного расчёта.</p>
+<h3>Запуск</h3>
+<p>1. Настройте одну линию в режиме road на экране камеры, выбрав три точки. Проверьте показания диагностическим примером.</p>
+<p>2. Укажите порты LEFT_MOTOR, RIGHT_MOTOR и AI_CAM. Значения рабочего примера: моторы 2 и 4, камера P8.</p>
+<p>3. Заполните ячейки 1, 2 и 4. Ячейка 3 остаётся зарезервирована для И-составляющей других примеров.</p>
+<p>4. Запустите Play. SetAICamCmd(AI_CAM, &quot;road&quot;) задаёт режим, SetWaitAICamCmd(AI_CAM, &quot;road&quot;) ожидает переключения. Затем начинается бесконечный цикл регулятора.</p>
+<p>5. Останавливайте программу кнопкой Stop в расширении. Пример запускается прямым вызовом task1(), без if __name__ и try/finally.</p>
+<p>Коэффициенты подбираются для своей конструкции и положения камеры. Начинайте настройку с П-составляющей, затем добавляйте Д-составляющую для уменьшения колебаний. Если робот поворачивает от линии, проверьте соответствие портов левому/правому мотору и знак управления.</p>
+<p>В этом простом примере нет калибровки пустого кадра и автоматической обработки потери линии. Результат камеры при отсутствии линии пока не подтверждён.</p>
+<h3>Полный код</h3>
+<pre><code># Е7: простой ПД-регулятор по ИИ-камере BE-1756, режим road.
+# Сначала настройте линию по трём точкам на экране камеры.
+# Ячейки: 1 — скорость, 2 — kP × 10, 4 — kD; ячейка 3 здесь не используется.
+import rcu  # Основная библиотека для управления роботом.
+import motor  # Библиотека для управления моторами.
+import aicam  # Библиотека для работы с ИИ-камерой.
+
+# ---------- Настройки моторов и датчиков ----------
+LEFT_MOTOR = 2  # устройство подключено на порт Motor 2
+RIGHT_MOTOR = 4  # устройство подключено на порт Motor 4
+AI_CAM = 8  # устройство подключено на порт Sensor 8
+# --------------------------------------------------
+
+lastDeviation = 0
+# Прошлое отклонение для Д-регулятора.
+
+
+def LinePDCamera():
+    global lastDeviation
+    # В global только значение, которое сохраняется между вызовами.
+    speed = rcu.GetData(1)
+    # Общая скорость из ячейки 1.
+    kP = rcu.GetData(2) / 10
+    # Коэффициент П-регулятора из ячейки 2 с делителем 10.
+    kD = rcu.GetData(4)
+    # Коэффициент Д-регулятора из ячейки 4 без делителя.
+
+    deviation = (aicam.GetAICam(AI_CAM, 2, 2) - 320) / 6.4
+    # Отклонение нижней точки от середины кадра, нормированное делением на 6.4.
+    pReg = deviation * kP
+    # П-регулятор реагирует на текущее отклонение.
+    dReg = (deviation - lastDeviation) * kD
+    # Д-регулятор реагирует на изменение отклонения.
+    control = pReg + dReg
+    # Итоговое управляющее воздействие ПД-регулятора.
+    lastDeviation = deviation
+    # Сохраняем отклонение для следующего расчёта.
+
+    leftSpeed = speed + control
+    rightSpeed = speed - control
+    # Подаём рассчитанные скорости на моторы.
+    motor.SetMotor(LEFT_MOTOR, -leftSpeed)
+    motor.SetMotor(RIGHT_MOTOR, rightSpeed)
+    rcu.SetWaitForTime(0.001)
+    # Небольшая пауза между расчётами.
+
+
+def task1():
+    aicam.SetAICamCmd(AI_CAM, &quot;road&quot;)
+    aicam.SetWaitAICamCmd(AI_CAM, &quot;road&quot;)
+    # Переключить камеру в режим линии и дождаться переключения.
+    while True:
+        LinePDCamera()
+task1()</code></pre></div>
 </body>
 
 </html>

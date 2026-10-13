@@ -1,42 +1,32 @@
 import rcu  # Основная библиотека для управления роботом.
-import motor # Библиотека для управления моторами.
-import math
-
+import motor  # Библиотека для управления моторами.
 
 # ---------- Настройки моторов и датчиков ----------
-LeftMotor = 1  # устройство подключено на порт Motor 1
-RightMotor = 3  # устройство подключено на порт Motor 3
+LEFT_MOTOR = 1  # устройство подключено на порт Motor 1
+RIGHT_MOTOR = 3  # устройство подключено на порт Motor 3
 # --------------------------------------------------
 
 
 def sgn(num):
-    # Функция возвращает 1, если num положительное, -1, если отрицательное, или оставляет 0
-    if(num > 0): return 1
-    elif (num < 0): return -1
-    else: return 0
+    return (num > 0) - (num < 0)
 
-def RobotMovement(encoder, speed):
-    # В функцию передаются два параметра: желаемый угол поворота энкодера и скорость движения
-    motor.SetMotorCode(LeftMotor)
-    # Сброс показаний энкодера
 
-    while(abs(motor.GetMotorCode(LeftMotor)) < abs(encoder)):
-        # Пока модуль показаний энкодера меньше, чем модуль желаемого угла поворота энкодера, двигайся
-        leftSpeed = speed * sgn(encoder)
-        rightSpeed = speed * sgn(encoder)
-        # Находим скорость моторов как базовую скорость, умноженную на направление движения
-
-        motor.SetMotor(LeftMotor, leftSpeed)
-        motor.SetMotor(RightMotor, rightSpeed)
-        # Подача скорости на моторы
+def RobotMovement(encoder):
+    # Знак угла задаёт направление, скорость берётся из ячейки 1.
+    motor.SetMotorCode(LEFT_MOTOR)
+    while abs(motor.GetMotorCode(LEFT_MOTOR)) < abs(encoder):
+        speed = rcu.GetData(1)
+        power = speed * sgn(encoder)
+        motor.SetMotor(LEFT_MOTOR, power)
+        motor.SetMotor(RIGHT_MOTOR, power)
         rcu.SetWaitForTime(0.001)
-        # Небольшая задержка
-    motor.SetMotor(LeftMotor, 0)
-    motor.SetMotor(RightMotor, 0)
-    # Обязательная остановка моторов после цикла
+    motor.SetMotorStop(LEFT_MOTOR)
+    motor.SetMotorStop(RIGHT_MOTOR)
+
 
 def task1():
-    RobotMovement(1000, 50)
-    RobotMovement(-500, 100)
+    RobotMovement(1000)
+    RobotMovement(-500)
+
 
 task1()

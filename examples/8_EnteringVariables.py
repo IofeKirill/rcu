@@ -1,27 +1,20 @@
 import rcu  # Основная библиотека для управления роботом.
-import motor # Библиотека для управления моторами.
-import sensor # Библиотека для работы с различными датчиками.
-import math
+import motor  # Библиотека для управления моторами.
+import sensor  # Библиотека для работы с датчиками.
 
 # ---------- Настройки моторов и датчиков ----------
-LeftMotor = 1  # устройство подключено на порт Motor 1
-RightMotor = 3  # устройство подключено на порт Motor 3
-LeftLightSensor = 3  # устройство подключено на порт Sensor 3
-RightLightSensor = 4  # устройство подключено на порт Sensor 4
+LEFT_MOTOR = 1  # устройство подключено на порт Motor 1
+RIGHT_MOTOR = 3  # устройство подключено на порт Motor 3
+LEFT_LIGHT = 5  # устройство подключено на порт Sensor 5
+RIGHT_LIGHT = 6  # устройство подключено на порт Sensor 6
 # --------------------------------------------------
 
-
-names = ["kP", "kI", "kD", "speed"]
-vars = [0.7, 0.003, 15, 70]
+# Порядок меню совпадает с порядком ячеек памяти 1–4.
+names = ["speed", "kP", "kI", "kD"]
+values = [0, 0, 0, 0]
 targetStr = 0
-otherSgn = 0
-end = True
-
-def sgn(num):
-    # Функция возвращает 1, если num положительное, -1, если отрицательное, или оставляет 0
-    if(num > 0): return 1
-    elif (num < 0): return -1
-    else: return 0
+lastDeviation = 0
+iReg = 0
 
 def CheckButtons():
     # функция читает нажатие в области, где нарисованы кнопки, и возвращает число, соответствующее нажатой кнопке
@@ -38,7 +31,6 @@ def CheckButtons():
 
 def DrawMenu():
     # функция рисует кнопки и меню на экране
-    global targetStr, vars, names
 
     rcu.SetLCDClear(0x0000)
     rcu.SetLCDRectangle2(80, 0, 80, 40, 2, 0x001F)
@@ -62,106 +54,105 @@ def DrawMenu():
     rcu.SetLCDLine(0, 160, 325, 20, 0xF01F)
 
     for n in range(4):
-        rcu.SetDisplayString(n + 1, str(names[n]) + " = " + str(vars[n]), 0xFFE0, 0x0000)
-    rcu.SetDisplayString(targetStr + 1, "* " + str(names[targetStr]) + " = " + str(vars[targetStr]), 0xFFE0, 0x0000)
+        rcu.SetDisplayString(n + 1, str(names[n]) + " = " + str(values[n]), 0xFFE0, 0x0000)
+    rcu.SetDisplayString(targetStr + 1, "* " + str(names[targetStr]) + " = " + str(values[targetStr]), 0xFFE0, 0x0000)
 
-def ReadButtons():
-    # функция проверяет нажатие на кнопки и выполняет соответствующие действия
-    global targetStr, otherSgn
 
-    if (CheckButtons() == 1):
-        targetStr -= 1
-        if (targetStr < 0): targetStr = 3
-
-    elif (CheckButtons() == 2):
-        otherSgn = 1
-
-    elif (CheckButtons() == 3):
-        targetStr += 1
-        if (targetStr > 3): targetStr = 0
-
-    elif (CheckButtons() == 4):
-        otherSgn = -1
-
+def ReadButtons(button):
+    global targetStr
+    # Возвращаем направление изменения; выбор строки сохраняется между вызовами.
+    direction = 0
+    if button == 1:
+        targetStr = (targetStr - 1) % 4
+    elif button == 2:
+        direction = 1
+    elif button == 3:
+        targetStr = (targetStr + 1) % 4
+    elif button == 4:
+        direction = -1
     rcu.SetSysTime()
+    return direction
+
 
 def WriteVars():
-    # функция записи введенных переменных в память робота
-    global vars
-    rcu.SetData(1, vars[0] * 100)
-    rcu.SetData(2, vars[1] * 1000)
-    rcu.SetData(3, vars[2] * 100)
-    rcu.SetData(4, vars[3])
+    rcu.SetData(1, values[0])
+    rcu.SetData(2, values[1] * 10)
+    rcu.SetData(3, values[2] * 1000)
+    rcu.SetData(4, values[3])
+
 
 def ReadVars():
-    # функция чтения введенных переменных из памяти робота
-    global vars
-    vars[0] = rcu.GetData(1) / 100
-    vars[1] = rcu.GetData(2) / 1000
-    vars[2] = rcu.GetData(3) / 100
-    vars[3] = rcu.GetData(4)
+    values[0] = rcu.GetData(1)
+    values[1] = rcu.GetData(2) / 10
+    values[2] = rcu.GetData(3) / 1000
+    values[3] = rcu.GetData(4)
+
 
 def InputVars():
-    # функция для изменения значений переменных при нажатии на кнопки
-    global targetStr, otherSgn, vars, end
-
     ReadVars()
     DrawMenu()
-
-    while end:
-        if (rcu.GetRightButton() == 1): end = False
-        if (CheckButtons() != 0):
-            ReadButtons()
-            if (targetStr == 0): vars[0] += 0.01 * otherSgn
-            elif (targetStr == 1): vars[1] += 0.001 * otherSgn
-            elif (targetStr == 2): vars[2] += 0.01 * otherSgn
-            elif (targetStr == 3): vars[3] += 5 * otherSgn
-
-            otherSgn = 0
+    steps = [5, 0.1, 0.001, 0.01]
+    # Вправо/влево меняют значение, вверх/вниз выбирают строку.
+    while rcu.GetRightButton() != 1:
+        button = CheckButtons()
+        if button != 0:
+            direction = ReadButtons(button)
+            values[targetStr] += steps[targetStr] * direction
             DrawMenu()
-            rcu.SetWaitForTime(0.001)
+        rcu.SetWaitForTime(0.001)
     WriteVars()
+    # Правая кнопка сохраняет значения и запускает движение.
+
+
+def ReadLight(port):
+    return sensor.GetLightSensor(port) / rcu.GetData(port)
+    # Нормируем показание датчика значением ячейки с номером его порта.
+
 
 def LinePID():
-    # функция для движения по линии
-    global vars
+    global lastDeviation, iReg
+    # Только изменяемое состояние между вызовами требует global.
+    speed = rcu.GetData(1)
+    # Общая скорость из ячейки 1.
+    kP = rcu.GetData(2) / 10
+    # Коэффициент П-регулятора: значение ячейки 2 делим на 10.
+    kI = rcu.GetData(3) / 1000
+    # Коэффициент И-регулятора: значение ячейки 3 делим на 1000.
+    kD = rcu.GetData(4)
+    # Коэффициент Д-регулятора из ячейки 4 без делителя.
 
-    lastError = 0
-    iMax = 25
-    iReg = 0
-    # Объявление глобальных переменных
-    error = sensor.GetLightSensor(LeftLightSensor) // 20 - sensor.GetLightSensor(RightLightSensor) // 20
-    # Вычисление отклонения от линии. Деление на 20 для приведения чувствительности датчиков в диапазон 0-100.
-    pReg = error * vars[0]
-    # Вычисление П-регулятораs
-    iReg = iReg + error * vars[1]
-    # Вычисление И-регулятора
-    dReg = (error - lastError) * vars[2]
-    # Вычисление Д-регулятора
+    leftLight = ReadLight(LEFT_LIGHT)
+    rightLight = ReadLight(RIGHT_LIGHT)
+    rcu.SetDisplayString(1, str(leftLight), 0xFFE0, 0x0000)
+    rcu.SetDisplayString(3, str(rightLight), 0xFFE0, 0x0000)
+    deviation = leftLight - rightLight
+    # Разность нормированных показаний датчиков света.
 
-    if(abs(iReg) > iMax): iReg = iMax * sgn(iReg)
-    # Ограничение значения И-регулятора
-    lastError = error
-    # Запись текущей ошибки как прошлой
-
+    pReg = deviation * kP
+    # П-составляющая зависит от текущего отклонения.
+    iReg = max(-25, min(25, iReg + deviation * kI))
+    # Накапливаем И-составляющую и ограничиваем её от -25 до 25.
+    dReg = (deviation - lastDeviation) * kD
+    # Д-составляющая зависит от изменения отклонения.
     control = pReg + iReg + dReg
-    # Определение итогового управляющего воздействия регулятора
+    # Итоговое управляющее воздействие ПИД-регулятора.
+    lastDeviation = deviation
+    # Сохраняем отклонение для следующего вызова.
 
-    leftSpeed = vars[3] + control
-    # Расчет скорости левого мотора
-    rightSpeed = vars[3] - control
-    # Расчет скорости правого мотора
-
-    motor.SetMotor(LeftMotor, leftSpeed)
-    motor.SetMotor(RightMotor, rightSpeed)
-    # Подача скорости на моторы
+    leftSpeed = speed + control
+    rightSpeed = speed - control
+    # Подаём рассчитанные скорости на моторы.
+    motor.SetMotor(LEFT_MOTOR, leftSpeed)
+    motor.SetMotor(RIGHT_MOTOR, rightSpeed)
     rcu.SetWaitForTime(0.001)
-    # Небольшая задержка
+    # Небольшая пауза между расчётами.
+
+
 
 def task1():
     InputVars()
-    sensor.SetLightSensorLed(LeftLightSensor, 1)
-    sensor.SetLightSensorLed(RightLightSensor, 1)
-    while True: LinePID()
-
+    sensor.SetLightSensorLed(LEFT_LIGHT, 1)
+    sensor.SetLightSensorLed(RIGHT_LIGHT, 1)
+    while True:
+        LinePID()
 task1()

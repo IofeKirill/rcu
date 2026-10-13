@@ -1,31 +1,22 @@
 import rcu  # Основная библиотека для управления роботом.
-import sensor # Библиотека для работы с различными датчиками.
+import sensor  # Библиотека для работы с датчиками.
 
 # ---------- Настройки моторов и датчиков ----------
-LeftLightSensor = 3  # устройство подключено на порт Sensor 3
+LIGHT_SENSOR = 3  # устройство подключено на порт Sensor 3
 # --------------------------------------------------
 
 
 def task1():
     timeClear = 0
-    # Переменная для отсчета времени очистки экрана
-    
     while True:
-        timeClear = timeClear + 1
-        # Добавляем в счетчик 1
-        if (timeClear == 15):
-        # Если на счетчике 15, то очищаем экран
+        timeClear += 1
+        if timeClear == 15:
             rcu.SetLCDClear(0x0000)
             timeClear = 0
-            # И сбрасываем счётчик
-        
-        colorValue = sensor.GetLightSensor(LeftLightSensor)
-        # Получаем значение с датчика света
-        
-        rcu.SetDisplayString(1, "Value = " + str(colorValue), 0xFFE0, 0x0000)
-        # Выводим значение с датчика на дисплей в строку 1 (цвет текста: жёлтый, фон: чёрный)
-        
+        # Очищаем экран каждые 15 итераций, выводим исходное показание.
+        lightValue = sensor.GetLightSensor(LIGHT_SENSOR)
+        rcu.SetDisplayString(1, str(lightValue), 0xFFE0, 0x0000)
         rcu.SetWaitForTime(0.001)
-        # Небольшая задержка для предотвращения перегрузки процессора
+
 
 task1()
