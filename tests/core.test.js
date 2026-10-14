@@ -14,8 +14,8 @@ class EventEmitter { constructor(){this.event=()=>({dispose(){}});} fire(){} dis
 class TreeItem { constructor(label,state){this.label=label;this.collapsibleState=state;} }
 class MarkdownString { appendText(text){this.value=text;return this;} }
 const vscode = {
- EventEmitter, TreeItem, MarkdownString, ThemeIcon:class {constructor(id){this.id=id;}},
- TreeItemCollapsibleState:{None:0,Collapsed:1}, ViewColumn:{One:1,Beside:-2},
+ EventEmitter, TreeItem, MarkdownString, ThemeColor:class {constructor(id){this.id=id;}}, ThemeIcon:class {constructor(id,color){this.id=id;this.color=color;}},
+ TreeItemCollapsibleState:{None:0,Collapsed:1,Expanded:2}, ViewColumn:{One:1,Beside:-2},
  SnippetString:class {constructor(value){this.value=value;}},
  commands:{registerCommand(id,handler){commands.set(id,handler);return {dispose(){}};}},
  window:{createOutputChannel:()=>({appendLine(){},append(){},show(){},dispose(){}}),get activeTextEditor(){return active;},showErrorMessage:m=>notices.push(m),showInformationMessage:m=>notices.push(m),showWarningMessage:m=>notices.push(m),createTreeView(){return {dispose(){}};}},
@@ -558,4 +558,87 @@ test('Command sections follow the release order with functions last and E7 camer
  assert.equal(trees.HRCU_TREE.at(-1).label,'Циклы, условия и функции');
  assert.ok(trees.HRCU_TREE.some(node=>node.label==='Mecanum колёса'));
  assert.ok(trees.HRCU_TREE.some(node=>node.label==='AI Cloud'));
+});
+
+function favoriteStorage(initial=[]){
+ const data=new Map([['favoriteCommands',initial]]);
+ return {get:(key,fallback)=>data.has(key)?data.get(key):fallback,update:async(key,value)=>data.set(key,value),data};
+}
+function regularCommand(provider,id){
+ const walk=nodes=>nodes.flatMap(node=>[node,...walk(node.children||[])]);
+ return walk(provider.getChildren().slice(1)).find(node=>node.commandId===id);
+}
+test('Favorites is an empty first section and preserves the existing section order',()=>{
+ const provider=new CommandTreeProvider('E7');
+ const roots=provider.getChildren();assert.equal(roots[0].label,'Избранное');
+ assert.equal(roots[0].commandId,undefined);assert.equal(roots[0].contextValue,'commandGroup');
+ assert.deepEqual(provider.getChildren(roots[0]),[]);
+ assert.deepEqual(roots.slice(1).map(node=>node.label),trees.E7_TREE.map(node=>node.label));
+});
+test('Favorite addition persists, ignores duplicates and retains the normal command entry',async()=>{
+ const storage=favoriteStorage();const provider=new CommandTreeProvider('E7',storage);
+ const regular=regularCommand(provider,'motor.SetMotor');
+ await Promise.all([provider.addFavorite(regular.commandId),provider.addFavorite(regular.commandId),provider.addFavorite('rcu.GetData')]);
+ const favorites=provider.getChildren()[0];
+ assert.equal(favorites.collapsibleState,vscode.TreeItemCollapsibleState.Expanded);
+ assert.deepEqual(favorites.children.map(node=>node.commandId),['motor.SetMotor','rcu.GetData']);
+ assert.equal(favorites.children[0].contextValue,'favoriteRobotCommand');
+ assert.deepEqual(favorites.children[0].command,regular.command);
+ assert.equal(regularCommand(provider,'motor.SetMotor').contextValue,'robotCommand');
+ assert.deepEqual(new CommandTreeProvider('E7',storage).getChildren()[0].children.map(node=>node.commandId),['motor.SetMotor','rcu.GetData']);
+});
+test('Removing favorites preserves the original command and persists an empty favorites section',async()=>{
+ const storage=favoriteStorage(['motor.SetMotor']);const provider=new CommandTreeProvider('E-RCU',storage);
+ await provider.removeFavorite('motor.SetMotor');
+ assert.deepEqual(provider.getChildren()[0].children,[]);
+ assert.ok(regularCommand(provider,'motor.SetMotor'));
+ assert.deepEqual(new CommandTreeProvider('E-RCU',storage).getChildren()[0].children,[]);
+ await provider.removeFavorite('motor.SetMotor');assert.deepEqual(storage.data.get('favoriteCommands.E-RCU'),[]);
+});
+test('Favorites are independent for each controller and restore when returning to E7',async()=>{
+ const provider=new CommandTreeProvider('E7',favoriteStorage());
+ await provider.addFavorite('aicam.GetAICam');await provider.addFavorite('motor.SetMotor');
+ provider.setController('E-RCU');assert.deepEqual(provider.getChildren()[0].children,[]);
+ await provider.addFavorite('motor.SetMotor');await provider.removeFavorite('motor.SetMotor');
+ provider.setController('H-RCU');assert.deepEqual(provider.getChildren()[0].children,[]);
+ provider.setController('E7');assert.deepEqual(provider.getChildren()[0].children.map(node=>node.commandId),['aicam.GetAICam','motor.SetMotor']);
+ assert.equal(provider.getChildren()[0].children[0].controller,'E7');
+});
+test('Invalid entries and persistence failures do not corrupt favorites or prevent the next save',async()=>{
+ const storage=favoriteStorage(['motor.SetMotor','motor.SetMotor',null,32,'nonexistent']);
+ const provider=new CommandTreeProvider('E-RCU',storage);
+ assert.equal(provider.getChildren()[0].children.length,1);
+ await assert.rejects(provider.addFavorite(),/конкретную/);
+ await assert.rejects(provider.addFavorite('aicam.GetAICam'),/конкретную/);
+ const update=storage.update;storage.update=async()=>{throw Error('write failed');};
+ await assert.rejects(provider.removeFavorite('motor.SetMotor'),/write failed/);
+ assert.equal(provider.getChildren()[0].children.length,1);
+ storage.update=update;await provider.removeFavorite('motor.SetMotor');assert.equal(provider.getChildren()[0].children.length,0);
+});
+test('Both favorite context actions are registered and information is available in both locations',async()=>{
+ const previousView=vscode.window.createTreeView;let provider;
+ vscode.window.createTreeView=(id,options)=>{if(id==='rcuCommands')provider=options.treeDataProvider;return {dispose(){}};};
+ const context={globalState:favoriteStorage(),subscriptions:[],extensionPath:path.join(__dirname,'..')};
+ try{
+  activate(context);
+  await commands.get('extension.addFavorite')(regularCommand(provider,'motor.SetMotor'));
+  assert.equal(provider.getChildren()[0].children[0].commandId,'motor.SetMotor');
+  await commands.get('extension.removeFavorite')(provider.getChildren()[0].children[0]);
+  assert.deepEqual(provider.getChildren()[0].children,[]);
+  const menu=require('../package.json').contributes.menus['view/item/context'];
+  assert.equal(menu.find(item=>item.command==='extension.addFavorite').when,'view == rcuCommands && viewItem == robotCommand');
+  assert.equal(menu.find(item=>item.command==='extension.removeFavorite').when,'view == rcuCommands && viewItem == favoriteRobotCommand');
+  const info=menu.find(item=>item.command==='extension.showCommandInfo').when;
+  assert.match(info,/robotCommand/);assert.match(info,/favoriteRobotCommand/);
+ }finally{vscode.window.createTreeView=previousView;for(const disposable of context.subscriptions)disposable.dispose();}
+});
+
+test('Switching controllers during a queued save keeps favorites with the originating controller',async()=>{
+ const storage=favoriteStorage();const provider=new CommandTreeProvider('E7',storage);
+ const saving=provider.addFavorite('motor.SetMotor');provider.setController('E-RCU');
+ await saving;assert.deepEqual(provider.getChildren()[0].children,[]);
+ assert.deepEqual(storage.data.get('favoriteCommands.E7'),['motor.SetMotor']);
+ await provider.addFavorite('rcu.GetData');
+ assert.deepEqual(new CommandTreeProvider('E-RCU',storage).getChildren()[0].children.map(n=>n.commandId),['rcu.GetData']);
+ provider.setController('E7');assert.deepEqual(provider.getChildren()[0].children.map(n=>n.commandId),['motor.SetMotor']);
 });

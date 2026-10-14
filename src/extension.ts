@@ -33,7 +33,7 @@ export function activate(context: vscode.ExtensionContext): void {
     }));
     let currentSet: ControllerSet = context.globalState.get<ControllerSet>('controller', 'E-RCU');
     if (!['E-RCU', 'H-RCU', 'E7'].includes(currentSet)) currentSet = 'E-RCU';
-    const commands = new CommandTreeProvider(currentSet);
+    const commands = new CommandTreeProvider(currentSet, context.globalState);
     const systemCommands = new SystemCommandTreeProvider();
     // Load native USB enumeration only on demand; a missing binary cannot hide the command tree.
     const listDrives = async (): Promise<DriveInfo[]> => {
@@ -99,6 +99,8 @@ export function activate(context: vscode.ExtensionContext): void {
     register('extension.setErcu', () => selectSet('E-RCU'));
     register('extension.setHrcu', () => selectSet('H-RCU'));
     register('extension.setE7', () => selectSet('E7'));
+    register('extension.addFavorite', (node?: CommandTreeItem) => commands.addFavorite(node?.commandId));
+    register('extension.removeFavorite', (node?: CommandTreeItem) => commands.removeFavorite(node?.commandId));
     register('rcuCommands.refresh', () => commands.refresh());
     register('rcuSidebar.refresh', () => commands.refresh()); // Compatibility with older callers.
     register('extension.refreshSystemCommands', () => systemCommands.refresh());

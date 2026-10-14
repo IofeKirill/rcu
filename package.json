@@ -6,7 +6,7 @@
     "type": "git",
     "url": "https://github.com/IofeKirill/Rus_ZMROBO.git"
   },
-  "version": "4.0.0",
+  "version": "4.1.0",
   "publisher": "IofeKirill",
   "icon": "images/rcu-icon.png",
   "engines": {
@@ -50,7 +50,9 @@
     "onCommand:extension.disconnectUSB",
     "onCommand:extension.showUSBLog",
     "onCommand:extension.installUSBDependency",
-    "onCommand:extension.connectUSBDevice"
+    "onCommand:extension.connectUSBDevice",
+    "onCommand:extension.addFavorite",
+    "onCommand:extension.removeFavorite"
   ],
   "main": "./out/extension.js",
   "keywords": [
@@ -228,6 +230,16 @@
         "command": "extension.installUSBDependency",
         "title": "Установить USB-зависимость",
         "category": "ZMROBO"
+      },
+      {
+        "command": "extension.addFavorite",
+        "title": "Добавить в Избранное",
+        "category": "ZMROBO"
+      },
+      {
+        "command": "extension.removeFavorite",
+        "title": "Убрать из Избранного",
+        "category": "ZMROBO"
       }
     ],
     "keybindings": [
@@ -248,17 +260,17 @@
         {
           "command": "extension.setErcu",
           "when": "view == rcuCommands",
-          "group": "navigation@2"
+          "group": "navigation@1"
         },
         {
           "command": "extension.setHrcu",
           "when": "view == rcuCommands",
-          "group": "navigation@1"
+          "group": "navigation@3"
         },
         {
           "command": "extension.setE7",
           "when": "view == rcuCommands",
-          "group": "navigation@3"
+          "group": "navigation@2"
         },
         {
           "command": "extension.scanBluetooth",
@@ -329,7 +341,7 @@
         },
         {
           "command": "extension.showCommandInfo",
-          "when": "view == rcuCommands && viewItem == robotCommand",
+          "when": "view == rcuCommands && (viewItem == robotCommand || viewItem == favoriteRobotCommand)",
           "group": "navigation"
         },
         {
@@ -366,6 +378,16 @@
           "command": "extension.disconnectUSB",
           "when": "view == connectedDevices && viewItem == usbDebugConnected",
           "group": "navigation"
+        },
+        {
+          "command": "extension.addFavorite",
+          "when": "view == rcuCommands && viewItem == robotCommand",
+          "group": "favorites@1"
+        },
+        {
+          "command": "extension.removeFavorite",
+          "when": "view == rcuCommands && viewItem == favoriteRobotCommand",
+          "group": "favorites@1"
         }
       ]
     },

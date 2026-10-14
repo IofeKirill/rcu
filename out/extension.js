@@ -34,7 +34,7 @@ function activate(context) {
     let currentSet = context.globalState.get('controller', 'E-RCU');
     if (!['E-RCU', 'H-RCU', 'E7'].includes(currentSet))
         currentSet = 'E-RCU';
-    const commands = new CommandTreeProvider_1.CommandTreeProvider(currentSet);
+    const commands = new CommandTreeProvider_1.CommandTreeProvider(currentSet, context.globalState);
     const systemCommands = new SystemCommandTreeProvider_1.SystemCommandTreeProvider();
     // Load native USB enumeration only on demand; a missing binary cannot hide the command tree.
     const listDrives = async () => {
@@ -108,6 +108,8 @@ function activate(context) {
     register('extension.setErcu', () => selectSet('E-RCU'));
     register('extension.setHrcu', () => selectSet('H-RCU'));
     register('extension.setE7', () => selectSet('E7'));
+    register('extension.addFavorite', (node) => commands.addFavorite(node === null || node === void 0 ? void 0 : node.commandId));
+    register('extension.removeFavorite', (node) => commands.removeFavorite(node === null || node === void 0 ? void 0 : node.commandId));
     register('rcuCommands.refresh', () => commands.refresh());
     register('rcuSidebar.refresh', () => commands.refresh()); // Compatibility with older callers.
     register('extension.refreshSystemCommands', () => systemCommands.refresh());
