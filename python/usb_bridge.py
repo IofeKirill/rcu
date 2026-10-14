@@ -13,8 +13,8 @@ def serial_modules():
         import serial
         from serial.tools import list_ports
         return serial, list_ports
-    except ImportError:
-        raise ValueError('Для USB-отладки установите pyserial: команда «Установить USB-зависимость» или py -m pip install pyserial.')
+    except ImportError as error:
+        raise ValueError('Не удалось загрузить библиотеку USB: ' + str(error) + '. Проверьте комплектность сборки ZMROBO или выбранный внешний Python.') from error
 
 
 class USBController(ControllerBLE):

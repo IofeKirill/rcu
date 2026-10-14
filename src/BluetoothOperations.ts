@@ -2,7 +2,8 @@ import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
 import { spawn } from 'child_process';
-import { BluetoothDevice, BridgeEvent, BluetoothBridge, BluetoothState, pythonCommand } from './BluetoothBridge';
+import { BluetoothDevice, BridgeEvent, BluetoothBridge, BluetoothState } from './BluetoothBridge';
+import { bundledConnectionRuntime, connectionPython } from './ConnectionRuntime';
 import { usesGyroLibrary } from './FileOperations';
 
 export interface ProgramSnapshot { name: string; source: string; }
@@ -36,7 +37,8 @@ export class BluetoothOperations implements vscode.Disposable {
         this.output = vscode.window.createOutputChannel('ZMROBO ' + this.transport);
         this.bridge = this.createBridge();
     }
-    private executable(): string { return pythonCommand(vscode.workspace.getConfiguration('zmrobo.bluetooth').get<string>('pythonPath', '')); }
+    private configuredPython(): string { return vscode.workspace.getConfiguration('zmrobo.bluetooth').get<string>('pythonPath', ''); }
+    private executable(): string { return connectionPython(this.extensionPath, this.configuredPython()); }
     private createBridge(): BluetoothBridge {
         const generation = ++this.bridgeGeneration;
         return new BluetoothBridge(() => this.executable(), this.extensionPath,
@@ -146,6 +148,11 @@ export class BluetoothOperations implements vscode.Disposable {
     showLog(): void { this.output.show(); }
     async installDependency(): Promise<void> {
         if (this.state?.address) throw new Error('Отключите контроллер перед установкой зависимости.');
+        if (bundledConnectionRuntime(this.configuredPython())) {
+            this.executable();
+            void vscode.window.showInformationMessage('Библиотеки Bluetooth и USB входят в сборку ZMROBO. Выполните поиск контроллера.');
+            return;
+        }
         const dependency = this.transport === 'USB' ? 'pyserial' : 'bleak';
         await this.operation('Установка ' + dependency + ' для ' + this.transport + '…', async () => {
             this.output.show(true);

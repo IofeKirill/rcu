@@ -1,0 +1,873 @@
+{
+  "python": "3.13.13",
+  "platform": "win32-x64",
+  "lockSha256": "021e96ff18784ae223678c6ae76eeb39cbbf4a3440e91ab70fa24ec139d1ecf9",
+  "packages": [
+    {
+      "name": "bleak",
+      "version": "3.0.2"
+    },
+    {
+      "name": "pyserial",
+      "version": "3.5"
+    },
+    {
+      "name": "typing-extensions",
+      "version": "4.16.0"
+    },
+    {
+      "name": "winrt-runtime",
+      "version": "3.2.1"
+    },
+    {
+      "name": "winrt-windows-devices-bluetooth",
+      "version": "3.2.1"
+    },
+    {
+      "name": "winrt-windows-devices-bluetooth-advertisement",
+      "version": "3.2.1"
+    },
+    {
+      "name": "winrt-windows-devices-bluetooth-genericattributeprofile",
+      "version": "3.2.1"
+    },
+    {
+      "name": "winrt-windows-devices-enumeration",
+      "version": "3.2.1"
+    },
+    {
+      "name": "winrt-windows-devices-radios",
+      "version": "3.2.1"
+    },
+    {
+      "name": "winrt-windows-foundation",
+      "version": "3.2.1"
+    },
+    {
+      "name": "winrt-windows-foundation-collections",
+      "version": "3.2.1"
+    },
+    {
+      "name": "winrt-windows-storage-streams",
+      "version": "3.2.1"
+    }
+  ],
+  "files": [
+    {
+      "path": "LICENSE.txt",
+      "sha256": "62bec384df47b0328307db41455ff6ea2559e5546b394ac69148561b21703120"
+    },
+    {
+      "path": "_asyncio.pyd",
+      "sha256": "423007b8c7d63b4cb5f23665a761dd5de1c7e15a65c8013391de0d18c89ce417"
+    },
+    {
+      "path": "_bz2.pyd",
+      "sha256": "1bf985b54f529a3cbb3e52532791cc4d4c64009142d37b54eb3521adec203d5c"
+    },
+    {
+      "path": "_ctypes.pyd",
+      "sha256": "96b07339d52c74f2a1dd043df5eb931e4072eed90a3a8715ffec751d818e4117"
+    },
+    {
+      "path": "_decimal.pyd",
+      "sha256": "398117a6af493e34f56ec0d78ced9901b20b8e895686ce5966edeadb23507056"
+    },
+    {
+      "path": "_elementtree.pyd",
+      "sha256": "fbce9a1190a228c59767bde785c27cc4d18ee3a1f6b46e9da042fc86f8d0def7"
+    },
+    {
+      "path": "_hashlib.pyd",
+      "sha256": "50f3ce7a2281fd32f378f3ba5067bdd13e18ee95877db5199c6a0babdc9c516a"
+    },
+    {
+      "path": "_lzma.pyd",
+      "sha256": "51815b6474d4216c6a2aeaffdae5d2ff4acb7a0236254f2cfe43247022f3d781"
+    },
+    {
+      "path": "_multiprocessing.pyd",
+      "sha256": "4df0d8f9da454831e96389c145ac9ea0093e09749627a3717ff60d21218670c8"
+    },
+    {
+      "path": "_overlapped.pyd",
+      "sha256": "53fe68819f23fea7f6deb0054623e936cc2500241061f29bd5288cf4a511278f"
+    },
+    {
+      "path": "_queue.pyd",
+      "sha256": "b5b5368026c33ade7651fb4cf4c6c1ca7eecc9c8cdad0af007da8a3ac0e067f7"
+    },
+    {
+      "path": "_socket.pyd",
+      "sha256": "8676f3cebd9d01c7ad51a29b3f7ff429c0a8f6bc564cab21eb6cdaa2e26fd259"
+    },
+    {
+      "path": "_sqlite3.pyd",
+      "sha256": "bb80e54f2de8aa3cddc00a2a2f893c432d45ecd64a5c55758a4eb6d2e3007127"
+    },
+    {
+      "path": "_ssl.pyd",
+      "sha256": "b8118580b461801df12ec12d3d666aa0ebc2b3750bcf92b90b92789b152bf856"
+    },
+    {
+      "path": "_uuid.pyd",
+      "sha256": "0116497261edadfe42ba7daf367c8a9ea27a1db210c8384943c890f532e3ce72"
+    },
+    {
+      "path": "_wmi.pyd",
+      "sha256": "9a7255064ea143895b28efea6d78e9e518bac290900aec52a6a0435c36a172fb"
+    },
+    {
+      "path": "_zoneinfo.pyd",
+      "sha256": "6351ce1ff38815e152bb8f28b884e7b2a3945cbee1b1fefa6117e45953d5751f"
+    },
+    {
+      "path": "libcrypto-3.dll",
+      "sha256": "eaf6d613b95b61a39558d84c50e72630a66c99914292df88e7b54ebd60c5bd34"
+    },
+    {
+      "path": "libffi-8.dll",
+      "sha256": "eff52743773eb550fcc6ce3efc37c85724502233b6b002a35496d828bd7b280a"
+    },
+    {
+      "path": "libssl-3.dll",
+      "sha256": "cf1a5fdcefa3daf69041f31f98ece1d7911ca4fcb8e9f1043b4d0f459ae4c936"
+    },
+    {
+      "path": "pyexpat.pyd",
+      "sha256": "b5f57327418750229656c30a809308669797cf30d7da3705f8cd584c2b8a038b"
+    },
+    {
+      "path": "python.cat",
+      "sha256": "a0a4ddd8d0df18ba5ac8d6fe0c16b00deb6a2e69a2007ecca158ddfa20ad5df1"
+    },
+    {
+      "path": "python.exe",
+      "sha256": "dc7ecf75280678175b4f931ce05f1ef9c10d48984399ca7de6beee69d71bcb1b"
+    },
+    {
+      "path": "python3.dll",
+      "sha256": "cbc4876275178244905ee45a9ee6ec9fa4bfb9aad6209a03b756d38a186f80d1"
+    },
+    {
+      "path": "python313._pth",
+      "sha256": "0d24e15e420211b206bd0db710b32ca7ad77226f2928519988ce79b66476d567"
+    },
+    {
+      "path": "python313.dll",
+      "sha256": "6964e590037c41d631fd1215f05af154f7fa68105993c6f573a20689b473f1ac"
+    },
+    {
+      "path": "python313.zip",
+      "sha256": "02afd3bd7dcda41f7f05f3f81759dbfa4c31ae2d0ced045110817bfd0f0b99c1"
+    },
+    {
+      "path": "pythonw.exe",
+      "sha256": "e98f517f1fa209c691c57d058e538473c4dedcecacd2e466c3f2bce54fc431f4"
+    },
+    {
+      "path": "select.pyd",
+      "sha256": "ddf1221851814943a82ed8a986d228463404da2ada969661bdd69223f14fc050"
+    },
+    {
+      "path": "site-packages/bleak/__init__.py",
+      "sha256": "86dea242af5ea6fa90ee1cfa03c2a541cc3b7ef4f479f76a36fb5ac532728363"
+    },
+    {
+      "path": "site-packages/bleak/_compat.py",
+      "sha256": "55dd53a48954225837dce02c2635b2d47f9235962b7fb3e48cf236205a9f23ad"
+    },
+    {
+      "path": "site-packages/bleak/args/__init__.py",
+      "sha256": "07ad1fc715c587fd45d2de7a0509748b6ad85b689068c84c5a4ec23c40061b8b"
+    },
+    {
+      "path": "site-packages/bleak/args/bluez.py",
+      "sha256": "15795d1dc199e1a16d280ef49305f7f5d2c124d509864d29da02686e9c7cbe4a"
+    },
+    {
+      "path": "site-packages/bleak/args/corebluetooth.py",
+      "sha256": "1d4970197b70d8ce85fe61a3d3ba1b625c1400b9d6a91ee8f0198358acee2ae9"
+    },
+    {
+      "path": "site-packages/bleak/args/winrt.py",
+      "sha256": "44f766f08df5e9214a6e47fff30fc549beee4cab83e705c72c67ba6dc8a2f7b9"
+    },
+    {
+      "path": "site-packages/bleak/assigned_numbers.py",
+      "sha256": "8c2dee8a11c6be8cc6982748677e33c24fa3783c988fae6c863f11bed23e959c"
+    },
+    {
+      "path": "site-packages/bleak/backends/__init__.py",
+      "sha256": "3d24ef323c93546ce4f769adc555b943bc2529cbe870bf692b8cbcdf879e2bff"
+    },
+    {
+      "path": "site-packages/bleak/backends/_manufacturers.py",
+      "sha256": "3630aa348ed20ad4b335fe4e98688533b6b2abdb7fe5e28d79c327c85e247a15"
+    },
+    {
+      "path": "site-packages/bleak/backends/_utils.py",
+      "sha256": "2a459b90b6ce85ac1a43ede229c9af2557a7d8076de10c6cb5cb2f13497e9882"
+    },
+    {
+      "path": "site-packages/bleak/backends/bluezdbus/__init__.py",
+      "sha256": "8ac605e5561d248f445140fd67401b437583bf8201b9a2c1bf67a95760d2f053"
+    },
+    {
+      "path": "site-packages/bleak/backends/bluezdbus/advertisement_monitor.py",
+      "sha256": "85fc0753303c90d0aff4ec94252014276994d0a6b2776ca995f84b54bda279fe"
+    },
+    {
+      "path": "site-packages/bleak/backends/bluezdbus/client.py",
+      "sha256": "ef65fa9784410521c10d5c9eca2f63310e299d7f4278baf7530f81d57888cf92"
+    },
+    {
+      "path": "site-packages/bleak/backends/bluezdbus/defs.py",
+      "sha256": "3b03dfcf4665331eef05623ef2dff5b5fbeabb4e4f1bc760506fdcd8932d5d26"
+    },
+    {
+      "path": "site-packages/bleak/backends/bluezdbus/manager.py",
+      "sha256": "2a7e20ef3a96b01ae83df5fcbfc2308849efeaab62921692c76ca69a28213bdb"
+    },
+    {
+      "path": "site-packages/bleak/backends/bluezdbus/scanner.py",
+      "sha256": "bb7349690591050a985915ebfcf7bc96efcba044dd9b54743a1d8c19d45fcf3a"
+    },
+    {
+      "path": "site-packages/bleak/backends/bluezdbus/signals.py",
+      "sha256": "da238f541b47490048002a86842e6ff0193fa058243d4b91ea477ce39b08336c"
+    },
+    {
+      "path": "site-packages/bleak/backends/bluezdbus/utils.py",
+      "sha256": "799370f062b95a53156c627735d9684a00b7b70a65e72e98ed52f5780f907cc2"
+    },
+    {
+      "path": "site-packages/bleak/backends/bluezdbus/version.py",
+      "sha256": "1906f0a583017eff0b086a448f29d4caf935b08b9d71e2f3fc536055fc6b1382"
+    },
+    {
+      "path": "site-packages/bleak/backends/characteristic.py",
+      "sha256": "8e15649bf09edd111f98a72302b0c750e4dd5b17c0ba07d2af411c658e8100b7"
+    },
+    {
+      "path": "site-packages/bleak/backends/client.py",
+      "sha256": "ff0485eb50707cc58ed24ce07108e12c18a7c5928ad5f6598b2c97d8b8d3ac61"
+    },
+    {
+      "path": "site-packages/bleak/backends/corebluetooth/CentralManagerDelegate.py",
+      "sha256": "dd8bdb1cd4378d527826a5492bbba35b2d99b113b0067a5ac138d27f5b597c93"
+    },
+    {
+      "path": "site-packages/bleak/backends/corebluetooth/PeripheralDelegate.py",
+      "sha256": "29d719d8a6d29a226f50b985a9da53d5f659787013cf3e53eeb9e81c0f249f47"
+    },
+    {
+      "path": "site-packages/bleak/backends/corebluetooth/__init__.py",
+      "sha256": "7b787b207fb2aca8d3bd3e16a0ada0f80ceb7b09b5f11834967e95b2667785b5"
+    },
+    {
+      "path": "site-packages/bleak/backends/corebluetooth/client.py",
+      "sha256": "1c8725b64bae8eb57b5f4dbb033bb3516a96709c4061fe85fd0c39b7c929ba5f"
+    },
+    {
+      "path": "site-packages/bleak/backends/corebluetooth/scanner.py",
+      "sha256": "b5a3001348760f37b2a540bb1c97a18058395cd7e1a3a46a8f2bc2510614fac2"
+    },
+    {
+      "path": "site-packages/bleak/backends/corebluetooth/utils.py",
+      "sha256": "121b4928c6cbbc17c13bfc957581783d9e0437c76b0692999737f7f21de2566f"
+    },
+    {
+      "path": "site-packages/bleak/backends/descriptor.py",
+      "sha256": "671494df473b68dfcde8177fbd58c5f4e9a60ef0ec45d43e904383813347b142"
+    },
+    {
+      "path": "site-packages/bleak/backends/device.py",
+      "sha256": "8a9dec7d86a9225c3097655c483f05e25daff565793c1120da1812aa4d6b7b76"
+    },
+    {
+      "path": "site-packages/bleak/backends/p4android/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "site-packages/bleak/backends/p4android/client.py",
+      "sha256": "58281899dc0e3d218d78a2455c7db58fbb5592ba0843995195ef1c5ed32ba100"
+    },
+    {
+      "path": "site-packages/bleak/backends/p4android/defs.py",
+      "sha256": "a4ee20a53c7cb6eda7ee45e0579cc35b0776ebf1e1fa6c8f032ef74d842c4bee"
+    },
+    {
+      "path": "site-packages/bleak/backends/p4android/java/com/github/hbldh/bleak/PythonBluetoothGattCallback.java",
+      "sha256": "d9b64f18c401dc466deee5b6115ed24f6115c2d5a70dad388933ad3961ee5aa7"
+    },
+    {
+      "path": "site-packages/bleak/backends/p4android/java/com/github/hbldh/bleak/PythonScanCallback.java",
+      "sha256": "bed8827920384a7f12723a838828171b6d6fd400d00fc4847a445d250dd0001f"
+    },
+    {
+      "path": "site-packages/bleak/backends/p4android/recipes/bleak/__init__.py",
+      "sha256": "a674faa7120bceb208fdc97cb0014837efe2b7874f45b5db5b999fb31e2ca2d0"
+    },
+    {
+      "path": "site-packages/bleak/backends/p4android/recipes/bleak/fix_setup.py",
+      "sha256": "28c7d586be149bdd5a2b10406315c819c8c7f7c0a24c55c1449c04030509ae20"
+    },
+    {
+      "path": "site-packages/bleak/backends/p4android/scanner.py",
+      "sha256": "71708c4e5611a2d3c5501ce56ae61e6df4b2d059872ae304cd2f5e758b181bed"
+    },
+    {
+      "path": "site-packages/bleak/backends/p4android/utils.py",
+      "sha256": "9a4ae3cc90479e452b8b8d5897aaa02a3965cfe2d742a3542cc8fa0d6e470f0a"
+    },
+    {
+      "path": "site-packages/bleak/backends/scanner.py",
+      "sha256": "cebc966f8f98c11a049955757dcf77bbfaad88039597e92ef273fe32583ae749"
+    },
+    {
+      "path": "site-packages/bleak/backends/service.py",
+      "sha256": "8618ca1a499f82c2a83528b723085e7f951617c3c2e7ece15838b49c1d0815e2"
+    },
+    {
+      "path": "site-packages/bleak/backends/winrt/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "site-packages/bleak/backends/winrt/client.py",
+      "sha256": "e50884702623359bd817a9ef206c5ab4d1229c93e8f5e777e184ff6c874c32d4"
+    },
+    {
+      "path": "site-packages/bleak/backends/winrt/scanner.py",
+      "sha256": "63a9e59a5f234ceff60a2e898ec66978b75e00cb80397c44e39f211e0f87ebc1"
+    },
+    {
+      "path": "site-packages/bleak/backends/winrt/util.py",
+      "sha256": "6cd4f48af9151283b8a2d781d5c4410530031e8965b9c731ec01158232dae113"
+    },
+    {
+      "path": "site-packages/bleak/exc.py",
+      "sha256": "be86bccba796764bcc25c10a00eeeb66a800803806b4210e339ad9dc910256ae"
+    },
+    {
+      "path": "site-packages/bleak/py.typed",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "site-packages/bleak/uuids.py",
+      "sha256": "8a777eeb43a335fa045cbce109f6095931a12ee4e0c09b8dd2f2cf9ef64bf0e7"
+    },
+    {
+      "path": "site-packages/bleak-3.0.2.dist-info/METADATA",
+      "sha256": "f89f15daa2ac2415cebc33952fbdd3ad7bf853aee3ca20e66e8a68ec15daf401"
+    },
+    {
+      "path": "site-packages/bleak-3.0.2.dist-info/RECORD",
+      "sha256": "cf57864ab270c72a8415c4ffd47d408d52dc2e3098b59f18f8a250393b74ebff"
+    },
+    {
+      "path": "site-packages/bleak-3.0.2.dist-info/WHEEL",
+      "sha256": "ab9205d2adb10a9de4b541510955ac40b8e5d8284d9565c126d9c8d4b086749f"
+    },
+    {
+      "path": "site-packages/bleak-3.0.2.dist-info/licenses/LICENSE",
+      "sha256": "c4029a2b63b3824ab68be841f414addbdde20cb79cdbe272fa80c0b2abe65374"
+    },
+    {
+      "path": "site-packages/pyserial-3.5.dist-info/DESCRIPTION.rst",
+      "sha256": "ad75c8505780b1f5ead984bb0c6933b469977b3f86ee00306f07412fcb7d28c1"
+    },
+    {
+      "path": "site-packages/pyserial-3.5.dist-info/METADATA",
+      "sha256": "42a8ab7e94ef0b7baa7e94cdac65d6b9254c608476f630120c990007bf472943"
+    },
+    {
+      "path": "site-packages/pyserial-3.5.dist-info/RECORD",
+      "sha256": "f744391b264f33b5a95fc5f2c3b3ab5539acae7dd0f6c3c99912920467cdc7b5"
+    },
+    {
+      "path": "site-packages/pyserial-3.5.dist-info/WHEEL",
+      "sha256": "91db0dfb93890192221cdfa23b846197cd8ac92d1b0d67f8b81c0c6e435a7ebf"
+    },
+    {
+      "path": "site-packages/pyserial-3.5.dist-info/entry_points.txt",
+      "sha256": "f80437a159889fbaed5b90e1d0eba9f741ead2a90894c8fbf6a1a674321793d5"
+    },
+    {
+      "path": "site-packages/pyserial-3.5.dist-info/metadata.json",
+      "sha256": "b39ac55f140a2fd4173b750c5d1998a0c5c6450b7696897aeeb7ffeb84b5bf5d"
+    },
+    {
+      "path": "site-packages/pyserial-3.5.dist-info/top_level.txt",
+      "sha256": "1528df5875b0f958cf884a8e86db5b88ff85f0e1e7fa58a2c6ad7028bd9f58e0"
+    },
+    {
+      "path": "site-packages/serial/__init__.py",
+      "sha256": "5dec897fdef45a0eaf63eacda1e01d62e1e75490302584ae0238f75376592344"
+    },
+    {
+      "path": "site-packages/serial/__main__.py",
+      "sha256": "a12a559270d2d98aa7d89757943b39164d04f1c71d88b209697bcf5948b3423d"
+    },
+    {
+      "path": "site-packages/serial/rfc2217.py",
+      "sha256": "9dc1bfe53b38d8cfd39bfed737743b884db8cbe946730bb68c2dcc15212fe817"
+    },
+    {
+      "path": "site-packages/serial/rs485.py",
+      "sha256": "f6deb2b8672d7b7ea093c1b553a3606e82951ad25416ab5ba403978fbbd8c4cd"
+    },
+    {
+      "path": "site-packages/serial/serialcli.py",
+      "sha256": "bb94271bdd14c6db6ab061bd9d88248f4194c9bd3020ec739548312788027338"
+    },
+    {
+      "path": "site-packages/serial/serialjava.py",
+      "sha256": "01c1cba760ffb008a1bbb2ffc02720f26b64edeb5feb30320782ffb6eb61568f"
+    },
+    {
+      "path": "site-packages/serial/serialposix.py",
+      "sha256": "5d56f98513391e1766a1847a04e2e1202ced4172a152803ba1c823a149a9b6f9"
+    },
+    {
+      "path": "site-packages/serial/serialutil.py",
+      "sha256": "3c84f8c7c319f161a85d6f8db5bedc4f65255714589bdcbeee6f2daf65a17c0a"
+    },
+    {
+      "path": "site-packages/serial/serialwin32.py",
+      "sha256": "17681ea9a650120c71db1aae9b8881301a40d38c47b34bb0da050e3f5bfbbe00"
+    },
+    {
+      "path": "site-packages/serial/threaded/__init__.py",
+      "sha256": "8a45e52987a3465cf30b37bd930c51fee00129ad587ee4f2a9c3e3c375515752"
+    },
+    {
+      "path": "site-packages/serial/tools/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "site-packages/serial/tools/hexlify_codec.py",
+      "sha256": "1512523bca5f8cce8047dfd206a2f7e1ee742d592f9737c529d98249c1a7e34f"
+    },
+    {
+      "path": "site-packages/serial/tools/list_ports.py",
+      "sha256": "7830e8c888684b77fd0f7095a6d86a95052a891da5f97d154c618e063b8ce1ec"
+    },
+    {
+      "path": "site-packages/serial/tools/list_ports_common.py",
+      "sha256": "c791c88211b8348cfe5dfe625fa1a4ef165f75e69db36b6a0ac7f226187721fb"
+    },
+    {
+      "path": "site-packages/serial/tools/list_ports_linux.py",
+      "sha256": "5275355583f534923b27c667ee063e03699b8b596e81b159495ced7d7f0fd695"
+    },
+    {
+      "path": "site-packages/serial/tools/list_ports_osx.py",
+      "sha256": "7a879f3068ae26a0be382bbd6805aaa895fbe701a5073a2a67a91d98c03cd8b3"
+    },
+    {
+      "path": "site-packages/serial/tools/list_ports_posix.py",
+      "sha256": "118a83e6445b9347f66b9b1c6914b8b605860729e4a551fbee36bf1ba4b75211"
+    },
+    {
+      "path": "site-packages/serial/tools/list_ports_windows.py",
+      "sha256": "53813370e02253ae8b5a83dd317236a0e3382c2779bcac0edc381e4d3e8cdea7"
+    },
+    {
+      "path": "site-packages/serial/tools/miniterm.py",
+      "sha256": "7d7be4114f4513253b1cf48d13c6dd5f638282219880279ed3aeb2179f27a2db"
+    },
+    {
+      "path": "site-packages/serial/urlhandler/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "site-packages/serial/urlhandler/protocol_alt.py",
+      "sha256": "fa46280a0cbd1b231637ac02f0e7b0f052f4e0b8cbe0db71dc71d5a924ca19c4"
+    },
+    {
+      "path": "site-packages/serial/urlhandler/protocol_cp2110.py",
+      "sha256": "8942ce4f855dc36d0fff0da37d259db74ae8518d4abbcc495471d873a7772266"
+    },
+    {
+      "path": "site-packages/serial/urlhandler/protocol_hwgrep.py",
+      "sha256": "19d29d43db44c4a447273b223dc43d13199a2daebe03bd6ae768b88d0c66a019"
+    },
+    {
+      "path": "site-packages/serial/urlhandler/protocol_loop.py",
+      "sha256": "e5b6abaeefe17f03646b28e3073e30dec9c1267d06ec2f9f1bbf9098769e4d6a"
+    },
+    {
+      "path": "site-packages/serial/urlhandler/protocol_rfc2217.py",
+      "sha256": "20f3bcaf7a4537ac840e5d59bf68e05277c86b4b50d2263466c0fcff184051e4"
+    },
+    {
+      "path": "site-packages/serial/urlhandler/protocol_socket.py",
+      "sha256": "428b5a1c23ddeadf74dd6ffd7dad8bbffe6e125ab49e88abd828b5d1af7ced73"
+    },
+    {
+      "path": "site-packages/serial/urlhandler/protocol_spy.py",
+      "sha256": "15d51a538dfe6e5d4a5d3cbf4b81e1cf2195e61a54b28a66f08a93ad7d955fee"
+    },
+    {
+      "path": "site-packages/serial/win32.py",
+      "sha256": "964eaba1df661e4ab381c8666aa077ca08939260164cd434d0827df39663bd32"
+    },
+    {
+      "path": "site-packages/typing_extensions-4.16.0.dist-info/METADATA",
+      "sha256": "b05084ca1d50879865178d9fff9fabeab61bdfb1f361bfbde95421ffc8f9be46"
+    },
+    {
+      "path": "site-packages/typing_extensions-4.16.0.dist-info/RECORD",
+      "sha256": "44dcf97810bea7b84bcd83890b6674bbcc2f4c5ef899a4887f15d524bdf6bb97"
+    },
+    {
+      "path": "site-packages/typing_extensions-4.16.0.dist-info/WHEEL",
+      "sha256": "1b68144734c4b66791f27add5d425f3620775585718a03d0f9b110ba3a4d88db"
+    },
+    {
+      "path": "site-packages/typing_extensions-4.16.0.dist-info/licenses/LICENSE",
+      "sha256": "3b2f81fe21d181c499c59a256c8e1968455d6689d269aa85373bfb6af41da3bf"
+    },
+    {
+      "path": "site-packages/typing_extensions.py",
+      "sha256": "4040ca1a1ecbee00d1385c12a93084d1c5bd46f0b774f07e5ae7e91c4f55e696"
+    },
+    {
+      "path": "site-packages/winrt/_winrt.cp313-win_amd64.pyd",
+      "sha256": "2535634de075b45f259120d3827fb0b6832bf78afdc2026fd7b61e04e45e5428"
+    },
+    {
+      "path": "site-packages/winrt/_winrt.pyi",
+      "sha256": "557b31697ede6355975c44fc60080809f482db8d5d3dd28120e2d6417e597a41"
+    },
+    {
+      "path": "site-packages/winrt/_winrt_windows_devices_bluetooth.cp313-win_amd64.pyd",
+      "sha256": "144268621a63cfdf6976fe7d4910ccf7685c14b0dcf99d0602726507c215a9d4"
+    },
+    {
+      "path": "site-packages/winrt/_winrt_windows_devices_bluetooth.pyi",
+      "sha256": "3d208c170a557101efb38717afa565080d21d0c497d0e9c2c68d8b603763f280"
+    },
+    {
+      "path": "site-packages/winrt/_winrt_windows_devices_bluetooth_advertisement.cp313-win_amd64.pyd",
+      "sha256": "5e6ca1619194a7d63f13b1b025af244744358e6425c78ab77faf0640113eebe0"
+    },
+    {
+      "path": "site-packages/winrt/_winrt_windows_devices_bluetooth_advertisement.pyi",
+      "sha256": "efafa1a07aae166eedcb3cbc58e2adb0686e308ae71f6490720734ac8f90af5a"
+    },
+    {
+      "path": "site-packages/winrt/_winrt_windows_devices_bluetooth_genericattributeprofile.cp313-win_amd64.pyd",
+      "sha256": "6ce0e9cb7dc9bf3a0dd7e83a7c56093fb401b79abd499f4442a1d964f0e30d7f"
+    },
+    {
+      "path": "site-packages/winrt/_winrt_windows_devices_bluetooth_genericattributeprofile.pyi",
+      "sha256": "6d02e582060b3dc2e6d288df103536c51ff095a6362dc627996e24ba3a4ab086"
+    },
+    {
+      "path": "site-packages/winrt/_winrt_windows_devices_enumeration.cp313-win_amd64.pyd",
+      "sha256": "e05c755458c85fd27722257838ad7a6c1df22f4366db32ae8c02bc153e36bf59"
+    },
+    {
+      "path": "site-packages/winrt/_winrt_windows_devices_enumeration.pyi",
+      "sha256": "360c760375807e02b9958c8267c3dc06e37e4255296ea51b6fc5ffded6cacadf"
+    },
+    {
+      "path": "site-packages/winrt/_winrt_windows_devices_radios.cp313-win_amd64.pyd",
+      "sha256": "397e6f58f5f955a26da18118ea03103890603ec659aed4e4998b2eddbe51d790"
+    },
+    {
+      "path": "site-packages/winrt/_winrt_windows_devices_radios.pyi",
+      "sha256": "5f47b55175f3fc570b37bc9dc0c994f2e9fb95738c6e0bfba08620a31982ac94"
+    },
+    {
+      "path": "site-packages/winrt/_winrt_windows_foundation.cp313-win_amd64.pyd",
+      "sha256": "d15955d0eeb18cd8a6730ab8851198fdc0323cdb62e8fd93eb930266b2a33200"
+    },
+    {
+      "path": "site-packages/winrt/_winrt_windows_foundation.pyi",
+      "sha256": "40930f11837a2bddefcf145b7f47f3c1e3086904911236cfec7199303e194dca"
+    },
+    {
+      "path": "site-packages/winrt/_winrt_windows_foundation_collections.cp313-win_amd64.pyd",
+      "sha256": "042ccee98913a72ced7d2758d59343b20540e0d2c398f75969505988e34d63fc"
+    },
+    {
+      "path": "site-packages/winrt/_winrt_windows_foundation_collections.pyi",
+      "sha256": "9dd90551ae4ccd8ae2ede865b0768b7f22a78b9bbdd3927de127c0102a1d7705"
+    },
+    {
+      "path": "site-packages/winrt/_winrt_windows_storage_streams.cp313-win_amd64.pyd",
+      "sha256": "ec69893d187319e36946666a6e2940429189ecce3e4f9a1dd9a479db7727c8b6"
+    },
+    {
+      "path": "site-packages/winrt/_winrt_windows_storage_streams.pyi",
+      "sha256": "b5a126711fae0aa6130fb972629bd0234589410cfd1d5198b6fe9ea9754219fd"
+    },
+    {
+      "path": "site-packages/winrt/msvcp140.dll",
+      "sha256": "75872c426555ac8af55b5a7f6d4aea8831af74353b22612850a2bfc40e3b67e1"
+    },
+    {
+      "path": "site-packages/winrt/py.typed",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "site-packages/winrt/runtime/__init__.py",
+      "sha256": "c28a020524e4eec1d67c9413734a7b56d61f9f947930232b47506611de9a9837"
+    },
+    {
+      "path": "site-packages/winrt/runtime/_internals.py",
+      "sha256": "ae2745c5086399383af660393de9d86e3d28ef98dcf38a704932879ad184c28b"
+    },
+    {
+      "path": "site-packages/winrt/runtime/interop.py",
+      "sha256": "379a2cf6b30a47e1de2cf2624b65d39bb7c97197242f98d7afc97f7169390fd9"
+    },
+    {
+      "path": "site-packages/winrt/runtime/py.typed",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "site-packages/winrt/system/__init__.py",
+      "sha256": "bc9986f9b489dd9e3ccbb3c0cfab61e5c4d8c23013207313a6695a05137aa952"
+    },
+    {
+      "path": "site-packages/winrt/system/hresult.py",
+      "sha256": "8692baa5149545cf2a93525f464c1e967a64503b6f27c319ac1eaf7c273b73b9"
+    },
+    {
+      "path": "site-packages/winrt/system/py.typed",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "site-packages/winrt/windows/devices/bluetooth/__init__.py",
+      "sha256": "d3281c5cc6ef892103176ec3dce92dbcf6bd001de43842a93a6a202934d77879"
+    },
+    {
+      "path": "site-packages/winrt/windows/devices/bluetooth/advertisement/__init__.py",
+      "sha256": "661b1b1ad0ed1c45caf86cd38cd23cdf590b8a216831e91251f9c320d254d96a"
+    },
+    {
+      "path": "site-packages/winrt/windows/devices/bluetooth/advertisement/py.typed",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "site-packages/winrt/windows/devices/bluetooth/genericattributeprofile/__init__.py",
+      "sha256": "d591aeed9180335e736a464e28d2f5c6add5a97ab09819df48d2fe3b34290418"
+    },
+    {
+      "path": "site-packages/winrt/windows/devices/bluetooth/genericattributeprofile/py.typed",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "site-packages/winrt/windows/devices/bluetooth/py.typed",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "site-packages/winrt/windows/devices/enumeration/__init__.py",
+      "sha256": "6d71c9f659c07bc923b6d66be3222ca9329e89c58dbaabc50606bba8da6f63dd"
+    },
+    {
+      "path": "site-packages/winrt/windows/devices/enumeration/py.typed",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "site-packages/winrt/windows/devices/radios/__init__.py",
+      "sha256": "9293455ea41a60958f5ed849631f8cdfc5a790c0884e6f0da8ae8bca81445c86"
+    },
+    {
+      "path": "site-packages/winrt/windows/devices/radios/py.typed",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "site-packages/winrt/windows/foundation/__init__.py",
+      "sha256": "4a02ac9d01cf8dadc05f490461bc113942b65a28ba4044eff8484f4f744709b7"
+    },
+    {
+      "path": "site-packages/winrt/windows/foundation/collections/__init__.py",
+      "sha256": "e933ef33905d1a68026590b3539e2f2e3cc574fcd7aefebc235da43db975b1dc"
+    },
+    {
+      "path": "site-packages/winrt/windows/foundation/collections/py.typed",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "site-packages/winrt/windows/foundation/py.typed",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "site-packages/winrt/windows/storage/streams/__init__.py",
+      "sha256": "02518d743ca50e64f9657f74689c09dec56df263565e1e06c153144d032f517a"
+    },
+    {
+      "path": "site-packages/winrt/windows/storage/streams/py.typed",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "site-packages/winrt_runtime-3.2.1.dist-info/METADATA",
+      "sha256": "015c1299aaff295cab8ac4f18cd946b052d9ea9c82c58b795fba548777cad0ae"
+    },
+    {
+      "path": "site-packages/winrt_runtime-3.2.1.dist-info/RECORD",
+      "sha256": "a3fb16650d08728b33cb1e9e44941b92290361a636bd18b477edbc7996c084e0"
+    },
+    {
+      "path": "site-packages/winrt_runtime-3.2.1.dist-info/WHEEL",
+      "sha256": "a95d0420f9638f55c2fefb926ad4568e7d369d9233dcdd6df23b19cfb1c1af65"
+    },
+    {
+      "path": "site-packages/winrt_runtime-3.2.1.dist-info/top_level.txt",
+      "sha256": "073c106f875946dd0dc425e2d740118d6b28c7b02c9ad7ff957af0fca47e0ff1"
+    },
+    {
+      "path": "site-packages/winrt_windows_devices_bluetooth-3.2.1.dist-info/METADATA",
+      "sha256": "bf8ccfbe1e38d4b19342397f65aa449c86d4602d4924ce76ce3cc03e9591c66d"
+    },
+    {
+      "path": "site-packages/winrt_windows_devices_bluetooth-3.2.1.dist-info/RECORD",
+      "sha256": "7cb11834f270be67a1bf3a376930f377e738c158309e54a4a52129d689084c5e"
+    },
+    {
+      "path": "site-packages/winrt_windows_devices_bluetooth-3.2.1.dist-info/WHEEL",
+      "sha256": "a95d0420f9638f55c2fefb926ad4568e7d369d9233dcdd6df23b19cfb1c1af65"
+    },
+    {
+      "path": "site-packages/winrt_windows_devices_bluetooth-3.2.1.dist-info/top_level.txt",
+      "sha256": "073c106f875946dd0dc425e2d740118d6b28c7b02c9ad7ff957af0fca47e0ff1"
+    },
+    {
+      "path": "site-packages/winrt_windows_devices_bluetooth_advertisement-3.2.1.dist-info/METADATA",
+      "sha256": "f993162d3c53174618145987aa3caa510da9910348eaeb9148b71f8173a19e04"
+    },
+    {
+      "path": "site-packages/winrt_windows_devices_bluetooth_advertisement-3.2.1.dist-info/RECORD",
+      "sha256": "bc717642480714189fc7c3e4d4ae1c4f911437b3bc36714561714e34e2b63c28"
+    },
+    {
+      "path": "site-packages/winrt_windows_devices_bluetooth_advertisement-3.2.1.dist-info/WHEEL",
+      "sha256": "a95d0420f9638f55c2fefb926ad4568e7d369d9233dcdd6df23b19cfb1c1af65"
+    },
+    {
+      "path": "site-packages/winrt_windows_devices_bluetooth_advertisement-3.2.1.dist-info/top_level.txt",
+      "sha256": "073c106f875946dd0dc425e2d740118d6b28c7b02c9ad7ff957af0fca47e0ff1"
+    },
+    {
+      "path": "site-packages/winrt_windows_devices_bluetooth_genericattributeprofile-3.2.1.dist-info/METADATA",
+      "sha256": "3f3b154e8cb77efc570d06d174c6a46e24f31c58b0b3c61b58f91a4381922731"
+    },
+    {
+      "path": "site-packages/winrt_windows_devices_bluetooth_genericattributeprofile-3.2.1.dist-info/RECORD",
+      "sha256": "4b776bcfcf10fafcaf941ab5b006f3844924640c0ca2bbe99623e7c9382ccdb8"
+    },
+    {
+      "path": "site-packages/winrt_windows_devices_bluetooth_genericattributeprofile-3.2.1.dist-info/WHEEL",
+      "sha256": "a95d0420f9638f55c2fefb926ad4568e7d369d9233dcdd6df23b19cfb1c1af65"
+    },
+    {
+      "path": "site-packages/winrt_windows_devices_bluetooth_genericattributeprofile-3.2.1.dist-info/top_level.txt",
+      "sha256": "073c106f875946dd0dc425e2d740118d6b28c7b02c9ad7ff957af0fca47e0ff1"
+    },
+    {
+      "path": "site-packages/winrt_windows_devices_enumeration-3.2.1.dist-info/METADATA",
+      "sha256": "8da0fdcda1e8df3166b57fd2ad9312b80ce85b6330caea39b3b8d8ce6f94e69c"
+    },
+    {
+      "path": "site-packages/winrt_windows_devices_enumeration-3.2.1.dist-info/RECORD",
+      "sha256": "62132af6951cf5c9b8ff875421801d7767996506c0c9c3876e9b925460b58a41"
+    },
+    {
+      "path": "site-packages/winrt_windows_devices_enumeration-3.2.1.dist-info/WHEEL",
+      "sha256": "a95d0420f9638f55c2fefb926ad4568e7d369d9233dcdd6df23b19cfb1c1af65"
+    },
+    {
+      "path": "site-packages/winrt_windows_devices_enumeration-3.2.1.dist-info/top_level.txt",
+      "sha256": "073c106f875946dd0dc425e2d740118d6b28c7b02c9ad7ff957af0fca47e0ff1"
+    },
+    {
+      "path": "site-packages/winrt_windows_devices_radios-3.2.1.dist-info/METADATA",
+      "sha256": "4d28664b4d259fe539823052df5740949fe8b33939292c6d1e3f6f84d261661b"
+    },
+    {
+      "path": "site-packages/winrt_windows_devices_radios-3.2.1.dist-info/RECORD",
+      "sha256": "7c4fa0b803d335913d6610b5f3ef705d1a4b5ee7707d9bec1bf41d7d65d3da71"
+    },
+    {
+      "path": "site-packages/winrt_windows_devices_radios-3.2.1.dist-info/WHEEL",
+      "sha256": "a95d0420f9638f55c2fefb926ad4568e7d369d9233dcdd6df23b19cfb1c1af65"
+    },
+    {
+      "path": "site-packages/winrt_windows_devices_radios-3.2.1.dist-info/top_level.txt",
+      "sha256": "073c106f875946dd0dc425e2d740118d6b28c7b02c9ad7ff957af0fca47e0ff1"
+    },
+    {
+      "path": "site-packages/winrt_windows_foundation-3.2.1.dist-info/METADATA",
+      "sha256": "45297f41dd75d4379c4a4e31193ffaaba7bf301b5861deee926e1f3c42156ed8"
+    },
+    {
+      "path": "site-packages/winrt_windows_foundation-3.2.1.dist-info/RECORD",
+      "sha256": "31a25372f422a890193c6d5073fb74209922ee4d5e2f7eb6b30caa83714b7d76"
+    },
+    {
+      "path": "site-packages/winrt_windows_foundation-3.2.1.dist-info/WHEEL",
+      "sha256": "a95d0420f9638f55c2fefb926ad4568e7d369d9233dcdd6df23b19cfb1c1af65"
+    },
+    {
+      "path": "site-packages/winrt_windows_foundation-3.2.1.dist-info/top_level.txt",
+      "sha256": "073c106f875946dd0dc425e2d740118d6b28c7b02c9ad7ff957af0fca47e0ff1"
+    },
+    {
+      "path": "site-packages/winrt_windows_foundation_collections-3.2.1.dist-info/METADATA",
+      "sha256": "541d312bab71e0feb829048b9a776d326776461181019b63e8475ad5dcfe6bc2"
+    },
+    {
+      "path": "site-packages/winrt_windows_foundation_collections-3.2.1.dist-info/RECORD",
+      "sha256": "fedb97342b772cbf3a6bafc514ed2dc4dd0b86a03ce3b9a27a1228d72044206c"
+    },
+    {
+      "path": "site-packages/winrt_windows_foundation_collections-3.2.1.dist-info/WHEEL",
+      "sha256": "a95d0420f9638f55c2fefb926ad4568e7d369d9233dcdd6df23b19cfb1c1af65"
+    },
+    {
+      "path": "site-packages/winrt_windows_foundation_collections-3.2.1.dist-info/top_level.txt",
+      "sha256": "073c106f875946dd0dc425e2d740118d6b28c7b02c9ad7ff957af0fca47e0ff1"
+    },
+    {
+      "path": "site-packages/winrt_windows_storage_streams-3.2.1.dist-info/METADATA",
+      "sha256": "c908326eb6c50866ab4e4c8994d4692ae03cb4eff4687cdbb1c016841d06ae22"
+    },
+    {
+      "path": "site-packages/winrt_windows_storage_streams-3.2.1.dist-info/RECORD",
+      "sha256": "75c2adfe6fdcd5e6a16620448385d5137fe91b169f0a9475be3d4b148036fa9f"
+    },
+    {
+      "path": "site-packages/winrt_windows_storage_streams-3.2.1.dist-info/WHEEL",
+      "sha256": "a95d0420f9638f55c2fefb926ad4568e7d369d9233dcdd6df23b19cfb1c1af65"
+    },
+    {
+      "path": "site-packages/winrt_windows_storage_streams-3.2.1.dist-info/top_level.txt",
+      "sha256": "073c106f875946dd0dc425e2d740118d6b28c7b02c9ad7ff957af0fca47e0ff1"
+    },
+    {
+      "path": "sqlite3.dll",
+      "sha256": "aaae3fe73a4dda249da1ed740c087d1548a1ff7b73eaa7aa62c2354a581ee299"
+    },
+    {
+      "path": "unicodedata.pyd",
+      "sha256": "b965a80346ee95dbec0b147faab329f3276ba24fceb8df5df171367649f116f3"
+    },
+    {
+      "path": "vcruntime140.dll",
+      "sha256": "052ad6a20d375957e82aa6a3c441ea548d89be0981516ca7eb306e063d5027f4"
+    },
+    {
+      "path": "vcruntime140_1.dll",
+      "sha256": "6a99bc0128e0c7d6cbbf615fcc26909565e17d4ca3451b97f8987f9c6acbc6c8"
+    },
+    {
+      "path": "winsound.pyd",
+      "sha256": "f23973ff866546525e5ffb63dc9ccc2f88980f320d4ae75168ffcd26c4ccb0cd"
+    }
+  ]
+}

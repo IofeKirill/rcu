@@ -1,0 +1,94 @@
+{
+  "python": "3.13.13",
+  "platform": "win32-x64",
+  "packages": [
+    {
+      "name": "bleak",
+      "version": "3.0.2",
+      "url": "https://files.pythonhosted.org/packages/26/54/05aceb9cd80073805b3ed8522e3196e8cb22f70e741873fa51406c31f4e7/bleak-3.0.2-py3-none-any.whl",
+      "filename": "bleak-3.0.2-py3-none-any.whl",
+      "sha256": "39092feb9e83f1df5ad2f88e837723c7211c982ce9e9cda6235104bc2ebe0d0d"
+    },
+    {
+      "name": "pyserial",
+      "version": "3.5",
+      "url": "https://files.pythonhosted.org/packages/07/bc/587a445451b253b285629263eb51c2d8e9bcea4fc97826266d186f96f558/pyserial-3.5-py2.py3-none-any.whl",
+      "filename": "pyserial-3.5-py2.py3-none-any.whl",
+      "sha256": "c4451db6ba391ca6ca299fb3ec7bae67a5c55dde170964c7a14ceefec02f2cf0"
+    },
+    {
+      "name": "typing-extensions",
+      "version": "4.16.0",
+      "url": "https://files.pythonhosted.org/packages/49/d3/b8441a820a491ddfc024b0b0cf0393375b75ea13866d9c66727e54c2fc80/typing_extensions-4.16.0-py3-none-any.whl",
+      "filename": "typing_extensions-4.16.0-py3-none-any.whl",
+      "sha256": "481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8"
+    },
+    {
+      "name": "winrt-runtime",
+      "version": "3.2.1",
+      "url": "https://files.pythonhosted.org/packages/aa/24/2b6e536ca7745d788dfd17a2ec376fa03a8c7116dc638bb39b035635484f/winrt_runtime-3.2.1-cp313-cp313-win_amd64.whl",
+      "filename": "winrt_runtime-3.2.1-cp313-cp313-win_amd64.whl",
+      "sha256": "3c1fdcaeedeb2920dc3b9039db64089a6093cad2be56a3e64acc938849245a6d"
+    },
+    {
+      "name": "winrt-windows-devices-bluetooth",
+      "version": "3.2.1",
+      "url": "https://files.pythonhosted.org/packages/05/6d/f60588846a065e69a2ec5e67c5f85eb45cb7edef2ee8974cd52fa8504de6/winrt_windows_devices_bluetooth-3.2.1-cp313-cp313-win_amd64.whl",
+      "filename": "winrt_windows_devices_bluetooth-3.2.1-cp313-cp313-win_amd64.whl",
+      "sha256": "6703dfbe444ee22426738830fb305c96a728ea9ccce905acfdf811d81045fdb3"
+    },
+    {
+      "name": "winrt-windows-devices-bluetooth-advertisement",
+      "version": "3.2.1",
+      "url": "https://files.pythonhosted.org/packages/86/83/503cf815d84c5ba8c8bc61480f32e55579ebf76630163405f7df39aa297b/winrt_windows_devices_bluetooth_advertisement-3.2.1-cp313-cp313-win_amd64.whl",
+      "filename": "winrt_windows_devices_bluetooth_advertisement-3.2.1-cp313-cp313-win_amd64.whl",
+      "sha256": "b66410c04b8dae634a7e4b615c3b7f8adda9c7d4d6902bcad5b253da1a684943"
+    },
+    {
+      "name": "winrt-windows-devices-bluetooth-genericattributeprofile",
+      "version": "3.2.1",
+      "url": "https://files.pythonhosted.org/packages/5b/3b/eb9d99b82a36002d7885206d00ea34f4a23db69c16c94816434ded728fa3/winrt_windows_devices_bluetooth_genericattributeprofile-3.2.1-cp313-cp313-win_amd64.whl",
+      "filename": "winrt_windows_devices_bluetooth_genericattributeprofile-3.2.1-cp313-cp313-win_amd64.whl",
+      "sha256": "8d8d89f01e9b6931fb48217847caac3227a0aeb38a5b7782af71c2e7b262ec30"
+    },
+    {
+      "name": "winrt-windows-devices-enumeration",
+      "version": "3.2.1",
+      "url": "https://files.pythonhosted.org/packages/70/de/f30daaaa0e6f4edb6bd7ddb3e058bd453c9ad90c032a4545c4d4639338aa/winrt_windows_devices_enumeration-3.2.1-cp313-cp313-win_amd64.whl",
+      "filename": "winrt_windows_devices_enumeration-3.2.1-cp313-cp313-win_amd64.whl",
+      "sha256": "6ca40d334734829e178ad46375275c4f7b5d6d2d4fc2e8879690452cbfb36015"
+    },
+    {
+      "name": "winrt-windows-devices-radios",
+      "version": "3.2.1",
+      "url": "https://files.pythonhosted.org/packages/39/c1/24cec0cc228642554b48d436a7617d7162fb952919c55fc26e2d99c310bd/winrt_windows_devices_radios-3.2.1-cp313-cp313-win_amd64.whl",
+      "filename": "winrt_windows_devices_radios-3.2.1-cp313-cp313-win_amd64.whl",
+      "sha256": "bf1a975f46a2aa271ffea1340be0c7e64985050d07433e701343dddc22a72290"
+    },
+    {
+      "name": "winrt-windows-foundation",
+      "version": "3.2.1",
+      "url": "https://files.pythonhosted.org/packages/ba/7f/8d5108461351d4f6017f550af8874e90c14007f9122fa2eab9f9e0e9b4e1/winrt_windows_foundation-3.2.1-cp313-cp313-win_amd64.whl",
+      "filename": "winrt_windows_foundation-3.2.1-cp313-cp313-win_amd64.whl",
+      "sha256": "6e98617c1e46665c7a56ce3f5d28e252798416d1ebfee3201267a644a4e3c479"
+    },
+    {
+      "name": "winrt-windows-foundation-collections",
+      "version": "3.2.1",
+      "url": "https://files.pythonhosted.org/packages/94/93/4f75fd6a4c96f1e9bee198c5dc9a9b57e87a9c38117e1b5e423401886353/winrt_windows_foundation_collections-3.2.1-cp313-cp313-win_amd64.whl",
+      "filename": "winrt_windows_foundation_collections-3.2.1-cp313-cp313-win_amd64.whl",
+      "sha256": "5e12a6e75036ee90484c33e204b85fb6785fcc9e7c8066ad65097301f48cdd10"
+    },
+    {
+      "name": "winrt-windows-storage-streams",
+      "version": "3.2.1",
+      "url": "https://files.pythonhosted.org/packages/15/59/601724453b885265c7779d5f8025b043a68447cbc64ceb9149d674d5b724/winrt_windows_storage_streams-3.2.1-cp313-cp313-win_amd64.whl",
+      "filename": "winrt_windows_storage_streams-3.2.1-cp313-cp313-win_amd64.whl",
+      "sha256": "202c5875606398b8bfaa2a290831458bb55f2196a39c1d4e5fa88a03d65ef915"
+    }
+  ],
+  "pythonArchive": {
+    "url": "https://www.python.org/ftp/python/3.13.13/python-3.13.13-embed-amd64.zip",
+    "sha256": "8766a8775746235e23cf5aee5027ab1060bb981d93110577adcf3508aa0cbd55"
+  }
+}

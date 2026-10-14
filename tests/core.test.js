@@ -642,3 +642,28 @@ test('Switching controllers during a queued save keeps favorites with the origin
  assert.deepEqual(new CommandTreeProvider('E-RCU',storage).getChildren()[0].children.map(n=>n.commandId),['rcu.GetData']);
  provider.setController('E7');assert.deepEqual(provider.getChildren()[0].children.map(n=>n.commandId),['motor.SetMotor']);
 });
+
+test('Bluetooth and USB scans use the shipped Windows runtime and dependency commands install nothing',async()=>{
+ const {BluetoothOperations}=require('../out/BluetoothOperations');
+ const {BluetoothBridge}=require('../out/BluetoothBridge');
+ const platform=Object.getOwnPropertyDescriptor(process,'platform');
+ const priorCall=BluetoothBridge.prototype.call,priorProgress=vscode.window.withProgress,priorLocation=vscode.ProgressLocation;
+ const childProcess=require('node:child_process'),priorSpawn=childProcess.spawn;
+ const launches=[],operations=[];
+ try {
+  Object.defineProperty(process,'platform',{...platform,value:'win32'});
+  vscode.window.withProgress=(_options,task)=>task();vscode.ProgressLocation={Window:10};
+  childProcess.spawn=()=>{throw Error('No installation process should run');};
+  BluetoothBridge.prototype.call=async function(action){launches.push({executable:this.executable(),script:this.pythonScript,action});return [];};
+  const tree={setDevices(){},setState(){},setConnecting(){}};
+  for(const usb of [false,true]){
+   const operation=new BluetoothOperations(path.join(__dirname,'..'),tree,()=>{},{usb});operations.push(operation);
+   await operation.scan();await operation.installDependency();
+  }
+  assert.deepEqual(launches.map(row=>row.script),['bluetooth_bridge.py','usb_bridge.py']);
+  assert.ok(launches.every(row=>row.executable===path.join(__dirname,'..','runtime','win32-x64','python.exe')));
+ }finally{
+  operations.forEach(operation=>operation.dispose());Object.defineProperty(process,'platform',platform);
+  BluetoothBridge.prototype.call=priorCall;childProcess.spawn=priorSpawn;vscode.window.withProgress=priorProgress;vscode.ProgressLocation=priorLocation;
+ }
+});

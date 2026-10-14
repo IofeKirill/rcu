@@ -6,6 +6,7 @@ const fs = require("fs");
 const path = require("path");
 const child_process_1 = require("child_process");
 const BluetoothBridge_1 = require("./BluetoothBridge");
+const ConnectionRuntime_1 = require("./ConnectionRuntime");
 const FileOperations_1 = require("./FileOperations");
 async function captureBluetoothProgram(save) {
     var _a;
@@ -33,7 +34,8 @@ class BluetoothOperations {
         this.output = vscode.window.createOutputChannel('ZMROBO ' + this.transport);
         this.bridge = this.createBridge();
     }
-    executable() { return (0, BluetoothBridge_1.pythonCommand)(vscode.workspace.getConfiguration('zmrobo.bluetooth').get('pythonPath', '')); }
+    configuredPython() { return vscode.workspace.getConfiguration('zmrobo.bluetooth').get('pythonPath', ''); }
+    executable() { return (0, ConnectionRuntime_1.connectionPython)(this.extensionPath, this.configuredPython()); }
     createBridge() {
         const generation = ++this.bridgeGeneration;
         return new BluetoothBridge_1.BluetoothBridge(() => this.executable(), this.extensionPath, line => { if (!this.disposed && generation === this.bridgeGeneration)
@@ -171,6 +173,11 @@ class BluetoothOperations {
         var _a;
         if ((_a = this.state) === null || _a === void 0 ? void 0 : _a.address)
             throw new Error('Отключите контроллер перед установкой зависимости.');
+        if ((0, ConnectionRuntime_1.bundledConnectionRuntime)(this.configuredPython())) {
+            this.executable();
+            void vscode.window.showInformationMessage('Библиотеки Bluetooth и USB входят в сборку ZMROBO. Выполните поиск контроллера.');
+            return;
+        }
         const dependency = this.transport === 'USB' ? 'pyserial' : 'bleak';
         await this.operation('Установка ' + dependency + ' для ' + this.transport + '…', async () => {
             this.output.show(true);

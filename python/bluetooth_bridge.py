@@ -287,8 +287,8 @@ class ControllerBLE:
 async def main():
     try:
         from bleak import BleakScanner, BleakClient
-    except ImportError:
-        event('fatal', message='Не установлен bleak. Выполните команду «Установить Bluetooth-зависимость» в VS Code.')
+    except ImportError as error:
+        event('fatal', message='Не удалось загрузить библиотеку Bluetooth: ' + str(error) + '. Проверьте комплектность сборки ZMROBO или выбранный внешний Python.')
         return
     backend = ControllerBLE(BleakScanner, BleakClient)
     event('ready')

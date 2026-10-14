@@ -18,3 +18,10 @@ scripts/test-bluetooth.js
 **/*.zip
 **/__pycache__/**
 **/*.pyc
+
+scripts/prepare-runtime.js
+scripts/check-runtime.js
+runtime-packages.json
+!runtime/win32-x64/python313.zip
+scripts/package-release.js
+scripts/check-vsix.js

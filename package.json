@@ -4,9 +4,9 @@
   "description": "Расширение для программирования ZMROBO на Python",
   "repository": {
     "type": "git",
-    "url": "https://github.com/IofeKirill/Rus_ZMROBO.git"
+    "url": "https://github.com/IofeKirill/rcu.git"
   },
-  "version": "4.1.0",
+  "version": "4.1.1",
   "publisher": "IofeKirill",
   "icon": "images/rcu-icon.png",
   "engines": {
@@ -397,16 +397,19 @@
         "zmrobo.bluetooth.pythonPath": {
           "type": "string",
           "default": "",
-          "description": "Путь к Python 3.10+ для Bluetooth. Пусто: py в Windows, python3 в других ОС. Указывайте исполняемый файл без аргументов."
+          "description": "Путь к внешнему Python для подключения Bluetooth и USB. Пусто: встроенный Python в Windows x64, python3 в других ОС."
         }
       }
     }
   },
   "scripts": {
-    "vscode:prepublish": "npm run compile",
+    "vscode:prepublish": "npm run compile && node scripts/prepare-runtime.js && node scripts/check-release.js",
     "compile": "tsc -p ./",
     "test": "npm run compile && node --test tests/*.test.js",
-    "test:bluetooth": "node scripts/test-bluetooth.js"
+    "test:bluetooth": "node scripts/test-bluetooth.js",
+    "prepare:runtime": "node scripts/prepare-runtime.js",
+    "check:runtime": "node scripts/check-runtime.js",
+    "package": "node scripts/package-release.js"
   },
   "devDependencies": {
     "@types/node": "^14.18.0",
@@ -415,5 +418,9 @@
   },
   "dependencies": {
     "drivelist": "^12.0.2"
+  },
+  "homepage": "https://github.com/IofeKirill/rcu",
+  "bugs": {
+    "url": "https://github.com/IofeKirill/rcu/issues"
   }
 }

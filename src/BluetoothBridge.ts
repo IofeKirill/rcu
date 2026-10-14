@@ -25,6 +25,7 @@ export class BluetoothBridge {
         const command = pythonCommand(this.executable());
         const env: NodeJS.ProcessEnv = { ...process.env, PYTHONIOENCODING: 'utf-8', PYTHONUNBUFFERED: '1' };
         delete env.PYTHONPATH; // Do not inject controller stub libraries into the desktop BLE runtime.
+        delete env.PYTHONHOME;
         this.starting = new Promise<void>((resolve, reject) => {
             const child = this.launcher(command, ['-u', path.join(this.extensionPath, 'python', this.pythonScript)],
                 { env, windowsHide: true, shell: false });
