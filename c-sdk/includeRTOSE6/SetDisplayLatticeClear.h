@@ -1,0 +1,4 @@
+#ifndef _SETDISPLAYLATTICECLEAR_
+#define _SETDISPLAYLATTICECLEAR_
+#include <JMLib.c>
+#endif

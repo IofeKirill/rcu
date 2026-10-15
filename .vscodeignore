@@ -25,3 +25,6 @@ runtime-packages.json
 !runtime/win32-x64/python313.zip
 scripts/package-release.js
 scripts/check-vsix.js
+scripts/check-c.js
+**/.zmrobo-build/**
+c-sdk-validation.json

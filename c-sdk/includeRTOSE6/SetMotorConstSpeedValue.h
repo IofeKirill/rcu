@@ -1,0 +1,4 @@
+#ifndef _SETMOTORCONSTSPEEDVALUE_
+#define _SETMOTORCONSTSPEEDVALUE_
+#include <JMLib.c>
+#endif

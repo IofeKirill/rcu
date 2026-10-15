@@ -1,0 +1,4 @@
+#ifndef _GETBTMODULEREMOTEBUTTON_
+#define _GETBTMODULEREMOTEBUTTON_
+#include <JMLib.c>
+#endif

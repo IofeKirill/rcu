@@ -1,0 +1,4 @@
+#ifndef _GETMAGNETICSERVODEGREE_
+#define _GETMAGNETICSERVODEGREE_
+#include <JMLib.c>
+#endif

@@ -1,5 +1,6 @@
 """Persistent controller BLE backend. JSON lines on stdin/stdout; no interactive prompts."""
 import asyncio
+import base64
 import json
 import re
 import sys
@@ -26,9 +27,9 @@ def encode_source(value):
     return result
 
 
-def validate_filename(name):
-    if not isinstance(name, str) or not name.lower().endswith('.py') or re.search(r'[\\/\x00-\x1f]', name):
-        raise ValueError('Нужно имя .py без пути и управляющих символов.')
+def validate_filename(name, extension=".py"):
+    if not isinstance(name, str) or not name.lower().endswith(extension) or re.search(r'[\\/\x00-\x1f]', name):
+        raise ValueError('Нужно имя '+extension+' без пути и управляющих символов.')
     try:
         encoded = name.encode('gbk')
     except UnicodeEncodeError:
@@ -118,6 +119,9 @@ class ControllerBLE:
         self.client = client
         self.address = address
         self.name = (pair[1].local_name if pair else None) or device.name or 'контроллер'
+        names = ' '.join(filter(None, [pair[1].local_name if pair else None, device.name]))
+        event('log', message='Bluetooth: имя объявления=' + repr(pair[1].local_name if pair else None) +
+              ', системное имя=' + repr(device.name))
         self.replies = Replies()
         try:
             await asyncio.wait_for(client.connect(), 25)
@@ -135,13 +139,45 @@ class ControllerBLE:
             if self.response and 'write' not in self.tx.properties:
                 raise ValueError('FFE3 не поддерживает запись.')
             await client.start_notify(self.rx, self.notify)
-            # RoboCode uses separate FFE3 + A1 approval on E7; E6 writes FFE1.
-            if dedicated_writer is not None:
+            for characteristic in service.characteristics:
+                event('log', message='GATT: ' + characteristic.uuid + ' properties=' + ','.join(characteristic.properties))
+            # Windows may return a generic/cached name. FFE1 write support is a reason
+            # to query firmware first, not proof of a controller model.
+            is_e6 = bool(re.search(r'(?:^|[^A-Z0-9])E6(?:[^0-9]|$)', names.upper()))
+            is_e7 = bool(re.search(r'(?:^|[^A-Z0-9])E7(?:[^0-9]|$)', names.upper()))
+            rx_writable = bool({'write', 'write-without-response'}.intersection(self.rx.properties))
+            frame = None
+            if not is_e7 and (is_e6 or rx_writable):
+                event('log', message='Определяем модель контроллера запросом версии, без подтверждения на экране.')
+                try:
+                    frame = await self.request(0x81, 6)
+                except asyncio.TimeoutError:
+                    if self.tx is self.rx or not rx_writable:
+                        raise ConnectionError('Контроллер не ответил на запрос версии. Повторите подключение и пришлите журнал Bluetooth.')
+                    event('log', message='FFE3 не ответил. Проверяем запрос версии через FFE1.')
+                    self.tx = self.rx
+                    self.response = 'write-without-response' not in self.tx.properties
+                    try:
+                        frame = await self.request(0x81, 6)
+                    except asyncio.TimeoutError:
+                        raise ConnectionError('Контроллер не ответил на запрос версии через FFE3 и FFE1. Пришлите журнал Bluetooth.')
+                model = re.search(rb'(E[67]|M6)V[0-9]{3}', frame)
+                if not model:
+                    raise ValueError('Модель в ответе версии не распознана; смотрите журнал Bluetooth.')
+                is_e6 = model[1] == b'E6'
+                is_e7 = model[1] == b'E7'
+                if is_e6 and not re.search(r'E6', self.name, re.IGNORECASE):
+                    self.name = 'E6-RCU (' + self.name + ')'
+                event('log', message='Модель по ответу контроллера: ' + model[1].decode('ascii'))
+            if dedicated_writer is not None and (is_e7 or (frame is None and not is_e6)):
                 event('pairing', message='Подтвердите подключение на экране контроллера, если появится запрос.')
                 approval = await self.request(0xA1, 20)
                 if approval[5] != 0x0D:
                     raise ValueError(f'Контроллер отклонил подключение: 0x{approval[5]:02X}.')
-            frame = await self.request(0x81, 6)
+            elif is_e6:
+                event('log', message='Подключение E6: подтверждение на экране не требуется. Проверяем ответ контроллера.')
+            if frame is None:
+                frame = await self.request(0x81, 6)
             self.version = firmware_version(frame)
             if not self.version:
                 raise ValueError('Ответ версии контроллера не распознан; смотрите журнал Bluetooth.')
@@ -205,35 +241,62 @@ class ControllerBLE:
         self.require_connection()
         if self.running or self.raw:
             await self.stop()
+        stage = 'подготовка режима Python'
         try:
             for opcode in self.prepare_opcodes:
-                await self.request(opcode)
+                stage = f'команда {opcode:02X}'
+                try:
+                    await self.request(opcode)
+                except asyncio.TimeoutError:
+                    if opcode != 0x90:
+                        raise
+                    event('log', message='На команду 90 нет ответа. Продолжаем через 87; готовность Python проверим по REPL.')
                 await asyncio.sleep(0.05)
+            stage = 'приглашение Python REPL'
             await self.write(b'\x03')
             await asyncio.sleep(0.2)
             await self.text_request(b'import rcu\r\n', b'>>> ', echo=b'import rcu')
+            stage = 'вход в raw REPL'
             await self.write(bytes([0x86, 0xAB, 0x14, 0xEE, 0xEF] + [0] * 14 + [0xCF]))
             await asyncio.sleep(0.05)
             await self.text_request(b'\x01', b'\r\n>', echo=b'raw REPL')
             self.raw = True
+            stage = 'передача кода'
             for offset in range(0, len(content), 512):
                 await self.write(content[offset:offset + 512])
                 await asyncio.sleep(0.02)
             self.runtime_tail.clear()
             self.running = True
+            stage = 'подтверждение запуска кода'
             await self.text_request(b'\x04', b'OK')
             event('state', **self.info())
             return {'accepted': True, **self.info()}
-        except BaseException:
+        except BaseException as error:
+            event('log', message='Play: сбой на этапе «' + stage + '»: ' + (str(error) or type(error).__name__))
             try:
                 await self.stop()
             except Exception:
                 event('log', message='После ошибки Play остановку подтвердить не удалось. Остановите программу на контроллере.')
+            if isinstance(error, asyncio.TimeoutError):
+                raise TimeoutError('Play: контроллер не ответил на этапе «' + stage + '». Смотрите журнал Bluetooth/USB.') from error
             raise
 
     async def upload(self, name, source):
-        content = encode_source(source)
-        name = validate_filename(name)
+        return await self.upload_content(validate_filename(name), encode_source(source))
+
+    async def upload_binary(self, name, encoded):
+        name = validate_filename(name, ".bin")
+        if self.name and re.search(r"(?:E7|H-RCU)", self.name, re.I):
+            raise ValueError("Программы C поддерживаются только для E6.")
+        try:
+            content = base64.b64decode(encoded, validate=True)
+        except (ValueError, TypeError):
+            raise ValueError("Некорректные двоичные данные программы C.")
+        if not 0 < len(content) <= 128 * 1024:
+            raise ValueError("Программа C E6 должна занимать от 1 до 128 KiB.")
+        return await self.upload_content(name, content)
+
+    async def upload_content(self, name, content):
         self.require_connection()
         if self.running or self.raw:
             await self.stop()
@@ -307,6 +370,8 @@ async def main():
                     result = await backend.connect(request.get('address'))
                 elif action == 'upload':
                     result = await backend.upload(request.get('name'), request.get('source'))
+                elif action == 'uploadBinary':
+                    result = await backend.upload_binary(request.get('name'), request.get('base64'))
                 elif action == 'play':
                     result = await backend.play(request.get('source'))
                 elif action == 'stop':

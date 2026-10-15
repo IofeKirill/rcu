@@ -1,0 +1,4 @@
+#ifndef _GETREMOTECONTROLLEREULERIAN_
+#define _GETREMOTECONTROLLEREULERIAN_
+#include <JMLib.c>
+#endif

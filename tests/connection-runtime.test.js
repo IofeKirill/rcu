@@ -50,6 +50,8 @@ test('Final VSIX validation rejects an omitted standard library zip or native de
  const manifest=checkRuntime(false);
  const entries=manifest.files.map(f=>'extension/runtime/win32-x64/'+f.path);
  entries.push('extension/runtime/win32-x64/runtime.json','extension/python/bluetooth_bridge.py','extension/python/usb_bridge.py','extension/python/bluetooth_protocol.py','extension/python/usb_identity.py','extension/python/usb_identity.ps1','extension/out/ConnectionRuntime.js');
+ const cManifest=require('../c-toolchain.json');
+ entries.push(...cManifest.files.map(f=>'extension/'+f.path),'extension/c-toolchain.json','extension/out/CCompiler.js','extension/examples/C_01_display.c','extension/examples/C_02_motors.c','extension/examples/C_03_line_pd.c');
  assert.doesNotThrow(()=>checkEntries(entries,manifest));
  assert.throws(()=>checkEntries(entries.filter(e=>!e.endsWith('/python313.zip')),manifest),/python313.zip/);
  const native=entries.find(e=>e.includes('winrt')&&e.endsWith('.pyd'));

@@ -19,10 +19,16 @@ export const PROGRAM_EXAMPLES: ReadonlyArray<{ file: string; title: string; lega
     { file: '9_SaveDataToFile.py', legacyFile: '9_SaveDataToFile .py', title: 'Создание файла и запись данных' },
     { file: '10_ReadDataFromFile.py', title: 'Чтение данных из файла' }
 ];
-export function programExamples(cspSource: string, controller: ControllerSet = 'E-RCU'): string {
+export const C_PROGRAM_EXAMPLES = [
+    { file: 'C_01_display.c', title: 'Проверка C: текст на экране' },
+    { file: 'C_02_motors.c', title: 'Два мотора на одну секунду — скорость из ячейки памяти' },
+    { file: 'C_03_line_pd.c', title: 'ПД по двум датчикам света (5 и 6) — коэффициенты из ячеек памяти' }
+];
+export function programExamples(cspSource: string, controller: ControllerSet = 'E-RCU', language: 'python' | 'c' = 'python'): string {
     const token = nonce();
+    const examples = language === 'c' ? (controller === 'E-RCU' ? C_PROGRAM_EXAMPLES : []) : PROGRAM_EXAMPLES.filter(example => !example.controller || (example.controller === 'E7' ? controller === 'E7' : controller !== 'H-RCU'));
     return `<!DOCTYPE html><html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${cspSource} 'nonce-${token}'; script-src 'nonce-${token}';">
-<style nonce="${token}">body{font-family:var(--vscode-font-family);color:var(--vscode-editor-foreground);background:var(--vscode-editor-background);padding:20px}li{margin:14px 0}button{color:var(--vscode-textLink-foreground);background:none;border:0;text-align:left;cursor:pointer;font:inherit;padding:0}</style></head><body><h1>Примеры программ</h1><p>Примеры открываются как новые несохранённые документы. При сохранении выберите папку своего проекта.</p><ol>${PROGRAM_EXAMPLES.filter(example => !example.controller || (example.controller === 'E7' ? controller === 'E7' : controller !== 'H-RCU')).map(example => `<li><button data-file="${escapeHtml(example.file)}">${escapeHtml(example.title)}</button></li>`).join('')}</ol>
+<style nonce="${token}">body{font-family:var(--vscode-font-family);color:var(--vscode-editor-foreground);background:var(--vscode-editor-background);padding:20px}li{margin:14px 0}button{color:var(--vscode-textLink-foreground);background:none;border:0;text-align:left;cursor:pointer;font:inherit;padding:0}</style></head><body><h1>Примеры программ${language === 'c' ? ' C для E6' : ''}</h1><p>Примеры открываются как новые несохранённые документы. При сохранении выберите папку своего проекта.</p><ol>${examples.map(example => `<li><button data-file="${escapeHtml(example.file)}">${escapeHtml(example.title)}</button></li>`).join('')}</ol>
 <script nonce="${token}">const vscode=acquireVsCodeApi();document.addEventListener('click',event=>{const button=event.target.closest('button[data-file]');if(button)vscode.postMessage({command:'openExample',example:button.dataset.file});});</script></body></html>`;
 }

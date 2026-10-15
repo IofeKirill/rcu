@@ -1,0 +1,4 @@
+#ifndef _SETTRACEV2I2CLINECOLOR_
+#define _SETTRACEV2I2CLINECOLOR_
+#include <JMLib.c>
+#endif

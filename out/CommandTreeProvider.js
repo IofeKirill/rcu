@@ -3,11 +3,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CommandTreeProvider = void 0;
 const vscode = require("vscode");
 const CommandTreeItem_1 = require("./CommandTreeItem");
+const CCommands_1 = require("./CCommands");
 const CommandTrees_1 = require("./CommandTrees");
 class CommandTreeProvider {
-    constructor(controller = 'E-RCU', storage) {
+    constructor(controller = 'E-RCU', storage, language = 'python') {
         this.controller = controller;
         this.storage = storage;
+        this.language = language;
         this.changes = new vscode.EventEmitter();
         this.onDidChangeTreeData = this.changes.event;
         this.roots = [];
@@ -16,15 +18,18 @@ class CommandTreeProvider {
         this.loadFavorites();
         this.rebuild();
     }
-    setController(controller) { this.controller = controller; this.loadFavorites(); this.rebuild(); this.refresh(); }
+    setController(controller) { this.controller = controller; if (controller !== 'E-RCU')
+        this.language = 'python'; this.loadFavorites(); this.rebuild(); this.refresh(); }
+    setLanguage(language) { this.language = this.controller === 'E-RCU' ? language : 'python'; this.loadFavorites(); this.rebuild(); this.refresh(); }
+    scope() { return this.controller + (this.language === 'c' ? '.c' : ''); }
     loadFavorites() {
         var _a, _b;
-        if (this.favorites.has(this.controller))
+        if (this.favorites.has(this.scope()))
             return;
         // Keep existing favorites when upgrading from the shared-list preview.
-        const saved = (_a = this.storage) === null || _a === void 0 ? void 0 : _a.get('favoriteCommands.' + this.controller, (_b = this.storage) === null || _b === void 0 ? void 0 : _b.get('favoriteCommands', []));
+        const saved = (_a = this.storage) === null || _a === void 0 ? void 0 : _a.get('favoriteCommands.' + this.scope(), (_b = this.storage) === null || _b === void 0 ? void 0 : _b.get('favoriteCommands', []));
         const available = this.commandDescriptions();
-        this.favorites.set(this.controller, Array.isArray(saved)
+        this.favorites.set(this.scope(), Array.isArray(saved)
             ? [...new Set(saved.filter((id) => typeof id === 'string' && available.has(id)))] : []);
     }
     refresh() { this.changes.fire(); }
@@ -32,7 +37,7 @@ class CommandTreeProvider {
     getChildren(element) { return element ? element.children : this.roots; }
     addFavorite(commandId) { return this.changeFavorite(commandId, true); }
     removeFavorite(commandId) { return this.changeFavorite(commandId, false); }
-    descriptions() { return this.controller === 'E7' ? CommandTrees_1.E7_TREE : this.controller === 'H-RCU' ? CommandTrees_1.HRCU_TREE : CommandTrees_1.ERCU_TREE; }
+    descriptions() { return this.controller === 'E-RCU' && this.language === 'c' ? CCommands_1.C_TREE : this.controller === 'E7' ? CommandTrees_1.E7_TREE : this.controller === 'H-RCU' ? CommandTrees_1.HRCU_TREE : CommandTrees_1.ERCU_TREE; }
     commandDescriptions() {
         const result = new Map();
         const visit = (nodes) => {
@@ -49,7 +54,7 @@ class CommandTreeProvider {
     changeFavorite(commandId, add) {
         if (!commandId || (add && !this.commandDescriptions().has(commandId)))
             return Promise.reject(new Error('Выберите конкретную команду робота.'));
-        const controller = this.controller;
+        const controller = this.scope();
         const save = this.pendingSave.then(async () => {
             const current = this.favorites.get(controller) || [];
             const next = add ? [...new Set([...current, commandId])] : current.filter(id => id !== commandId);
@@ -69,21 +74,21 @@ class CommandTreeProvider {
             var _a;
             const id = prefix + '/' + index;
             const item = new CommandTreeItem_1.CommandTreeItem(node.label, node.commandId, ((_a = node.children) === null || _a === void 0 ? void 0 : _a.length) ? vscode.TreeItemCollapsibleState.Collapsed : vscode.TreeItemCollapsibleState.None, node.children ? build(node.children, id) : [], this.controller);
-            item.id = this.controller + id;
+            item.id = this.scope() + id;
             return item;
         });
         const available = this.commandDescriptions();
-        const favorites = (this.favorites.get(this.controller) || []).flatMap(commandId => {
+        const favorites = (this.favorites.get(this.scope()) || []).flatMap(commandId => {
             const definition = available.get(commandId);
             if (!definition)
                 return [];
             const item = new CommandTreeItem_1.CommandTreeItem(definition.label, commandId, vscode.TreeItemCollapsibleState.None, [], this.controller);
-            item.id = this.controller + '/favorites/' + commandId;
+            item.id = this.scope() + '/favorites/' + commandId;
             item.contextValue = 'favoriteRobotCommand';
             return [item];
         });
-        const favoriteGroup = new CommandTreeItem_1.CommandTreeItem('Избранное', undefined, favorites.length ? vscode.TreeItemCollapsibleState.Expanded : vscode.TreeItemCollapsibleState.None, favorites, this.controller);
-        favoriteGroup.id = this.controller + '/favorites';
+        const favoriteGroup = new CommandTreeItem_1.CommandTreeItem('Избранное', undefined, favorites.length ? vscode.TreeItemCollapsibleState.Collapsed : vscode.TreeItemCollapsibleState.None, favorites, this.controller);
+        favoriteGroup.id = this.scope() + '/favorites';
         favoriteGroup.iconPath = new vscode.ThemeIcon('star-full', new vscode.ThemeColor('charts.yellow'));
         favoriteGroup.description = favorites.length ? 'Команд: ' + favorites.length : 'Пока пусто';
         this.roots = [favoriteGroup, ...build(this.descriptions())];

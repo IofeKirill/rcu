@@ -7,7 +7,11 @@ for(const file of [manifest.main,manifest.icon,'README.md','CHANGELOG.md','comma
 for(const grammar of manifest.contributes.grammars||[])check(grammar.path);
 for(const views of Object.values(manifest.contributes.viewsContainers||{}))for(const view of views)if(view.icon)check(view.icon);
 for(const library of ['rcu','motor','move','servo','sensor','ai','trace','display','actuator','rf','iot','aicam'])if(!exists('stub_libs/'+library+'.pyi')&&!exists('stub_libs/'+library+'.py'))errors.push('Отсутствуют подсказки: '+library);
-if(exists(manifest.main))for(const item of require(path.join(root,'out','ProgramExamples.js')).PROGRAM_EXAMPLES)check('examples/'+item.file);
+if(exists(manifest.main)){const examples=require(path.join(root,'out','ProgramExamples.js'));for(const item of [...examples.PROGRAM_EXAMPLES,...examples.C_PROGRAM_EXAMPLES])check('examples/'+item.file);}
 try{require('./check-runtime').checkRuntime();}catch(error){errors.push('Встроенная среда: '+error.message);}
 if(!fs.readFileSync(path.join(root,'CHANGELOG.md'),'utf8').includes('## ['+manifest.version+']'))errors.push('Версия package.json отсутствует в CHANGELOG.md.');
+async function finish(){try{await require('./check-c').checkC();}catch(error){errors.push('Комплект C: '+error.message);}
 if(errors.length){console.error(errors.join('\n'));process.exitCode=1;}else console.log('Ресурсы релиза '+manifest.version+' на месте.');
+
+}
+finish().catch(error=>{console.error(error.message);process.exitCode=1;});

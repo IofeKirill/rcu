@@ -9,6 +9,7 @@
 	// Turn off tsc task auto detection since we have the necessary tasks as npm scripts
 	"typescript.tsc.autoDetect": "off",
 	"python.analysis.extraPaths": [
+		"c:\\Users\\Public\\VSCExtensions\\iofekirill.rcu-extension-4.1.1\\stub_libs",
 		"c:\\Users\\iofe_\\.vscode\\extensions\\iofekirill.rcu-extension-4.1.1\\stub_libs",
 		"c:\\Users\\iofe_\\.vscode\\extensions\\iofekirill.rcu-extension-4.1.0\\stub_libs",
 		"c:\\Users\\iofe_\\.vscode\\extensions\\iofekirill.rcu-extension-4.0.0\\stub_libs"

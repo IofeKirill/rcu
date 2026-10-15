@@ -1,0 +1,4 @@
+#ifndef _SETMAGNETICSERVODEGREETIME_
+#define _SETMAGNETICSERVODEGREETIME_
+#include <JMLib.c>
+#endif

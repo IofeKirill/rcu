@@ -138,6 +138,23 @@ class BluetoothOperations {
             void vscode.window.showInformationMessage(`На контроллер загружен ${program.name} (${result.bytes} байт).`);
         });
     }
+    get connectedAddress() { var _a; return ((_a = this.state) === null || _a === void 0 ? void 0 : _a.address) || undefined; }
+    async uploadBinary(name, bytes, expectedAddress) {
+        var _a, _b;
+        this.requireConnection();
+        if (expectedAddress && ((_a = this.state) === null || _a === void 0 ? void 0 : _a.address) !== expectedAddress)
+            throw new Error('Bluetooth-устройство изменилось во время сборки. Загрузка отменена.');
+        if (/E7|H-RCU/i.test(((_b = this.state) === null || _b === void 0 ? void 0 : _b.name) || ''))
+            throw new Error('Программы C поддерживаются только для E6.');
+        const address = this.state.address;
+        await this.operation('Загрузка C-программы на E6…', async () => {
+            var _a;
+            if (((_a = this.state) === null || _a === void 0 ? void 0 : _a.address) !== address)
+                throw new Error('Подключение изменилось. Повторите загрузку.');
+            await this.bridge.call('uploadBinary', { name, base64: bytes.toString('base64') });
+            void vscode.window.showInformationMessage('Загружен ' + name + '. Запустите файл в меню E6.');
+        });
+    }
     async play(program) {
         this.requireConnection();
         await this.operation('Запуск программы на контроллер…', async () => {

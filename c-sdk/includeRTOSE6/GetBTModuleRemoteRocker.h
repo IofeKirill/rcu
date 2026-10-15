@@ -1,0 +1,4 @@
+#ifndef _GETBTMODULEREMOTEROCKER_
+#define _GETBTMODULEREMOTEROCKER_
+#include <JMLib.c>
+#endif

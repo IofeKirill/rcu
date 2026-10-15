@@ -1,0 +1,4 @@
+#ifndef _GETBLUETOOTHCONTROLDATA_
+#define _GETBLUETOOTHCONTROLDATA_
+#include <JMLib.c>
+#endif

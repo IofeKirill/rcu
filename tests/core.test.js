@@ -14,10 +14,11 @@ class EventEmitter { constructor(){this.event=()=>({dispose(){}});} fire(){} dis
 class TreeItem { constructor(label,state){this.label=label;this.collapsibleState=state;} }
 class MarkdownString { appendText(text){this.value=text;return this;} }
 const vscode = {
+ languages:{registerCompletionItemProvider:()=>({dispose(){}}),registerHoverProvider:()=>({dispose(){}})},
  EventEmitter, TreeItem, MarkdownString, ThemeColor:class {constructor(id){this.id=id;}}, ThemeIcon:class {constructor(id,color){this.id=id;this.color=color;}},
  TreeItemCollapsibleState:{None:0,Collapsed:1,Expanded:2}, ViewColumn:{One:1,Beside:-2},
  SnippetString:class {constructor(value){this.value=value;}},
- commands:{registerCommand(id,handler){commands.set(id,handler);return {dispose(){}};}},
+ commands:{executeCommand:async()=>{},registerCommand(id,handler){commands.set(id,handler);return {dispose(){}};}},
  window:{createOutputChannel:()=>({appendLine(){},append(){},show(){},dispose(){}}),get activeTextEditor(){return active;},showErrorMessage:m=>notices.push(m),showInformationMessage:m=>notices.push(m),showWarningMessage:m=>notices.push(m),createTreeView(){return {dispose(){}};}},
  ConfigurationTarget:{WorkspaceFolder:3},
  workspace:{onDidChangeWorkspaceFolders:()=>({dispose(){}}),getConfiguration:()=>({get:(_key,fallback)=>fallback,update:async()=>{}})}
@@ -140,7 +141,7 @@ test('Port form writes only the file captured when opened, even after switching 
  vscode.workspace.openTextDocument=async uri=>{assert.equal(uri,uriA);return docA;};
  vscode.workspace.applyEdit=async edit=>{const {uri,range,replacement}=edit.change;assert.equal(uri,uriA);textA=textA.slice(0,range.start)+replacement+textA.slice(range.end);return true;};
  active={document:docA};await commands.get('extension.configurePorts')();active={document:docB};
- const rows=ports.getPortRows(original);rows[0].names='NEW_LEFT';receiver({command:'savePorts',rows});
+ const rows=ports.getPortRows(original,4);rows[0].names='NEW_LEFT';receiver({command:'savePorts',rows});
  await new Promise(resolve=>setImmediate(resolve));assert.match(textA,/NEW_LEFT = 1/);assert.equal(textBResult,textB);
 });
 
@@ -297,15 +298,15 @@ test('USB circles transition only after mount validation; failed new selection r
  assert.equal(p.getSelectedDevice().mountpoint,a.mountpoint);assert.ok(p.getChildren()[0].iconPath.light.endsWith('connection-green.svg'));assert.ok(p.getChildren()[1].iconPath.light.endsWith('connection-red.svg'));
  assert.equal(p.getChildren().at(-1).label,'Поиск по USB');
 });
-test('USB serial rows have independent colors and commands; system panel contains only file, ports, examples',()=>{
+test('USB serial rows have independent colors and commands; E6 system panel includes language switching',()=>{
  const {SystemCommandTreeProvider}=require('../out/SystemCommandTreeProvider');
- assert.deepEqual(new SystemCommandTreeProvider().getChildren().map(row=>row.commandId),['extension.createPythonTemplate','extension.configurePorts','extension.openExamples']);
+ assert.deepEqual(new SystemCommandTreeProvider().getChildren().map(row=>row.commandId),['extension.createPythonTemplate','extension.configurePorts','extension.openExamples','extension.setCMode']);
  const p=new DeviceTreeProvider(async()=>[]);p.setSerialDevices([{address:'COM5',name:'controller',serialNumber:'123'}]);
  let row=p.getChildren()[0];assert.equal(row.command.command,'extension.connectUSBDevice');assert.ok(row.iconPath.light.endsWith('connection-red.svg'));
  p.setSerialConnecting({address:'COM5',name:'controller'});assert.ok(p.getChildren()[0].iconPath.light.endsWith('connection-yellow.svg'));
  p.setSerialState({address:'COM5',name:'controller',version:'1.2.3',running:false});p.setSerialConnecting();row=p.getChildren()[0];assert.ok(row.iconPath.light.endsWith('connection-green.svg'));assert.match(row.tooltip,/123/);
  const manifest=require('../package.json');assert.equal(manifest.contributes.views.rcuSidebar.find(view=>view.id==='connectedDevices').name,'Устройства USB');
- for(const id of ['uploadUSB','playUSB','stopUSB'])assert.ok(manifest.contributes.menus['view/title'].some(item=>item.command==='extension.'+id && item.when==='view == connectedDevices'));
+ for(const id of ['uploadUSB','playUSB','stopUSB'])assert.ok(manifest.contributes.menus['view/title'].some(item=>item.command==='extension.'+id && item.when.includes('view == connectedDevices')));
 });
 
 
@@ -436,6 +437,7 @@ test('USB and Bluetooth connection commands disconnect the other transport befor
  const {BluetoothOperations}=require('../out/BluetoothOperations');
  const previousConnect=BluetoothOperations.prototype.connect,previousDisconnect=BluetoothOperations.prototype.disconnect;
  const previousScan=BluetoothOperations.prototype.scan,previousView=vscode.window.createTreeView;
+ const previousUpload=files.uploadActiveFile;
  const treesById={},events=[];
  let failDisconnect=false,release;
  BluetoothOperations.prototype.connect=async function(device){
@@ -470,6 +472,13 @@ test('USB and Bluetooth connection commands disconnect the other transport befor
   await commands.get('extension.connectUSBDevice')({mountpoint:'/robot',serialDevices:[{address:'COM5',name:'E7-RCU'}],serialDevice:{address:'COM5',name:'E7-RCU'}});
   assert.deepEqual(events,['disconnect:Bluetooth','connect:USB']);
   assert.equal(greenCount(ble),0);assert.equal(greenCount(usb),1);
+  files.uploadActiveFile=async()=>{events.push('upload:USB');};
+  events.length=0;
+  await commands.get('extension.uploadUSB')(usb.getChildren().find(row=>row.mountpoint));
+  assert.deepEqual(events,['disconnect:Bluetooth','upload:USB']);
+  assert.equal(greenCount(usb),1);assert.ok(usb.getSelectedDevice());
+  events.length=0;await commands.get('extension.uploadFile')();
+  assert.deepEqual(events,['upload:USB']);assert.equal(greenCount(usb),1);
   events.length=0;await commands.get('extension.connectBluetooth')();
   assert.deepEqual(events,['scan:Bluetooth']);assert.equal(greenCount(usb),1);
   failDisconnect=true;events.length=0;
@@ -487,6 +496,7 @@ test('USB and Bluetooth connection commands disconnect the other transport befor
  }finally{
   BluetoothOperations.prototype.connect=previousConnect;BluetoothOperations.prototype.disconnect=previousDisconnect;
   BluetoothOperations.prototype.scan=previousScan;vscode.window.createTreeView=previousView;
+  files.uploadActiveFile=previousUpload;
   for(const disposable of context.subscriptions)disposable.dispose();
  }
 });
@@ -550,6 +560,39 @@ test('The same physical controller keeps its verified disk when Windows changes 
  assert.match(usb.getChildren()[0].description,/COM8/);assert.doesNotMatch(usb.getChildren()[0].description,/COM4/);
 });
 
+test('Switching E6 to E7 on the same drive replaces the cached owner, including after COM disappears',async()=>{
+ const usb=new DeviceTreeProvider(async()=>[{device:'disk1',isUSB:true,description:'Joinmax',mountpoints:[{path:'D:\\'}]}]);
+ await usb.detectDevices();
+ usb.setSerialDevices([{address:'COM9',name:'USB Serial',physicalId:'E6-ID',mountpoints:['D:\\'],diskDevices:['disk1']}]);
+ usb.setSerialState({address:'COM9',name:'E6-RCU',version:'2.0.3'});
+ usb.setSerialState();usb.setSerialDevices([]);
+ usb.listDrives=async()=>[{device:'disk1',isUSB:true,description:'MicroPy FS Card',mountpoints:[{path:'D:\\'}]}];
+ await usb.detectDevices();
+ usb.setSerialDevices([{address:'COM10',name:'USB Serial',physicalId:'E7-ID',mountpoints:['d:/'],diskDevices:['disk1']}]);
+ assert.equal(usb.getChildren().length,2);
+ assert.match(usb.getChildren()[0].description,/COM10/);
+ assert.doesNotMatch(usb.getChildren()[0].description,/COM9/);
+ usb.setSerialState({address:'COM10',name:'E7-RCU',version:'1.2.3'});usb.setSerialState();
+ usb.setSerialDevices([]);
+ const rows=usb.getChildren();assert.equal(rows.length,2);assert.equal(rows[0].label,'E7-RCU');
+ assert.equal(rows[0].mountpoint,'D:\\');assert.equal(rows[0].serialDevices.length,0);
+ assert.ok(rows[0].iconPath.light.endsWith('connection-red.svg'));
+ usb.setSerialDevices([{address:'COM10',name:'USB Serial',physicalId:'E7-ID',mountpoints:[],diskDevices:[]}]);
+ assert.equal(usb.getChildren().length,2);assert.equal(usb.getChildren()[0].label,'E7-RCU');
+});
+
+test('Different live USB controllers on different disks remain separate',async()=>{
+ const usb=new DeviceTreeProvider(async()=>[
+  {device:'disk1',isUSB:true,description:'Joinmax',mountpoints:[{path:'D:\\'}]},
+  {device:'disk2',isUSB:true,description:'MicroPy FS Card',mountpoints:[{path:'E:\\'}]}]);
+ await usb.detectDevices();usb.setSerialDevices([
+  {address:'COM9',name:'E6-RCU',physicalId:'E6-ID',mountpoints:['D:\\'],diskDevices:['disk1']},
+  {address:'COM10',name:'E7-RCU',physicalId:'E7-ID',mountpoints:['E:\\'],diskDevices:['disk2']}]);
+ usb.setSerialDevices([]);
+ assert.equal(usb.getChildren().length,3);
+ assert.deepEqual(usb.getChildren().slice(0,2).map(row=>row.label),['E6-RCU','E7-RCU']);
+});
+
 test('Command sections follow the release order with functions last and E7 camera in its own position',()=>{
  const expected=['Контроллер','Моторы','Датчики','Экран','Сервоприводы','ИИ-камера','Bluetooth','Звуки','Матричный экран','Исполнительные устройства','Радиосвязь','IoT','Колёсная база','Циклы, условия и функции'];
  assert.deepEqual(trees.E7_TREE.map(node=>node.label),expected);
@@ -580,7 +623,7 @@ test('Favorite addition persists, ignores duplicates and retains the normal comm
  const regular=regularCommand(provider,'motor.SetMotor');
  await Promise.all([provider.addFavorite(regular.commandId),provider.addFavorite(regular.commandId),provider.addFavorite('rcu.GetData')]);
  const favorites=provider.getChildren()[0];
- assert.equal(favorites.collapsibleState,vscode.TreeItemCollapsibleState.Expanded);
+ assert.equal(favorites.collapsibleState,vscode.TreeItemCollapsibleState.Collapsed);
  assert.deepEqual(favorites.children.map(node=>node.commandId),['motor.SetMotor','rcu.GetData']);
  assert.equal(favorites.children[0].contextValue,'favoriteRobotCommand');
  assert.deepEqual(favorites.children[0].command,regular.command);
@@ -666,4 +709,51 @@ test('Bluetooth and USB scans use the shipped Windows runtime and dependency com
   operations.forEach(operation=>operation.dispose());Object.defineProperty(process,'platform',platform);
   BluetoothBridge.prototype.call=priorCall;childProcess.spawn=priorSpawn;vscode.window.withProgress=priorProgress;vscode.ProgressLocation=priorLocation;
  }
+});
+
+test('E6 language switch changes commands and system actions; other controllers stay Python',async()=>{
+ const storage=favoriteStorage(),previousView=vscode.window.createTreeView;let provider,system;
+ vscode.window.createTreeView=(id,options)=>{if(id==='rcuCommands')provider=options.treeDataProvider;if(id==='systemCommands')system=options.treeDataProvider;return {dispose(){}};};
+ const context={extensionPath:path.join(__dirname,'..'),globalState:storage,subscriptions:[]};
+ try {
+  activate(context);await provider.addFavorite('motor.SetMotor');
+  assert.equal(system.getChildren().at(-1).label,'Переключиться на C');
+  await commands.get('extension.setCMode')();
+  assert.equal(storage.data.get('e6Language'),'c');assert.ok(regularCommand(provider,'c.SetMotor'));assert.equal(regularCommand(provider,'motor.SetMotor'),undefined);
+  assert.equal(system.getChildren()[0].label,'Создать C-файл для E6');
+  assert.equal(system.getChildren().at(-1).label,'Переключиться на Python');
+  assert.ok(!system.getChildren().some(row=>['extension.compileC','extension.showCLog'].includes(row.command.command)));
+  assert.deepEqual(provider.getChildren()[0].children,[]);await provider.addFavorite('c.SetMotor');
+  await commands.get('extension.setPythonMode')();assert.deepEqual(provider.getChildren()[0].children.map(n=>n.commandId),['motor.SetMotor']);
+  await commands.get('extension.setCMode')();assert.deepEqual(provider.getChildren()[0].children.map(n=>n.commandId),['c.SetMotor']);
+  await commands.get('extension.setE7')();assert.ok(regularCommand(provider,'aicam.GetAICam'));assert.equal(regularCommand(provider,'c.SetMotor'),undefined);
+  assert.equal(system.getChildren().length,3);
+  const count=notices.length;await commands.get('extension.setCMode')();assert.ok(notices.slice(count).some(message=>/только для E6/.test(message)));
+  await commands.get('extension.setErcu')();assert.ok(regularCommand(provider,'c.SetMotor'));
+ }finally{vscode.window.createTreeView=previousView;context.subscriptions.forEach(item=>item.dispose());}
+});
+
+test('E6 Python ports save four motors and eight sensors and reject hidden motor ports',()=>{
+ const rows=ports.getPortRows('',4);assert.equal(rows.length,12);
+ rows[3].names='RIGHT_MOTOR';rows[11].names='SENSOR_EIGHT';
+ const edit=ports.buildPortEdit('import rcu\n',rows,4);
+ assert.match(edit.replacement,/RIGHT_MOTOR = 4/);assert.match(edit.replacement,/SENSOR_EIGHT = 8/);
+ assert.deepEqual(ports.getPortRows(edit.replacement,4),rows);
+ const bad=rows.map(row=>({...row}));bad[3].port=5;
+ assert.throws(()=>ports.buildPortEdit('',bad,4),/данные портов/);
+ assert.equal(ports.getPortRows('',8).length,16);
+});
+
+test('C examples use the examples page and open C documents from a validated catalog',async()=>{
+ const html=programExamples('vscode-test','E-RCU','c');
+ assert.match(html,/data-file="C_03_line_pd.c"/);assert.doesNotMatch(html,/aicam_01_probe.py/);
+ const originalOpen=vscode.workspace.openTextDocument,originalShow=vscode.window.showTextDocument;
+ let opened;
+ vscode.workspace.openTextDocument=async options=>{opened=options;return options;};
+ vscode.window.showTextDocument=async()=>{};
+ try {
+  await files.openExampleFile('C_03_line_pd.c',path.join(__dirname,'..'),'c');
+  assert.equal(opened.language,'c');assert.match(opened.content,/void LinePD\(void\)/);
+  await assert.rejects(files.openExampleFile('../package.json',path.join(__dirname,'..'),'c'),/Неизвестный пример/);
+ }finally{vscode.workspace.openTextDocument=originalOpen;vscode.window.showTextDocument=originalShow;}
 });

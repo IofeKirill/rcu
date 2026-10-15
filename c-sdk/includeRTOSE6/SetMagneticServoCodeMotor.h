@@ -1,0 +1,4 @@
+#ifndef  _SETMAGNETICSERVOCODEMOTOR_
+#define _SETMAGNETICSERVOCODEMOTOR_
+#include <JMLib.c>
+#endif

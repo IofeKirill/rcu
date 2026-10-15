@@ -1,0 +1,4 @@
+#ifndef _GETREMOTECONTROLLERGRAVITY_
+#define _GETREMOTECONTROLLERGRAVITY_
+#include <JMLib.c>
+#endif

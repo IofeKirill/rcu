@@ -1,0 +1,4 @@
+#ifndef _SETLIGHTSENSORTHRESHOLD_
+#define _SETLIGHTSENSORTHRESHOLD_
+#include <JMLib.c>
+#endif

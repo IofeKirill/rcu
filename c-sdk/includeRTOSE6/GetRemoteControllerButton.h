@@ -1,0 +1,4 @@
+#ifndef _GETREMOTECONTROLLERBUTTON_
+#define _GETREMOTECONTROLLERBUTTON_
+#include <JMLib.c>
+#endif

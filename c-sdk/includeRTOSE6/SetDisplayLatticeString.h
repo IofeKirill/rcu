@@ -1,0 +1,4 @@
+#ifndef _SETDISPLAYLATTICESTRING_
+#define _SETDISPLAYLATTICESTRING_
+#include <JMLib.c>
+#endif

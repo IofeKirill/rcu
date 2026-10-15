@@ -56,10 +56,10 @@ export function findSettingsBlock(text: string): SettingsBlock | undefined {
     return { start, end, content: text.slice(start, end) };
 }
 
-export function getPortRows(text: string): PortRow[] {
+export function getPortRows(text: string, motorPorts: 4 | 8 = 8): PortRow[] {
     const rows: PortRow[] = [];
     for (const kind of ['Motor', 'Sensor'] as PortKind[]) {
-        for (let port = 1; port <= 8; port++) rows.push({ kind, port, names: '' });
+        for (let port = 1; port <= (kind === 'Motor' ? motorPorts : 8); port++) rows.push({ kind, port, names: '' });
     }
     const block = findSettingsBlock(text);
     if (!block) return rows;
@@ -73,12 +73,12 @@ export function getPortRows(text: string): PortRow[] {
     return rows;
 }
 
-export function validatePortRows(value: unknown): PortRow[] {
-    if (!Array.isArray(value) || value.length !== 16) throw new Error('Ожидаются настройки восьми моторов и восьми датчиков.');
+export function validatePortRows(value: unknown, motorPorts: 4 | 8 = 8): PortRow[] {
+    if (!Array.isArray(value) || value.length !== motorPorts + 8) throw new Error(`Ожидаются настройки ${motorPorts} моторов и 8 датчиков.`);
     const seenPorts = new Set<string>();
     const seenNames = new Set<string>();
     return value.map(item => {
-        if (!item || (item.kind !== 'Motor' && item.kind !== 'Sensor') || !Number.isInteger(item.port) || item.port < 1 || item.port > 8 || typeof item.names !== 'string') throw new Error('Некорректные данные портов.');
+        if (!item || (item.kind !== 'Motor' && item.kind !== 'Sensor') || !Number.isInteger(item.port) || item.port < 1 || item.port > (item.kind === 'Motor' ? motorPorts : 8) || typeof item.names !== 'string') throw new Error('Некорректные данные портов.');
         const key = item.kind + item.port;
         if (seenPorts.has(key)) throw new Error('Порт указан дважды: ' + key);
         seenPorts.add(key);
@@ -123,8 +123,8 @@ export function insertionOffset(text: string): number {
     return offset;
 }
 
-export function buildPortEdit(text: string, value: unknown): { start: number; end: number; replacement: string } {
-    const rows = validatePortRows(value);
+export function buildPortEdit(text: string, value: unknown, motorPorts: 4 | 8 = 8): { start: number; end: number; replacement: string } {
+    const rows = validatePortRows(value, motorPorts);
     const eol = text.includes('\r\n') ? '\r\n' : '\n';
     const old = findSettingsBlock(text);
     const preserved = old ? old.content.split(/\r?\n/).filter(line => line.trim() && line !== SETTINGS_START && line !== SETTINGS_END && !readAssignment(line, text)) : [];

@@ -1,0 +1,4 @@
+#ifndef _GETRFMODULEREMOTEGRAVITY_
+#define _GETRFMODULEREMOTEGRAVITY_
+#include <JMLib.c>
+#endif

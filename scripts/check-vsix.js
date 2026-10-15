@@ -8,6 +8,8 @@ function checkEntries(entries, manifest) {
     required.push('extension/runtime/win32-x64/runtime.json', 'extension/python/bluetooth_bridge.py',
         'extension/python/usb_bridge.py', 'extension/python/bluetooth_protocol.py', 'extension/python/usb_identity.py',
         'extension/python/usb_identity.ps1', 'extension/out/ConnectionRuntime.js');
+    const cManifest=JSON.parse(fs.readFileSync(path.join(root,'c-toolchain.json'),'utf8'));
+    required.push(...cManifest.files.map(file=>'extension/'+file.path),'extension/c-toolchain.json','extension/out/CCompiler.js','extension/examples/C_01_display.c','extension/examples/C_02_motors.c','extension/examples/C_03_line_pd.c');
     const missing = required.filter(file => !present.has(file));
     if (missing.length) throw Error('В VSIX отсутствуют файлы подключения:\n' + missing.join('\n'));
 }

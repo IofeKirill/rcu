@@ -48,6 +48,7 @@ export class DeviceTreeProvider implements vscode.TreeDataProvider<DeviceTreeIte
             // Preserve a verified association only for the same device and until a new association arrives.
             const hasDiskMapping = !!device.mountpoints?.length || !!device.diskDevices?.length;
             const enriched = canReuse ? { ...previous, ...device,
+                name: /^E[67]-RCU$/.test(controllerLabel(device.name)) ? controllerLabel(device.name) : previous!.name,
                 physicalId: device.physicalId || previous!.physicalId,
                 mountpoints: hasDiskMapping ? device.mountpoints : previous!.mountpoints,
                 diskDevices: hasDiskMapping ? device.diskDevices : previous!.diskDevices } : device;
@@ -57,9 +58,28 @@ export class DeviceTreeProvider implements vscode.TreeDataProvider<DeviceTreeIte
             }
             return { ...enriched, present: true };
         });
+        // Drive letters and PHYSICALDRIVE numbers are reused when another robot is plugged in.
+        // A new verified owner invalidates cached associations of the previous controller.
+        const normal = (value: string): string => value.replace(/\\/g, '/').replace(/\/+$/, '').toLowerCase();
+        for (const [address, known] of this.serialIdentity) {
+            const superseded = this.serialDevices.some(current => current.physicalId && known.physicalId &&
+                current.physicalId.toUpperCase() !== known.physicalId.toUpperCase() &&
+                (current.mountpoints?.some(m => known.mountpoints?.some(old => normal(m) === normal(old))) ||
+                 current.diskDevices?.some(d => known.diskDevices?.some(old => normal(d) === normal(old)))));
+            if (superseded) this.serialIdentity.delete(address);
+        }
         this.refresh();
     }
-    setSerialState(state?: BluetoothState): void { this.serialState = state?.address ? state : undefined; this.refresh(); }
+    setSerialState(state?: BluetoothState): void {
+        this.serialState = state?.address ? state : undefined;
+        if (state?.address && state.name) {
+            const known = this.serialIdentity.get(state.address);
+            if (known) known.name = controllerLabel(state.name);
+            const current = this.serialDevices.find(device => device.address === state.address);
+            if (current) current.name = controllerLabel(state.name);
+        }
+        this.refresh();
+    }
     setSerialConnecting(device?: BluetoothDevice): void { this.serialConnecting = device; this.refresh(); }
     getTreeItem(element: DeviceTreeItem): vscode.TreeItem { return element; }
     getChildren(element?: DeviceTreeItem): DeviceTreeItem[] {

@@ -1,0 +1,4 @@
+#ifndef _SETMAGNETICSERVOPOWERDOWN_
+#define _SETMAGNETICSERVOPOWERDOWN_
+#include <JMLib.c>
+#endif

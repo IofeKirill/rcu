@@ -1,0 +1,4 @@
+#ifndef _TRACE_LINE_TURN_ENCOUNTERLINE_
+#define _TRACE_LINE_TURN_ENCOUNTERLINE_
+#include <JMLib.c>
+#endif

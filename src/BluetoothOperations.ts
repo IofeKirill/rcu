@@ -118,6 +118,18 @@ export class BluetoothOperations implements vscode.Disposable {
             void vscode.window.showInformationMessage(`На контроллер загружен ${program.name} (${result.bytes} байт).`);
         });
     }
+    get connectedAddress(): string | undefined { return this.state?.address || undefined; }
+    async uploadBinary(name: string, bytes: Buffer, expectedAddress?: string): Promise<void> {
+        this.requireConnection();
+        if(expectedAddress && this.state?.address !== expectedAddress) throw new Error('Bluetooth-устройство изменилось во время сборки. Загрузка отменена.');
+        if (/E7|H-RCU/i.test(this.state?.name || '')) throw new Error('Программы C поддерживаются только для E6.');
+        const address=this.state!.address;
+        await this.operation('Загрузка C-программы на E6…',async()=>{
+            if (this.state?.address!==address) throw new Error('Подключение изменилось. Повторите загрузку.');
+            await this.bridge.call('uploadBinary',{name,base64:bytes.toString('base64')});
+            void vscode.window.showInformationMessage('Загружен '+name+'. Запустите файл в меню E6.');
+        });
+    }
     async play(program: ProgramSnapshot): Promise<void> {
         this.requireConnection();
         await this.operation('Запуск программы на контроллер…', async () => {

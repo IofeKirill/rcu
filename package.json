@@ -1,12 +1,12 @@
 {
   "name": "rcu-extension",
   "displayName": "ZMROBO Russian (Not official)",
-  "description": "Расширение для программирования ZMROBO на Python",
+  "description": "Расширение для программирования ZMROBO на Python и E6 на C",
   "repository": {
     "type": "git",
     "url": "https://github.com/IofeKirill/rcu.git"
   },
-  "version": "4.1.1",
+  "version": "4.2.2",
   "publisher": "IofeKirill",
   "icon": "images/rcu-icon.png",
   "engines": {
@@ -52,7 +52,12 @@
     "onCommand:extension.installUSBDependency",
     "onCommand:extension.connectUSBDevice",
     "onCommand:extension.addFavorite",
-    "onCommand:extension.removeFavorite"
+    "onCommand:extension.removeFavorite",
+    "onLanguage:c",
+    "onCommand:extension.setCMode",
+    "onCommand:extension.setPythonMode",
+    "onCommand:extension.compileC",
+    "onCommand:extension.showCLog"
   ],
   "main": "./out/extension.js",
   "keywords": [
@@ -82,19 +87,23 @@
       "rcuSidebar": [
         {
           "id": "systemCommands",
-          "name": "Системные команды"
+          "name": "Системные команды",
+          "initialSize": 4
         },
         {
           "id": "rcuCommands",
-          "name": "Команды для робота"
+          "name": "Команды для робота",
+          "initialSize": 20
         },
         {
           "id": "connectedDevices",
-          "name": "Устройства USB"
+          "name": "Устройства USB",
+          "initialSize": 1
         },
         {
           "id": "bluetoothDevices",
-          "name": "Bluetooth"
+          "name": "Bluetooth",
+          "initialSize": 1
         }
       ]
     },
@@ -240,6 +249,29 @@
         "command": "extension.removeFavorite",
         "title": "Убрать из Избранного",
         "category": "ZMROBO"
+      },
+      {
+        "command": "extension.setCMode",
+        "title": "Переключиться на C",
+        "category": "ZMROBO",
+        "enablement": "zmrobo.controller == 'E-RCU'"
+      },
+      {
+        "command": "extension.setPythonMode",
+        "title": "Переключиться на Python",
+        "category": "ZMROBO",
+        "enablement": "zmrobo.controller == 'E-RCU'"
+      },
+      {
+        "command": "extension.compileC",
+        "title": "Скомпилировать C для E6",
+        "category": "ZMROBO",
+        "enablement": "zmrobo.cMode"
+      },
+      {
+        "command": "extension.showCLog",
+        "title": "Журнал C",
+        "category": "ZMROBO"
       }
     ],
     "keybindings": [
@@ -284,12 +316,12 @@
         },
         {
           "command": "extension.playBluetooth",
-          "when": "view == bluetoothDevices",
+          "when": "(view == bluetoothDevices) && !zmrobo.cMode",
           "group": "navigation@3"
         },
         {
           "command": "extension.stopBluetooth",
-          "when": "view == bluetoothDevices",
+          "when": "(view == bluetoothDevices) && !zmrobo.cMode",
           "group": "navigation@4"
         },
         {
@@ -314,12 +346,12 @@
         },
         {
           "command": "extension.playUSB",
-          "when": "view == connectedDevices",
+          "when": "(view == connectedDevices) && !zmrobo.cMode",
           "group": "navigation@3"
         },
         {
           "command": "extension.stopUSB",
-          "when": "view == connectedDevices",
+          "when": "(view == connectedDevices) && !zmrobo.cMode",
           "group": "navigation@4"
         },
         {
@@ -351,12 +383,12 @@
         },
         {
           "command": "extension.playBluetooth",
-          "when": "view == bluetoothDevices && viewItem == bluetoothConnected",
+          "when": "(view == bluetoothDevices && viewItem == bluetoothConnected) && !zmrobo.cMode",
           "group": "navigation"
         },
         {
           "command": "extension.stopBluetooth",
-          "when": "view == bluetoothDevices && viewItem == bluetoothConnected",
+          "when": "(view == bluetoothDevices && viewItem == bluetoothConnected) && !zmrobo.cMode",
           "group": "navigation"
         },
         {
@@ -366,12 +398,12 @@
         },
         {
           "command": "extension.playUSB",
-          "when": "view == connectedDevices && viewItem == usbDebugConnected",
+          "when": "(view == connectedDevices && viewItem == usbDebugConnected) && !zmrobo.cMode",
           "group": "navigation"
         },
         {
           "command": "extension.stopUSB",
-          "when": "view == connectedDevices && viewItem == usbDebugConnected",
+          "when": "(view == connectedDevices && viewItem == usbDebugConnected) && !zmrobo.cMode",
           "group": "navigation"
         },
         {
@@ -398,6 +430,11 @@
           "type": "string",
           "default": "",
           "description": "Путь к внешнему Python для подключения Bluetooth и USB. Пусто: встроенный Python в Windows x64, python3 в других ОС."
+        },
+        "zmrobo.c.compilerPath": {
+          "type": "string",
+          "default": "",
+          "description": "Папка bin внешнего ARM GCC для C. Пусто: встроенный компилятор Windows."
         }
       }
     }
@@ -409,7 +446,8 @@
     "test:bluetooth": "node scripts/test-bluetooth.js",
     "prepare:runtime": "node scripts/prepare-runtime.js",
     "check:runtime": "node scripts/check-runtime.js",
-    "package": "node scripts/package-release.js"
+    "package": "node scripts/package-release.js",
+    "check:c": "node scripts/check-c.js"
   },
   "devDependencies": {
     "@types/node": "^14.18.0",

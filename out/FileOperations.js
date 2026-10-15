@@ -78,8 +78,9 @@ async function uploadActiveFile(devices, extensionPath) {
     vscode.window.showInformationMessage('Загружен файл ' + path.basename(document.uri.fsPath) + ' на ' + device.label + ' (' + device.mountpoint + ').');
 }
 exports.uploadActiveFile = uploadActiveFile;
-async function openExampleFile(exampleName, extensionPath) {
-    const example = ProgramExamples_1.PROGRAM_EXAMPLES.find(item => item.file === exampleName);
+async function openExampleFile(exampleName, extensionPath, language = 'python') {
+    const catalog = language === 'c' ? ProgramExamples_1.C_PROGRAM_EXAMPLES : ProgramExamples_1.PROGRAM_EXAMPLES;
+    const example = catalog.find(item => item.file === exampleName);
     if (!example)
         throw new Error('Неизвестный пример программы.');
     let file = path.join(extensionPath, 'examples', example.file);
@@ -92,7 +93,7 @@ async function openExampleFile(exampleName, extensionPath) {
         file = path.join(extensionPath, 'examples', example.legacyFile);
     }
     const content = await fs.promises.readFile(file, 'utf8');
-    await vscode.window.showTextDocument(await vscode.workspace.openTextDocument({ language: 'python', content }));
+    await vscode.window.showTextDocument(await vscode.workspace.openTextDocument({ language, content }));
 }
 exports.openExampleFile = openExampleFile;
 //# sourceMappingURL=FileOperations.js.map

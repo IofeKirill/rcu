@@ -1,0 +1,4 @@
+#ifndef _SETMAGNETICSERVOSOFTRESET_
+#define _SETMAGNETICSERVOSOFTRESET_
+#include <JMLib.c>
+#endif

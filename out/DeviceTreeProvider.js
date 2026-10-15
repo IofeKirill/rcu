@@ -49,6 +49,7 @@ class DeviceTreeProvider {
             // Preserve a verified association only for the same device and until a new association arrives.
             const hasDiskMapping = !!((_a = device.mountpoints) === null || _a === void 0 ? void 0 : _a.length) || !!((_b = device.diskDevices) === null || _b === void 0 ? void 0 : _b.length);
             const enriched = canReuse ? { ...previous, ...device,
+                name: /^E[67]-RCU$/.test((0, UsbDevices_1.controllerLabel)(device.name)) ? (0, UsbDevices_1.controllerLabel)(device.name) : previous.name,
                 physicalId: device.physicalId || previous.physicalId,
                 mountpoints: hasDiskMapping ? device.mountpoints : previous.mountpoints,
                 diskDevices: hasDiskMapping ? device.diskDevices : previous.diskDevices } : device;
@@ -59,9 +60,34 @@ class DeviceTreeProvider {
             }
             return { ...enriched, present: true };
         });
+        // Drive letters and PHYSICALDRIVE numbers are reused when another robot is plugged in.
+        // A new verified owner invalidates cached associations of the previous controller.
+        const normal = (value) => value.replace(/\\/g, '/').replace(/\/+$/, '').toLowerCase();
+        for (const [address, known] of this.serialIdentity) {
+            const superseded = this.serialDevices.some(current => {
+                var _a, _b;
+                return current.physicalId && known.physicalId &&
+                    current.physicalId.toUpperCase() !== known.physicalId.toUpperCase() &&
+                    (((_a = current.mountpoints) === null || _a === void 0 ? void 0 : _a.some(m => { var _a; return (_a = known.mountpoints) === null || _a === void 0 ? void 0 : _a.some(old => normal(m) === normal(old)); })) ||
+                        ((_b = current.diskDevices) === null || _b === void 0 ? void 0 : _b.some(d => { var _a; return (_a = known.diskDevices) === null || _a === void 0 ? void 0 : _a.some(old => normal(d) === normal(old)); })));
+            });
+            if (superseded)
+                this.serialIdentity.delete(address);
+        }
         this.refresh();
     }
-    setSerialState(state) { this.serialState = (state === null || state === void 0 ? void 0 : state.address) ? state : undefined; this.refresh(); }
+    setSerialState(state) {
+        this.serialState = (state === null || state === void 0 ? void 0 : state.address) ? state : undefined;
+        if ((state === null || state === void 0 ? void 0 : state.address) && state.name) {
+            const known = this.serialIdentity.get(state.address);
+            if (known)
+                known.name = (0, UsbDevices_1.controllerLabel)(state.name);
+            const current = this.serialDevices.find(device => device.address === state.address);
+            if (current)
+                current.name = (0, UsbDevices_1.controllerLabel)(state.name);
+        }
+        this.refresh();
+    }
     setSerialConnecting(device) { this.serialConnecting = device; this.refresh(); }
     getTreeItem(element) { return element; }
     getChildren(element) {

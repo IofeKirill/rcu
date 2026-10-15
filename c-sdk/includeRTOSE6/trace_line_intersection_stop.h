@@ -1,0 +1,4 @@
+#ifndef _TRACE_LINE_INTERSECTION_STOP_
+#define _TRACE_LINE_INTERSECTION_STOP_
+#include <JMLib.c>
+#endif

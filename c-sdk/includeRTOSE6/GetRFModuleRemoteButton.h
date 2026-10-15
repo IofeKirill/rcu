@@ -1,0 +1,4 @@
+#ifndef _GETRFMODULEREMOTEBUTTON_
+#define _GETRFMODULEREMOTEBUTTON_
+#include <JMLib.c>
+#endif

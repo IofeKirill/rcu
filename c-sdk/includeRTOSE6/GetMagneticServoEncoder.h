@@ -1,0 +1,4 @@
+#ifndef _GETMAGNETICSERVOENCODER_
+#define _GETMAGNETICSERVOENCODER_
+#include <JMLib.c>
+#endif

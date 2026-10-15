@@ -1,0 +1,4 @@
+#ifndef _GETREMOTECONTROLLERROCKER_
+#define _GETREMOTECONTROLLERROCKER_
+#include <JMLib.c>
+#endif

@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
 import { DeviceTreeProvider } from './DeviceTreeProvider';
-import { PROGRAM_EXAMPLES } from './ProgramExamples';
+import { PROGRAM_EXAMPLES, C_PROGRAM_EXAMPLES } from './ProgramExamples';
 import { ControllerSet } from './CommandTrees';
 import { LIBRARY_COMMENTS } from './PythonImports';
 
@@ -57,8 +57,9 @@ export async function uploadActiveFile(devices: DeviceTreeProvider, extensionPat
     await fs.promises.copyFile(document.uri.fsPath, destination);
     vscode.window.showInformationMessage('Загружен файл ' + path.basename(document.uri.fsPath) + ' на ' + device.label + ' (' + device.mountpoint + ').');
 }
-export async function openExampleFile(exampleName: unknown, extensionPath: string): Promise<void> {
-    const example = PROGRAM_EXAMPLES.find(item => item.file === exampleName);
+export async function openExampleFile(exampleName: unknown, extensionPath: string, language: 'python' | 'c' = 'python'): Promise<void> {
+    const catalog: ReadonlyArray<{file: string; legacyFile?: string}> = language === 'c' ? C_PROGRAM_EXAMPLES : PROGRAM_EXAMPLES;
+    const example = catalog.find(item => item.file === exampleName);
     if (!example) throw new Error('Неизвестный пример программы.');
     let file = path.join(extensionPath, 'examples', example.file);
     try { await fs.promises.access(file); }
@@ -67,5 +68,5 @@ export async function openExampleFile(exampleName: unknown, extensionPath: strin
         file = path.join(extensionPath, 'examples', example.legacyFile);
     }
     const content = await fs.promises.readFile(file, 'utf8');
-    await vscode.window.showTextDocument(await vscode.workspace.openTextDocument({ language: 'python', content }));
+    await vscode.window.showTextDocument(await vscode.workspace.openTextDocument({ language, content }));
 }

@@ -1,0 +1,4 @@
+#ifndef _SETLCDFILLEDRECTANGLE2_
+#define _SETLCDFILLEDRECTANGLE2_
+#include <JMLib.c>
+#endif

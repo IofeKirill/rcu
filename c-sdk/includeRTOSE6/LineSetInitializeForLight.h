@@ -1,0 +1,4 @@
+#ifndef _LINESETINITIALIZEFORLIGHT_
+#define _LINESETINITIALIZEFORLIGHT_
+#include <JMLib.c>
+#endif

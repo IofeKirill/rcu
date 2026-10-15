@@ -3,6 +3,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deactivate = exports.activate = void 0;
 const vscode = require("vscode");
 const path = require("path");
+const fs = require("fs");
+const CCommands_1 = require("./CCommands");
+const CDocuments_1 = require("./CDocuments");
+const CPortSettings_1 = require("./CPortSettings");
 const InsertCommand_1 = require("./InsertCommand");
 const LibraryPaths_1 = require("./LibraryPaths");
 const CommandCatalog_1 = require("./CommandCatalog");
@@ -34,8 +38,24 @@ function activate(context) {
     let currentSet = context.globalState.get('controller', 'E-RCU');
     if (!['E-RCU', 'H-RCU', 'E7'].includes(currentSet))
         currentSet = 'E-RCU';
-    const commands = new CommandTreeProvider_1.CommandTreeProvider(currentSet, context.globalState);
+    let cMode = currentSet === 'E-RCU' && context.globalState.get('e6Language', 'python') === 'c';
+    const commands = new CommandTreeProvider_1.CommandTreeProvider(currentSet, context.globalState, cMode ? 'c' : 'python');
+    const cBuild = new CDocuments_1.CBuildOperations(context.extensionPath);
+    context.subscriptions.push(cBuild);
+    (0, CDocuments_1.registerCLanguage)(context, () => cMode);
     const systemCommands = new SystemCommandTreeProvider_1.SystemCommandTreeProvider();
+    let commandView;
+    const updateMode = () => {
+        commands.setLanguage(cMode ? 'c' : 'python');
+        systemCommands.setCMode(cMode, currentSet === 'E-RCU');
+        if (commandView)
+            commandView.description = cMode ? 'E6 · C' : (currentSet === 'E-RCU' ? 'E6' : currentSet === 'E7' ? 'E7' : 'H') + ' · Python';
+        void vscode.commands.executeCommand('setContext', 'zmrobo.cMode', cMode);
+        void vscode.commands.executeCommand('setContext', 'zmrobo.controller', currentSet);
+        if (cMode)
+            void (0, CDocuments_1.configureCPaths)(context.extensionPath).catch(error => vscode.window.showWarningMessage((0, FileOperations_1.errorMessage)(error)));
+    };
+    updateMode();
     // Load native USB enumeration only on demand; a missing binary cannot hide the command tree.
     const listDrives = async () => {
         try {
@@ -57,7 +77,9 @@ function activate(context) {
     }, () => { selectedTransport = 'usb'; }, { usb: true });
     context.subscriptions.push(usbDebug);
     context.subscriptions.push(bluetooth, bluetoothTree, vscode.window.createTreeView('bluetoothDevices', { treeDataProvider: bluetoothTree }));
-    context.subscriptions.push(commands, systemCommands, devices, vscode.window.createTreeView('rcuCommands', { treeDataProvider: commands }), vscode.window.createTreeView('systemCommands', { treeDataProvider: systemCommands }), vscode.window.createTreeView('connectedDevices', { treeDataProvider: devices }));
+    commandView = vscode.window.createTreeView('rcuCommands', { treeDataProvider: commands });
+    updateMode();
+    context.subscriptions.push(commands, systemCommands, devices, commandView, vscode.window.createTreeView('systemCommands', { treeDataProvider: systemCommands }), vscode.window.createTreeView('connectedDevices', { treeDataProvider: devices }));
     let changingConnection = false;
     const switchConnection = async (transport, connect) => {
         if (changingConnection)
@@ -94,6 +116,12 @@ function activate(context) {
             continue;
         register(id, () => (0, InsertCommand_1.insertCommand)(definition.snippet));
     }
+    for (const [id, definition] of Object.entries(CCommands_1.C_COMMANDS))
+        register(id, () => {
+            if (!cMode || currentSet !== 'E-RCU')
+                throw new Error('Выберите E6 и режим C.');
+            return (0, CDocuments_1.insertCCommand)(definition.snippet);
+        });
     register('aicam.guide', () => {
         const panel = vscode.window.createWebviewPanel('aicamGuide', 'ИИ-камера — руководство', vscode.ViewColumn.One, { enableScripts: false, localResourceRoots: [] });
         panel.webview.html = (0, getProgramExamples_1.getProgramExamples)('aicam.guide', context.extensionPath);
@@ -101,10 +129,25 @@ function activate(context) {
     });
     const selectSet = async (set) => {
         currentSet = set;
+        cMode = set === 'E-RCU' && context.globalState.get('e6Language', 'python') === 'c';
         commands.setController(set);
+        updateMode();
         await context.globalState.update('controller', set);
         vscode.window.showInformationMessage('Выбран набор: ' + (set === 'E-RCU' ? 'E6' : set === 'H-RCU' ? 'H' : 'E7'));
     };
+    const selectLanguage = async (enabled) => {
+        if (currentSet !== 'E-RCU')
+            throw new Error('Режим C доступен только для E6.');
+        await context.globalState.update('e6Language', enabled ? 'c' : 'python');
+        cMode = enabled;
+        updateMode();
+        vscode.window.showInformationMessage('E6: выбран ' + (cMode ? 'C' : 'Python') + '.');
+    };
+    register('extension.setCMode', () => selectLanguage(true));
+    register('extension.setPythonMode', () => selectLanguage(false));
+    register('extension.compileC', async () => { if (!cMode)
+        throw new Error('Выберите режим C для E6.'); const result = await cBuild.compile(); vscode.window.showInformationMessage('Собран ' + result.name + ' (' + result.bytes.length + ' байт).'); });
+    register('extension.showCLog', () => cBuild.showLog());
     register('extension.setErcu', () => selectSet('E-RCU'));
     register('extension.setHrcu', () => selectSet('H-RCU'));
     register('extension.setE7', () => selectSet('E7'));
@@ -113,7 +156,7 @@ function activate(context) {
     register('rcuCommands.refresh', () => commands.refresh());
     register('rcuSidebar.refresh', () => commands.refresh()); // Compatibility with older callers.
     register('extension.refreshSystemCommands', () => systemCommands.refresh());
-    register('extension.createPythonTemplate', () => (0, FileOperations_1.createPythonTemplate)(currentSet));
+    register('extension.createPythonTemplate', () => cMode ? (0, CDocuments_1.createCTemplate)() : (0, FileOperations_1.createPythonTemplate)(currentSet));
     register('extension.detectDevices', async () => {
         const results = await Promise.all([devices.detectDevices(), usbDebug.scan()].map(task => task.then(() => undefined, error => error)));
         for (const result of results)
@@ -135,7 +178,30 @@ function activate(context) {
             throw new Error('Дождитесь завершения текущей загрузки.');
         uploading = true;
         try {
-            if (transport === 'bluetooth')
+            if (cMode) {
+                const disk = transport === 'usb' ? devices.getSelectedDevice() : undefined;
+                const address = transport === 'bluetooth' ? bluetooth.connectedAddress : undefined;
+                if (transport === 'bluetooth' && !address)
+                    throw new Error('Подключитесь к E6 по Bluetooth.');
+                if (transport === 'usb' && !disk)
+                    throw new Error('Выберите USB-накопитель E6.');
+                if (disk && /E7|H-RCU/i.test(String(disk.label)))
+                    throw new Error('Программы C поддерживаются только для E6.');
+                const result = await cBuild.compile();
+                if (!cMode || currentSet !== 'E-RCU')
+                    throw new Error('Режим изменился во время сборки. Загрузка отменена.');
+                if (transport === 'bluetooth')
+                    await bluetooth.uploadBinary(result.name, result.bytes, address);
+                else {
+                    if (devices.getSelectedDevice() !== disk)
+                        throw new Error('USB-устройство изменилось во время сборки.');
+                    if (!(await fs.promises.stat(disk.mountpoint)).isDirectory())
+                        throw new Error('USB-накопитель недоступен.');
+                    await fs.promises.writeFile(path.join(disk.mountpoint, result.name), result.bytes);
+                    vscode.window.showInformationMessage('Загружен ' + result.name + '. Запустите файл в меню E6.');
+                }
+            }
+            else if (transport === 'bluetooth')
                 await bluetooth.upload(await (0, BluetoothOperations_1.captureBluetoothProgram)(true));
             else
                 await (0, FileOperations_1.uploadActiveFile)(devices, context.extensionPath);
@@ -147,8 +213,6 @@ function activate(context) {
     register('extension.uploadFile', () => upload());
     register('extension.uploadFileToDevice', () => upload());
     register('extension.uploadUSB', (device) => switchConnection('usb', async () => {
-        if (device === null || device === void 0 ? void 0 : device.mountpoint)
-            await usbDebug.disconnect();
         if ((device === null || device === void 0 ? void 0 : device.mountpoint) && !devices.selectDevice(device))
             throw new Error('Выбранный USB-накопитель больше не доступен. Повторите поиск.');
         selectedTransport = 'usb';
@@ -179,8 +243,10 @@ function activate(context) {
             await usbDebug.connect(device);
         });
     });
-    register('extension.playUSB', async () => usbDebug.play(await (0, BluetoothOperations_1.captureBluetoothProgram)(false)));
-    register('extension.stopUSB', () => usbDebug.stop());
+    register('extension.playUSB', async () => { if (cMode)
+        throw new Error('Запустите собранный .bin в меню E6.'); return usbDebug.play(await (0, BluetoothOperations_1.captureBluetoothProgram)(false)); });
+    register('extension.stopUSB', () => { if (cMode)
+        throw new Error('Остановите C-программу кнопкой контроллера.'); return usbDebug.stop(); });
     register('extension.disconnectUSB', async () => {
         await usbDebug.disconnect();
         devices.clearSelection();
@@ -194,9 +260,11 @@ function activate(context) {
         return switchConnection('bluetooth', () => bluetooth.connect(device));
     });
     register('extension.disconnectBluetooth', () => bluetooth.disconnect());
-    register('extension.uploadBluetooth', async () => bluetooth.upload(await (0, BluetoothOperations_1.captureBluetoothProgram)(true)));
-    register('extension.playBluetooth', async () => bluetooth.play(await (0, BluetoothOperations_1.captureBluetoothProgram)(false)));
-    register('extension.stopBluetooth', () => bluetooth.stop());
+    register('extension.uploadBluetooth', async () => upload('bluetooth'));
+    register('extension.playBluetooth', async () => { if (cMode)
+        throw new Error('Запустите собранный .bin в меню E6.'); return bluetooth.play(await (0, BluetoothOperations_1.captureBluetoothProgram)(false)); });
+    register('extension.stopBluetooth', () => { if (cMode)
+        throw new Error('Остановите C-программу кнопкой контроллера.'); return bluetooth.stop(); });
     register('extension.showBluetoothLog', () => bluetooth.showLog());
     register('extension.installBluetoothDependency', () => bluetooth.installDependency());
     register('extension.testDrivelist', async () => {
@@ -211,23 +279,29 @@ function activate(context) {
         panel.onDidDispose(() => listener.dispose(), undefined, context.subscriptions);
         context.subscriptions.push(panel);
     };
-    register('extension.openExamples', () => {
+    register('extension.openExamples', async () => {
+        const language = cMode ? 'c' : 'python';
         const panel = vscode.window.createWebviewPanel('examplePage', 'Примеры программ', vscode.ViewColumn.One, { enableScripts: true, localResourceRoots: [] });
-        panel.webview.html = (0, ProgramExamples_1.programExamples)(panel.webview.cspSource, currentSet);
+        panel.webview.html = (0, ProgramExamples_1.programExamples)(panel.webview.cspSource, currentSet, language);
         watchMessages(panel, async (message) => {
             if ((message === null || message === void 0 ? void 0 : message.command) === 'openExample')
-                await (0, FileOperations_1.openExampleFile)(message.example, context.extensionPath);
+                await (0, FileOperations_1.openExampleFile)(message.example, context.extensionPath, language);
         });
     });
     register('extension.configurePorts', () => {
         var _a, _b;
         const target = (_a = vscode.window.activeTextEditor) === null || _a === void 0 ? void 0 : _a.document;
-        if (!target || target.languageId !== 'python')
-            throw new Error('Откройте Python-файл перед настройкой портов.');
+        if (!target || target.languageId !== (cMode ? 'c' : 'python'))
+            throw new Error('Откройте файл выбранного языка перед настройкой портов.');
         if (target.isUntitled)
-            throw new Error('Сначала сохраните Python-файл, затем откройте настройку портов.');
-        const initialBlock = (_b = (0, PortSettings_1.findSettingsBlock)(target.getText())) === null || _b === void 0 ? void 0 : _b.content;
-        const rows = (0, PortSettings_1.getPortRows)(target.getText());
+            throw new Error('Сначала сохраните файл, затем откройте настройку портов.');
+        const portCMode = cMode;
+        const motorPorts = currentSet === 'E-RCU' ? 4 : 8;
+        const settingsBlock = portCMode ? CPortSettings_1.cSettingsBlock : PortSettings_1.findSettingsBlock;
+        const portRows = portCMode ? CPortSettings_1.getCPortRows : (text) => (0, PortSettings_1.getPortRows)(text, motorPorts);
+        const portEdit = portCMode ? CPortSettings_1.buildCPortEdit : (text, rows) => (0, PortSettings_1.buildPortEdit)(text, rows, motorPorts);
+        const initialBlock = (_b = settingsBlock(target.getText())) === null || _b === void 0 ? void 0 : _b.content;
+        const rows = portRows(target.getText());
         const uri = target.uri;
         const panel = vscode.window.createWebviewPanel('configurePorts', 'Порты — ' + path.basename(uri.fsPath), vscode.ViewColumn.Beside, { enableScripts: true, localResourceRoots: [] });
         panel.webview.html = (0, PortConfiguration_1.getPortConfigurationHtml)(rows, path.basename(uri.fsPath), panel.webview.cspSource);
@@ -245,9 +319,9 @@ function activate(context) {
             try {
                 const document = await vscode.workspace.openTextDocument(uri);
                 const text = document.getText();
-                if (((_a = (0, PortSettings_1.findSettingsBlock)(text)) === null || _a === void 0 ? void 0 : _a.content) !== initialBlock)
+                if (((_a = settingsBlock(text)) === null || _a === void 0 ? void 0 : _a.content) !== initialBlock)
                     throw new Error('Блок портов изменился после открытия окна. Закройте окно и откройте его снова, чтобы сохранить актуальные имена.');
-                const change = (0, PortSettings_1.buildPortEdit)(text, message.rows);
+                const change = portEdit(text, message.rows);
                 const edit = new vscode.WorkspaceEdit();
                 edit.replace(uri, new vscode.Range(document.positionAt(change.start), document.positionAt(change.end)), change.replacement);
                 if (!await vscode.workspace.applyEdit(edit))
@@ -273,7 +347,7 @@ function activate(context) {
             infoPanel.onDidDispose(() => { infoPanel = undefined; }, undefined, context.subscriptions);
             context.subscriptions.push(infoPanel);
         }
-        infoPanel.webview.html = (0, getProgramExamples_1.getProgramExamples)(node.commandId, context.extensionPath, node.label, node.controller);
+        infoPanel.webview.html = node.commandId.startsWith('c.') ? (0, CDocuments_1.cCommandHelp)(node.commandId) : (0, getProgramExamples_1.getProgramExamples)(node.commandId, context.extensionPath, node.label, node.controller);
         infoPanel.reveal(vscode.ViewColumn.Beside, true);
     });
 }

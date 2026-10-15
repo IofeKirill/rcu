@@ -63,10 +63,10 @@ function findSettingsBlock(text) {
     return { start, end, content: text.slice(start, end) };
 }
 exports.findSettingsBlock = findSettingsBlock;
-function getPortRows(text) {
+function getPortRows(text, motorPorts = 8) {
     const rows = [];
     for (const kind of ['Motor', 'Sensor']) {
-        for (let port = 1; port <= 8; port++)
+        for (let port = 1; port <= (kind === 'Motor' ? motorPorts : 8); port++)
             rows.push({ kind, port, names: '' });
     }
     const block = findSettingsBlock(text);
@@ -84,13 +84,13 @@ function getPortRows(text) {
     return rows;
 }
 exports.getPortRows = getPortRows;
-function validatePortRows(value) {
-    if (!Array.isArray(value) || value.length !== 16)
-        throw new Error('Ожидаются настройки восьми моторов и восьми датчиков.');
+function validatePortRows(value, motorPorts = 8) {
+    if (!Array.isArray(value) || value.length !== motorPorts + 8)
+        throw new Error(`Ожидаются настройки ${motorPorts} моторов и 8 датчиков.`);
     const seenPorts = new Set();
     const seenNames = new Set();
     return value.map(item => {
-        if (!item || (item.kind !== 'Motor' && item.kind !== 'Sensor') || !Number.isInteger(item.port) || item.port < 1 || item.port > 8 || typeof item.names !== 'string')
+        if (!item || (item.kind !== 'Motor' && item.kind !== 'Sensor') || !Number.isInteger(item.port) || item.port < 1 || item.port > (item.kind === 'Motor' ? motorPorts : 8) || typeof item.names !== 'string')
             throw new Error('Некорректные данные портов.');
         const key = item.kind + item.port;
         if (seenPorts.has(key))
@@ -148,8 +148,8 @@ function insertionOffset(text) {
     return offset;
 }
 exports.insertionOffset = insertionOffset;
-function buildPortEdit(text, value) {
-    const rows = validatePortRows(value);
+function buildPortEdit(text, value, motorPorts = 8) {
+    const rows = validatePortRows(value, motorPorts);
     const eol = text.includes('\r\n') ? '\r\n' : '\n';
     const old = findSettingsBlock(text);
     const preserved = old ? old.content.split(/\r?\n/).filter(line => line.trim() && line !== exports.SETTINGS_START && line !== exports.SETTINGS_END && !readAssignment(line, text)) : [];

@@ -1,0 +1,4 @@
+#ifndef _SETMAGNETICSERVODEGREESPEED_
+#define _SETMAGNETICSERVODEGREESPEED_
+#include <JMLib.c>
+#endif

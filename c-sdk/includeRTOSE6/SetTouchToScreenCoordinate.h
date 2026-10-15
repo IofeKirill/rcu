@@ -1,0 +1,4 @@
+#ifndef _SETTOUCHTOSCREENCOORDINATE_
+#define _SETTOUCHTOSCREENCOORDINATE_
+#include <JMLib.c>
+#endif
