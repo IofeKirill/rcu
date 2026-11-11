@@ -1,12 +1,12 @@
 {
   "name": "rcu-extension",
   "displayName": "ZMROBO Russian (Not official)",
-  "description": "Расширение для программирования ZMROBO на Python и E6 на C",
+  "description": "Расширение для программирования ZMROBO на Python, E6 на C и запуска программ в 2D-модели",
   "repository": {
     "type": "git",
     "url": "https://github.com/IofeKirill/rcu.git"
   },
-  "version": "4.2.2",
+  "version": "4.3.0",
   "publisher": "IofeKirill",
   "icon": "images/rcu-icon.png",
   "engines": {
@@ -57,9 +57,10 @@
     "onCommand:extension.setCMode",
     "onCommand:extension.setPythonMode",
     "onCommand:extension.compileC",
-    "onCommand:extension.showCLog"
+    "onCommand:extension.showCLog",
+    "onCommand:zmrobo2d.open"
   ],
-  "main": "./out/extension.js",
+  "main": "./simulator/integrated-host.js",
   "keywords": [
     "zmrobo",
     "robots",
@@ -272,6 +273,11 @@
         "command": "extension.showCLog",
         "title": "Журнал C",
         "category": "ZMROBO"
+      },
+      {
+        "command": "zmrobo2d.open",
+        "title": "Открыть 2D-модель",
+        "icon": "$(map)"
       }
     ],
     "keybindings": [
@@ -421,33 +427,48 @@
           "when": "view == rcuCommands && viewItem == favoriteRobotCommand",
           "group": "favorites@1"
         }
-      ]
+      ],
+      "editor/title": []
     },
-    "configuration": {
-      "title": "ZMROBO",
-      "properties": {
-        "zmrobo.bluetooth.pythonPath": {
-          "type": "string",
-          "default": "",
-          "description": "Путь к внешнему Python для подключения Bluetooth и USB. Пусто: встроенный Python в Windows x64, python3 в других ОС."
-        },
-        "zmrobo.c.compilerPath": {
-          "type": "string",
-          "default": "",
-          "description": "Папка bin внешнего ARM GCC для C. Пусто: встроенный компилятор Windows."
+    "configuration": [
+      {
+        "title": "ZMROBO",
+        "properties": {
+          "zmrobo.bluetooth.pythonPath": {
+            "type": "string",
+            "default": "",
+            "description": "Путь к внешнему Python для подключения Bluetooth и USB. Пусто: встроенный Python в Windows x64, python3 в других ОС."
+          },
+          "zmrobo.c.compilerPath": {
+            "type": "string",
+            "default": "",
+            "description": "Папка bin внешнего ARM GCC для C. Пусто: встроенный компилятор Windows."
+          }
         }
+      },
+      {
+        "title": "ZMROBO 2D",
+        "properties": {
+          "zmrobo2d.pythonPath": {
+            "type": "string",
+            "default": "",
+            "description": "Путь к Python 3 для симуляции. Если пусто, сначала проверяется встроенный Python расширения ZMROBO."
+          }
+        },
+        "id": "zmrobo2d-local"
       }
-    }
+    ]
   },
   "scripts": {
-    "vscode:prepublish": "npm run compile && node scripts/prepare-runtime.js && node scripts/check-release.js",
+    "vscode:prepublish": "npm run compile && node scripts/check-simulator.js && node scripts/prepare-runtime.js && node scripts/check-release.js",
     "compile": "tsc -p ./",
     "test": "npm run compile && node --test tests/*.test.js",
     "test:bluetooth": "node scripts/test-bluetooth.js",
     "prepare:runtime": "node scripts/prepare-runtime.js",
     "check:runtime": "node scripts/check-runtime.js",
-    "package": "node scripts/package-release.js",
-    "check:c": "node scripts/check-c.js"
+    "package": "node scripts/package-with-simulator.js",
+    "check:c": "node scripts/check-c.js",
+    "check:simulator": "node scripts/check-simulator.js"
   },
   "devDependencies": {
     "@types/node": "^14.18.0",
@@ -460,5 +481,6 @@
   "homepage": "https://github.com/IofeKirill/rcu",
   "bugs": {
     "url": "https://github.com/IofeKirill/rcu/issues"
-  }
+  },
+  "zmrobo2dOriginalMain": "./out/extension.js"
 }

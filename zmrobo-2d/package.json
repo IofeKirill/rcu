@@ -1,0 +1,46 @@
+{
+  "name": "zmrobo-2d-local",
+  "displayName": "ZMROBO — 2D",
+  "publisher": "zmrobo-local",
+  "version": "0.15.0",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "main": "./extension.js",
+  "activationEvents": [
+    "onCommand:zmrobo2d.open"
+  ],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": false
+    }
+  },
+  "contributes": {
+    "commands": [
+      {
+        "command": "zmrobo2d.open",
+        "title": "Открыть 2D-модель",
+        "icon": "$(map)"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "zmrobo2d.open",
+          "when": "editorLangId == python && isWorkspaceTrusted",
+          "group": "navigation@20"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "ZMROBO 2D",
+      "properties": {
+        "zmrobo2d.pythonPath": {
+          "type": "string",
+          "default": "",
+          "description": "Путь к Python 3 для симуляции. Если пусто, сначала проверяется встроенный Python расширения ZMROBO."
+        }
+      }
+    }
+  }
+}

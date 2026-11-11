@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='utf-8'?>
+<zmrobo-scene version="1.0">
+  <field>
+    <prop kind="can" coords="399.71181556195967 215.22574447646494" />
+    <prop kind="can" coords="424.8799231508165 225.60038424591738" />
+    <prop kind="can" coords="434.87031700288185 250.19212295869357" />
+    <prop kind="can" coords="424.68780019212295 274.9759846301633" />
+    <prop kind="can" coords="400.09606147934676 285.5427473583093" />
+    <prop kind="can" coords="375.1200768491835 274.78386167146977" />
+    <prop kind="can" coords="365.12968299711815 249.80787704130643" />
+    <prop kind="can" coords="375.1200768491835 224.83189241114314" />
+    <shape type="ellipse" points="353.5 203.5 446.5 296.5" width="7" stroke="#171717" />
+    <shape type="ellipse" points="432 247 438 253" width="0.5" stroke="#edb900" />
+    <shape type="ellipse" points="421.74873734152914 271.74873734152914 427.74873734152914 277.74873734152914" width="0.5" stroke="#edb900" />
+    <shape type="ellipse" points="397 282 403 288" width="0.5" stroke="#edb900" />
+    <shape type="ellipse" points="372.25126265847086 271.74873734152914 378.25126265847086 277.74873734152914" width="0.5" stroke="#edb900" />
+    <shape type="ellipse" points="362 247 368 253" width="0.5" stroke="#edb900" />
+    <shape type="ellipse" points="372.2512626584708 222.25126265847084 378.2512626584708 228.25126265847084" width="0.5" stroke="#edb900" />
+    <shape type="ellipse" points="397 212 403 218" width="0.5" stroke="#edb900" />
+    <shape type="ellipse" points="421.74873734152914 222.25126265847084 427.74873734152914 228.25126265847084" width="0.5" stroke="#edb900" />
+    <shape type="line" points="388 238 388 262" width="0.8" stroke="#da3535" />
+    <shape type="line" points="412 238 412 262" width="0.8" stroke="#da3535" />
+  </field>
+  <robots>
+    <robot id="r1" name="Робот 1" model="E6" start="400 250 0" body="18" wheelDiameter="56" motorType="standard" motors="1 3" reverse="0 0" program="Kegli.py">
+      <sensor port="1" type="light" pose="6.891450528338169 -0.12536023054755674 0" height="1" />
+      <sensor port="2" type="sonar" pose="-3.8674351585014506 -0.6181556195965641 0" />
+      <sensor port="3" type="led" pose="0.5513928914505186 3.5 0" />
+      <memory>
+        <cell index="1" value="70" />
+      </memory>
+    </robot>
+  </robots>
+</zmrobo-scene>

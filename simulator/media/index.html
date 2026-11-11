@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="ru">
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'nonce-{{nonce}}'; style-src {{source}}; img-src {{source}} blob: data:;">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="{{css}}">
+<title>ZMROBO 2D</title>
+<body>
+<header class="top">
+  <strong>ZMROBO <span class="badge">2D</span></strong>
+  <div class="actions">
+    <label title="Скорость моделирования">Скорость <select id="rate" aria-label="Скорость моделирования"><option value="1">1×</option><option value="2">2×</option><option value="4">4×</option><option value="8">8×</option></select></label>
+  </div>
+  <span>Время</span><output id="timer" aria-label="Время симуляции">0,000 с</output><span id="source" class="source">Выбери Python-файл</span>
+</header>
+<div class="fieldbar setup">
+  <label>Шаблон <select id="preset"><option value="empty" selected>Пустое поле</option><option value="loop">Кольцевая трасса</option><option value="maze">Лабиринт 5×5</option><option value="ring">Кегельринг 1 м</option><option value="macro">Кегельринг макро 1,5 м</option><option value="snake">Слалом</option><option value="checker">Инверсная линия</option><option value="contour">Эстафета</option><option value="narrow">Узкая линия 1 см</option><option value="crossings">Линия с перекрёстками</option><option value="bigtravel">Большое путешествие</option><option value="rally">Ралли: коридор</option></select></label>
+  <button id="apply">Загрузить</button>
+  <button id="realism" aria-pressed="false" title="Погрешности моторов и датчиков">Реалистичность</button>
+
+</div>
+<img id="deviceLight" src="{{deviceLight}}" hidden alt="">
+<img id="deviceLed" src="{{deviceLed}}" hidden alt="">
+<img id="robotCar" src="{{robotCar}}" hidden alt="">
+<img id="robotE6Standard" src="{{robotE6Standard}}" hidden alt="">
+<img id="robotE6" src="{{robotE6}}" hidden alt="">
+<img id="robotM6" src="{{robotM6}}" hidden alt="">
+<img id="deviceLaser" src="{{deviceLaser}}" hidden alt="">
+<img id="deviceSonar" src="{{deviceSonar}}" hidden alt="">
+<script id="clawData" type="application/json" nonce="{{nonce}}">{{clawData}}</script>
+<script id="bigTravelData" type="application/json" nonce="{{nonce}}">{{bigTravelData}}</script>
+<img id="beamStraight" src="{{beamStraight}}" hidden alt="">
+<img id="beamAngle" src="{{beamAngle}}" hidden alt="">
+<img id="clawStraight" src="{{clawStraight}}" hidden alt="">
+<img id="clawSmall" src="{{clawSmall}}" hidden alt="">
+<img id="clawLarge" src="{{clawLarge}}" hidden alt="">
+<img id="clawNarrow" src="{{clawNarrow}}" hidden alt="">
+<main>
+  <section class="workspace" aria-label="Рабочее поле">
+    <nav id="tools" aria-label="Инструменты поля">
+      <button data-tool="pan" aria-pressed="true" title="Выделение и перетаскивание" aria-label="Выделение и перетаскивание"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2v20M2 12h20M9 5l3-3 3 3M9 19l3 3 3-3M5 9l-3 3 3 3m14-6 3 3-3 3" stroke="#7db8ee"/></svg></button>
+
+      <button class="edit-tool" data-tool="wall" title="Стена" aria-label="Стена"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2" fill="#b75a34"/><path d="M2 9h20M2 15h20M8 4v5m8 0v6m-8 0v5" stroke="#fac394"/></svg></button>
+      <button class="edit-tool" data-tool="line" title="Линия" aria-label="Линия"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 19 20 5" stroke="#95a9ce" stroke-width="3"/><circle cx="4" cy="19" r="2" fill="#f4cb6b"/><circle cx="20" cy="5" r="2" fill="#f4cb6b"/></svg></button>
+      <button class="edit-tool" data-tool="curve" title="Кривая" aria-label="Кривая"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 19C3 3 15 3 21 14" stroke="#83d2ff" stroke-width="2"/><path d="M3 19V6m18 8-7-9" stroke="#9ca6b2" stroke-dasharray="2 1"/><circle cx="3" cy="6" r="2" fill="#ffc359"/><circle cx="14" cy="5" r="2" fill="#ffc359"/></svg></button>
+      <button class="edit-tool" data-tool="paint" title="Цветная область" aria-label="Цветная область"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2" fill="#49b794"/><path d="M7 16 16 7m-4 10 6-6" stroke="#d7ffdf"/></svg></button>
+      <button class="edit-tool" data-tool="ellipse" title="Цветной эллипс" aria-label="Цветной эллипс"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><ellipse cx="12" cy="12" rx="9" ry="6" fill="#ae79d5" stroke="#e9baff"/></svg></button>
+      <button class="edit-tool" data-tool="can" title="Банка" aria-label="Банка"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="#a92532"/><circle cx="12" cy="12" r="8.5" fill="#dfe6ea" stroke="#697880"/><circle cx="12" cy="12" r="6.8" fill="#b3c2c9" stroke="#f9fcfd"/><path d="M10 16Q8 14 10 11L11 8Q12 7 13 8L14 12Q16 15 14 16Z" fill="#edf4f6" stroke="#526771"/><circle cx="12" cy="14" r="1.3" fill="#657980"/></svg></button>
+      <button class="edit-tool" data-tool="ball" title="Мячик" aria-label="Мячик"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="#a5ca2e" stroke="#627f1d"/><path d="M2.5 10C9 4 10.5 18 16 17.5C20 17 22 12 20 7.1" stroke="#f7ffd9" stroke-width="1.7"/></svg></button>
+      <button class="edit-tool" data-tool="regionRect" title="Прямоугольный регион" aria-label="Прямоугольный регион">▧</button>
+      <button class="edit-tool" data-tool="regionEllipse" title="Эллиптический регион" aria-label="Эллиптический регион">◍</button>
+      <button id="chooseImage" class="edit-tool" title="Картинка поля" aria-label="Картинка поля"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2" stroke="#8ec5f5"/><circle cx="8" cy="8" r="2" fill="#ffd16d"/><path d="m4 18 5-5 3 2 4-5 4 8z" fill="#6ec295"/></svg></button>
+      <input hidden type="file" id="image" accept="image/png,image/jpeg,image/webp">
+      <button id="undo" class="edit-tool" title="Отменить · Ctrl+Z" aria-label="Отменить правку поля"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 10h10a5 5 0 1 1 0 10h-4M8 6l-4 4 4 4" stroke="#eeb45c" stroke-width="2"/></svg></button>
+      <button id="redo" class="edit-tool" title="Вернуть · Ctrl+Y" aria-label="Вернуть действие">↷</button>
+      <div class="run-tools" aria-label="Управление программой">
+        <button id="reset" title="На старт" aria-label="На старт">↶</button>
+        <button id="stop" title="Стоп" aria-label="Стоп" disabled>■</button>
+        <button id="run" class="primary" title="Запуск" aria-label="Запуск">▶</button>
+      </div>
+    </nav>
+    <div class="field">
+      <div class="options">
+        <label><input id="grid" type="checkbox" checked> Сетка</label><span title="Сторона клетки на поле">Масштаб: 1 клетка = 10 см</span>
+        <label><input id="showRegions" type="checkbox" checked> Регионы</label>
+        <label><input id="snapGrid" type="checkbox"> Привязка к сетке</label>
+        <button id="zoomOut" aria-label="Уменьшить масштаб">−</button><button id="fit">Вписать</button><button id="zoomIn" aria-label="Увеличить масштаб">+</button>
+        <label id="radiusOption" class="setup" hidden>Радиус <input id="radius" type="number" value="5" min="1" max="800" step="any"> см</label>
+        <label id="paintOption" class="setup" hidden>Цвет <input id="paint" type="color" value="#202020"></label>
+        <label id="widthOption" class="setup" hidden>Толщина <input id="width" type="number" value="4" min="1" max="50"> см</label>
+      </div>
+      <div id="viewport"><canvas id="world" width="800" height="500" tabindex="0" aria-label="Поле симулятора"></canvas>
+      <div id="fieldMenu" role="menu" hidden><button id="load" role="menuitem">Открыть полигон XML…</button><button id="save" role="menuitem">Сохранить полигон XML…</button></div></div>
+      <div id="hint" class="hint"></div>
+      <div id="status" role="status">Готово</div>
+    </div>
+  </section>
+  <aside>
+    <div class="robot-picker"><label>Робот <select id="activeRobot"></select></label><button id="addRobot" title="Добавить робота" aria-label="Добавить робота">+</button><button id="removeRobot" title="Удалить выбранного робота" aria-label="Удалить робота">−</button></div>
+    <div class="tabs" aria-label="Панель робота">
+      <button data-tab="readings" aria-pressed="true">Показания</button>
+      <button data-tab="robot" aria-pressed="false">Робот</button>
+      <button data-tab="memory" aria-pressed="false">Память</button>
+      <button data-tab="variables" aria-pressed="false">Переменные</button>
+      <button data-tab="task" aria-pressed="false">Задание</button>
+      <button data-tab="output" aria-pressed="false">Вывод</button>
+    </div>
+    <section id="readings" class="tab">
+      <h2>Датчики и энкодеры</h2><div id="carReadings" hidden></div>
+      <table><thead><tr><th>Порт</th><th>Устройство</th><th>Значение</th></tr></thead><tbody id="telemetry"></tbody></table>
+    </section>
+    <section id="robot" class="tab" hidden>
+      <div class="config setup">
+        <label for="robotName">Имя</label><input id="robotName" maxlength="80">
+        <span id="programLabel">Программа</span><div class="config-controls"><button id="program" aria-describedby="programLabel">Выбрать файл…</button><button id="clearProgram" title="Отвязать файл" aria-label="Отвязать файл">×</button></div>
+        <label for="model">Конструкция</label><select id="model"><option>E6</option><option>M6</option><option>E7</option><option value="Car">Автомобиль (E6)</option></select>
+        <label id="bodySizeLabel" for="bodySize">Сторона корпуса</label><div class="config-controls"><input id="bodySize" type="number" min="100" max="700" step="any" value="180"> мм</div>
+        <label for="wheelDiameter">Диаметр колёс</label><div class="config-controls"><input id="wheelDiameter" type="number" min="20" max="200" step="any" value="56"> мм</div>
+        <label for="motorType">Тип моторов</label><select id="motorType"><option value="standard">Обычные</option><option value="sport">Спортивные</option></select>
+        <label for="wear">Изношенность робота</label><div class="config-controls"><input id="wear" type="range" min="0" max="100" step="1" value="0" disabled><output id="wearValue">0%</output></div>
+        <label id="leftLabel" for="left">Левое колесо</label><div class="config-controls"><select id="left" required></select><label class="reverse"><input type="checkbox" id="invertL" aria-label="Реверс левого колеса">Реверс</label></div>
+        <label id="rightLabel" for="right">Правое колесо</label><div class="config-controls"><select id="right" required></select><label class="reverse"><input type="checkbox" id="invertR" aria-label="Реверс правого колеса">Реверс</label></div>
+      </div>
+      <div id="carOptions" class="config setup" hidden><button id="differential" aria-pressed="true">Дифференциал: включён</button></div>
+      <details open><summary>Клешня и механизм</summary>
+        <div class="config setup">
+          <select id="clawKind" aria-label="Клешня или механизм"><option value="">Без клешни</option><option value="small">Малая</option><option value="large">Большая</option><option value="narrow">Узкая</option><option value="straight">Прямая</option><option value="gripper">Моторный захват</option><option value="kicker">Пиналка</option></select>
+        </div>
+        <div id="mechanismPortRow" class="config setup" hidden><label for="mechanismPort">Мотор механизма</label><select id="mechanismPort"></select></div>
+        <div id="maxOpeningRow" class="config setup" hidden><label for="maxOpening">Макс. раскрытие</label><span><input id="maxOpening" type="number" min="0" max="180" step="1" value="50" aria-label="Максимальный угол между балками захвата"> °</span></div>
+        <div id="initialAngleRow" class="config setup" hidden><label for="initialAngle">Начальный угол</label><span><input id="initialAngle" type="number" min="0" max="360" step="1" value="0" aria-label="Начальный угол пиналки; ноль — вперёд"> °</span></div>
+      </details>
+      <details open><summary>Датчики по портам</summary>
+        <table class="ports"><thead><tr><th>Порт</th><th>Устройство</th><th>Высота, см</th></tr></thead><tbody id="sensors" class="setup"></tbody></table>
+      </details>
+    </section>
+    <section id="memory" class="tab" hidden>
+      <div class="pager"><button id="prevPage" aria-label="Предыдущие ячейки">←</button><span id="page"></span><button id="nextPage" aria-label="Следующие ячейки">→</button></div>
+      <div id="memoryGrid"><div id="cells" class="setup"></div></div>
+    </section>
+    <section id="variables" class="tab" hidden>
+      <table><thead><tr><th>Имя</th><th>Значение</th></tr></thead><tbody id="variableRows"></tbody></table>
+      <p id="noVariables">Значения появятся после запуска программы.</p>
+    </section>
+    <section id="task" class="tab" hidden>
+      <h2>Результат</h2><p id="taskResult"></p><p id="taskReason"></p>
+      <pre id="taskCounters"></pre><pre id="taskMessages"></pre>
+      <details><summary>События</summary><pre id="taskEvents"></pre></details>
+      <div class="setup">
+        <h2>Регионы</h2><p>Вход засчитывается, когда в регионе находится хотя бы половина площади проекции объекта. Штриховка не видна датчикам.</p>
+        <button id="regionsShowAll">Показать все</button><button id="regionsHideAll">Скрыть все</button>
+        <div id="regionList"></div>
+        <div id="regionFields" hidden>
+          <p>ID: <code id="regionId"></code></p>
+          <label>Название <input id="regionName" maxlength="100"></label>
+          <label>Цвет <input id="regionColor" type="color" value="#bb55aa"></label>
+          <label><input id="regionVisible" type="checkbox" checked> Отображать</label>
+          <p>Перетаскивай регион и угловые точки на поле. Delete удаляет выделенный регион.</p>
+        </div>
+        <h2>Правила</h2>
+        <label>Лимит времени, с <input id="taskLimit" type="number" min="0" value="0" step="any"></label>
+        <div id="ruleList"></div>
+        <details><summary>Добавить правило</summary>
+          <div class="task-form">
+            <label>Имя <input id="ruleName" maxlength="100"></label>
+            <label>Объект <select id="ruleObject"></select></label>
+            <label>Условие <select id="ruleCondition"><option value="inside">В регионе</option><option value="outside">Вне региона</option></select></label>
+            <label>Регион <select id="ruleRegion"></select></label>
+            <label>Баллы <input id="rulePoints" type="number" value="0" step="any"></label>
+            <label>Сообщение <input id="ruleMessage" maxlength="1000"></label>
+            <label>Включить событие <select id="ruleNext"></select></label>
+            <label>Завершение <select id="ruleOutcome"><option value="">Продолжить</option><option value="success">Успех</option><option value="fail">Нарушение</option></select></label>
+            <label><input id="ruleEnabled" type="checkbox" checked> Активно при старте</label>
+            <label><input id="ruleOnce" type="checkbox" checked> Один раз (сними для повтора при новом входе)</label>
+            <button id="ruleAdd">Добавить</button>
+          </div>
+        </details>
+        <details><summary>Сложные правила · JSON</summary><p>Общий формат правил для редактора и импорта. Здесь доступны счётчики, логические условия, таймеры и действия.</p><textarea id="taskCode" rows="16" spellcheck="false" aria-label="Правила задания JSON"></textarea><button id="taskApplyCode">Применить правила</button></details>
+        <p id="taskEditStatus" role="status"></p>
+      </div>
+    </section>
+    <section id="output" class="tab" hidden>
+      <h2>Экран робота</h2><pre id="display"></pre>
+      <h2>Вывод Python</h2><pre id="log"></pre>
+    </section>
+  </aside>
+</main>
+<script nonce="{{nonce}}" src="{{taskJs}}"></script>
+<script nonce="{{nonce}}" src="{{js}}"></script>
+</body>
+</html>

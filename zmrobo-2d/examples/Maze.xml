@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='utf-8'?>
+<zmrobo-scene version="1.0">
+  <field>
+    <segment coords="310 160 460 160 3" />
+    <segment coords="460 160 460 310 3" />
+    <segment coords="460 310 310 310 3" />
+    <segment coords="310 310 310 160 3" />
+    <segment coords="310 190 340 190 3" />
+    <segment coords="370 160 370 220 3" />
+    <segment coords="340 220 370 220 3" />
+    <segment coords="370 190 400 190 3" />
+    <segment coords="400 190 400 220 3" />
+    <segment coords="430 190 460 190 3" />
+    <segment coords="430 190 430 220 3" />
+    <segment coords="310 280 340 280 3" />
+    <segment coords="340 250 340 280 3" />
+    <segment coords="370 250 370 280 3" />
+    <segment coords="370 280 400 280 3" />
+    <segment coords="400 250 400 310 3" />
+    <segment coords="400 250 430 250 3" />
+    <segment coords="430 280 460 280 3" />
+    <shape type="rectangle" points="311.5 161.5 338.5 188.5" width="0.2" stroke="#1eb840" fill="#1eb840" />
+  </field>
+  <robots>
+    <robot id="r1" name="Робот 1" model="E6" start="445 295 180" body="18" wheelDiameter="56" motorType="standard" motors="1 2" reverse="0 0">
+      <sensor port="1" type="sonar" pose="3.0094339622641524 1.0400943396226108 90" />
+      <sensor port="2" type="laser" pose="3.009433962264154 1.170990566037743 0" />
+      <sensor port="3" type="color" pose="2.734669811320771 -6.666273584905697 0" height="1" />
+      <sensor port="4" type="led" pose="7.955188679245284 -7.0849056603773315 0" />
+      <memory>
+        <cell index="1" value="100" />
+        <cell index="2" value="7" />
+        <cell index="3" value="15" />
+        <cell index="5" value="3200" />
+        <cell index="6" value="3200" />
+      </memory>
+    </robot>
+  </robots>
+</zmrobo-scene>

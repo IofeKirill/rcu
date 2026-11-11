@@ -1,0 +1,431 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root version="20190819">
+    <world>
+        <walls>
+            <wall stroke-width="10" begin="500:500" stroke="#ff000000" id="{9db2ec59-834a-49be-8d8e-dc38fb2a36bc}" stroke-style="none" fill="#ff000000" end="1000:500"/>
+            <wall stroke-width="10" begin="1000:500" stroke="#ff000000" id="{be729524-bb0f-4795-82b4-5239ec6dfe1c}" stroke-style="none" fill="#ff000000" end="1000:100"/>
+            <wall stroke-width="10" begin="500:400" stroke="#ff000000" id="{98f06363-3ec9-435a-a477-d27190c95538}" stroke-style="none" fill="#ff000000" end="500:0"/>
+            <wall stroke-width="10" begin="500:0" stroke="#ff000000" id="{5c3cb3d4-124b-4526-9f83-bb78e638c8e7}" stroke-style="none" fill="#ff000000" end="1000:0"/>
+            <wall stroke-width="10" begin="500:400" stroke="#ff000000" id="{feaf0529-606b-4e29-95a7-074be9a269b5}" stroke-style="none" fill="#ff000000" end="600:400"/>
+            <wall stroke-width="10" begin="600:300" stroke="#ff000000" id="{0e441c72-3daf-4137-aa94-f6b493a7cdb9}" stroke-style="none" fill="#ff000000" end="600:200"/>
+            <wall stroke-width="10" begin="600:200" stroke="#ff000000" id="{a264ffeb-8295-4787-88f5-904b2f7de3be}" stroke-style="none" fill="#ff000000" end="600:100"/>
+            <wall stroke-width="10" begin="600:100" stroke="#ff000000" id="{0461d9bf-ecbf-4560-af61-378acb564ec3}" stroke-style="none" fill="#ff000000" end="500:100"/>
+            <wall stroke-width="10" begin="700:0" stroke="#ff000000" id="{490f46e0-ee64-432b-9b20-da981212946e}" stroke-style="none" fill="#ff000000" end="700:100"/>
+            <wall stroke-width="10" begin="800:0" stroke="#ff000000" id="{55094fee-af7d-4d24-b268-b003aae76f57}" stroke-style="none" fill="#ff000000" end="800:100"/>
+            <wall stroke-width="10" begin="700:500" stroke="#ff000000" id="{b7a9ac3d-86a6-4555-ad7b-5c6bfd5dff69}" stroke-style="none" fill="#ff000000" end="700:400"/>
+            <wall stroke-width="10" begin="800:500" stroke="#ff000000" id="{fe11006c-d049-40e1-a619-5aeb4a7ceace}" stroke-style="none" fill="#ff000000" end="800:400"/>
+            <wall stroke-width="10" begin="1000:400" stroke="#ff000000" id="{a809e5ad-ae04-4bfd-a79c-7ab4a8ff1c8e}" stroke-style="none" fill="#ff000000" end="900:400"/>
+            <wall stroke-width="10" begin="900:400" stroke="#ff000000" id="{693f718a-f512-444a-a40e-39e4ff10254d}" stroke-style="none" fill="#ff000000" end="900:300"/>
+            <wall stroke-width="10" begin="1000:100" stroke="#ff000000" id="{0c6e9db1-b869-4208-bad3-b85c1ac9df36}" stroke-style="none" fill="#ff000000" end="900:100"/>
+            <wall stroke-width="10" begin="900:200" stroke="#ff000000" id="{88b8fa32-4f0b-4f4d-b849-04050b223302}" stroke-style="none" fill="#ff000000" end="900:300"/>
+            <wall stroke-width="10" begin="700:200" stroke="#ff000000" id="{175bde3c-9c39-4c96-acb3-5c25b49f8b96}" stroke-style="none" fill="#ff000000" end="800:200"/>
+            <wall stroke-width="10" begin="800:300" stroke="#ff000000" id="{726d37de-cd21-4904-a798-f1b0bf91954a}" stroke-style="none" fill="#ff000000" end="900:300"/>
+            <wall stroke-width="10" begin="600:200" stroke="#ff000000" id="{cb55da39-433e-483d-a57d-8785556eaabe}" stroke-style="none" fill="#ff000000" end="700:200"/>
+            <wall stroke-width="10" begin="700:300" stroke="#ff000000" id="{c1d57ce1-4666-440d-a141-5c00c75f6875}" stroke-style="none" fill="#ff000000" end="800:300"/>
+            <wall stroke-width="10" begin="215.704:312.593" stroke="#ff000000" id="{6c0530f6-e66c-4255-ae69-8c1d95bad820}" stroke-style="none" fill="#ff000000" end="238.815:301.037"/>
+            <wall stroke-width="10" begin="220.297:321.63" stroke="#ff000000" id="{193c29fb-30a5-48da-a821-98c50f6a0d51}" stroke-style="none" fill="#ff000000" end="243.408:310.074"/>
+            <wall stroke-width="10" begin="348.593:306.223" stroke="#ff000000" id="{290f71cc-e691-44fe-a17f-3b9ad9940b3f}" stroke-style="none" fill="#ff000000" end="376.593:306.223"/>
+            <wall stroke-width="10" begin="348.445:296.89" stroke="#ff000000" id="{da5bc0fd-9c80-4a42-ae43-7d6d82aa1c4f}" stroke-style="none" fill="#ff000000" end="376.444:296.89"/>
+        </walls>
+        <skittles>
+            <skittle startRotation="0" y="333.333" rotation="0" id="{skittle1}" markerX="1787.33" x="1787.33" markerY="333.333"/>
+            <skittle startRotation="0" y="345.333" rotation="0" id="{skittle2}" markerX="1664" x="1664" markerY="345.333"/>
+            <skittle startRotation="0" y="287.333" rotation="0" id="{skittle3}" markerX="1832.67" x="1832.67" markerY="287.333"/>
+            <skittle startRotation="0" y="222" rotation="0" id="{skittle4}" markerX="1676" x="1676" markerY="222"/>
+            <skittle startRotation="0" y="164.667" rotation="0" id="{skittle5}" markerX="1843.33" x="1843.33" markerY="164.667"/>
+            <skittle startRotation="0" y="174.667" rotation="0" id="{skittle6}" markerX="1786" x="1786" markerY="174.667"/>
+            <skittle startRotation="0" y="126" rotation="0" id="{skittle7}" markerX="1754" x="1754" markerY="126"/>
+            <skittle startRotation="0" y="254" rotation="0" id="{skittle8}" markerX="1628" x="1628" markerY="254"/>
+        </skittles>
+        <balls/>
+        <colorFields>
+            <rectangle stroke-width="10" begin="-13:-1" fill-style="none" stroke="#ff000000" id="{ab911c84-2d9a-40cd-bdbb-49b49e4cf768}" stroke-style="solid" fill="#ff000000" end="79:90"/>
+            <rectangle stroke-width="10" begin="-6.22222:6.2963" fill-style="solid" stroke="#ff32cd32" id="{9bacfed6-54db-4edd-8080-14bb28a3bb72}" stroke-style="solid" fill="#ff32cd32" end="72:82.0741"/>
+            <line stroke-width="10" begin="33.8519:96.5186" fill-style="none" stroke="#ff000000" id="{351285d3-4c30-4364-ac54-938065c17c38}" stroke-style="solid" fill="#ff000000" end="33.8519:117.185"/>
+            <cubicBezier stroke-width="10" begin="33.3169:117.597" cp2="38.9794:134.584" cp1="32:133.663" fill-style="none" stroke="#ff000000" id="{f28fb1c5-2ee3-4cb7-bbc6-c798989a26c2}" stroke-style="solid" fill="#ff000000" end="62.2222:135.111"/>
+            <cubicBezier stroke-width="10" begin="63.6049:135.374" cp2="109.3:216.626" cp1="108.379:138.535" fill-style="none" stroke="#ff000000" id="{bd8b7611-034d-40a0-adef-476d6f85baf0}" stroke-style="solid" fill="#ff000000" end="57.284:221.498"/>
+            <cubicBezier stroke-width="10" begin="56.3621:221.63" cp2="-7.37449:308.807" cp1="-6.05761:224" fill-style="none" stroke="#ff000000" id="{9d45ac97-09ee-48f5-a983-7a1d4c783d04}" stroke-style="solid" fill="#ff000000" end="55.3086:309.728"/>
+            <cubicBezier stroke-width="10" begin="53.8601:309.728" cp2="113.514:392.691" cp1="112.198:311.177" fill-style="none" stroke="#ff000000" id="{5182cac1-32ee-4ce7-ad44-8b1dea57e07e}" stroke-style="solid" fill="#ff000000" end="56.2963:397.037"/>
+            <cubicBezier stroke-width="10" begin="56.7572:397.037" cp2="-6.71605:498.173" cp1="-8.16461:397.037" fill-style="none" stroke="#ff000000" id="{59762305-a873-476a-9461-e87034f2d342}" stroke-style="solid" fill="#ff000000" end="57.0206:498.173"/>
+            <line stroke-width="10" begin="62.4198:499.226" fill-style="none" stroke="#ff000000" id="{3ecbcd1a-dbd5-4280-ae78-3c49b824bfc8}" stroke-style="solid" fill="#ff000000" end="165.267:498.436"/>
+            <cubicBezier stroke-width="10" begin="167.901:498.305" cp2="275.753:435.16" cp1="225.975:494.815" fill-style="none" stroke="#ff000000" id="{fa1016fe-9927-4a37-995a-2149091f07c4}" stroke-style="solid" fill="#ff000000" end="251.556:371.556"/>
+            <cubicBezier stroke-width="10" begin="151.44:109.3" cp2="160.395:30.2881" cp1="141.564:82.1728" fill-style="none" stroke="#ff000000" id="{6d6534bb-2363-4ac7-ad71-56cbe9df2b57}" stroke-style="solid" fill="#ff000000" end="206.815:29.8272"/>
+            <cubicBezier stroke-width="10" begin="280.691:29.8272" cp2="361.613:71.6379" cp1="330.14:32.5267" fill-style="none" stroke="#ff000000" id="{6aca24de-95ec-4e4a-81c6-f961af0a73fb}" stroke-style="solid" fill="#ff000000" end="361.745:116.28"/>
+            <cubicBezier stroke-width="10" begin="362.008:414.551" cp2="372.016:456.823" cp1="359.901:436.28" fill-style="none" stroke="#ff000000" id="{9f60bc5c-2747-4a9e-b0d0-09ffc957963d}" stroke-style="solid" fill="#ff000000" end="401.383:457.745"/>
+            <line stroke-width="10" begin="251.259:370.667" fill-style="none" stroke="#ff000000" id="{9af2d1ae-58e3-4853-9772-b6b6f831d51c}" stroke-style="solid" fill="#ff000000" end="153.021:113.778"/>
+            <line stroke-width="10" begin="210.634:30.2881" fill-style="none" stroke="#ff000000" id="{57c50d61-89a6-47a0-83bc-6523c913b07a}" stroke-style="solid" fill="#ff000000" end="276.741:30.2881"/>
+            <line stroke-width="10" begin="362.139:115.506" fill-style="none" stroke="#ff000000" id="{ae91247f-a004-4a46-b31b-e40f914645bf}" stroke-style="solid" fill="#ff000000" end="362.139:414.173"/>
+            <line stroke-width="10" begin="400.461:458.403" fill-style="none" stroke="#ff000000" id="{fc8578b6-eca0-4b26-bd2f-7a9c25b280a6}" stroke-style="solid" fill="#ff000000" end="488.165:458.403"/>
+            <line stroke-width="10" begin="497.778:407.835" fill-style="none" stroke="#ff000000" id="{169aa951-070c-467f-95c3-bdfeeca08727}" stroke-style="solid" fill="#ff000000" end="497.778:499.226"/>
+            <rectangle stroke-width="1" begin="399.506:402.963" fill-style="none" stroke="#ff000000" id="{f4f12ed8-cb66-4fa0-b5d4-93c124d12d12}" stroke-style="solid" fill="#ff000000" end="499.72:503.177"/>
+            <rectangle stroke-width="1" begin="995.333:0.666667" fill-style="none" stroke="#ff000000" id="{39d7578e-3715-4fe4-bce1-e7f3c0c1a6c0}" stroke-style="solid" fill="#ff000000" end="1097.33:102.667"/>
+            <line stroke-width="10" begin="1001.33:2.66667" fill-style="none" stroke="#ff000000" id="{a9b4f871-b87e-46bf-93f1-5dfefa9e3125}" stroke-style="solid" fill="#ff000000" end="1001.33:102"/>
+            <line stroke-width="10" begin="1003.11:50.2963" fill-style="none" stroke="#ff000000" id="{fb04408d-f4d5-45f2-a275-3f4224cbd5b8}" stroke-style="solid" fill="#ff000000" end="1353.78:50.2963"/>
+            <line stroke-width="10" begin="1386.96:128" fill-style="none" stroke="#ff000000" id="{af99043f-0c9b-4c57-aced-7cde65ef7614}" stroke-style="solid" fill="#ff000000" end="1116.74:348.444"/>
+            <line stroke-width="10" begin="1134.07:411.63" fill-style="none" stroke="#ff000000" id="{b3ca20f6-2a30-4dc6-9064-5cf4e5a2eb7f}" stroke-style="solid" fill="#ff000000" end="1364.07:411.63"/>
+            <line stroke-width="10" begin="1447.26:254.444" fill-style="none" stroke="#ff000000" id="{b79cd449-3b9b-4d54-a88b-59a7dc9ccef0}" stroke-style="solid" fill="#ff000000" end="1485.63:254.444"/>
+            <line stroke-width="10" begin="1397.7:297.613" fill-style="none" stroke="#ff000000" id="{eafc1eff-1f13-4b9c-bc54-a54767a056d5}" stroke-style="solid" fill="#ff000000" end="1397.7:379.852"/>
+            <line stroke-width="10" begin="1489.78:203.333" fill-style="none" stroke="#ff000000" id="{97f23cb5-b669-4902-86bb-7eda9943e55e}" stroke-style="solid" fill="#ff000000" end="1489.78:306.667"/>
+            <cubicBezier stroke-width="10" begin="1356.77:50.1728" cp2="1407.11:107.852" cp1="1404.15:49.1852" fill-style="none" stroke="#ff000000" id="{88832839-7161-4c77-a1c0-d8823eae7970}" stroke-style="solid" fill="#ff000000" end="1389.17:125.63"/>
+            <cubicBezier stroke-width="10" begin="1115.85:346.963" cp2="1111.41:414.815" cp1="1084.15:375.704" fill-style="none" stroke="#ff000000" id="{60439310-34e9-49ce-80b1-454a34ab972a}" stroke-style="solid" fill="#ff000000" end="1140.74:411.556"/>
+            <cubicBezier stroke-width="10" begin="1364.54:410.996" cp2="1398.12:392.823" cp1="1389.17:412.181" fill-style="none" stroke="#ff000000" id="{720e720d-583f-460b-8705-128a30cb5b22}" stroke-style="solid" fill="#ff000000" end="1397.2:380.313"/>
+            <cubicBezier stroke-width="10" begin="1397.07:293.267" cp2="1410.37:253.333" cp1="1398.12:274.831" fill-style="none" stroke="#ff000000" id="{3991c432-d1b7-4100-8c0d-36639acc128d}" stroke-style="solid" fill="#ff000000" end="1444.74:254.156"/>
+            <ellipse stroke-width="16" begin="1586.67:85.3333" fill-style="none" stroke="#ff000000" id="{723534c5-8edd-460e-b0dc-3aebd2ac92ce}" stroke-style="solid" fill="#ff000000" end="1919.56:424"/>
+            <ellipse stroke-width="1" begin="1708.38:162.864" fill-style="none" stroke="#ffffff00" id="{332091f0-7db7-4f1f-ab44-98d15d806ed1}" stroke-style="solid" fill="#ffffff00" end="1734.16:188.642"/>
+            <ellipse stroke-width="1" begin="1651.29:151.407" fill-style="none" stroke="#ffffff00" id="{90170b06-03eb-4e94-bd57-ec0f630c54f7}" stroke-style="solid" fill="#ffffff00" end="1677.07:177.185"/>
+            <ellipse stroke-width="1" begin="1613.94:242.123" fill-style="none" stroke="#ffffff00" id="{4a359776-f8c1-47f4-b5d3-9735294f6302}" stroke-style="solid" fill="#ffffff00" end="1639.72:267.901"/>
+            <ellipse stroke-width="1" begin="1662.34:209.531" fill-style="none" stroke="#ffffff00" id="{33b932d2-eb0d-48cd-abe3-ea873d917cb8}" stroke-style="solid" fill="#ffffff00" end="1688.12:235.309"/>
+            <ellipse stroke-width="1" begin="1662.46:275.029" fill-style="none" stroke="#ffffff00" id="{985ab962-2df2-47a0-8de9-eeba077fd8c7}" stroke-style="solid" fill="#ffffff00" end="1688.24:300.807"/>
+            <ellipse stroke-width="1" begin="1651:332.51" fill-style="none" stroke="#ffffff00" id="{ff31985f-1bdb-4d5a-a1f1-d516ae1b7f35}" stroke-style="solid" fill="#ffffff00" end="1676.78:358.288"/>
+            <ellipse stroke-width="1" begin="1708.28:321.152" fill-style="none" stroke="#ffffff00" id="{449fb695-6f72-4681-a1ea-17ac2eb364a3}" stroke-style="solid" fill="#ffffff00" end="1734.06:346.93"/>
+            <ellipse stroke-width="1" begin="1614.31:241.399" fill-style="none" stroke="#ffffff00" id="{f78351f0-c291-405d-ad56-744e1a13a4e1}" stroke-style="solid" fill="#ffffff00" end="1640.09:267.177"/>
+            <ellipse stroke-width="1" begin="1773.42:320.807" fill-style="none" stroke="#ffffff00" id="{f880c04a-a949-428d-a323-afaa9bbe4bfa}" stroke-style="solid" fill="#ffffff00" end="1799.2:346.585"/>
+            <ellipse stroke-width="1" begin="1740.83:369.992" fill-style="none" stroke="#ffffff00" id="{3d1ff387-6af4-4768-ad2a-85ecdd3cbcb8}" stroke-style="solid" fill="#ffffff00" end="1766.61:395.77"/>
+            <ellipse stroke-width="1" begin="1740.83:113.399" fill-style="none" stroke="#ffffff00" id="{c8918876-f905-418d-a978-9c1b1dff0a5d}" stroke-style="solid" fill="#ffffff00" end="1766.61:139.177"/>
+            <ellipse stroke-width="1" begin="1773.27:161.843" fill-style="none" stroke="#ffffff00" id="{cd3f7dc9-698f-4344-a1cb-ecc69c5c097e}" stroke-style="solid" fill="#ffffff00" end="1799.05:187.621"/>
+            <ellipse stroke-width="1" begin="1830.31:151.028" fill-style="none" stroke="#ffffff00" id="{e10c7885-3f15-4fc0-b58a-b37f32ead00a}" stroke-style="solid" fill="#ffffff00" end="1856.09:176.806"/>
+            <ellipse stroke-width="1" begin="1819.05:208.51" fill-style="none" stroke="#ffffff00" id="{ef1d69b7-5961-4af1-9bed-eb0f8a6e549e}" stroke-style="solid" fill="#ffffff00" end="1844.83:234.288"/>
+            <ellipse stroke-width="1" begin="1867.05:241.695" fill-style="none" stroke="#ffffff00" id="{4df95df1-b236-42ba-bd2c-f6d842cec197}" stroke-style="solid" fill="#ffffff00" end="1892.83:267.473"/>
+            <ellipse stroke-width="1" begin="1818.75:274.287" fill-style="none" stroke="#ffffff00" id="{b05ca75c-13be-49fc-90a2-073a206702a5}" stroke-style="solid" fill="#ffffff00" end="1844.53:300.065"/>
+            <ellipse stroke-width="1" begin="1773.12:321.102" fill-style="none" stroke="#ffffff00" id="{1ed2b592-8148-490e-aa81-56b9214259e1}" stroke-style="solid" fill="#ffffff00" end="1798.9:346.88"/>
+            <ellipse stroke-width="1" begin="1830.31:332.658" fill-style="none" stroke="#ffffff00" id="{31dd8462-3ac7-4ad6-b512-19819e68f983}" stroke-style="solid" fill="#ffffff00" end="1856.09:358.436"/>
+        </colorFields>
+        <images/>
+        <regions>
+            <region y="406" textY="0" visible="false" filled="true" text="Finish1" width="100" type="rectangle" textX="0" height="100" id="Finish1" x="502" color="#f1ff00"/>
+            <region y="6" textY="0" visible="false" filled="true" text="Finish2" width="100" type="rectangle" textX="0" height="100" id="Finish2" x="994" color="#f1f3f0"/>
+            <region y="201" textY="0" visible="false" filled="true" text="Finish3" width="100" type="rectangle" textX="0" height="100" id="Finish3" x="1480" color="#f1f3f0"/>
+            <region y="78" textY="0" visible="false" filled="true" text="Finish4" width="350" type="ellipse" textX="0" height="350" id="Finish4" x="1578" color="#ff1fff"/>
+            <region y="-5" textY="0" visible="false" filled="true" text="Start" width="100" type="rectangle" textX="0" height="100" id="Start" x="-19" color="#ff0000"/>
+        </regions>
+        <comments/>
+        <robot direction="90" position="7.3766:20.3333">
+            <startPosition y="45.3333" direction="90" id="{e5e07dc6-67bc-489e-a632-fbd2fb5887f9}" x="32.3766"/>
+        </robot>
+    </world>
+    <robots>
+        <robot id="ev3KitUsbRobot">
+            <sensors>
+                <sensor direction="0" port="4###input######sensor4" type="kitBase::robotModel::robotParts::RangeSensor" position="19.893:24.4609"/>
+                <sensor direction="0" port="1###input######sensor1" type="kitBase::robotModel::robotParts::LightSensor" position="53.3675:15.978"/>
+                <sensor direction="90" port="3###input######sensor3" type="kitBase::robotModel::robotParts::RangeSensor" position="20.0427:23.6364"/>
+                <sensor direction="0" port="2###input######sensor2" type="kitBase::robotModel::robotParts::LightSensor" position="52.8734:33.0985"/>
+            </sensors>
+            <wheels left="B###output###В###" right="C###output###С###"/>
+        </robot>
+    </robots>
+    <settings realisticMotors="true" realisticPhysics="true" realisticSensors="true"/>
+    <constraints>
+        <!-- Временное ограничение -->
+        <timelimit value="800000"/>
+        <init>
+            <setter name="total_score">
+                <int value="0"/>
+            </setter>
+        </init>
+        <!-- Ограничение с условием. При нарушении условия будет выдана ошибка -->
+        <constraint checkOnce="true" failMessage="Робот должен находиться на старте перед запуском!">
+            <inside objectId="robot1" regionId="Start"/>
+        </constraint>
+        <event id="Act1" settedUpInitially="true">
+            <condition>
+                <inside objectId="robot1" regionId="Finish1"/>
+            </condition>
+            <triggers>
+                <setter name="total_score">
+                    <sum>
+                        <variableValue name="total_score"/>
+                        <int value="40"/>
+                    </sum>
+                </setter>
+                <message text="Первая часть пройдена. Сумма: %total_score%">
+                    <replace var="total_score">
+                        <variableValue name="total_score"/>
+                    </replace>
+                </message>
+                <setUp id="Act2"/>
+                <drop id="Act1"/>
+            </triggers>
+        </event>
+        <event id="Act2" settedUpInitially="false">
+            <condition>
+                <inside objectId="robot1" regionId="Finish2"/>
+            </condition>
+            <triggers>
+                <setter name="total_score">
+                    <sum>
+                        <variableValue name="total_score"/>
+                        <int value="80"/>
+                    </sum>
+                </setter>
+                <message text="Вторая часть пройдена. Сумма: %total_score%">
+                    <replace var="total_score">
+                        <variableValue name="total_score"/>
+                    </replace>
+                </message>
+                <setUp id="Act3"/>
+                <drop id="Act2"/>
+            </triggers>
+        </event>
+        <event id="Act3" settedUpInitially="false">
+            <condition>
+                <inside objectId="robot1" regionId="Finish3"/>
+            </condition>
+            <triggers>
+                <setter name="total_score">
+                    <sum>
+                        <variableValue name="total_score"/>
+                        <int value="40"/>
+                    </sum>
+                </setter>
+                <message text="Третья часть пройдена. Сумма: %total_score%">
+                    <replace var="total_score">
+                        <variableValue name="total_score"/>
+                    </replace>
+                </message>
+                <setUp id="Act4_1"/>
+                <setUp id="Act4_2"/>
+                <setUp id="Act4_3"/>
+                <setUp id="Act4_4"/>
+                <setUp id="Act4_5"/>
+                <setUp id="Act4_6"/>
+                <setUp id="Act4_7"/>
+                <setUp id="Act4_8"/>
+                <setUp id="Check_jars_ending"/>
+                <drop id="Act3"/>
+            </triggers>
+        </event>
+        <event id="Act4_1" settedUpInitially="false">
+            <condition>
+                <not>
+                    <inside objectId="{skittle1}" regionId="Finish4"/>
+                </not>
+            </condition>
+            <triggers>
+                <setter name="total_score">
+                    <sum>
+                        <variableValue name="total_score"/>
+                        <int value="5"/>
+                    </sum>
+                </setter>
+                <message text="Первая банка выбита. Сумма: %total_score%">
+                    <replace var="total_score">
+                        <variableValue name="total_score"/>
+                    </replace>
+                </message>
+                <drop id="Act4_1"/>
+            </triggers>
+        </event>
+        <event id="Act4_2" settedUpInitially="false">
+            <condition>
+                <not>
+                    <inside objectId="{skittle2}" regionId="Finish4"/>
+                </not>
+            </condition>
+            <triggers>
+                <setter name="total_score">
+                    <sum>
+                        <variableValue name="total_score"/>
+                        <int value="5"/>
+                    </sum>
+                </setter>
+                <message text="Вторая банка выбита. Сумма: %total_score%">
+                    <replace var="total_score">
+                        <variableValue name="total_score"/>
+                    </replace>
+                </message>
+                <drop id="Act4_2"/>
+            </triggers>
+        </event>
+        <event id="Act4_3" settedUpInitially="false">
+            <condition>
+                <not>
+                    <inside objectId="{skittle3}" regionId="Finish4"/>
+                </not>
+            </condition>
+            <triggers>
+                <setter name="total_score">
+                    <sum>
+                        <variableValue name="total_score"/>
+                        <int value="5"/>
+                    </sum>
+                </setter>
+                <message text="Третья банка выбита. Сумма: %total_score%">
+                    <replace var="total_score">
+                        <variableValue name="total_score"/>
+                    </replace>
+                </message>
+                <drop id="Act4_3"/>
+            </triggers>
+        </event>
+        <event id="Act4_4" settedUpInitially="false">
+            <condition>
+                <not>
+                    <inside objectId="{skittle4}" regionId="Finish4"/>
+                </not>
+            </condition>
+            <triggers>
+                <setter name="total_score">
+                    <sum>
+                        <variableValue name="total_score"/>
+                        <int value="5"/>
+                    </sum>
+                </setter>
+                <message text="Четвертая банка выбита. Сумма: %total_score%">
+                    <replace var="total_score">
+                        <variableValue name="total_score"/>
+                    </replace>
+                </message>
+                <drop id="Act4_4"/>
+            </triggers>
+        </event>
+        <event id="Act4_5" settedUpInitially="false">
+            <condition>
+                <not>
+                    <inside objectId="{skittle5}" regionId="Finish4"/>
+                </not>
+            </condition>
+            <triggers>
+                <setter name="total_score">
+                    <sum>
+                        <variableValue name="total_score"/>
+                        <int value="5"/>
+                    </sum>
+                </setter>
+                <message text="Пятая банка выбита. Сумма: %total_score%">
+                    <replace var="total_score">
+                        <variableValue name="total_score"/>
+                    </replace>
+                </message>
+                <drop id="Act4_5"/>
+            </triggers>
+        </event>
+        <event id="Act4_6" settedUpInitially="false">
+            <condition>
+                <not>
+                    <inside objectId="{skittle6}" regionId="Finish4"/>
+                </not>
+            </condition>
+            <triggers>
+                <setter name="total_score">
+                    <sum>
+                        <variableValue name="total_score"/>
+                        <int value="5"/>
+                    </sum>
+                </setter>
+                <message text="Шестая банка выбита. Сумма: %total_score%">
+                    <replace var="total_score">
+                        <variableValue name="total_score"/>
+                    </replace>
+                </message>
+                <drop id="Act4_6"/>
+            </triggers>
+        </event>
+        <event id="Act4_7" settedUpInitially="false">
+            <condition>
+                <not>
+                    <inside objectId="{skittle7}" regionId="Finish4"/>
+                </not>
+            </condition>
+            <triggers>
+                <setter name="total_score">
+                    <sum>
+                        <variableValue name="total_score"/>
+                        <int value="5"/>
+                    </sum>
+                </setter>
+                <message text="Седьмая банка выбита. Сумма: %total_score%">
+                    <replace var="total_score">
+                        <variableValue name="total_score"/>
+                    </replace>
+                </message>
+                <drop id="Act4_7"/>
+            </triggers>
+        </event>
+        <event id="Act4_8" settedUpInitially="false">
+            <condition>
+                <not>
+                    <inside objectId="{skittle8}" regionId="Finish4"/>
+                </not>
+            </condition>
+            <triggers>
+                <setter name="total_score">
+                    <sum>
+                        <variableValue name="total_score"/>
+                        <int value="5"/>
+                    </sum>
+                </setter>
+                <message text="Восьмая банка выбита. Сумма: %total_score%">
+                    <replace var="total_score">
+                        <variableValue name="total_score"/>
+                    </replace>
+                </message>
+                <drop id="Act4_8"/>
+            </triggers>
+        </event>
+        <event id="Check_jars_ending" settedUpInitially="false">
+            <conditions glue="and">
+                <not>
+                    <settedUp id="Act4_1"/>
+                </not>
+                <not>
+                    <settedUp id="Act4_2"/>
+                </not>
+                <not>
+                    <settedUp id="Act4_3"/>
+                </not>
+                <not>
+                    <settedUp id="Act4_4"/>
+                </not>
+                <not>
+                    <settedUp id="Act4_5"/>
+                </not>
+                <not>
+                    <settedUp id="Act4_6"/>
+                </not>
+                <not>
+                    <settedUp id="Act4_7"/>
+                </not>
+                <not>
+                    <settedUp id="Act4_8"/>
+                </not>
+            </conditions>
+            <triggers>
+                <drop id="Check_jars_ending"/>
+                <setUp id="finish_checker"/>
+            </triggers>
+        </event>
+        <event id="finish_checker" settedUpInitially="false">
+            <conditions glue="and">
+                <not>
+                    <inside objectId="{skittle1}" regionId="Finish4"/>
+                </not>
+                <not>
+                    <inside objectId="{skittle2}" regionId="Finish4"/>
+                </not>
+                <not>
+                    <inside objectId="{skittle3}" regionId="Finish4"/>
+                </not>
+                <not>
+                    <inside objectId="{skittle4}" regionId="Finish4"/>
+                </not>
+                <not>
+                    <inside objectId="{skittle5}" regionId="Finish4"/>
+                </not>
+                <not>
+                    <inside objectId="{skittle6}" regionId="Finish4"/>
+                </not>
+                <not>
+                    <inside objectId="{skittle7}" regionId="Finish4"/>
+                </not>
+                <not>
+                    <inside objectId="{skittle8}" regionId="Finish4"/>
+                </not>
+            </conditions>
+            <triggers>
+                <message text="Задание полностью выполнено!"/>
+                <success/>
+            </triggers>
+        </event>
+    </constraints>
+</root>
