@@ -14,7 +14,7 @@ from task_rules import Judge
 
 def run(request, send, world=None, remote_advance=None):
     world = world if world is not None else World(request['scene'])
-    judge=None if remote_advance else Judge(request['scene'],{request['scene'].get('id','robot1'):world})
+    judge=None if remote_advance else Judge(dict(request['scene'],task=None) if request.get('training') else request['scene'],{request['scene'].get('id','robot1'):world})
     class TaskEnded(Exception):pass
     rate = number(request.get('rate',1),1,8)
     next_frame = 0.0
@@ -53,7 +53,7 @@ def run(request, send, world=None, remote_advance=None):
 
     def get_timer():
         advance(.003)
-        return round(max(0,world.system_time()-timer_origin),9)
+        return round(max(0,world.system_time()-timer_origin)*1000,6)
 
     def get_bluetooth():
         # Yield model time so a busy polling loop lets the other program run.
@@ -115,21 +115,117 @@ def run(request, send, world=None, remote_advance=None):
         sys.modules[name] = mod
         return mod
 
+    def device_read(op,*args):
+        advance(.003)
+        return world.device(op,*args)
+
+    def tone(freq,seconds):
+        number(freq,0,30000);seconds=number(seconds,0,3600)
+        world.device('sound','tone',seconds if freq else 0)
+        advance(seconds)
+
+    def sound_mp3(folder,file,seconds):
+        port(folder,99);port(file,255);seconds=number(seconds,0,3600)
+        world.device('sound','mp3',seconds);advance(seconds)
+
+    def sound_preset(kind):
+        durations={1:.2,2:1.2,3:.5}
+        if kind not in durations:raise ValueError('Тип сигнала: 1, 2 или 3.')
+        world.device('sound','preset',durations[kind]);advance(durations[kind])
+
+    trace_port=None;trace_color='black'
+    def trace_init(p,color,chassis):
+        nonlocal trace_port,trace_color
+        if world.sensors.get(p,('',))[0]!='line':raise ValueError('На этом порту нужен модуль линии.')
+        if color not in ('black','white') or chassis not in ('wheeledchassis','mecanumchassis'):raise ValueError('Проверь цвет линии и тип базы.')
+        trace_port=p;trace_color=color
+
+    def line_begin(speed):
+        if trace_port is None:raise ValueError('Сначала вызови trace.LineSetInitialize().')
+        world.device('line_auto',trace_port,number(speed,-100,100),trace_color)
+
+    def line_end():
+        world.device('line_off');world.motor(world.left,0);world.motor(world.right,0)
+
+    def line_states():
+        values=[device_read('line_state',trace_port,i) for i in range(1,8)]
+        return values if trace_color=='black' else [1-v for v in values]
+
+    def line_milliseconds(speed,milliseconds):
+        duration=number(milliseconds,0,3_600_000)/1000
+        line_begin(speed)
+        try:advance(duration)
+        finally:line_end()
+
+    def line_encoder(speed,angle):
+        angle=abs(number(angle,-1e8,1e8))
+        if angle and not speed:raise ValueError('Скорость должна быть ненулевой.')
+        line_begin(speed);start_code=world.encoders[world.left]
+        try:
+            while abs(world.encoders[world.left]-start_code)<angle:advance(TICK)
+        finally:line_end()
+
+    def line_intersection(speed,kind):
+        if kind not in (1,7,17):raise ValueError('Тип перекрёстка: 1, 7 или 17.')
+        line_begin(speed)
+        try:
+            while True:
+                states=line_states();left=bool(states[0] or states[1]);right=bool(states[5] or states[6])
+                if (right if kind==1 else left if kind==7 else left and right):break
+                advance(TICK)
+        finally:line_end()
+
+    def line_turn(left,right,index):
+        if trace_port is None:raise ValueError('Сначала вызови trace.LineSetInitialize().')
+        port(index,7)
+        world.motor(world.left,number(left,-100,100)*world.left_mount_sign*(-1 if world.reversed[0] else 1))
+        world.motor(world.right,number(right,-100,100)*(-1 if world.reversed[1] else 1))
+        try:
+            while device_read('line_state',trace_port,index)!=(1 if trace_color=='black' else 0):advance(TICK)
+        finally:line_end()
+
+    def line_calibrate(p,seconds):
+        duration=number(seconds,0,3600);end=world.system_time()+duration;lo,hi=100.,0.
+        while world.system_time()<end:
+            for i in range(1,8):
+                # One simultaneous sampling frame, not seven sequential polling delays.
+                value=world.device('line_read',p,i);lo=min(lo,value);hi=max(hi,value)
+            advance(min(.01,max(0,end-world.system_time())))
+        world.device('line_threshold',p,(lo+hi)/2 if hi-lo>1 else 50)
+
     motors = module('motor',SetMotor=world.motor,SetMotorStop=lambda p: world.motor(p,0),
         SetMotorCode=reset_encoder,GetMotorCode=encoder,SetMotorConstSpeed=world.motor,
         SetMotorSecond=set_second,SetMotorAngle=set_angle,SetMotorAngleDelay=lambda p,s,a: set_angle(p,s,a,True))
     sensors = module('sensor',GetLightSensor=lambda p: read(p,'light'),
         GetLightSensorData=lambda p: int(read(p,'light') < world.light_threshold(p)),
         Set3CLed=world.set_lamp,SetLightSensorLed=world.set_light_led,GetColorSensor=lambda p,mode: read(p,'color',mode),
-        GetLaserDist=lambda p,mode=1: read(p,'laser',mode),GetUltrasound=lambda p: read(p,'sonar'))
+        GetLaserDist=lambda p,mode=1: read(p,'laser',mode),GetUltrasound=lambda p: read(p,'sonar'),
+        GetTouch=lambda p: read(p,'touch'),GetShortIRDist=lambda p: read(p,'ir'),
+        SetAHRS=lambda p,mode: world.device('gyro_reset',p,mode),GetAHRS=lambda p,mode,axis=0: device_read('gyro',p,mode,axis),
+        SetSmartEyeMode=lambda p,mode,color: world.device('eye_mode',p,mode,color),
+        SetSmartEyeAllLed=lambda p,*colors: world.device('eye_colors',p,list(colors)),
+        SetSmartEyeIRcode=lambda p,code: world.device('eye_send',p,code),
+        GetSmartEyeIRcode=lambda p: device_read('eye_receive',p),GetSmartEyeDist=lambda p: device_read('eye_distance',p))
+    module('trace',GetTraceV2I2C=lambda p,index:device_read('line_read',p,index),
+        GetTraceV2I2CState=lambda p,index:device_read('line_state',p,index),
+        GetTraceV2I2CChxState=lambda p,mode:device_read('line_group',p,mode),
+        SetTraceV2I2AllColor=lambda p,color:world.device('line_colors',p,[color]*7),
+        SetTraceV2I2Color=lambda p,*colors:world.device('line_colors',p,list(colors)),
+        SetTraceV2I2Threshold=line_calibrate,LineSetInitialize=trace_init,LineBasis=line_begin,
+        LineMillisecond=line_milliseconds,LineForBmp=line_encoder,LineIntersectionStop=line_intersection,LineTurnEncounterline=line_turn)
     controller = module('rcu',GetBluetoothData=get_bluetooth,SetBluetoothData=set_bluetooth,SetSysTime=reset_timer,GetSysTime=get_timer,GetData=lambda i: world.cells.get(port(i,128),0),SetData=set_data,
         SetWaitForTime=lambda s: advance(number(s,0,3600)),SetRcuStop=stop_all,
         SetDisplayString=display,SetDisplayVar=display,SetDisplayVarU32=display,
-        SetInBeep=lambda state: None)
+        SetInBeep=lambda state:world.device('sound','beep',None if state else 0),
+        SetInSound=tone,SoundStartBeep=sound_preset,SoundMp3=sound_mp3,
+        SetMp3Play=lambda folder,file:world.device('sound','mp3',None),
+        SetMp3Suspend=lambda:world.device('sound','mp3',0),SetMp3Sound=lambda volume:world.device('volume',volume))
     for mod in (motors,sensors):
         for key,value in vars(mod).items():
             if not key.startswith('_'):
                 setattr(controller,key,value)
+
+    sys.modules.pop('gyro_lib',None)
 
     class Log(io.TextIOBase):
         budget = 16000

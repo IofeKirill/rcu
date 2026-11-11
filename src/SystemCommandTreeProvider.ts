@@ -8,7 +8,9 @@ export class SystemCommandTreeProvider implements vscode.TreeDataProvider<System
     private readonly commands = [
         new SystemCommandTreeItem('Создать файл для проекта', 'extension.createPythonTemplate'),
         new SystemCommandTreeItem('Настроить порты', 'extension.configurePorts'),
-        new SystemCommandTreeItem('Примеры программ', 'extension.openExamples')
+        new SystemCommandTreeItem('Примеры программ', 'extension.openExamples'),
+        new SystemCommandTreeItem('Создать программу из блоков', 'zmroboBlocks.new'),
+        new SystemCommandTreeItem('Открыть программу из блоков', 'zmroboBlocks.open')
     ];
     getTreeItem(element: SystemCommandTreeItem): vscode.TreeItem { return element; }
     setCMode(enabled:boolean, e6 = true):void { this.cMode=enabled;this.e6=e6;this.refresh(); }

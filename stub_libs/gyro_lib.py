@@ -58,9 +58,9 @@ class Gyro:
 # Пример использования:
 # ------------------------------------------------------------
 # import rcu
-# import gyro
+# import gyro_lib
 #
-# g = gyro.Gyro(4)         # гироскоп на порту 4
+# g = gyro_lib.Gyro(4)         # гироскоп на порту 4
 # g.CalibrateGyro()        # калибровка
 #
 # while True:

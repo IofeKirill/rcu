@@ -6,7 +6,7 @@
     "type": "git",
     "url": "https://github.com/IofeKirill/rcu.git"
   },
-  "version": "4.3.0",
+  "version": "4.5.0",
   "publisher": "IofeKirill",
   "icon": "images/rcu-icon.png",
   "engines": {
@@ -58,7 +58,10 @@
     "onCommand:extension.setPythonMode",
     "onCommand:extension.compileC",
     "onCommand:extension.showCLog",
-    "onCommand:zmrobo2d.open"
+    "onCommand:zmrobo2d.open",
+    "onCustomEditor:zmrobo.blocks",
+    "onCommand:zmroboBlocks.new",
+    "onCommand:zmroboBlocks.open"
   ],
   "main": "./simulator/integrated-host.js",
   "keywords": [
@@ -278,6 +281,18 @@
         "command": "zmrobo2d.open",
         "title": "Открыть 2D-модель",
         "icon": "$(map)"
+      },
+      {
+        "command": "zmroboBlocks.new",
+        "title": "ZMROBO: создать программу из блоков"
+      },
+      {
+        "command": "zmroboBlocks.open",
+        "title": "ZMROBO: открыть программу из блоков"
+      },
+      {
+        "command": "zmroboBlocks.upload",
+        "title": "ZMROBO Блоки: загрузить на робота"
       }
     ],
     "keybindings": [
@@ -285,6 +300,11 @@
         "command": "extension.uploadFileToDevice",
         "key": "F6",
         "when": "editorTextFocus"
+      },
+      {
+        "command": "zmroboBlocks.upload",
+        "key": "f6",
+        "when": "activeCustomEditorId == zmrobo.blocks"
       }
     ],
     "menus": {
@@ -457,10 +477,22 @@
         },
         "id": "zmrobo2d-local"
       }
+    ],
+    "customEditors": [
+      {
+        "viewType": "zmrobo.blocks",
+        "displayName": "ZMROBO Блоки",
+        "selector": [
+          {
+            "filenamePattern": "*.zmblocks"
+          }
+        ],
+        "priority": "default"
+      }
     ]
   },
   "scripts": {
-    "vscode:prepublish": "npm run compile && node scripts/check-simulator.js && node scripts/prepare-runtime.js && node scripts/check-release.js",
+    "vscode:prepublish": "npm run compile && node scripts/check-simulator.js && node scripts/check-blocks.js && node scripts/prepare-runtime.js && node scripts/check-release.js",
     "compile": "tsc -p ./",
     "test": "npm run compile && node --test tests/*.test.js",
     "test:bluetooth": "node scripts/test-bluetooth.js",
@@ -468,12 +500,16 @@
     "check:runtime": "node scripts/check-runtime.js",
     "package": "node scripts/package-with-simulator.js",
     "check:c": "node scripts/check-c.js",
-    "check:simulator": "node scripts/check-simulator.js"
+    "check:simulator": "node scripts/check-simulator.js",
+    "test:blocks": "node --test scratch/tests/*.test.js",
+    "check:blocks": "node scripts/check-blocks.js"
   },
   "devDependencies": {
     "@types/node": "^14.18.0",
     "@types/vscode": "1.60.0",
-    "typescript": "~4.9.5"
+    "typescript": "~4.9.5",
+    "blockly": "13.4.0",
+    "jsdom": "30.1.3"
   },
   "dependencies": {
     "drivelist": "^12.0.2"

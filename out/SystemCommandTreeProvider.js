@@ -12,7 +12,9 @@ class SystemCommandTreeProvider {
         this.commands = [
             new SystemCommandTreeItem_1.SystemCommandTreeItem('Создать файл для проекта', 'extension.createPythonTemplate'),
             new SystemCommandTreeItem_1.SystemCommandTreeItem('Настроить порты', 'extension.configurePorts'),
-            new SystemCommandTreeItem_1.SystemCommandTreeItem('Примеры программ', 'extension.openExamples')
+            new SystemCommandTreeItem_1.SystemCommandTreeItem('Примеры программ', 'extension.openExamples'),
+            new SystemCommandTreeItem_1.SystemCommandTreeItem('Создать программу из блоков', 'zmroboBlocks.new'),
+            new SystemCommandTreeItem_1.SystemCommandTreeItem('Открыть программу из блоков', 'zmroboBlocks.open')
         ];
     }
     getTreeItem(element) { return element; }

@@ -89,4 +89,4 @@ if(require.main===module) {
         console.log(args.length?'VSIX проверен: версия, точки запуска и все файлы симулятора совпадают с проектом.':'2D-модель: все '+required.length+' файлов и точка запуска на месте.');
     } catch(error){console.error(error.message);process.exitCode=1;}
 }
-module.exports={checkSource,checkVsix,fail};
+module.exports={checkSource,checkVsix,fail,zipReader};

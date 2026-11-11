@@ -1,0 +1,9696 @@
+{
+  "groups": [
+    {
+      "id": "rcu",
+      "name": "E6RCU",
+      "color": "#855CD6",
+      "icon": "controller"
+    },
+    {
+      "id": "motor",
+      "name": "Мотор",
+      "color": "#4C97FF",
+      "icon": "wheel"
+    },
+    {
+      "id": "drive",
+      "name": "Два мотора",
+      "color": "#FF408E",
+      "icon": "wheel"
+    },
+    {
+      "id": "screen",
+      "name": "Экран",
+      "color": "#9966FF",
+      "icon": "eye"
+    },
+    {
+      "id": "sound",
+      "name": "Звуки",
+      "color": "#CF63CF",
+      "icon": "play"
+    },
+    {
+      "id": "sensors",
+      "name": "Датчики",
+      "color": "#0BB5DF",
+      "icon": "sensor"
+    },
+    {
+      "id": "wireless",
+      "name": "Беспроводная связь",
+      "color": "#0BB5DF",
+      "icon": "wifi"
+    },
+    {
+      "id": "control",
+      "name": "Управление",
+      "color": "#FFAB19",
+      "icon": "control"
+    },
+    {
+      "id": "operators",
+      "name": "Операторы",
+      "color": "#59C059",
+      "icon": "operators"
+    },
+    {
+      "id": "variables",
+      "name": "Переменные",
+      "color": "#FF8C1A",
+      "icon": "data"
+    },
+    {
+      "id": "procedures",
+      "name": "Мои блоки",
+      "color": "#FF6680",
+      "icon": "blocks"
+    },
+    {
+      "id": "extra",
+      "name": "Дополнительные датчики",
+      "color": "#0BB5DF",
+      "icon": "sensor"
+    },
+    {
+      "id": "line",
+      "name": "Модуль линии",
+      "color": "#0BB5DF",
+      "icon": "line"
+    },
+    {
+      "id": "radio",
+      "name": "Расширенная беспроводная связь",
+      "color": "#0BB5DF",
+      "icon": "radio"
+    },
+    {
+      "id": "devices",
+      "name": "Дополнительные устройства",
+      "color": "#4C97FF",
+      "icon": "bolt"
+    },
+    {
+      "id": "ai",
+      "name": "ИИ",
+      "color": "#FF6268",
+      "icon": "ai"
+    },
+    {
+      "id": "servo",
+      "name": "Сервопривод",
+      "color": "#4C97FF",
+      "icon": "gear"
+    },
+    {
+      "id": "cameraE7",
+      "name": "Камера E7",
+      "color": "#FF6066",
+      "icon": "ai"
+    }
+  ],
+  "blocks": [
+    {
+      "id": "rc_motor_seconds",
+      "group": "motor",
+      "text": "Мотор {M} вращается со скоростью {S} в течение {T} секунд",
+      "args": [
+        {
+          "name": "M",
+          "kind": "dropdown",
+          "options": [
+            [
+              "M1",
+              1
+            ],
+            [
+              "M2",
+              2
+            ],
+            [
+              "M3",
+              3
+            ],
+            [
+              "M4",
+              4
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "S",
+          "kind": "number",
+          "value": 50
+        },
+        {
+          "name": "T",
+          "kind": "number",
+          "value": 1
+        }
+      ],
+      "call": "motor.SetMotorSecond",
+      "order": [
+        "M",
+        "S",
+        "T"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_motor_angle_wait",
+      "group": "motor",
+      "text": "Мотор {M} поворачивается на {A} градусов со скоростью {S}",
+      "args": [
+        {
+          "name": "M",
+          "kind": "dropdown",
+          "options": [
+            [
+              "M1",
+              1
+            ],
+            [
+              "M2",
+              2
+            ],
+            [
+              "M3",
+              3
+            ],
+            [
+              "M4",
+              4
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "A",
+          "kind": "number",
+          "value": 180
+        },
+        {
+          "name": "S",
+          "kind": "number",
+          "value": 50
+        }
+      ],
+      "call": "motor.SetMotorAngleDelay",
+      "order": [
+        "M",
+        "S",
+        "A"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_motor_run",
+      "group": "motor",
+      "text": "Мотор {M} вращается со скоростью {S}",
+      "args": [
+        {
+          "name": "M",
+          "kind": "dropdown",
+          "options": [
+            [
+              "M1",
+              1
+            ],
+            [
+              "M2",
+              2
+            ],
+            [
+              "M3",
+              3
+            ],
+            [
+              "M4",
+              4
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "S",
+          "kind": "number",
+          "value": 50
+        }
+      ],
+      "call": "motor.SetMotor",
+      "order": [
+        "M",
+        "S"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_motor_stop",
+      "group": "motor",
+      "text": "Остановить мотор {M}",
+      "args": [
+        {
+          "name": "M",
+          "kind": "dropdown",
+          "options": [
+            [
+              "M1",
+              1
+            ],
+            [
+              "M2",
+              2
+            ],
+            [
+              "M3",
+              3
+            ],
+            [
+              "M4",
+              4
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "motor.SetMotorStop",
+      "order": [
+        "M"
+      ],
+      "output": null
+    },
+    {
+      "separator": true,
+      "group": "motor",
+      "label": ""
+    },
+    {
+      "id": "rc_motor_constant",
+      "group": "motor",
+      "text": "Мотор {M} вращается с постоянной скоростью {S}",
+      "args": [
+        {
+          "name": "M",
+          "kind": "dropdown",
+          "options": [
+            [
+              "M1",
+              1
+            ],
+            [
+              "M2",
+              2
+            ],
+            [
+              "M3",
+              3
+            ],
+            [
+              "M4",
+              4
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "S",
+          "kind": "number",
+          "value": 50
+        }
+      ],
+      "call": "motor.SetMotorConstSpeed",
+      "order": [
+        "M",
+        "S"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_motor_angle",
+      "group": "motor",
+      "text": "Установить мотор {M} на поворот на {A} градусов со скоростью {S}",
+      "args": [
+        {
+          "name": "M",
+          "kind": "dropdown",
+          "options": [
+            [
+              "M1",
+              1
+            ],
+            [
+              "M2",
+              2
+            ],
+            [
+              "M3",
+              3
+            ],
+            [
+              "M4",
+              4
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "A",
+          "kind": "number",
+          "value": 180
+        },
+        {
+          "name": "S",
+          "kind": "number",
+          "value": 50
+        }
+      ],
+      "call": "motor.SetMotorAngle",
+      "order": [
+        "M",
+        "S",
+        "A"
+      ],
+      "output": null
+    },
+    {
+      "separator": true,
+      "group": "motor",
+      "label": ""
+    },
+    {
+      "id": "rc_motor_direction",
+      "group": "motor",
+      "text": "Установить направление вращения мотора {M} : {D}",
+      "args": [
+        {
+          "name": "M",
+          "kind": "dropdown",
+          "options": [
+            [
+              "M1",
+              1
+            ],
+            [
+              "M2",
+              2
+            ],
+            [
+              "M3",
+              3
+            ],
+            [
+              "M4",
+              4
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "D",
+          "kind": "dropdown",
+          "options": [
+            [
+              "по часовой стрелке",
+              0
+            ],
+            [
+              "против часовой стрелки",
+              1
+            ]
+          ],
+          "value": 0
+        }
+      ],
+      "call": "motor.SetMotorDirection",
+      "order": [
+        "M",
+        "D"
+      ],
+      "output": null
+    },
+    {
+      "separator": true,
+      "group": "motor",
+      "label": ""
+    },
+    {
+      "id": "rc_motor_reset",
+      "group": "motor",
+      "text": "Сбросить значение энкодера мотора {M}",
+      "args": [
+        {
+          "name": "M",
+          "kind": "dropdown",
+          "options": [
+            [
+              "M1",
+              1
+            ],
+            [
+              "M2",
+              2
+            ],
+            [
+              "M3",
+              3
+            ],
+            [
+              "M4",
+              4
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "motor.SetMotorCode",
+      "order": [
+        "M"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_motor_encoder",
+      "group": "motor",
+      "text": "Значение энкодера мотора {M}",
+      "args": [
+        {
+          "name": "M",
+          "kind": "dropdown",
+          "options": [
+            [
+              "M1",
+              1
+            ],
+            [
+              "M2",
+              2
+            ],
+            [
+              "M3",
+              3
+            ],
+            [
+              "M4",
+              4
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "motor.GetMotorCode",
+      "order": [
+        "M"
+      ],
+      "output": "number"
+    },
+    {
+      "id": "rc_drive_seconds",
+      "group": "drive",
+      "text": "Двигаться {D} со скоростью {S} в течение {T} секунд",
+      "args": [
+        {
+          "name": "D",
+          "kind": "dropdown",
+          "options": [
+            [
+              "вперёд",
+              "forward"
+            ],
+            [
+              "назад",
+              "backward"
+            ],
+            [
+              "влево",
+              "turnleft"
+            ],
+            [
+              "вправо",
+              "turnright"
+            ]
+          ],
+          "value": "forward"
+        },
+        {
+          "name": "S",
+          "kind": "number",
+          "value": 50
+        },
+        {
+          "name": "T",
+          "kind": "number",
+          "value": 1
+        }
+      ],
+      "call": "move.SetMoveRunSecond",
+      "order": [
+        "D",
+        "S",
+        "T"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_drive_angle",
+      "group": "drive",
+      "text": "Двигаться {D} на {A} градусов со скоростью {S}",
+      "args": [
+        {
+          "name": "D",
+          "kind": "dropdown",
+          "options": [
+            [
+              "вперёд",
+              "forward"
+            ],
+            [
+              "назад",
+              "backward"
+            ],
+            [
+              "влево",
+              "turnleft"
+            ],
+            [
+              "вправо",
+              "turnright"
+            ]
+          ],
+          "value": "forward"
+        },
+        {
+          "name": "A",
+          "kind": "number",
+          "value": 180
+        },
+        {
+          "name": "S",
+          "kind": "number",
+          "value": 50
+        }
+      ],
+      "call": "move.SetMoveRunAngle",
+      "order": [
+        "D",
+        "S",
+        "A"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_drive_run",
+      "group": "drive",
+      "text": "Двигаться {D} со скоростью {S}",
+      "args": [
+        {
+          "name": "D",
+          "kind": "dropdown",
+          "options": [
+            [
+              "вперёд",
+              "forward"
+            ],
+            [
+              "назад",
+              "backward"
+            ],
+            [
+              "влево",
+              "turnleft"
+            ],
+            [
+              "вправо",
+              "turnright"
+            ]
+          ],
+          "value": "forward"
+        },
+        {
+          "name": "S",
+          "kind": "number",
+          "value": 50
+        }
+      ],
+      "call": "move.SetMoveRun",
+      "order": [
+        "D",
+        "S"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_drive_stop",
+      "group": "drive",
+      "text": "Остановить движение",
+      "args": [],
+      "call": "move.SetMoveStop",
+      "order": [],
+      "output": null
+    },
+    {
+      "separator": true,
+      "group": "drive",
+      "label": ""
+    },
+    {
+      "id": "rc_drive_speeds_seconds",
+      "group": "drive",
+      "text": "Двигаться со скоростью левого мотора {L} и правого мотора {R} в течение {T} секунд",
+      "args": [
+        {
+          "name": "L",
+          "kind": "number",
+          "value": 50
+        },
+        {
+          "name": "R",
+          "kind": "number",
+          "value": 50
+        },
+        {
+          "name": "T",
+          "kind": "number",
+          "value": 1
+        }
+      ],
+      "call": "move.SetMoveSpeedSecond",
+      "order": [
+        "L",
+        "R",
+        "T"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_drive_speeds",
+      "group": "drive",
+      "text": "Двигаться со скоростью левого мотора {L} и правого мотора {R}",
+      "args": [
+        {
+          "name": "L",
+          "kind": "number",
+          "value": 50
+        },
+        {
+          "name": "R",
+          "kind": "number",
+          "value": 50
+        }
+      ],
+      "call": "move.SetMoveSpeed",
+      "order": [
+        "L",
+        "R"
+      ],
+      "output": null
+    },
+    {
+      "separator": true,
+      "group": "drive",
+      "label": ""
+    },
+    {
+      "id": "rc_drive_power",
+      "group": "drive",
+      "text": "Запустить с мощностью левого мотора {L} % и правого мотора {R} %",
+      "args": [
+        {
+          "name": "L",
+          "kind": "number",
+          "value": 50
+        },
+        {
+          "name": "R",
+          "kind": "number",
+          "value": 50
+        }
+      ],
+      "call": "move.SetMovePower",
+      "order": [
+        "L",
+        "R"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_drive_max_power",
+      "group": "drive",
+      "text": "Установить максимальную мощность: M1 {M1} %, M2 {M2} %, M3 {M3} %, M4 {M4} %",
+      "args": [
+        {
+          "name": "M1",
+          "kind": "number",
+          "value": 100
+        },
+        {
+          "name": "M2",
+          "kind": "number",
+          "value": 100
+        },
+        {
+          "name": "M3",
+          "kind": "number",
+          "value": 100
+        },
+        {
+          "name": "M4",
+          "kind": "number",
+          "value": 100
+        }
+      ],
+      "call": "move.SetMotorPower",
+      "order": [
+        "M1",
+        "M2",
+        "M3",
+        "M4"
+      ],
+      "output": null
+    },
+    {
+      "separator": true,
+      "group": "drive",
+      "label": ""
+    },
+    {
+      "id": "rc_drive_init",
+      "group": "drive",
+      "text": "Назначить левый мотор {L} и правый мотор {R}, направление вращения — {D}",
+      "args": [
+        {
+          "name": "L",
+          "kind": "dropdown",
+          "options": [
+            [
+              "M1",
+              1
+            ],
+            [
+              "M2",
+              2
+            ],
+            [
+              "M3",
+              3
+            ],
+            [
+              "M4",
+              4
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "R",
+          "kind": "dropdown",
+          "options": [
+            [
+              "M1",
+              1
+            ],
+            [
+              "M2",
+              2
+            ],
+            [
+              "M3",
+              3
+            ],
+            [
+              "M4",
+              4
+            ]
+          ],
+          "value": 2
+        },
+        {
+          "name": "D",
+          "kind": "dropdown",
+          "options": [
+            [
+              "оба мотора по часовой стрелке",
+              "no_reversal"
+            ],
+            [
+              "левый в обратную сторону",
+              "left_reversal"
+            ],
+            [
+              "правый в обратную сторону",
+              "right_reversal"
+            ],
+            [
+              "оба в обратную сторону",
+              "all_reversal"
+            ]
+          ],
+          "value": "no_reversal"
+        }
+      ],
+      "call": "move.SetMoveInitialize",
+      "order": [
+        "L",
+        "R",
+        "D"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_drive_encoder_pulses",
+      "group": "drive",
+      "text": "Установить количество импульсов энкодера за оборот приводного мотора: {PULSES}",
+      "args": [
+        {
+          "name": "PULSES",
+          "kind": "dropdown",
+          "options": [
+            [
+              "Стандартный мотор (360)",
+              360
+            ],
+            [
+              "Спортивный мотор (180)",
+              180
+            ]
+          ],
+          "value": 360
+        }
+      ],
+      "call": null,
+      "order": [
+        "PULSES"
+      ],
+      "output": null,
+      "special": "encoderPulses",
+      "requiresOriginalCode": "Нужен Python, который RoboCode создаёт для настройки импульсов энкодера: в переданных библиотеках сигнатура этой настройки отсутствует."
+    },
+    {
+      "id": "rc_start",
+      "group": "rcu",
+      "text": "E6RCU {TASK}",
+      "args": [
+        {
+          "name": "TASK",
+          "kind": "dropdown",
+          "options": [
+            [
+              "задача 1",
+              1
+            ],
+            [
+              "задача 2",
+              2
+            ],
+            [
+              "задача 3",
+              3
+            ],
+            [
+              "задача 4",
+              4
+            ],
+            [
+              "задача 5",
+              5
+            ],
+            [
+              "задача 6",
+              6
+            ],
+            [
+              "задача 7",
+              7
+            ],
+            [
+              "задача 8",
+              8
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": null,
+      "order": [
+        "TASK"
+      ],
+      "output": "hat"
+    },
+    {
+      "separator": true,
+      "group": "rcu",
+      "label": ""
+    },
+    {
+      "id": "rc_left_button",
+      "group": "rcu",
+      "text": "Левая кнопка нажата?",
+      "args": [],
+      "call": "rcu.GetLeftButton",
+      "order": [],
+      "output": "boolean"
+    },
+    {
+      "id": "rc_right_button",
+      "group": "rcu",
+      "text": "Правая кнопка нажата?",
+      "args": [],
+      "call": "rcu.GetRightButton",
+      "order": [],
+      "output": "boolean"
+    },
+    {
+      "separator": true,
+      "group": "rcu",
+      "label": ""
+    },
+    {
+      "id": "rc_timer_reset",
+      "group": "rcu",
+      "text": "Сбросить таймер",
+      "args": [],
+      "call": "rcu.SetSysTime",
+      "order": [],
+      "output": null
+    },
+    {
+      "id": "rc_timer",
+      "group": "rcu",
+      "text": "Таймер (мс)",
+      "args": [],
+      "call": "rcu.GetSysTime",
+      "order": [],
+      "output": "number"
+    },
+    {
+      "separator": true,
+      "group": "rcu",
+      "label": ""
+    },
+    {
+      "id": "rc_microphone",
+      "group": "rcu",
+      "text": "Громкость микрофона",
+      "args": [],
+      "call": "rcu.GetInMic",
+      "order": [],
+      "output": "number"
+    },
+    {
+      "id": "rc_memory_set",
+      "group": "rcu",
+      "text": "Установить значение {V} по адресу {A}",
+      "args": [
+        {
+          "name": "V",
+          "kind": "number",
+          "value": 50
+        },
+        {
+          "name": "A",
+          "kind": "number",
+          "value": 1
+        }
+      ],
+      "call": "rcu.SetData",
+      "order": [
+        "A",
+        "V"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_memory_get",
+      "group": "rcu",
+      "text": "Значение по адресу {A}",
+      "args": [
+        {
+          "name": "A",
+          "kind": "number",
+          "value": 1
+        }
+      ],
+      "call": "rcu.GetData",
+      "order": [
+        "A"
+      ],
+      "output": "number"
+    },
+    {
+      "separator": true,
+      "group": "rcu",
+      "label": ""
+    },
+    {
+      "id": "rc_uart_send",
+      "group": "rcu",
+      "text": "Отправить данные через последовательный порт {V} со скоростью {B} бод",
+      "args": [
+        {
+          "name": "V",
+          "kind": "number",
+          "value": 255
+        },
+        {
+          "name": "B",
+          "kind": "dropdown",
+          "options": [
+            [
+              "9600",
+              9600
+            ],
+            [
+              "19200",
+              19200
+            ],
+            [
+              "38400",
+              38400
+            ],
+            [
+              "57600",
+              57600
+            ],
+            [
+              "115200",
+              115200
+            ]
+          ],
+          "value": 9600
+        }
+      ],
+      "call": "rcu.SetUartData",
+      "order": [
+        "V",
+        "B"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_uart_receive",
+      "group": "rcu",
+      "text": "Получить данные через последовательный порт со скоростью {B} бод",
+      "args": [
+        {
+          "name": "B",
+          "kind": "dropdown",
+          "options": [
+            [
+              "9600",
+              9600
+            ],
+            [
+              "19200",
+              19200
+            ],
+            [
+              "38400",
+              38400
+            ],
+            [
+              "57600",
+              57600
+            ],
+            [
+              "115200",
+              115200
+            ]
+          ],
+          "value": 9600
+        }
+      ],
+      "call": "rcu.GetUartData",
+      "order": [
+        "B"
+      ],
+      "output": "number"
+    },
+    {
+      "id": "rc_battery",
+      "group": "rcu",
+      "text": "Напряжение аккумулятора",
+      "args": [],
+      "call": "rcu.GetInVotage",
+      "order": [],
+      "output": "number"
+    },
+    {
+      "id": "rc_screen_clear",
+      "group": "screen",
+      "text": "очистить экран цветом {C}",
+      "args": [
+        {
+          "name": "C",
+          "kind": "dropdown",
+          "options": [
+            [
+              "красный",
+              63488
+            ],
+            [
+              "зелёный",
+              2016
+            ],
+            [
+              "синий",
+              31
+            ],
+            [
+              "жёлтый",
+              65504
+            ],
+            [
+              "чёрный",
+              0
+            ],
+            [
+              "белый",
+              65535
+            ],
+            [
+              "фиолетовый",
+              63519
+            ],
+            [
+              "голубой",
+              2047
+            ]
+          ],
+          "value": 63488
+        }
+      ],
+      "call": "rcu.SetLCDClear",
+      "order": [
+        "C"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_screen_font",
+      "group": "screen",
+      "text": "установить размер шрифта {SIZE}",
+      "args": [
+        {
+          "name": "SIZE",
+          "kind": "dropdown",
+          "options": [
+            [
+              "по умолчанию",
+              0
+            ],
+            [
+              "маленький",
+              1
+            ],
+            [
+              "средний",
+              2
+            ],
+            [
+              "большой",
+              3
+            ],
+            [
+              "очень большой",
+              4
+            ]
+          ],
+          "value": 0
+        }
+      ],
+      "call": "rcu.SetFontSize",
+      "order": [
+        "SIZE"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_screen_number",
+      "group": "screen",
+      "text": "показать число {V} в строке {ROW}",
+      "args": [
+        {
+          "name": "V",
+          "kind": "number",
+          "value": 10
+        },
+        {
+          "name": "ROW",
+          "kind": "number",
+          "value": 1
+        }
+      ],
+      "call": "rcu.SetDisplayVar",
+      "order": [
+        "ROW",
+        "V",
+        {
+          "constant": 65504
+        },
+        {
+          "constant": 0
+        }
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_screen_text",
+      "group": "screen",
+      "text": "показать текст {V} в строке {ROW}",
+      "args": [
+        {
+          "name": "V",
+          "kind": "text",
+          "value": "hello"
+        },
+        {
+          "name": "ROW",
+          "kind": "number",
+          "value": 1
+        }
+      ],
+      "call": "rcu.SetDisplayString",
+      "order": [
+        "ROW",
+        "V",
+        {
+          "constant": 65504
+        },
+        {
+          "constant": 0
+        }
+      ],
+      "output": null
+    },
+    {
+      "separator": true,
+      "group": "screen",
+      "label": ""
+    },
+    {
+      "id": "rc_screen_touch",
+      "group": "screen",
+      "text": "экран нажат?",
+      "args": [],
+      "call": "rcu.GetTouchScreen",
+      "order": [],
+      "output": "boolean"
+    },
+    {
+      "id": "rc_screen_x",
+      "group": "screen",
+      "text": "координата X точки касания",
+      "args": [],
+      "call": "rcu.GetTouchScreenX",
+      "order": [],
+      "output": "number"
+    },
+    {
+      "id": "rc_screen_y",
+      "group": "screen",
+      "text": "координата Y точки касания",
+      "args": [],
+      "call": "rcu.GetTouchScreenY",
+      "order": [],
+      "output": "number"
+    },
+    {
+      "separator": true,
+      "group": "screen",
+      "label": ""
+    },
+    {
+      "id": "rc_screen_number_xy",
+      "group": "screen",
+      "text": "показать число {V} в точке X {X} Y {Y}, цвет {C}, фон {BG}",
+      "args": [
+        {
+          "name": "V",
+          "kind": "number",
+          "value": 10
+        },
+        {
+          "name": "X",
+          "kind": "number",
+          "value": 1
+        },
+        {
+          "name": "Y",
+          "kind": "number",
+          "value": 1
+        },
+        {
+          "name": "C",
+          "kind": "dropdown",
+          "options": [
+            [
+              "красный",
+              63488
+            ],
+            [
+              "зелёный",
+              2016
+            ],
+            [
+              "синий",
+              31
+            ],
+            [
+              "жёлтый",
+              65504
+            ],
+            [
+              "чёрный",
+              0
+            ],
+            [
+              "белый",
+              65535
+            ],
+            [
+              "фиолетовый",
+              63519
+            ],
+            [
+              "голубой",
+              2047
+            ]
+          ],
+          "value": 65504
+        },
+        {
+          "name": "BG",
+          "kind": "dropdown",
+          "options": [
+            [
+              "красный",
+              63488
+            ],
+            [
+              "зелёный",
+              2016
+            ],
+            [
+              "синий",
+              31
+            ],
+            [
+              "жёлтый",
+              65504
+            ],
+            [
+              "чёрный",
+              0
+            ],
+            [
+              "белый",
+              65535
+            ],
+            [
+              "фиолетовый",
+              63519
+            ],
+            [
+              "голубой",
+              2047
+            ]
+          ],
+          "value": 0
+        }
+      ],
+      "call": "rcu.SetDisplayVarXY",
+      "order": [
+        "X",
+        "Y",
+        "V",
+        "C",
+        "BG"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_screen_text_xy",
+      "group": "screen",
+      "text": "показать символ {V} в точке X {X} Y {Y}, цвет {C}, фон {BG}, прозрачность {ALPHA}",
+      "args": [
+        {
+          "name": "V",
+          "kind": "text",
+          "value": "hello"
+        },
+        {
+          "name": "X",
+          "kind": "number",
+          "value": 1
+        },
+        {
+          "name": "Y",
+          "kind": "number",
+          "value": 1
+        },
+        {
+          "name": "C",
+          "kind": "dropdown",
+          "options": [
+            [
+              "красный",
+              63488
+            ],
+            [
+              "зелёный",
+              2016
+            ],
+            [
+              "синий",
+              31
+            ],
+            [
+              "жёлтый",
+              65504
+            ],
+            [
+              "чёрный",
+              0
+            ],
+            [
+              "белый",
+              65535
+            ],
+            [
+              "фиолетовый",
+              63519
+            ],
+            [
+              "голубой",
+              2047
+            ]
+          ],
+          "value": 65504
+        },
+        {
+          "name": "BG",
+          "kind": "dropdown",
+          "options": [
+            [
+              "красный",
+              63488
+            ],
+            [
+              "зелёный",
+              2016
+            ],
+            [
+              "синий",
+              31
+            ],
+            [
+              "жёлтый",
+              65504
+            ],
+            [
+              "чёрный",
+              0
+            ],
+            [
+              "белый",
+              65535
+            ],
+            [
+              "фиолетовый",
+              63519
+            ],
+            [
+              "голубой",
+              2047
+            ]
+          ],
+          "value": 0
+        },
+        {
+          "name": "ALPHA",
+          "kind": "dropdown",
+          "options": [
+            [
+              "да",
+              1
+            ],
+            [
+              "нет",
+              0
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "rcu.SetDisplayStringXY",
+      "order": [
+        "X",
+        "Y",
+        "V",
+        "C",
+        "BG",
+        "ALPHA"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_screen_picture",
+      "group": "screen",
+      "text": "показать изображение {FILE} в точке X {X} Y {Y} с масштабом {SCALE} %",
+      "args": [
+        {
+          "name": "FILE",
+          "kind": "text",
+          "value": "a.jpg"
+        },
+        {
+          "name": "X",
+          "kind": "number",
+          "value": 1
+        },
+        {
+          "name": "Y",
+          "kind": "number",
+          "value": 1
+        },
+        {
+          "name": "SCALE",
+          "kind": "number",
+          "value": 0
+        }
+      ],
+      "call": "rcu.SetDisplayPicture",
+      "order": [
+        "X",
+        "Y",
+        "FILE",
+        "SCALE"
+      ],
+      "output": null
+    },
+    {
+      "separator": true,
+      "group": "screen",
+      "label": ""
+    },
+    {
+      "id": "rc_screen_u32",
+      "group": "screen",
+      "text": "показать 10-разрядное положительное число {V} в строке {ROW}, цвет {C}, фон {BG}",
+      "args": [
+        {
+          "name": "V",
+          "kind": "number",
+          "value": 1234567890
+        },
+        {
+          "name": "ROW",
+          "kind": "number",
+          "value": 1
+        },
+        {
+          "name": "C",
+          "kind": "dropdown",
+          "options": [
+            [
+              "красный",
+              63488
+            ],
+            [
+              "зелёный",
+              2016
+            ],
+            [
+              "синий",
+              31
+            ],
+            [
+              "жёлтый",
+              65504
+            ],
+            [
+              "чёрный",
+              0
+            ],
+            [
+              "белый",
+              65535
+            ],
+            [
+              "фиолетовый",
+              63519
+            ],
+            [
+              "голубой",
+              2047
+            ]
+          ],
+          "value": 65504
+        },
+        {
+          "name": "BG",
+          "kind": "dropdown",
+          "options": [
+            [
+              "красный",
+              63488
+            ],
+            [
+              "зелёный",
+              2016
+            ],
+            [
+              "синий",
+              31
+            ],
+            [
+              "жёлтый",
+              65504
+            ],
+            [
+              "чёрный",
+              0
+            ],
+            [
+              "белый",
+              65535
+            ],
+            [
+              "фиолетовый",
+              63519
+            ],
+            [
+              "голубой",
+              2047
+            ]
+          ],
+          "value": 0
+        }
+      ],
+      "call": "rcu.SetDisplayVarU32",
+      "order": [
+        "ROW",
+        "V",
+        "C",
+        "BG"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_screen_float",
+      "group": "screen",
+      "text": "показать 10-разрядное число с плавающей точкой {V} в строке {ROW}, цвет {C}, фон {BG}",
+      "args": [
+        {
+          "name": "V",
+          "kind": "number",
+          "value": 10
+        },
+        {
+          "name": "ROW",
+          "kind": "number",
+          "value": 1
+        },
+        {
+          "name": "C",
+          "kind": "dropdown",
+          "options": [
+            [
+              "красный",
+              63488
+            ],
+            [
+              "зелёный",
+              2016
+            ],
+            [
+              "синий",
+              31
+            ],
+            [
+              "жёлтый",
+              65504
+            ],
+            [
+              "чёрный",
+              0
+            ],
+            [
+              "белый",
+              65535
+            ],
+            [
+              "фиолетовый",
+              63519
+            ],
+            [
+              "голубой",
+              2047
+            ]
+          ],
+          "value": 65504
+        },
+        {
+          "name": "BG",
+          "kind": "dropdown",
+          "options": [
+            [
+              "красный",
+              63488
+            ],
+            [
+              "зелёный",
+              2016
+            ],
+            [
+              "синий",
+              31
+            ],
+            [
+              "жёлтый",
+              65504
+            ],
+            [
+              "чёрный",
+              0
+            ],
+            [
+              "белый",
+              65535
+            ],
+            [
+              "фиолетовый",
+              63519
+            ],
+            [
+              "голубой",
+              2047
+            ]
+          ],
+          "value": 0
+        }
+      ],
+      "call": "rcu.SetDisplayVar",
+      "order": [
+        "ROW",
+        "V",
+        "C",
+        "BG"
+      ],
+      "output": null
+    },
+    {
+      "separator": true,
+      "group": "screen",
+      "label": ""
+    },
+    {
+      "id": "rc_screen_dot",
+      "group": "screen",
+      "text": "нарисовать точку в X {X} Y {Y}, цвет {C}",
+      "args": [
+        {
+          "name": "X",
+          "kind": "number",
+          "value": 10
+        },
+        {
+          "name": "Y",
+          "kind": "number",
+          "value": 10
+        },
+        {
+          "name": "C",
+          "kind": "dropdown",
+          "options": [
+            [
+              "красный",
+              63488
+            ],
+            [
+              "зелёный",
+              2016
+            ],
+            [
+              "синий",
+              31
+            ],
+            [
+              "жёлтый",
+              65504
+            ],
+            [
+              "чёрный",
+              0
+            ],
+            [
+              "белый",
+              65535
+            ],
+            [
+              "фиолетовый",
+              63519
+            ],
+            [
+              "голубой",
+              2047
+            ]
+          ],
+          "value": 65504
+        }
+      ],
+      "call": "rcu.SetLCDDot",
+      "order": [
+        "X",
+        "Y",
+        "C"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_screen_line",
+      "group": "screen",
+      "text": "нарисовать отрезок из точки X {X} Y {Y}, угол {ANGLE}, длина {L}, цвет {C}",
+      "args": [
+        {
+          "name": "X",
+          "kind": "number",
+          "value": 10
+        },
+        {
+          "name": "Y",
+          "kind": "number",
+          "value": 10
+        },
+        {
+          "name": "ANGLE",
+          "kind": "number",
+          "value": 45
+        },
+        {
+          "name": "L",
+          "kind": "number",
+          "value": 10
+        },
+        {
+          "name": "C",
+          "kind": "dropdown",
+          "options": [
+            [
+              "красный",
+              63488
+            ],
+            [
+              "зелёный",
+              2016
+            ],
+            [
+              "синий",
+              31
+            ],
+            [
+              "жёлтый",
+              65504
+            ],
+            [
+              "чёрный",
+              0
+            ],
+            [
+              "белый",
+              65535
+            ],
+            [
+              "фиолетовый",
+              63519
+            ],
+            [
+              "голубой",
+              2047
+            ]
+          ],
+          "value": 65504
+        }
+      ],
+      "call": "rcu.SetLCDLine",
+      "order": [
+        "X",
+        "Y",
+        "ANGLE",
+        "L",
+        "C"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_screen_circle",
+      "group": "screen",
+      "text": "нарисовать окружность с центром X {X} Y {Y}, радиус {R}, цвет {C}",
+      "args": [
+        {
+          "name": "X",
+          "kind": "number",
+          "value": 10
+        },
+        {
+          "name": "Y",
+          "kind": "number",
+          "value": 10
+        },
+        {
+          "name": "R",
+          "kind": "number",
+          "value": 5
+        },
+        {
+          "name": "C",
+          "kind": "dropdown",
+          "options": [
+            [
+              "красный",
+              63488
+            ],
+            [
+              "зелёный",
+              2016
+            ],
+            [
+              "синий",
+              31
+            ],
+            [
+              "жёлтый",
+              65504
+            ],
+            [
+              "чёрный",
+              0
+            ],
+            [
+              "белый",
+              65535
+            ],
+            [
+              "фиолетовый",
+              63519
+            ],
+            [
+              "голубой",
+              2047
+            ]
+          ],
+          "value": 65504
+        }
+      ],
+      "call": "rcu.SetLCDSolidCircle",
+      "order": [
+        "X",
+        "Y",
+        "R",
+        "C"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_screen_rect",
+      "group": "screen",
+      "text": "нарисовать прямоугольник в X {X} Y {Y}, ширина {W}, высота {H}, толщина линии {T}, цвет {C}",
+      "args": [
+        {
+          "name": "X",
+          "kind": "number",
+          "value": 10
+        },
+        {
+          "name": "Y",
+          "kind": "number",
+          "value": 10
+        },
+        {
+          "name": "W",
+          "kind": "number",
+          "value": 50
+        },
+        {
+          "name": "H",
+          "kind": "number",
+          "value": 50
+        },
+        {
+          "name": "T",
+          "kind": "number",
+          "value": 2
+        },
+        {
+          "name": "C",
+          "kind": "dropdown",
+          "options": [
+            [
+              "красный",
+              63488
+            ],
+            [
+              "зелёный",
+              2016
+            ],
+            [
+              "синий",
+              31
+            ],
+            [
+              "жёлтый",
+              65504
+            ],
+            [
+              "чёрный",
+              0
+            ],
+            [
+              "белый",
+              65535
+            ],
+            [
+              "фиолетовый",
+              63519
+            ],
+            [
+              "голубой",
+              2047
+            ]
+          ],
+          "value": 65504
+        }
+      ],
+      "call": "rcu.SetLCDRectangle2",
+      "order": [
+        "X",
+        "Y",
+        "W",
+        "H",
+        "T",
+        "C"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_screen_filled_rect",
+      "group": "screen",
+      "text": "нарисовать закрашенный прямоугольник в X {X} Y {Y}, ширина {W}, высота {H}, цвет {C}",
+      "args": [
+        {
+          "name": "X",
+          "kind": "number",
+          "value": 10
+        },
+        {
+          "name": "Y",
+          "kind": "number",
+          "value": 10
+        },
+        {
+          "name": "W",
+          "kind": "number",
+          "value": 50
+        },
+        {
+          "name": "H",
+          "kind": "number",
+          "value": 50
+        },
+        {
+          "name": "C",
+          "kind": "dropdown",
+          "options": [
+            [
+              "красный",
+              63488
+            ],
+            [
+              "зелёный",
+              2016
+            ],
+            [
+              "синий",
+              31
+            ],
+            [
+              "жёлтый",
+              65504
+            ],
+            [
+              "чёрный",
+              0
+            ],
+            [
+              "белый",
+              65535
+            ],
+            [
+              "фиолетовый",
+              63519
+            ],
+            [
+              "голубой",
+              2047
+            ]
+          ],
+          "value": 65504
+        }
+      ],
+      "call": "rcu.SetLCDFilledRectangle2",
+      "order": [
+        "X",
+        "Y",
+        "W",
+        "H",
+        "C"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_tone_note",
+      "group": "sound",
+      "text": "воспроизвести тон {F} Гц в течение {T} секунд",
+      "args": [
+        {
+          "name": "F",
+          "kind": "dropdown",
+          "options": [
+            [
+              "Low Do",
+              262
+            ],
+            [
+              "Re",
+              294
+            ],
+            [
+              "Mi",
+              330
+            ],
+            [
+              "Fa",
+              349
+            ],
+            [
+              "Sol",
+              392
+            ],
+            [
+              "La",
+              440
+            ],
+            [
+              "Si",
+              494
+            ],
+            [
+              "High Do",
+              1047
+            ]
+          ],
+          "value": 1047
+        },
+        {
+          "name": "T",
+          "kind": "number",
+          "value": 1
+        }
+      ],
+      "call": "rcu.SetInSound",
+      "order": [
+        "F",
+        "T"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_tone_hz",
+      "group": "sound",
+      "text": "воспроизвести тон {F} Гц в течение {T} секунд",
+      "args": [
+        {
+          "name": "F",
+          "kind": "number",
+          "value": 1047
+        },
+        {
+          "name": "T",
+          "kind": "number",
+          "value": 1
+        }
+      ],
+      "call": "rcu.SetInSound",
+      "order": [
+        "F",
+        "T"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_tone_preset",
+      "group": "sound",
+      "text": "воспроизвести звук {S}",
+      "args": [
+        {
+          "name": "S",
+          "kind": "dropdown",
+          "options": [
+            [
+              "лёгкий",
+              1
+            ],
+            [
+              "сирена",
+              2
+            ],
+            [
+              "глубокий",
+              3
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "rcu.SoundStartBeep",
+      "order": [
+        "S"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_beep",
+      "group": "sound",
+      "text": "зуммер {ON}",
+      "args": [
+        {
+          "name": "ON",
+          "kind": "dropdown",
+          "options": [
+            [
+              "вкл.",
+              1
+            ],
+            [
+              "выкл.",
+              0
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "rcu.SetInBeep",
+      "order": [
+        "ON"
+      ],
+      "output": null
+    },
+    {
+      "separator": true,
+      "group": "sound",
+      "label": ""
+    },
+    {
+      "id": "rc_sound_effect",
+      "group": "sound",
+      "text": "воспроизвести звук {F}",
+      "args": [
+        {
+          "name": "F",
+          "kind": "dropdown",
+          "options": [
+            [
+              "Крик петуха",
+              1
+            ],
+            [
+              "Вой",
+              2
+            ],
+            [
+              "Мяуканье",
+              3
+            ],
+            [
+              "Ржание",
+              4
+            ],
+            [
+              "Кряканье",
+              5
+            ],
+            [
+              "Барабан",
+              6
+            ],
+            [
+              "Арфа",
+              7
+            ],
+            [
+              "Колокол",
+              8
+            ],
+            [
+              "Смех",
+              9
+            ],
+            [
+              "Мягкий звук",
+              10
+            ],
+            [
+              "Кристалл",
+              11
+            ],
+            [
+              "Гитара",
+              12
+            ],
+            [
+              "Хип-хоп",
+              13
+            ],
+            [
+              "Быстрый ритм",
+              14
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "rcu.SetMp3Play",
+      "order": [
+        {
+          "constant": 1
+        },
+        "F"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_mp3_timed",
+      "group": "sound",
+      "text": "воспроизвести MP3 {F} из папки {DIR} в течение {T} секунд",
+      "args": [
+        {
+          "name": "F",
+          "kind": "number",
+          "value": 1
+        },
+        {
+          "name": "DIR",
+          "kind": "number",
+          "value": 1
+        },
+        {
+          "name": "T",
+          "kind": "number",
+          "value": 1
+        }
+      ],
+      "call": "rcu.SoundMp3",
+      "order": [
+        "DIR",
+        "F",
+        "T"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_mp3",
+      "group": "sound",
+      "text": "воспроизвести файл {F} из папки {DIR}",
+      "args": [
+        {
+          "name": "F",
+          "kind": "number",
+          "value": 1
+        },
+        {
+          "name": "DIR",
+          "kind": "number",
+          "value": 1
+        }
+      ],
+      "call": "rcu.SetMp3Play",
+      "order": [
+        "DIR",
+        "F"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_mp3_stop",
+      "group": "sound",
+      "text": "остановить воспроизведение",
+      "args": [],
+      "call": "rcu.SetMp3Suspend",
+      "order": [],
+      "output": null
+    },
+    {
+      "separator": true,
+      "group": "sound",
+      "label": ""
+    },
+    {
+      "id": "rc_mp3_volume",
+      "group": "sound",
+      "text": "установить громкость MP3 на {V}",
+      "args": [
+        {
+          "name": "V",
+          "kind": "dropdown",
+          "options": [
+            [
+              "0",
+              0
+            ],
+            [
+              "5",
+              5
+            ],
+            [
+              "10",
+              10
+            ],
+            [
+              "15",
+              15
+            ],
+            [
+              "20",
+              20
+            ],
+            [
+              "25",
+              25
+            ],
+            [
+              "28",
+              28
+            ]
+          ],
+          "value": 20
+        }
+      ],
+      "call": "rcu.SetMp3Sound",
+      "order": [
+        "V"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_lamp",
+      "group": "sensors",
+      "text": "установить цвет лампы {P} : {C}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "C",
+          "kind": "dropdown",
+          "options": [
+            [
+              "выключено",
+              0
+            ],
+            [
+              "красный",
+              1
+            ],
+            [
+              "зелёный",
+              2
+            ],
+            [
+              "синий",
+              3
+            ],
+            [
+              "жёлтый",
+              4
+            ],
+            [
+              "фиолетовый",
+              5
+            ],
+            [
+              "голубой",
+              6
+            ],
+            [
+              "белый",
+              7
+            ]
+          ],
+          "value": 4
+        }
+      ],
+      "call": "sensor.Set3CLed",
+      "order": [
+        "P",
+        "C"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_touch",
+      "group": "sensors",
+      "text": "Датчик касания {P} нажат?",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "sensor.GetTouch",
+      "order": [
+        "P"
+      ],
+      "output": "boolean"
+    },
+    {
+      "separator": true,
+      "group": "sensors",
+      "label": ""
+    },
+    {
+      "id": "rc_light_led",
+      "group": "sensors",
+      "text": "Установить светодиод датчика освещённости {P} : {ON}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "ON",
+          "kind": "dropdown",
+          "options": [
+            [
+              "вкл.",
+              1
+            ],
+            [
+              "выкл.",
+              0
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "sensor.SetLightSensorLed",
+      "order": [
+        "P",
+        "ON"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_light_digital",
+      "group": "sensors",
+      "text": "Цифровое значение датчика освещённости {P}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": null,
+      "order": [
+        "P"
+      ],
+      "output": "boolean",
+      "special": "lightDigital"
+    },
+    {
+      "id": "rc_light_value",
+      "group": "sensors",
+      "text": "Значение датчика освещённости {P}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "sensor.GetLightSensor",
+      "order": [
+        "P"
+      ],
+      "output": "number"
+    },
+    {
+      "separator": true,
+      "group": "sensors",
+      "label": ""
+    },
+    {
+      "id": "rc_light_set_threshold",
+      "group": "sensors",
+      "text": "Установить порог датчика освещённости {P} на {V}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "V",
+          "kind": "number",
+          "value": 1000
+        }
+      ],
+      "call": null,
+      "order": [
+        "P",
+        "V"
+      ],
+      "output": null,
+      "special": "lightSetThreshold"
+    },
+    {
+      "id": "rc_light_threshold",
+      "group": "sensors",
+      "text": "Порог датчика освещённости {P}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": null,
+      "order": [
+        "P"
+      ],
+      "output": "number",
+      "special": "lightThreshold"
+    },
+    {
+      "separator": true,
+      "group": "sensors",
+      "label": ""
+    },
+    {
+      "id": "rc_sonar_compare",
+      "group": "sensors",
+      "text": "Расстояние ультразвукового датчика {P} {OP} {V}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "OP",
+          "kind": "dropdown",
+          "options": [
+            [
+              "<",
+              "<"
+            ],
+            [
+              ">",
+              ">"
+            ],
+            [
+              "=",
+              "=="
+            ]
+          ],
+          "value": "<"
+        },
+        {
+          "name": "V",
+          "kind": "number",
+          "value": 10
+        }
+      ],
+      "call": "sensor.GetUltrasound",
+      "order": [
+        "P"
+      ],
+      "output": "boolean",
+      "compare": {
+        "op": "OP",
+        "right": "V"
+      }
+    },
+    {
+      "id": "rc_sonar",
+      "group": "sensors",
+      "text": "Значение ультразвукового датчика {P} (см)",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "sensor.GetUltrasound",
+      "order": [
+        "P"
+      ],
+      "output": "number"
+    },
+    {
+      "separator": true,
+      "group": "sensors",
+      "label": ""
+    },
+    {
+      "id": "rc_color_is",
+      "group": "sensors",
+      "text": "Датчик цвета {P} определяет цвет {C}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "C",
+          "kind": "dropdown",
+          "options": [
+            [
+              "красный (1)",
+              1
+            ],
+            [
+              "зелёный (2)",
+              2
+            ],
+            [
+              "синий (3)",
+              3
+            ],
+            [
+              "жёлтый (4)",
+              4
+            ],
+            [
+              "чёрный (5)",
+              5
+            ],
+            [
+              "белый (6)",
+              6
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "sensor.GetColorSensor",
+      "order": [
+        "P",
+        {
+          "constant": 4
+        }
+      ],
+      "output": "boolean",
+      "compare": {
+        "op": "==",
+        "right": "C"
+      }
+    },
+    {
+      "id": "rc_color_channel",
+      "group": "sensors",
+      "text": "Датчик цвета {P} распознаёт {MODE}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "MODE",
+          "kind": "dropdown",
+          "options": [
+            [
+              "значение G",
+              1
+            ],
+            [
+              "значение R",
+              2
+            ],
+            [
+              "значение B",
+              3
+            ],
+            [
+              "освещённость",
+              9
+            ],
+            [
+              "тон",
+              15
+            ],
+            [
+              "насыщенность",
+              16
+            ],
+            [
+              "яркость",
+              17
+            ]
+          ],
+          "value": 2
+        }
+      ],
+      "call": "sensor.GetColorSensor",
+      "order": [
+        "P",
+        "MODE"
+      ],
+      "output": "number"
+    },
+    {
+      "id": "rc_color_value",
+      "group": "sensors",
+      "text": "Значение датчика цвета {P}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "sensor.GetColorSensor",
+      "order": [
+        "P",
+        {
+          "constant": 4
+        }
+      ],
+      "output": "number"
+    },
+    {
+      "id": "rc_bluetooth_send",
+      "group": "wireless",
+      "text": "отправить данные по Bluetooth {V}",
+      "args": [
+        {
+          "name": "V",
+          "kind": "number",
+          "value": 255
+        }
+      ],
+      "call": "rcu.SetBluetoothData",
+      "order": [
+        "V"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_bluetooth_receive",
+      "group": "wireless",
+      "text": "получить данные по Bluetooth",
+      "args": [],
+      "call": "rcu.GetBluetoothData",
+      "order": [],
+      "output": "number"
+    },
+    {
+      "separator": true,
+      "group": "wireless",
+      "label": ""
+    },
+    {
+      "id": "rc_app_button",
+      "group": "wireless",
+      "text": "значение кнопки приложения",
+      "args": [],
+      "call": "rcu.GetBluetoothControl",
+      "order": [],
+      "output": "number"
+    },
+    {
+      "id": "rc_app_code",
+      "group": "wireless",
+      "text": "код комбинации кнопок приложения",
+      "args": [],
+      "call": "rcu.GetBluetoothControlData",
+      "order": [],
+      "output": "number"
+    },
+    {
+      "separator": true,
+      "group": "wireless",
+      "label": ""
+    },
+    {
+      "id": "rc_bt_button",
+      "group": "wireless",
+      "text": "значение кнопки Bluetooth-геймпада",
+      "args": [],
+      "call": "rcu.GetBTModuleRemoteButton",
+      "order": [],
+      "output": "number"
+    },
+    {
+      "id": "rc_bt_code",
+      "group": "wireless",
+      "text": "код комбинации кнопок Bluetooth-геймпада",
+      "args": [],
+      "call": "rcu.GetBTModuleRemoteCode",
+      "order": [],
+      "output": "number"
+    },
+    {
+      "id": "rc_bt_rocker",
+      "group": "wireless",
+      "text": "значение джойстика Bluetooth-геймпада: {SIDE}, ось {AXIS}",
+      "args": [
+        {
+          "name": "SIDE",
+          "kind": "dropdown",
+          "options": [
+            [
+              "левый",
+              0
+            ],
+            [
+              "правый",
+              1
+            ]
+          ],
+          "value": 0
+        },
+        {
+          "name": "AXIS",
+          "kind": "dropdown",
+          "options": [
+            [
+              "Ось X",
+              0
+            ],
+            [
+              "Ось Y",
+              1
+            ]
+          ],
+          "value": 0
+        }
+      ],
+      "call": "rcu.GetBTModuleRemoteRocker",
+      "order": [
+        "SIDE",
+        "AXIS"
+      ],
+      "output": "number"
+    },
+    {
+      "separator": true,
+      "group": "wireless",
+      "label": ""
+    },
+    {
+      "id": "rc_app_voice",
+      "group": "wireless",
+      "text": "распознавание речи в приложении {TEXT}",
+      "args": [
+        {
+          "name": "TEXT",
+          "kind": "text",
+          "value": "hello"
+        }
+      ],
+      "call": "rcu.GetComVoice",
+      "order": [
+        "TEXT"
+      ],
+      "output": "boolean"
+    },
+    {
+      "id": "rc_gyro_mode",
+      "group": "extra",
+      "text": "установить датчик ориентации {P} в режим {MODE}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "MODE",
+          "kind": "dropdown",
+          "options": [
+            [
+              "калибровка",
+              1
+            ],
+            [
+              "сброс",
+              2
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "sensor.SetAHRS",
+      "order": [
+        "P",
+        "MODE"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_gyro_angle",
+      "group": "extra",
+      "text": "угол {MODE} датчика ориентации {P} (0,1°)",
+      "args": [
+        {
+          "name": "MODE",
+          "kind": "dropdown",
+          "options": [
+            [
+              "угол крена",
+              1
+            ],
+            [
+              "угол наклона",
+              2
+            ],
+            [
+              "угол рысканья",
+              3
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "sensor.GetAHRS",
+      "order": [
+        "P",
+        "MODE",
+        {
+          "constant": 0
+        }
+      ],
+      "output": "number"
+    },
+    {
+      "id": "rc_gyro_accel",
+      "group": "extra",
+      "text": "ускорение датчика ориентации {P} по оси {AXIS} (0,01 g)",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "AXIS",
+          "kind": "dropdown",
+          "options": [
+            [
+              "Ось X",
+              4
+            ],
+            [
+              "Ось Y",
+              5
+            ],
+            [
+              "Ось Z",
+              6
+            ]
+          ],
+          "value": 4
+        }
+      ],
+      "call": "sensor.GetAHRS",
+      "order": [
+        "P",
+        "AXIS",
+        {
+          "constant": 0
+        }
+      ],
+      "output": "number"
+    },
+    {
+      "id": "rc_gyro_speed",
+      "group": "extra",
+      "text": "угловая скорость датчика ориентации {P} по оси {AXIS} (0,1°/с)",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "AXIS",
+          "kind": "dropdown",
+          "options": [
+            [
+              "Ось X",
+              7
+            ],
+            [
+              "Ось Y",
+              8
+            ],
+            [
+              "Ось Z",
+              9
+            ]
+          ],
+          "value": 7
+        }
+      ],
+      "call": "sensor.GetAHRS",
+      "order": [
+        "P",
+        "AXIS",
+        {
+          "constant": 0
+        }
+      ],
+      "output": "number"
+    },
+    {
+      "separator": true,
+      "group": "extra",
+      "label": ""
+    },
+    {
+      "id": "rc_gesture_is",
+      "group": "extra",
+      "text": "датчик жестов {P} распознал {V}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "V",
+          "kind": "dropdown",
+          "options": [
+            [
+              "взмах влево (1)",
+              1
+            ],
+            [
+              "взмах вправо (2)",
+              2
+            ],
+            [
+              "вверх (3)",
+              3
+            ],
+            [
+              "вниз (4)",
+              4
+            ],
+            [
+              "вперёд (5)",
+              5
+            ],
+            [
+              "назад (6)",
+              6
+            ],
+            [
+              "по часовой стрелке (7)",
+              7
+            ],
+            [
+              "против часовой стрелки (8)",
+              8
+            ],
+            [
+              "взмах (9)",
+              9
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "sensor.GetGesture",
+      "order": [
+        "P"
+      ],
+      "output": "boolean",
+      "compare": {
+        "op": "==",
+        "right": "V"
+      }
+    },
+    {
+      "id": "rc_gesture",
+      "group": "extra",
+      "text": "результат распознавания жеста датчиком {P}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "sensor.GetGesture",
+      "order": [
+        "P"
+      ],
+      "output": "number"
+    },
+    {
+      "separator": true,
+      "group": "extra",
+      "label": ""
+    },
+    {
+      "id": "rc_laser",
+      "group": "extra",
+      "text": "расстояние лазерного дальномера {P} в режиме {MODE} (мм)",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "MODE",
+          "kind": "dropdown",
+          "options": [
+            [
+              "стандартный",
+              1
+            ],
+            [
+              "большая дальность",
+              2
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "sensor.GetLaserDist",
+      "order": [
+        "P",
+        "MODE"
+      ],
+      "output": "number"
+    },
+    {
+      "id": "rc_ir",
+      "group": "extra",
+      "text": "расстояние инфракрасного дальномера {P}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "sensor.GetShortIRDist",
+      "order": [
+        "P"
+      ],
+      "output": "number"
+    },
+    {
+      "separator": true,
+      "group": "extra",
+      "label": ""
+    },
+    {
+      "id": "rc_pressure",
+      "group": "extra",
+      "text": "атмосферное давление датчика {P} (гПа)",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "sensor.GetAirPressure",
+      "order": [
+        "P"
+      ],
+      "output": "number"
+    },
+    {
+      "id": "rc_temperature",
+      "group": "extra",
+      "text": "датчик температуры и влажности {P} : {MODE}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "MODE",
+          "kind": "dropdown",
+          "options": [
+            [
+              "температура (°C)",
+              0
+            ],
+            [
+              "влажность (%)",
+              1
+            ]
+          ],
+          "value": 0
+        }
+      ],
+      "call": "sensor.GetSht30",
+      "order": [
+        "P",
+        "MODE"
+      ],
+      "output": "number"
+    },
+    {
+      "id": "rc_magnet_is",
+      "group": "extra",
+      "text": "магнитный датчик {P} определяет {POLE}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "POLE",
+          "kind": "dropdown",
+          "options": [
+            [
+              "северный полюс",
+              1
+            ],
+            [
+              "южный полюс",
+              2
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "sensor.GetMagnetic",
+      "order": [
+        "P",
+        {
+          "constant": 1
+        }
+      ],
+      "output": "boolean",
+      "compare": {
+        "op": "==",
+        "right": "POLE"
+      }
+    },
+    {
+      "id": "rc_magnet",
+      "group": "extra",
+      "text": "напряжённость магнитного поля датчика {P}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "sensor.GetMagnetic",
+      "order": [
+        "P",
+        {
+          "constant": 0
+        }
+      ],
+      "output": "number"
+    },
+    {
+      "separator": true,
+      "group": "extra",
+      "label": ""
+    },
+    {
+      "id": "rc_eye_mode",
+      "group": "extra",
+      "text": "установить режим интеллектуального глаза {P} : {MODE}, цвет {C}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "MODE",
+          "kind": "dropdown",
+          "options": [
+            [
+              "постоянный свет",
+              1
+            ],
+            [
+              "мигание",
+              2
+            ],
+            [
+              "дыхание",
+              3
+            ],
+            [
+              "бегущий огонь",
+              4
+            ],
+            [
+              "обратный бегущий огонь",
+              5
+            ],
+            [
+              "двойной огонь",
+              6
+            ],
+            [
+              "чередование",
+              7
+            ],
+            [
+              "заполнение",
+              8
+            ],
+            [
+              "радужный бегущий огонь",
+              9
+            ]
+          ],
+          "value": 9
+        },
+        {
+          "name": "C",
+          "kind": "colour",
+          "value": "#ff0000"
+        }
+      ],
+      "call": "sensor.SetSmartEyeMode",
+      "order": [
+        "P",
+        "MODE",
+        "C"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_eye_colors",
+      "group": "extra",
+      "text": "установить цвета светодиодов интеллектуального глаза {P} : {C1} {C2} {C3} {C4} {C5} {C6} {C7} {C8}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "C1",
+          "kind": "colour",
+          "value": "#ff0000"
+        },
+        {
+          "name": "C2",
+          "kind": "colour",
+          "value": "#ff9900"
+        },
+        {
+          "name": "C3",
+          "kind": "colour",
+          "value": "#ffff00"
+        },
+        {
+          "name": "C4",
+          "kind": "colour",
+          "value": "#00ff00"
+        },
+        {
+          "name": "C5",
+          "kind": "colour",
+          "value": "#00ffcc"
+        },
+        {
+          "name": "C6",
+          "kind": "colour",
+          "value": "#0099ff"
+        },
+        {
+          "name": "C7",
+          "kind": "colour",
+          "value": "#ff0099"
+        },
+        {
+          "name": "C8",
+          "kind": "colour",
+          "value": "#ff0000"
+        }
+      ],
+      "call": "sensor.SetSmartEyeAllLed",
+      "order": [
+        "P",
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6",
+        "C7",
+        "C8"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_eye_send",
+      "group": "extra",
+      "text": "интеллектуальный глаз {P} отправляет ИК-данные {V}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "V",
+          "kind": "number",
+          "value": 50
+        }
+      ],
+      "call": "sensor.SetSmartEyeIRcode",
+      "order": [
+        "P",
+        "V"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_eye_receive",
+      "group": "extra",
+      "text": "ИК-данные, полученные интеллектуальным глазом {P}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "sensor.GetSmartEyeIRcode",
+      "order": [
+        "P"
+      ],
+      "output": "number"
+    },
+    {
+      "id": "rc_eye_distance",
+      "group": "extra",
+      "text": "расстояние, измеренное интеллектуальным глазом {P} по ИК",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "sensor.GetSmartEyeDist",
+      "order": [
+        "P"
+      ],
+      "output": "number"
+    },
+    {
+      "separator": true,
+      "group": "extra",
+      "label": ""
+    },
+    {
+      "id": "rc_qr_contains",
+      "group": "extra",
+      "text": "QR-код камеры {PORT} содержит строку {V} ?",
+      "args": [
+        {
+          "name": "PORT",
+          "kind": "dropdown",
+          "options": [
+            [
+              "E6/E7:P8",
+              8
+            ]
+          ],
+          "value": 8
+        },
+        {
+          "name": "V",
+          "kind": "text",
+          "value": "hello"
+        }
+      ],
+      "call": "sensor.GetScanCamera",
+      "order": [],
+      "output": "boolean",
+      "compare": {
+        "op": "contains",
+        "right": "V"
+      }
+    },
+    {
+      "id": "rc_qr",
+      "group": "extra",
+      "text": "данные QR-кода камеры {PORT}",
+      "args": [
+        {
+          "name": "PORT",
+          "kind": "dropdown",
+          "options": [
+            [
+              "E6/E7:P8",
+              8
+            ]
+          ],
+          "value": 8
+        }
+      ],
+      "call": "sensor.GetScanCamera",
+      "order": [],
+      "output": "number"
+    },
+    {
+      "separator": true,
+      "group": "extra",
+      "label": ""
+    },
+    {
+      "id": "rc_rfid_write",
+      "group": "extra",
+      "text": "записать RFID-данные {V} через считыватель карт {P}",
+      "args": [
+        {
+          "name": "V",
+          "kind": "number",
+          "value": 255
+        },
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "sensor.WriteRFID522",
+      "order": [
+        "P",
+        "V"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_rfid_number",
+      "group": "extra",
+      "text": "номер RFID-карты, считанный модулем {P}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "sensor.GetRFID522",
+      "order": [
+        "P"
+      ],
+      "output": "number"
+    },
+    {
+      "id": "rc_rfid_data",
+      "group": "extra",
+      "text": "RFID-данные, считанные модулем {P}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "sensor.ReadRFID522",
+      "order": [
+        "P"
+      ],
+      "output": "number"
+    },
+    {
+      "id": "rc_rfid_sector_write",
+      "group": "extra",
+      "text": "записать данные RFID-карты {P}, сектор {S}, блок {B}, данные {V}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "S",
+          "kind": "dropdown",
+          "options": [
+            [
+              "0",
+              0
+            ],
+            [
+              "1",
+              1
+            ],
+            [
+              "2",
+              2
+            ],
+            [
+              "3",
+              3
+            ],
+            [
+              "4",
+              4
+            ],
+            [
+              "5",
+              5
+            ],
+            [
+              "6",
+              6
+            ],
+            [
+              "7",
+              7
+            ],
+            [
+              "8",
+              8
+            ],
+            [
+              "9",
+              9
+            ],
+            [
+              "10",
+              10
+            ],
+            [
+              "11",
+              11
+            ],
+            [
+              "12",
+              12
+            ],
+            [
+              "13",
+              13
+            ],
+            [
+              "14",
+              14
+            ],
+            [
+              "15",
+              15
+            ]
+          ],
+          "value": 0
+        },
+        {
+          "name": "B",
+          "kind": "dropdown",
+          "options": [
+            [
+              "0",
+              0
+            ],
+            [
+              "1",
+              1
+            ],
+            [
+              "2",
+              2
+            ],
+            [
+              "3",
+              3
+            ]
+          ],
+          "value": 0
+        },
+        {
+          "name": "V",
+          "kind": "number",
+          "value": 0
+        }
+      ],
+      "call": "sensor.WriteRFID522Sector",
+      "order": [
+        "P",
+        "S",
+        "B",
+        "V"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_rfid_sector_read",
+      "group": "extra",
+      "text": "прочитать данные RFID-карты {P}, сектор {S}, блок {B}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "S",
+          "kind": "dropdown",
+          "options": [
+            [
+              "0",
+              0
+            ],
+            [
+              "1",
+              1
+            ],
+            [
+              "2",
+              2
+            ],
+            [
+              "3",
+              3
+            ],
+            [
+              "4",
+              4
+            ],
+            [
+              "5",
+              5
+            ],
+            [
+              "6",
+              6
+            ],
+            [
+              "7",
+              7
+            ],
+            [
+              "8",
+              8
+            ],
+            [
+              "9",
+              9
+            ],
+            [
+              "10",
+              10
+            ],
+            [
+              "11",
+              11
+            ],
+            [
+              "12",
+              12
+            ],
+            [
+              "13",
+              13
+            ],
+            [
+              "14",
+              14
+            ],
+            [
+              "15",
+              15
+            ]
+          ],
+          "value": 0
+        },
+        {
+          "name": "B",
+          "kind": "dropdown",
+          "options": [
+            [
+              "0",
+              0
+            ],
+            [
+              "1",
+              1
+            ],
+            [
+              "2",
+              2
+            ],
+            [
+              "3",
+              3
+            ]
+          ],
+          "value": 0
+        }
+      ],
+      "call": "sensor.ReadRFID522Sector",
+      "order": [
+        "P",
+        "S",
+        "B"
+      ],
+      "output": "number"
+    },
+    {
+      "separator": true,
+      "group": "extra",
+      "label": ""
+    },
+    {
+      "id": "rc_air",
+      "group": "extra",
+      "text": "данные датчика качества воздуха {P}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "sensor.GetAirQuality",
+      "order": [
+        "P"
+      ],
+      "output": "number"
+    },
+    {
+      "id": "rc_soil",
+      "group": "extra",
+      "text": "данные датчика влажности почвы {P}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "sensor.GetSoilmoisture",
+      "order": [
+        "P"
+      ],
+      "output": "number"
+    },
+    {
+      "id": "rc_rain",
+      "group": "extra",
+      "text": "данные датчика дождя {P}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "sensor.GetRainfall",
+      "order": [
+        "P"
+      ],
+      "output": "number"
+    },
+    {
+      "id": "rc_line_black",
+      "group": "line",
+      "text": "модуль линии {P}, канал {CH} распознаёт чёрную линию?",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "CH",
+          "kind": "dropdown",
+          "options": [
+            [
+              "канал 1",
+              1
+            ],
+            [
+              "канал 2",
+              2
+            ],
+            [
+              "канал 3",
+              3
+            ],
+            [
+              "канал 4",
+              4
+            ],
+            [
+              "канал 5",
+              5
+            ],
+            [
+              "канал 6",
+              6
+            ],
+            [
+              "канал 7",
+              7
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "trace.GetTraceV2I2CState",
+      "order": [
+        "P",
+        "CH"
+      ],
+      "output": "boolean",
+      "special": "lineDigital"
+    },
+    {
+      "id": "rc_line_value",
+      "group": "line",
+      "text": "аналоговое значение фотодатчика {CH} модуля слежения {P}",
+      "args": [
+        {
+          "name": "CH",
+          "kind": "dropdown",
+          "options": [
+            [
+              "канал 1",
+              1
+            ],
+            [
+              "канал 2",
+              2
+            ],
+            [
+              "канал 3",
+              3
+            ],
+            [
+              "канал 4",
+              4
+            ],
+            [
+              "канал 5",
+              5
+            ],
+            [
+              "канал 6",
+              6
+            ],
+            [
+              "канал 7",
+              7
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "trace.GetTraceV2I2C",
+      "order": [
+        "P",
+        "CH"
+      ],
+      "output": "number"
+    },
+    {
+      "id": "rc_line_state",
+      "group": "line",
+      "text": "модуль линии {P} определяет состояние {STATE}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "STATE",
+          "kind": "dropdown",
+          "options": [
+            [
+              "Т-образный перекрёсток: 1-----1",
+              1
+            ],
+            [
+              "линия слева",
+              2
+            ],
+            [
+              "линия справа",
+              3
+            ],
+            [
+              "линия по центру",
+              4
+            ],
+            [
+              "канал 1",
+              5
+            ],
+            [
+              "канал 2",
+              6
+            ],
+            [
+              "канал 3",
+              7
+            ],
+            [
+              "канал 4",
+              8
+            ],
+            [
+              "канал 5",
+              9
+            ],
+            [
+              "канал 6",
+              10
+            ],
+            [
+              "канал 7",
+              11
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "trace.GetTraceV2I2CChxState",
+      "order": [
+        "P",
+        "STATE"
+      ],
+      "output": "boolean"
+    },
+    {
+      "id": "rc_line_all_colors",
+      "group": "line",
+      "text": "установить все светодиоды модуля слежения {P} в цвет {C}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "C",
+          "kind": "dropdown",
+          "options": [
+            [
+              "выключено",
+              0
+            ],
+            [
+              "красный",
+              1
+            ],
+            [
+              "зелёный",
+              2
+            ],
+            [
+              "синий",
+              3
+            ],
+            [
+              "жёлтый",
+              4
+            ],
+            [
+              "фиолетовый",
+              5
+            ],
+            [
+              "голубой",
+              6
+            ],
+            [
+              "белый",
+              7
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "trace.SetTraceV2I2AllColor",
+      "order": [
+        "P",
+        "C"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_line_colors",
+      "group": "line",
+      "text": "установить цвета светодиодов модуля слежения {P} : {C1} {C2} {C3} {C4} {C5} {C6} {C7}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "C1",
+          "kind": "dropdown",
+          "options": [
+            [
+              "выключено",
+              0
+            ],
+            [
+              "красный",
+              1
+            ],
+            [
+              "зелёный",
+              2
+            ],
+            [
+              "синий",
+              3
+            ],
+            [
+              "жёлтый",
+              4
+            ],
+            [
+              "фиолетовый",
+              5
+            ],
+            [
+              "голубой",
+              6
+            ],
+            [
+              "белый",
+              7
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "C2",
+          "kind": "dropdown",
+          "options": [
+            [
+              "выключено",
+              0
+            ],
+            [
+              "красный",
+              1
+            ],
+            [
+              "зелёный",
+              2
+            ],
+            [
+              "синий",
+              3
+            ],
+            [
+              "жёлтый",
+              4
+            ],
+            [
+              "фиолетовый",
+              5
+            ],
+            [
+              "голубой",
+              6
+            ],
+            [
+              "белый",
+              7
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "C3",
+          "kind": "dropdown",
+          "options": [
+            [
+              "выключено",
+              0
+            ],
+            [
+              "красный",
+              1
+            ],
+            [
+              "зелёный",
+              2
+            ],
+            [
+              "синий",
+              3
+            ],
+            [
+              "жёлтый",
+              4
+            ],
+            [
+              "фиолетовый",
+              5
+            ],
+            [
+              "голубой",
+              6
+            ],
+            [
+              "белый",
+              7
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "C4",
+          "kind": "dropdown",
+          "options": [
+            [
+              "выключено",
+              0
+            ],
+            [
+              "красный",
+              1
+            ],
+            [
+              "зелёный",
+              2
+            ],
+            [
+              "синий",
+              3
+            ],
+            [
+              "жёлтый",
+              4
+            ],
+            [
+              "фиолетовый",
+              5
+            ],
+            [
+              "голубой",
+              6
+            ],
+            [
+              "белый",
+              7
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "C5",
+          "kind": "dropdown",
+          "options": [
+            [
+              "выключено",
+              0
+            ],
+            [
+              "красный",
+              1
+            ],
+            [
+              "зелёный",
+              2
+            ],
+            [
+              "синий",
+              3
+            ],
+            [
+              "жёлтый",
+              4
+            ],
+            [
+              "фиолетовый",
+              5
+            ],
+            [
+              "голубой",
+              6
+            ],
+            [
+              "белый",
+              7
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "C6",
+          "kind": "dropdown",
+          "options": [
+            [
+              "выключено",
+              0
+            ],
+            [
+              "красный",
+              1
+            ],
+            [
+              "зелёный",
+              2
+            ],
+            [
+              "синий",
+              3
+            ],
+            [
+              "жёлтый",
+              4
+            ],
+            [
+              "фиолетовый",
+              5
+            ],
+            [
+              "голубой",
+              6
+            ],
+            [
+              "белый",
+              7
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "C7",
+          "kind": "dropdown",
+          "options": [
+            [
+              "выключено",
+              0
+            ],
+            [
+              "красный",
+              1
+            ],
+            [
+              "зелёный",
+              2
+            ],
+            [
+              "синий",
+              3
+            ],
+            [
+              "жёлтый",
+              4
+            ],
+            [
+              "фиолетовый",
+              5
+            ],
+            [
+              "голубой",
+              6
+            ],
+            [
+              "белый",
+              7
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "trace.SetTraceV2I2Color",
+      "order": [
+        "P",
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6",
+        "C7"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_line_calibrate",
+      "group": "line",
+      "text": "Запустить автоматическую настройку порога модуля слежения {P} на {T} секунд",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "T",
+          "kind": "number",
+          "value": 5
+        }
+      ],
+      "call": "trace.SetTraceV2I2Threshold",
+      "order": [
+        "P",
+        "T"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_line_set_threshold",
+      "group": "line",
+      "text": "установить порог {CH} модуля слежения {P} на {V}",
+      "args": [
+        {
+          "name": "CH",
+          "kind": "dropdown",
+          "options": [
+            [
+              "канал 1",
+              1
+            ],
+            [
+              "канал 2",
+              2
+            ],
+            [
+              "канал 3",
+              3
+            ],
+            [
+              "канал 4",
+              4
+            ],
+            [
+              "канал 5",
+              5
+            ],
+            [
+              "канал 6",
+              6
+            ],
+            [
+              "канал 7",
+              7
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "V",
+          "kind": "number",
+          "value": 100
+        }
+      ],
+      "call": null,
+      "order": [
+        "CH",
+        "P",
+        "V"
+      ],
+      "output": null,
+      "special": "lineSetThreshold"
+    },
+    {
+      "separator": true,
+      "group": "line",
+      "label": "Встроенное движение по линии"
+    },
+    {
+      "id": "rc_line_init",
+      "group": "line",
+      "text": "настроить модуль линии: порт {P}, цвет линии {C}, шасси {CHASSIS}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "C",
+          "kind": "dropdown",
+          "options": [
+            [
+              "чёрный",
+              "black"
+            ],
+            [
+              "белый",
+              "white"
+            ]
+          ],
+          "value": "black"
+        },
+        {
+          "name": "CHASSIS",
+          "kind": "dropdown",
+          "options": [
+            [
+              "колёсное шасси",
+              "wheeledchassis"
+            ],
+            [
+              "меканум-шасси",
+              "mecanumchassis"
+            ]
+          ],
+          "value": "wheeledchassis"
+        }
+      ],
+      "call": "trace.LineSetInitialize",
+      "order": [
+        "P",
+        "C",
+        "CHASSIS"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_line_to_intersection",
+      "group": "line",
+      "text": "двигаться по линии со скоростью {S} до обнаружения {TYPE}",
+      "args": [
+        {
+          "name": "S",
+          "kind": "number",
+          "value": 50
+        },
+        {
+          "name": "TYPE",
+          "kind": "dropdown",
+          "options": [
+            [
+              "Т-образный перекрёсток (17)",
+              17
+            ],
+            [
+              "ответвление справа (1)",
+              1
+            ],
+            [
+              "ответвление слева (7)",
+              7
+            ]
+          ],
+          "value": 17
+        }
+      ],
+      "call": "trace.LineIntersectionStop",
+      "order": [
+        "S",
+        "TYPE"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_line_milliseconds",
+      "group": "line",
+      "text": "двигаться по линии со скоростью {S} в течение {T} мс",
+      "args": [
+        {
+          "name": "S",
+          "kind": "number",
+          "value": 50
+        },
+        {
+          "name": "T",
+          "kind": "number",
+          "value": 1000
+        }
+      ],
+      "call": "trace.LineMillisecond",
+      "order": [
+        "S",
+        "T"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_line_encoder",
+      "group": "line",
+      "text": "двигаться по линии со скоростью {S} до значения энкодера {V}",
+      "args": [
+        {
+          "name": "S",
+          "kind": "number",
+          "value": 50
+        },
+        {
+          "name": "V",
+          "kind": "number",
+          "value": 360
+        }
+      ],
+      "call": "trace.LineForBmp",
+      "order": [
+        "S",
+        "V"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_line_turn",
+      "group": "line",
+      "text": "поворачивать со скоростью левого мотора {L} и правого мотора {R}, пока канал {CH} не обнаружит линию",
+      "args": [
+        {
+          "name": "L",
+          "kind": "number",
+          "value": 50
+        },
+        {
+          "name": "R",
+          "kind": "number",
+          "value": -50
+        },
+        {
+          "name": "CH",
+          "kind": "dropdown",
+          "options": [
+            [
+              "канал 1",
+              1
+            ],
+            [
+              "канал 2",
+              2
+            ],
+            [
+              "канал 3",
+              3
+            ],
+            [
+              "канал 4",
+              4
+            ],
+            [
+              "канал 5",
+              5
+            ],
+            [
+              "канал 6",
+              6
+            ],
+            [
+              "канал 7",
+              7
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "trace.LineTurnEncounterline",
+      "order": [
+        "L",
+        "R",
+        "CH"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_line_tick",
+      "group": "line",
+      "text": "выполнить один цикл движения по линии со скоростью {S}",
+      "args": [
+        {
+          "name": "S",
+          "kind": "number",
+          "value": 50
+        }
+      ],
+      "call": "trace.LineBasis",
+      "order": [
+        "S"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_radio_pressed",
+      "group": "radio",
+      "text": "кнопка {BUTTON} 2,4 ГГц-геймпада {P} нажата",
+      "args": [
+        {
+          "name": "BUTTON",
+          "kind": "dropdown",
+          "options": [
+            [
+              "1",
+              1
+            ],
+            [
+              "2",
+              2
+            ],
+            [
+              "3",
+              3
+            ],
+            [
+              "4",
+              4
+            ],
+            [
+              "5",
+              5
+            ],
+            [
+              "6",
+              6
+            ],
+            [
+              "7",
+              7
+            ],
+            [
+              "8",
+              8
+            ],
+            [
+              "9",
+              9
+            ],
+            [
+              "10",
+              10
+            ],
+            [
+              "11",
+              11
+            ],
+            [
+              "12",
+              12
+            ],
+            [
+              "13",
+              13
+            ],
+            [
+              "14",
+              14
+            ],
+            [
+              "15",
+              15
+            ],
+            [
+              "16",
+              16
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "rf.GetRFModuleRemoteBit",
+      "order": [
+        "P",
+        "BUTTON"
+      ],
+      "output": "boolean"
+    },
+    {
+      "id": "rc_radio_button",
+      "group": "radio",
+      "text": "кнопка 2,4 ГГц-геймпада {P}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "rf.GetRFModuleRemoteButton",
+      "order": [
+        "P"
+      ],
+      "output": "number"
+    },
+    {
+      "id": "rc_radio_code",
+      "group": "radio",
+      "text": "код комбинации кнопок 2,4 ГГц-геймпада {P}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "rf.GetRFModuleRemoteCode",
+      "order": [
+        "P"
+      ],
+      "output": "number"
+    },
+    {
+      "id": "rc_radio_gravity",
+      "group": "radio",
+      "text": "скорость наклона 2,4 ГГц-геймпада {P} по оси {AXIS}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "AXIS",
+          "kind": "dropdown",
+          "options": [
+            [
+              "Ось X",
+              0
+            ],
+            [
+              "Ось Y",
+              1
+            ],
+            [
+              "Ось Z",
+              2
+            ]
+          ],
+          "value": 0
+        }
+      ],
+      "call": "rf.GetRFModuleRemoteGravity",
+      "order": [
+        "P",
+        "AXIS"
+      ],
+      "output": "number"
+    },
+    {
+      "id": "rc_radio_rocker",
+      "group": "radio",
+      "text": "значение джойстика 2,4 ГГц-геймпада {P} по оси {AXIS} {SIDE} джойстика",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "AXIS",
+          "kind": "dropdown",
+          "options": [
+            [
+              "Ось X",
+              0
+            ],
+            [
+              "Ось Y",
+              1
+            ]
+          ],
+          "value": 0
+        },
+        {
+          "name": "SIDE",
+          "kind": "dropdown",
+          "options": [
+            [
+              "левого",
+              0
+            ],
+            [
+              "правого",
+              1
+            ]
+          ],
+          "value": 0
+        }
+      ],
+      "call": "rf.GetRFModuleRemoteRocker",
+      "order": [
+        "P",
+        "SIDE",
+        "AXIS"
+      ],
+      "output": "number"
+    },
+    {
+      "separator": true,
+      "group": "radio",
+      "label": ""
+    },
+    {
+      "id": "rc_radio_password",
+      "group": "radio",
+      "text": "установить пароль 2,4 ГГц-геймпада {P} на {V}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "V",
+          "kind": "number",
+          "value": 1234567
+        }
+      ],
+      "call": "rf.SetRFPassWord",
+      "order": [
+        "P",
+        "V"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_radio_send",
+      "group": "radio",
+      "text": "2,4 ГГц-геймпад {P} отправляет данные {V}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "V",
+          "kind": "number",
+          "value": 255
+        }
+      ],
+      "call": "rf.SetRFModuleByte",
+      "order": [
+        "P",
+        "V"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_radio_receive",
+      "group": "radio",
+      "text": "2,4 ГГц-геймпад {P} получает данные",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "rf.GetRFModuleByte",
+      "order": [
+        "P"
+      ],
+      "output": "number"
+    },
+    {
+      "separator": true,
+      "group": "radio",
+      "label": ""
+    },
+    {
+      "id": "rc_radio_knob_set",
+      "group": "radio",
+      "text": "установить значение энкодера регулятора 2,4 ГГц-геймпада {P} на {V}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "V",
+          "kind": "number",
+          "value": 0
+        }
+      ],
+      "call": "rf.SetRFModuleRemoteKnob",
+      "order": [
+        "P",
+        "V"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_radio_knob",
+      "group": "radio",
+      "text": "значение энкодера регулятора 2,4 ГГц-геймпада {P}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "rf.GetRFModuleRemoteKnob",
+      "order": [
+        "P"
+      ],
+      "output": "number"
+    },
+    {
+      "id": "rc_matrix_picture",
+      "group": "devices",
+      "text": "матричный экран {P} показывает {PIC}, яркость {BRIGHT}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "PIC",
+          "kind": "dropdown",
+          "options": [
+            [
+              "♡",
+              "0000183c7effff7e3c1800000000000000000000000000000000000000000000"
+            ],
+            [
+              "☺",
+              "00003c4242a581a599423c000000000000000000000000000000000000000000"
+            ]
+          ],
+          "value": "0000183c7effff7e3c1800000000000000000000000000000000000000000000"
+        },
+        {
+          "name": "BRIGHT",
+          "kind": "dropdown",
+          "options": [
+            [
+              "0",
+              0
+            ],
+            [
+              "1",
+              1
+            ],
+            [
+              "2",
+              2
+            ],
+            [
+              "3",
+              3
+            ],
+            [
+              "4",
+              4
+            ],
+            [
+              "5",
+              5
+            ],
+            [
+              "6",
+              6
+            ],
+            [
+              "7",
+              7
+            ],
+            [
+              "8",
+              8
+            ],
+            [
+              "9",
+              9
+            ],
+            [
+              "10",
+              10
+            ],
+            [
+              "15",
+              15
+            ]
+          ],
+          "value": 10
+        }
+      ],
+      "call": "display.SetDisplayLatticePic",
+      "order": [
+        "P",
+        "PIC",
+        "BRIGHT"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_matrix_text",
+      "group": "devices",
+      "text": "матричный экран {P} показывает текст {V}, яркость {BRIGHT}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "V",
+          "kind": "text",
+          "value": "字符串"
+        },
+        {
+          "name": "BRIGHT",
+          "kind": "dropdown",
+          "options": [
+            [
+              "0",
+              0
+            ],
+            [
+              "1",
+              1
+            ],
+            [
+              "2",
+              2
+            ],
+            [
+              "3",
+              3
+            ],
+            [
+              "4",
+              4
+            ],
+            [
+              "5",
+              5
+            ],
+            [
+              "6",
+              6
+            ],
+            [
+              "7",
+              7
+            ],
+            [
+              "8",
+              8
+            ],
+            [
+              "9",
+              9
+            ],
+            [
+              "10",
+              10
+            ],
+            [
+              "15",
+              15
+            ]
+          ],
+          "value": 10
+        }
+      ],
+      "call": "display.SetDisplayLattice",
+      "order": [
+        "P",
+        "V",
+        "BRIGHT"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_matrix_dot",
+      "group": "devices",
+      "text": "установить точку X {X} Y {Y} матричного экрана {P} в состояние {ON}, яркость {BRIGHT}",
+      "args": [
+        {
+          "name": "X",
+          "kind": "number",
+          "value": 10
+        },
+        {
+          "name": "Y",
+          "kind": "number",
+          "value": 10
+        },
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "ON",
+          "kind": "dropdown",
+          "options": [
+            [
+              "включить",
+              1
+            ],
+            [
+              "выключить",
+              0
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "BRIGHT",
+          "kind": "dropdown",
+          "options": [
+            [
+              "0",
+              0
+            ],
+            [
+              "1",
+              1
+            ],
+            [
+              "2",
+              2
+            ],
+            [
+              "3",
+              3
+            ],
+            [
+              "4",
+              4
+            ],
+            [
+              "5",
+              5
+            ],
+            [
+              "6",
+              6
+            ],
+            [
+              "7",
+              7
+            ],
+            [
+              "8",
+              8
+            ],
+            [
+              "9",
+              9
+            ],
+            [
+              "10",
+              10
+            ],
+            [
+              "15",
+              15
+            ]
+          ],
+          "value": 10
+        }
+      ],
+      "call": "display.SetDisplayLatticeXY",
+      "order": [
+        "P",
+        "X",
+        "Y",
+        "ON",
+        "BRIGHT"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_matrix_scroll",
+      "group": "devices",
+      "text": "матричный экран {P} показывает текст {V} с движением {D}, скорость {S}, яркость {BRIGHT}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "V",
+          "kind": "text",
+          "value": "hello"
+        },
+        {
+          "name": "D",
+          "kind": "dropdown",
+          "options": [
+            [
+              "влево",
+              0
+            ],
+            [
+              "вправо",
+              1
+            ],
+            [
+              "вверх",
+              2
+            ],
+            [
+              "вниз",
+              3
+            ]
+          ],
+          "value": 0
+        },
+        {
+          "name": "S",
+          "kind": "number",
+          "value": 100
+        },
+        {
+          "name": "BRIGHT",
+          "kind": "dropdown",
+          "options": [
+            [
+              "0",
+              0
+            ],
+            [
+              "1",
+              1
+            ],
+            [
+              "2",
+              2
+            ],
+            [
+              "3",
+              3
+            ],
+            [
+              "4",
+              4
+            ],
+            [
+              "5",
+              5
+            ],
+            [
+              "6",
+              6
+            ],
+            [
+              "7",
+              7
+            ],
+            [
+              "8",
+              8
+            ],
+            [
+              "9",
+              9
+            ],
+            [
+              "10",
+              10
+            ],
+            [
+              "15",
+              15
+            ]
+          ],
+          "value": 10
+        }
+      ],
+      "call": "display.SetDisplayLatticeString",
+      "order": [
+        "P",
+        "V",
+        "D",
+        "S",
+        "BRIGHT"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_matrix_clear",
+      "group": "devices",
+      "text": "очистить матричный экран {P}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "display.SetDisplayLatticeClear",
+      "order": [
+        "P"
+      ],
+      "output": null
+    },
+    {
+      "separator": true,
+      "group": "devices",
+      "label": ""
+    },
+    {
+      "id": "rc_pump",
+      "group": "devices",
+      "text": "{ON} воздушный насос {P}",
+      "args": [
+        {
+          "name": "ON",
+          "kind": "dropdown",
+          "options": [
+            [
+              "включить",
+              1
+            ],
+            [
+              "выключить",
+              0
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "actuator.SetPump",
+      "order": [
+        "P",
+        "ON"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_electromagnet",
+      "group": "devices",
+      "text": "установить электромагнит {P} в состояние {ON}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "ON",
+          "kind": "dropdown",
+          "options": [
+            [
+              "включить",
+              1
+            ],
+            [
+              "выключить",
+              0
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "actuator.SetElectromagnet",
+      "order": [
+        "P",
+        "ON"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_electromagnet_power",
+      "group": "devices",
+      "text": "установить мощность электромагнита {P} на {V} %",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "V",
+          "kind": "number",
+          "value": 100
+        }
+      ],
+      "call": "actuator.SetElectromagnetPower",
+      "order": [
+        "P",
+        "V"
+      ],
+      "output": null
+    },
+    {
+      "separator": true,
+      "group": "ai",
+      "label": "Подключение последовательного порта E6:P8 M6:P5"
+    },
+    {
+      "id": "rc_ai_wait_mode",
+      "group": "ai",
+      "text": "ждать переключения модуля компьютерного зрения в режим {MODE}",
+      "args": [
+        {
+          "name": "MODE",
+          "kind": "dropdown",
+          "options": [
+            [
+              "Не выбрано",
+              1
+            ],
+            [
+              "распознавание цвета",
+              2
+            ],
+            [
+              "QR-код",
+              3
+            ],
+            [
+              "распознавание шара",
+              4
+            ],
+            [
+              "распознавание дороги",
+              5
+            ],
+            [
+              "распознавание лица",
+              6
+            ],
+            [
+              "классификация изображения",
+              7
+            ],
+            [
+              "распознавание метки",
+              8
+            ],
+            [
+              "обучение цвету",
+              9
+            ],
+            [
+              "обучение лицу",
+              10
+            ],
+            [
+              "распознавание жестов",
+              11
+            ],
+            [
+              "обучение классификации",
+              12
+            ],
+            [
+              "дорожные знаки",
+              13
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "ai.SetWaitForAICamData",
+      "order": [
+        "MODE",
+        {
+          "constant": 0
+        }
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_ai_mode",
+      "group": "ai",
+      "text": "переключить модуль компьютерного зрения в режим {MODE}",
+      "args": [
+        {
+          "name": "MODE",
+          "kind": "dropdown",
+          "options": [
+            [
+              "Не выбрано",
+              1
+            ],
+            [
+              "распознавание цвета",
+              2
+            ],
+            [
+              "QR-код",
+              3
+            ],
+            [
+              "распознавание шара",
+              4
+            ],
+            [
+              "распознавание дороги",
+              5
+            ],
+            [
+              "распознавание лица",
+              6
+            ],
+            [
+              "классификация изображения",
+              7
+            ],
+            [
+              "распознавание метки",
+              8
+            ],
+            [
+              "обучение цвету",
+              9
+            ],
+            [
+              "обучение лицу",
+              10
+            ],
+            [
+              "распознавание жестов",
+              11
+            ],
+            [
+              "обучение классификации",
+              12
+            ],
+            [
+              "дорожные знаки",
+              13
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "ai.SetAICamData",
+      "order": [
+        "MODE",
+        {
+          "constant": 0
+        }
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_ai_led",
+      "group": "ai",
+      "text": "установить подсветку в состояние {ON}",
+      "args": [
+        {
+          "name": "ON",
+          "kind": "dropdown",
+          "options": [
+            [
+              "выключить",
+              0
+            ],
+            [
+              "включить",
+              1
+            ]
+          ],
+          "value": 0
+        }
+      ],
+      "call": "ai.SetAICamLED",
+      "order": [
+        "ON"
+      ],
+      "output": null
+    },
+    {
+      "separator": true,
+      "group": "ai",
+      "label": ""
+    },
+    {
+      "id": "rc_ai_voice",
+      "group": "ai",
+      "text": "ключевое слово распознавания речи {KEY}",
+      "args": [
+        {
+          "name": "KEY",
+          "kind": "dropdown",
+          "options": [
+            [
+              "ИИ-помощник",
+              514
+            ]
+          ],
+          "value": 514
+        }
+      ],
+      "call": "ai.GetAICamVoice",
+      "order": [
+        "KEY"
+      ],
+      "output": "boolean"
+    },
+    {
+      "id": "rc_ai_colors",
+      "group": "ai",
+      "text": "количество обнаруженных объектов цвета {C}",
+      "args": [
+        {
+          "name": "C",
+          "kind": "dropdown",
+          "options": [
+            [
+              "красный",
+              1
+            ],
+            [
+              "зелёный",
+              2
+            ],
+            [
+              "синий",
+              3
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "ai.GetAICamData",
+      "order": [
+        "C"
+      ],
+      "output": "number"
+    },
+    {
+      "id": "rc_ai_qr",
+      "group": "ai",
+      "text": "распознавание QR-кода {VALUE}",
+      "args": [
+        {
+          "name": "VALUE",
+          "kind": "dropdown",
+          "options": [
+            [
+              "значение",
+              1
+            ],
+            [
+              "координата X",
+              2
+            ],
+            [
+              "координата Y",
+              3
+            ],
+            [
+              "размер",
+              4
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "ai.GetAICamData",
+      "order": [
+        "VALUE"
+      ],
+      "output": "number"
+    },
+    {
+      "id": "rc_ai_ball_color",
+      "group": "ai",
+      "text": "распознать шар цвета {C}",
+      "args": [
+        {
+          "name": "C",
+          "kind": "dropdown",
+          "options": [
+            [
+              "красный",
+              0
+            ],
+            [
+              "зелёный",
+              1
+            ],
+            [
+              "синий",
+              2
+            ],
+            [
+              "жёлтый",
+              3
+            ]
+          ],
+          "value": 0
+        }
+      ],
+      "call": "ai.SetAICamData",
+      "order": [
+        {
+          "constant": 4
+        },
+        "C"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_ai_ball",
+      "group": "ai",
+      "text": "распознавание шара {VALUE}",
+      "args": [
+        {
+          "name": "VALUE",
+          "kind": "dropdown",
+          "options": [
+            [
+              "координата X",
+              1
+            ],
+            [
+              "координата Y",
+              2
+            ],
+            [
+              "размер",
+              3
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "ai.GetAICamData",
+      "order": [
+        "VALUE"
+      ],
+      "output": "number"
+    },
+    {
+      "id": "rc_ai_road",
+      "group": "ai",
+      "text": "распознавание дороги {VALUE}",
+      "args": [
+        {
+          "name": "VALUE",
+          "kind": "dropdown",
+          "options": [
+            [
+              "значение смещения",
+              1
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "ai.GetAICamData",
+      "order": [
+        "VALUE"
+      ],
+      "output": "number"
+    },
+    {
+      "id": "rc_ai_face",
+      "group": "ai",
+      "text": "распознавание лица {VALUE}",
+      "args": [
+        {
+          "name": "VALUE",
+          "kind": "dropdown",
+          "options": [
+            [
+              "координата X",
+              1
+            ],
+            [
+              "координата Y",
+              2
+            ],
+            [
+              "размер",
+              3
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "ai.GetAICamData",
+      "order": [
+        "VALUE"
+      ],
+      "output": "number"
+    },
+    {
+      "id": "rc_ai_class",
+      "group": "ai",
+      "text": "классификация изображения {VALUE}",
+      "args": [
+        {
+          "name": "VALUE",
+          "kind": "dropdown",
+          "options": [
+            [
+              "ID",
+              1
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "ai.GetAICamData",
+      "order": [
+        "VALUE"
+      ],
+      "output": "number"
+    },
+    {
+      "id": "rc_ai_tag",
+      "group": "ai",
+      "text": "распознавание метки {VALUE}",
+      "args": [
+        {
+          "name": "VALUE",
+          "kind": "dropdown",
+          "options": [
+            [
+              "ID",
+              1
+            ],
+            [
+              "координата X",
+              2
+            ],
+            [
+              "координата Y",
+              3
+            ],
+            [
+              "размер",
+              4
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "ai.GetAICamData",
+      "order": [
+        "VALUE"
+      ],
+      "output": "number"
+    },
+    {
+      "separator": true,
+      "group": "ai",
+      "label": ""
+    },
+    {
+      "id": "rc_ai_train_color",
+      "group": "ai",
+      "text": "обучение цвета {ACTION}",
+      "args": [
+        {
+          "name": "ACTION",
+          "kind": "dropdown",
+          "options": [
+            [
+              "обучить один раз",
+              1
+            ],
+            [
+              "сбросить обучение",
+              2
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "ai.SetAICamData",
+      "order": [
+        {
+          "constant": 9
+        },
+        "ACTION"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_ai_trained_color",
+      "group": "ai",
+      "text": "обучение цвета {VALUE}",
+      "args": [
+        {
+          "name": "VALUE",
+          "kind": "dropdown",
+          "options": [
+            [
+              "ID1",
+              1
+            ],
+            [
+              "ID2",
+              2
+            ],
+            [
+              "ID3",
+              3
+            ],
+            [
+              "ID4",
+              4
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "ai.GetAICamData",
+      "order": [
+        "VALUE"
+      ],
+      "output": "number"
+    },
+    {
+      "id": "rc_ai_trained_color_xy",
+      "group": "ai",
+      "text": "обучение распознаванию цвета {ID}, координата {AXIS}",
+      "args": [
+        {
+          "name": "ID",
+          "kind": "dropdown",
+          "options": [
+            [
+              "ID1",
+              1
+            ],
+            [
+              "ID2",
+              2
+            ],
+            [
+              "ID3",
+              3
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "AXIS",
+          "kind": "dropdown",
+          "options": [
+            [
+              "X",
+              19
+            ],
+            [
+              "Y",
+              20
+            ]
+          ],
+          "value": 19
+        }
+      ],
+      "call": "ai.GetAICamData",
+      "order": [
+        "AXIS"
+      ],
+      "output": "number",
+      "requiresOriginalCode": "Нужен Python из RoboCode для координат обученного цвета: документация не описывает сочетание ID и координаты."
+    },
+    {
+      "separator": true,
+      "group": "ai",
+      "label": ""
+    },
+    {
+      "id": "rc_ai_train_face",
+      "group": "ai",
+      "text": "обучение лица {ACTION}",
+      "args": [
+        {
+          "name": "ACTION",
+          "kind": "dropdown",
+          "options": [
+            [
+              "обучить один раз",
+              1
+            ],
+            [
+              "сбросить обучение",
+              2
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "ai.SetAICamData",
+      "order": [
+        {
+          "constant": 10
+        },
+        "ACTION"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_ai_trained_face",
+      "group": "ai",
+      "text": "обучение лица {VALUE}",
+      "args": [
+        {
+          "name": "VALUE",
+          "kind": "dropdown",
+          "options": [
+            [
+              "ID",
+              1
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "ai.GetAICamData",
+      "order": [
+        "VALUE"
+      ],
+      "output": "number"
+    },
+    {
+      "separator": true,
+      "group": "ai",
+      "label": ""
+    },
+    {
+      "id": "rc_ai_train_classification",
+      "group": "ai",
+      "text": "обучение классификации изображений {ACTION}",
+      "args": [
+        {
+          "name": "ACTION",
+          "kind": "dropdown",
+          "options": [
+            [
+              "обучить один раз",
+              1
+            ],
+            [
+              "сбросить обучение",
+              2
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "ai.SetAICamData",
+      "order": [
+        {
+          "constant": 12
+        },
+        "ACTION"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_ai_trained_classification",
+      "group": "ai",
+      "text": "обучение классификации изображений {VALUE}",
+      "args": [
+        {
+          "name": "VALUE",
+          "kind": "dropdown",
+          "options": [
+            [
+              "ID",
+              1
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "ai.GetAICamData",
+      "order": [
+        "VALUE"
+      ],
+      "output": "number"
+    },
+    {
+      "separator": true,
+      "group": "ai",
+      "label": ""
+    },
+    {
+      "id": "rc_ai_gesture",
+      "group": "ai",
+      "text": "распознавание жеста {VALUE}",
+      "args": [
+        {
+          "name": "VALUE",
+          "kind": "dropdown",
+          "options": [
+            [
+              "ID",
+              1
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "ai.GetAICamData",
+      "order": [
+        "VALUE"
+      ],
+      "output": "number"
+    },
+    {
+      "id": "rc_ai_traffic",
+      "group": "ai",
+      "text": "распознавание дорожного знака {VALUE}",
+      "args": [
+        {
+          "name": "VALUE",
+          "kind": "dropdown",
+          "options": [
+            [
+              "ID",
+              1
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "ai.GetAICamData",
+      "order": [
+        "VALUE"
+      ],
+      "output": "number"
+    },
+    {
+      "id": "rc_ai_data",
+      "group": "ai",
+      "text": "получить данные распознавания {MODE}",
+      "args": [
+        {
+          "name": "MODE",
+          "kind": "number",
+          "value": 1
+        }
+      ],
+      "call": "ai.GetAICamData",
+      "order": [
+        "MODE"
+      ],
+      "output": "number"
+    },
+    {
+      "id": "rc_servo_reset",
+      "group": "servo",
+      "text": "сбросить цифровой сервопривод {P}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "servo.SetMagneticServoSoftReset",
+      "order": [
+        "P"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_servo_init",
+      "group": "servo",
+      "text": "установить для цифрового сервопривода {P} сброс при включении питания {ON}, скорость сброса {S}, угол {A}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "ON",
+          "kind": "dropdown",
+          "options": [
+            [
+              "ВЫКЛ",
+              0
+            ],
+            [
+              "ВКЛ",
+              1
+            ]
+          ],
+          "value": 0
+        },
+        {
+          "name": "S",
+          "kind": "number",
+          "value": 0
+        },
+        {
+          "name": "A",
+          "kind": "number",
+          "value": 0
+        }
+      ],
+      "call": "servo.SetMagneticServoState",
+      "order": [
+        "P",
+        "ON",
+        "S",
+        "A"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_servo_angle_wait",
+      "group": "servo",
+      "text": "установить цифровой сервопривод {P} на угол {A} и ждать {T} мс",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "A",
+          "kind": "number",
+          "value": 90
+        },
+        {
+          "name": "T",
+          "kind": "number",
+          "value": 1000
+        }
+      ],
+      "call": "servo.SetMagneticServoDegreeTime",
+      "order": [
+        "P",
+        "A",
+        "T"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_servo_angle",
+      "group": "servo",
+      "text": "установить цифровой сервопривод {P} на угол {A} со скоростью {S}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "A",
+          "kind": "number",
+          "value": 90
+        },
+        {
+          "name": "S",
+          "kind": "number",
+          "value": 50
+        }
+      ],
+      "call": "servo.SetMagneticServoDegreeSpeed",
+      "order": [
+        "P",
+        "A",
+        "S"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_servo_read",
+      "group": "servo",
+      "text": "угол цифрового сервопривода {P}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "servo.GetMagneticServoDegree",
+      "order": [
+        "P"
+      ],
+      "output": "number"
+    },
+    {
+      "separator": true,
+      "group": "servo",
+      "label": ""
+    },
+    {
+      "id": "rc_servo_encoder_to",
+      "group": "servo",
+      "text": "повернуть цифровой сервопривод {P} до значения энкодера {V} со скоростью {S}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "V",
+          "kind": "number",
+          "value": 360
+        },
+        {
+          "name": "S",
+          "kind": "number",
+          "value": 50
+        }
+      ],
+      "call": "servo.SetMagneticServoCodeMotor",
+      "order": [
+        "P",
+        "V",
+        "S"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_servo_encoder_reset",
+      "group": "servo",
+      "text": "сбросить значение энкодера цифрового сервопривода {P}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "servo.SetMagneticServoEncoder",
+      "order": [
+        "P"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_servo_encoder",
+      "group": "servo",
+      "text": "значение энкодера цифрового сервопривода {P}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "servo.GetMagneticServoEncoder",
+      "order": [
+        "P"
+      ],
+      "output": "number"
+    },
+    {
+      "id": "rc_servo_speed",
+      "group": "servo",
+      "text": "вращать цифровой сервопривод {P} со скоростью {S}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "S",
+          "kind": "number",
+          "value": 100
+        }
+      ],
+      "call": "servo.SetMagneticServoMotor",
+      "order": [
+        "P",
+        "S"
+      ],
+      "output": null
+    },
+    {
+      "separator": true,
+      "group": "servo",
+      "label": "каналы сервоприводов 1–3 · E6:P4–6, M6:P3–5, C6:P2–4, M5:P1–2"
+    },
+    {
+      "id": "rc_mini_angle",
+      "group": "servo",
+      "text": "установить мини-сервопривод {CH} на угол {A}",
+      "args": [
+        {
+          "name": "CH",
+          "kind": "dropdown",
+          "options": [
+            [
+              "канал (1)",
+              1
+            ],
+            [
+              "канал (2)",
+              2
+            ],
+            [
+              "канал (3)",
+              3
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "A",
+          "kind": "number",
+          "value": 135
+        }
+      ],
+      "call": "servo.SetSeeringEngine",
+      "order": [
+        "CH",
+        "A"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_mini_angle_wait",
+      "group": "servo",
+      "text": "установить мини-сервопривод {CH} на угол {A} и ждать {T} мс",
+      "args": [
+        {
+          "name": "CH",
+          "kind": "dropdown",
+          "options": [
+            [
+              "канал (1)",
+              1
+            ],
+            [
+              "канал (2)",
+              2
+            ],
+            [
+              "канал (3)",
+              3
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "A",
+          "kind": "number",
+          "value": 135
+        },
+        {
+          "name": "T",
+          "kind": "number",
+          "value": 1000
+        }
+      ],
+      "call": "servo.SetSeeringEngineTime",
+      "order": [
+        "CH",
+        "A",
+        "T"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_mini_speed",
+      "group": "servo",
+      "text": "вращать мини-сервопривод {CH} со скоростью {S}",
+      "args": [
+        {
+          "name": "CH",
+          "kind": "dropdown",
+          "options": [
+            [
+              "канал (1)",
+              1
+            ],
+            [
+              "канал (2)",
+              2
+            ],
+            [
+              "канал (3)",
+              3
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "S",
+          "kind": "number",
+          "value": 50
+        }
+      ],
+      "call": "servo.SetServoMotor",
+      "order": [
+        "CH",
+        "S"
+      ],
+      "output": null
+    },
+    {
+      "separator": true,
+      "group": "servo",
+      "label": ""
+    },
+    {
+      "id": "rc_servo180_angle",
+      "group": "servo",
+      "text": "установить сервопривод 180° {CH} на угол {A}",
+      "args": [
+        {
+          "name": "CH",
+          "kind": "dropdown",
+          "options": [
+            [
+              "канал (1)",
+              1
+            ],
+            [
+              "канал (2)",
+              2
+            ],
+            [
+              "канал (3)",
+              3
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "A",
+          "kind": "number",
+          "value": 90
+        }
+      ],
+      "call": "servo.SetServo",
+      "order": [
+        "CH",
+        "A"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_servo180_wait",
+      "group": "servo",
+      "text": "установить сервопривод 180° {CH} на угол {A} и ждать {T} мс",
+      "args": [
+        {
+          "name": "CH",
+          "kind": "dropdown",
+          "options": [
+            [
+              "канал (1)",
+              1
+            ],
+            [
+              "канал (2)",
+              2
+            ],
+            [
+              "канал (3)",
+              3
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "A",
+          "kind": "number",
+          "value": 90
+        },
+        {
+          "name": "T",
+          "kind": "number",
+          "value": 1000
+        }
+      ],
+      "call": "servo.SetServoTime",
+      "order": [
+        "CH",
+        "A",
+        "T"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_e7_SetAICamCmd",
+      "group": "cameraE7",
+      "controllers": [
+        "E7"
+      ],
+      "text": "Переключить камеру {P} в режим {MODE}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 7
+        },
+        {
+          "name": "MODE",
+          "kind": "dropdown",
+          "options": [
+            [
+              "Камера",
+              "camera"
+            ],
+            [
+              "Лица",
+              "face"
+            ],
+            [
+              "Метки AprilTag",
+              "apriltag"
+            ],
+            [
+              "QR-коды",
+              "qrcode"
+            ],
+            [
+              "Объекты",
+              "detector"
+            ],
+            [
+              "Цвета",
+              "color"
+            ],
+            [
+              "Дорога",
+              "road"
+            ],
+            [
+              "Жесты",
+              "gesture"
+            ],
+            [
+              "Точки тела",
+              "human"
+            ],
+            [
+              "Классификация объектов",
+              "classifier"
+            ],
+            [
+              "Классификация изображений",
+              "image"
+            ]
+          ],
+          "value": "camera"
+        }
+      ],
+      "call": "aicam.SetAICamCmd",
+      "order": [
+        "P",
+        "MODE"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_e7_SetWaitAICamCmd",
+      "group": "cameraE7",
+      "controllers": [
+        "E7"
+      ],
+      "text": "Дождаться камеры {P} и переключить в режим {MODE}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 7
+        },
+        {
+          "name": "MODE",
+          "kind": "dropdown",
+          "options": [
+            [
+              "Камера",
+              "camera"
+            ],
+            [
+              "Лица",
+              "face"
+            ],
+            [
+              "Метки AprilTag",
+              "apriltag"
+            ],
+            [
+              "QR-коды",
+              "qrcode"
+            ],
+            [
+              "Объекты",
+              "detector"
+            ],
+            [
+              "Цвета",
+              "color"
+            ],
+            [
+              "Дорога",
+              "road"
+            ],
+            [
+              "Жесты",
+              "gesture"
+            ],
+            [
+              "Точки тела",
+              "human"
+            ],
+            [
+              "Классификация объектов",
+              "classifier"
+            ],
+            [
+              "Классификация изображений",
+              "image"
+            ]
+          ],
+          "value": "camera"
+        }
+      ],
+      "call": "aicam.SetWaitAICamCmd",
+      "order": [
+        "P",
+        "MODE"
+      ],
+      "output": null
+    },
+    {
+      "id": "rc_e7_GetAICam",
+      "group": "cameraE7",
+      "controllers": [
+        "E7"
+      ],
+      "text": "Камера {P}, цель № {T}, параметр {PARAM}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 7
+        },
+        {
+          "name": "T",
+          "kind": "number",
+          "value": 1
+        },
+        {
+          "name": "PARAM",
+          "kind": "dropdown",
+          "options": [
+            [
+              "ID",
+              1
+            ],
+            [
+              "X",
+              2
+            ],
+            [
+              "Y",
+              3
+            ],
+            [
+              "Ширина",
+              4
+            ],
+            [
+              "Высота",
+              5
+            ],
+            [
+              "Размер",
+              6
+            ],
+            [
+              "Уверенность",
+              7
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "aicam.GetAICam",
+      "order": [
+        "P",
+        "T",
+        "PARAM"
+      ],
+      "output": "number"
+    },
+    {
+      "id": "rc_e7_GetAICamStr",
+      "group": "cameraE7",
+      "controllers": [
+        "E7"
+      ],
+      "text": "Камера {P}, строка цели № {T}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 7
+        },
+        {
+          "name": "T",
+          "kind": "number",
+          "value": 1
+        }
+      ],
+      "call": "aicam.GetAICamStr",
+      "order": [
+        "P",
+        "T"
+      ],
+      "output": "string"
+    },
+    {
+      "id": "rc_e7_GetAICamIDData",
+      "group": "cameraE7",
+      "controllers": [
+        "E7"
+      ],
+      "text": "Камера {P}, цель с ID {T}, параметр {PARAM}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 7
+        },
+        {
+          "name": "T",
+          "kind": "number",
+          "value": 1
+        },
+        {
+          "name": "PARAM",
+          "kind": "dropdown",
+          "options": [
+            [
+              "X",
+              1
+            ],
+            [
+              "Y",
+              2
+            ],
+            [
+              "Ширина",
+              3
+            ],
+            [
+              "Высота",
+              4
+            ],
+            [
+              "Размер",
+              5
+            ],
+            [
+              "Уверенность",
+              6
+            ]
+          ],
+          "value": 1
+        }
+      ],
+      "call": "aicam.GetAICamIDData",
+      "order": [
+        "P",
+        "T",
+        "PARAM"
+      ],
+      "output": "number"
+    },
+    {
+      "id": "rc_e7_GetAICamIDStr",
+      "group": "cameraE7",
+      "controllers": [
+        "E7"
+      ],
+      "text": "Камера {P}, строка цели с ID {T}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 7
+        },
+        {
+          "name": "T",
+          "kind": "number",
+          "value": 1
+        }
+      ],
+      "call": "aicam.GetAICamIDStr",
+      "order": [
+        "P",
+        "T"
+      ],
+      "output": "string"
+    }
+  ]
+}

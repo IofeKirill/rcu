@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 import mechanisms
 import car_model
+from devices import Devices
 
 WIDTH, HEIGHT = 800, 500
 MAX_SPEED = 42.0  # cm/s at power 100
@@ -38,6 +39,9 @@ class Prop:
         self.radius,self.transfer,self.drag,self.bounce = PROP_TYPES[kind]
         self.vx = self.vy = 0.
         self.held_by = None
+        self.inactive = False
+        self.last_touch = None
+        self.last_touch_position = None
         self.mass = 1.0 if kind=='can' else .45
 
     def circle(self):
@@ -172,8 +176,9 @@ LIGHT_FOOTPRINTS = tuple(tuple((i/2,j/2) for i in range(1-n,n)
                             for j in range(1-n,n) if i*i+j*j < n*n)
                         for n in range(2,11,2))
 
-class World:
+class World(Devices):
     def __init__(self, scene, props=None):
+        self.robot_id=scene.get('id')
         self.half = number(scene.get('bodySize',36),10,70)/2
         realistic = scene.get('realistic',False)
         if type(realistic) is not bool:
@@ -238,7 +243,9 @@ class World:
                 self.max_opening=number(claw.get('maxOpening',50),0,180)
                 if claw['kind']=='kicker':
                     self.joint=number(claw.get('initialAngle',0),0,360)
-                self.extra = self.car_wheels+[mechanisms.mount(poly,claw) for poly in mechanisms.polygons(claw['kind'],self.joint,self.max_opening)]
+                    if claw.get('length','short') not in mechanisms.KICKERS:
+                        raise ValueError('Неизвестная длина пиналки.')
+                self.extra = self.car_wheels+[mechanisms.mount(poly,claw) for poly in mechanisms.polygons(claw['kind'],self.joint,self.max_opening,claw.get('length','short'))]
             else:
                 ax,ay = item['anchor']
                 pitch = item['pitch']
@@ -279,7 +286,9 @@ class World:
             for x,y,kind in rows:
                 if not isinstance(kind,str) or kind not in PROP_TYPES:
                     raise ValueError('Неизвестный подвижный объект.')
-                self.props.append(Prop(number(x,-5000,5000),number(y,-5000,5000),kind))
+                obj=Prop(number(x,-5000,5000),number(y,-5000,5000),kind)
+                if kind=='ball':obj.radius=number(scene.get('ballDiameter',6.7),5.6,6.7)/2
+                self.props.append(obj)
             for obj in self.props:
                 if self.prop_blocked(obj,obj.x,obj.y):
                     raise ValueError('Банка или мяч пересекает препятствие или край поля.')
@@ -294,12 +303,12 @@ class World:
             if port(int(key),8) > self.sensor_count:
                 continue
             kind, forward, right, angle = item[:4]
-            if kind not in ('light','color','laser','sonar','led'):
+            if kind not in ('light','color','laser','sonar','led','touch','ir','gyro','line','eye'):
                 raise ValueError('Неизвестный тип датчика.')
             self.sensors[port(int(key),8)] = (kind,number(forward,-100,100),
                 number(right,-100,100),number(angle,-360,360))
             p = int(key)
-            if kind == 'light':
+            if kind in ('light','line'):
                 self.light_heights[p] = port(item[4] if len(item)>4 else 1,5)
                 self.light_leds[p] = True
             elif kind == 'led':
@@ -313,6 +322,7 @@ class World:
         self.targets = {}
         self.time = 0.0
         self.blocked = False
+        self.init_devices(scene)
         if self.collides(self.x,self.y,self.heading):
             raise ValueError('На старте тележка пересекает препятствие или край поля.')
 
@@ -337,7 +347,7 @@ class World:
                 return True
             if any(circle_overlap(px,py,heading,r,hw,hh) for r in self.circles):
                 return True
-            if include_props and any(circle_overlap(px,py,heading,(obj.x,obj.y,obj.radius-CONTACT_EPS),hw,hh) for obj in self.props if obj.held_by is not self):
+            if include_props and any(circle_overlap(px,py,heading,(obj.x,obj.y,obj.radius-CONTACT_EPS),hw,hh) for obj in self.props if not obj.inactive and obj.held_by is not self):
                 return True
             for o in nearby:
                 ox,oy = rotate(px-o.x,py-o.y,math.cos(o.heading),math.sin(o.heading))
@@ -357,7 +367,7 @@ class World:
                 local = [rotate(u-a,v-b,cs,sn) for u,v in points]
                 if polygons_overlap(local,box_polygon(*rect)):
                     return True
-            circles = self.circles+([(obj.x,obj.y,obj.radius-CONTACT_EPS) for obj in self.props if obj.held_by is not self] if include_props else [])
+            circles = self.circles+([(obj.x,obj.y,obj.radius-CONTACT_EPS) for obj in self.props if not obj.inactive and obj.held_by is not self] if include_props else [])
             if any(polygon_contact(a,b,r,points) for a,b,r in circles):
                 return True
             for o in nearby:
@@ -381,7 +391,7 @@ class World:
                 return True
         if any((x-a)**2+(y-b)**2 < (r+rr)**2 for a,b,rr in self.circles):
             return True
-        if include_props and any(o is not obj and (x-o.x)**2+(y-o.y)**2 < (r+o.radius-CONTACT_EPS)**2 for o in self.props):
+        if include_props and any(not o.inactive and o is not obj and (x-o.x)**2+(y-o.y)**2 < (r+o.radius-CONTACT_EPS)**2 for o in self.props):
             return True
         for robot in robots:
             u,v = rotate(x-robot.x,y-robot.y,math.cos(robot.heading),math.sin(robot.heading))
@@ -392,12 +402,12 @@ class World:
         return False
 
     def prop_states(self):
-        return [(obj,obj.x,obj.y,obj.vx,obj.vy) for obj in self.props]
+        return [(obj,obj.x,obj.y,obj.vx,obj.vy,obj.last_touch,obj.last_touch_position) for obj in self.props]
 
     @staticmethod
     def restore_props(states):
-        for obj,x,y,vx,vy in states:
-            obj.x,obj.y,obj.vx,obj.vy = x,y,vx,vy
+        for obj,x,y,vx,vy,touch,pos in states:
+            obj.x,obj.y,obj.vx,obj.vy,obj.last_touch,obj.last_touch_position = x,y,vx,vy,touch,pos
 
     def translate_prop(self, obj, x, y, robots, path=None, rolling=False):
         """Move a contact chain as one transaction; the caller owns rollback."""
@@ -407,7 +417,7 @@ class World:
         path = path|{obj}
         obj.x,obj.y = x,y
         for other in self.props:
-            if other is obj:
+            if other is obj or other.inactive:
                 continue
             dx,dy = other.x-x,other.y-y
             distance = math.hypot(dx,dy)
@@ -428,9 +438,12 @@ class World:
                 speed = closing*other.transfer
                 other.vx += speed*nx
                 other.vy += speed*ny
+            before=(other.x,other.y)
             if not self.translate_prop(other,other.x+(depth+CONTACT_EPS)*nx,
                                        other.y+(depth+CONTACT_EPS)*ny,robots,path,rolling):
                 return False
+            if rolling and closing>0 and obj.last_touch:
+                other.last_touch=obj.last_touch;other.last_touch_position=before
         return True
 
     def robot_prop_contact(self, u, v, radius):
@@ -467,7 +480,7 @@ class World:
             self.restore_props(saved)
             valid = True
             for obj in self.props:
-                if obj.held_by is self:
+                if obj.inactive or obj.held_by is self:
                     continue
                 u,v = rotate(obj.x-x,obj.y-y,c,s)
                 hit = self.robot_prop_contact(u,v,obj.radius)
@@ -512,6 +525,10 @@ class World:
                     valid = False
                     break
             if valid and not self.collides(x,y,heading):
+                if self.robot_id:
+                    for obj,ox,oy,vx,vy,_,_ in saved:
+                        if math.hypot(obj.x-ox,obj.y-oy)>1e-8 or math.hypot(obj.vx-vx,obj.vy-vy)>1e-8:
+                            obj.last_touch=self.robot_id;obj.last_touch_position=(ox,oy)
                 return True
         self.restore_props(saved)
         return False
@@ -519,7 +536,7 @@ class World:
     def advance_props(self, dt):
         robots = [self,*self.others]
         for obj in self.props:
-            if obj.held_by is not None or not (obj.vx or obj.vy):
+            if obj.inactive or obj.held_by is not None or not (obj.vx or obj.vy):
                 continue
             count = max(1,math.ceil(math.hypot(obj.vx,obj.vy)*dt))
             for _ in range(count):
@@ -666,12 +683,13 @@ class World:
 
     def refresh_mechanism(self, joint):
         self.joint=joint
-        self.tool_polygons=[mechanisms.mount(poly,self.claw) for poly in mechanisms.polygons(self.claw['kind'],joint,self.max_opening)]
+        self.tool_polygons=[mechanisms.mount(poly,self.claw) for poly in mechanisms.polygons(self.claw['kind'],joint,self.max_opening,self.claw.get('length','short'))]
         self.extra=self.car_wheels+self.tool_polygons
         self.corners=self.body_corners+self.extra
         self.extent=max(math.hypot(x,y) for poly in self.corners for x,y in poly)
 
     def grip_contacts(self, obj, margin=3e-5):
+        if obj.inactive:return False
         if obj.held_by is not None and obj.held_by is not self:
             return False
         u,v=rotate(obj.x-self.x,obj.y-self.y,math.cos(self.heading),math.sin(self.heading))
@@ -719,7 +737,8 @@ class World:
             if self.claw['kind']=='gripper' and change>0:
                 if any(self.grip_contacts(obj,0) for obj in self.props):
                     return False
-            travel=abs(math.radians(joint-old))*12
+            radius=max(math.hypot(x-self.claw['forward'],y-self.claw['right']) for poly in self.tool_polygons for x,y in poly)
+            travel=abs(math.radians(joint-old))*radius
             velocity=(0,0)
             if self.claw['kind']=='kicker':
                 # v = angular velocity x (contact - shaft), in world coordinates.
@@ -777,6 +796,8 @@ class World:
         return math.degrees(self.car_steer-old)*car_model.STEER_RATIO/sign
 
     def step(self, dt):
+        previous=(self.x,self.y,self.heading)
+        self.devices_before_step()
         # Use the same wheel rotation for encoders and motion, including the last
         # fraction of a step when a motor reaches a requested encoder position.
         delta = [0.0]*(self.count+1)
@@ -827,11 +848,13 @@ class World:
             if self.blocked:
                 self.car_speed=self.car_yaw=0.
             self.time+=dt
+            self.devices_after_step(previous,dt)
             return
         dl = math.radians(delta[self.left]/self.encoder_ratio)*self.wheel_radius*self.left_mount_sign*(-1 if self.reversed[0] else 1)
         dr = math.radians(delta[self.right]/self.encoder_ratio)*self.wheel_radius*(-1 if self.reversed[1] else 1)
         self.move((dl+dr)/2,(dl-dr)/self.track,dt,self.axle_offset)
         self.time += dt
+        self.devices_after_step(previous,dt)
 
     def set_bluetooth(self, data):
         if type(data) not in (int,float) or (type(data) is float and not math.isfinite(data)):
@@ -852,6 +875,7 @@ class World:
 
     def motor(self,p,speed):
         p = port(p,self.count)
+        self.line_follow=None
         self.speeds[p] = motor_power(speed)
         self.targets.pop(p,None)
 
@@ -888,7 +912,8 @@ class World:
     def read(self,p,kind,mode=None):
         p = port(p,self.sensor_count)
         if p not in self.sensors or self.sensors[p][0] != kind:
-            raise ValueError(f'На S{p} не настроен датчик типа {dict(light="свет",color="цвет",laser="лазер",sonar="сонар")[kind]}.')
+            raise ValueError(f'На S{p} не настроен датчик типа {dict(light="свет",color="цвет",laser="лазер",sonar="сонар").get(kind,kind)}.')
+        if kind in ('touch','ir','gyro','line','eye'):return self.read_device(p,mode)
         _,x,y,heading = self.sensor_pose(p)
         if kind in ('laser','sonar'):
             if kind == 'laser' and mode not in (None,1,2):
@@ -907,6 +932,7 @@ class World:
                 for circle in self.circles:
                     nearest = min(nearest,circle_hit(x,y,dx,dy,circle,nearest))
                 for obj in self.props:
+                    if obj.inactive:continue
                     nearest = min(nearest,circle_hit(x,y,dx,dy,obj.circle(),nearest))
                 for o in self.others:
                     c,s = math.cos(o.heading),math.sin(o.heading)
@@ -960,7 +986,7 @@ class World:
         return round(values[mode])
 
     def snapshot(self):
-        return dict(x=self.x,y=self.y,heading=self.heading,time=self.time,
+        return dict(x=self.x,y=self.y,heading=self.heading,time=self.time,devices=self.device_snapshot(),
                     mechanism=dict(angle=self.joint,held=self.props.index(self.held) if self.held else None) if self.mechanism_port else None,
                     blocked=self.blocked,motors=self.speeds[1:],encoders=[round(x) for x in self.encoders[1:]],
                     bluetooth=dict(connected=self.bluetooth_peer is not None,peer=self.bluetooth_peer_key,

@@ -42,20 +42,25 @@ export async function uploadActiveFile(devices: DeviceTreeProvider, extensionPat
         if (!await document.save()) throw new Error('Файл не сохранён. Загрузка отменена.');
     }
     if (document.uri.scheme !== 'file') throw new Error('Для загрузки сохраните программу на локальном диске.');
+    await uploadProgramSnapshot(devices, extensionPath, {name:path.basename(document.uri.fsPath), source:document.getText()}, document.uri.fsPath);
+}
+export async function uploadProgramSnapshot(devices: DeviceTreeProvider, extensionPath: string, program: {name:string;source:string}, originalPath?:string): Promise<void> {
+    if(validFileName(program.name) || !/\.py$/i.test(program.name))throw new Error('Некорректное имя Python-файла.');
     const device = devices.getSelectedDevice();
     if (!device) throw new Error('Найдите и выберите устройство в разделе «Устройства USB».');
     const stat = await fs.promises.stat(device.mountpoint);
     if (!stat.isDirectory()) throw new Error('Выбранное устройство недоступно. Повторите поиск устройств.');
-    const destination = path.join(device.mountpoint, path.basename(document.uri.fsPath));
+    const destination = path.join(device.mountpoint, program.name);
     const samePath = (a: string, b: string): boolean => process.platform === 'win32' ? path.resolve(a).toLowerCase() === path.resolve(b).toLowerCase() : path.resolve(a) === path.resolve(b);
-    if (samePath(document.uri.fsPath, destination)) throw new Error('Открытый файл уже находится на выбранном устройстве.');
-    if (usesGyroLibrary(document.getText())) {
+    if (originalPath && samePath(originalPath, destination)) throw new Error('Открытый файл уже находится на выбранном устройстве.');
+    if (usesGyroLibrary(program.source)) {
         const library = path.join(extensionPath, 'stub_libs', 'gyro_lib.py');
         await fs.promises.access(library, fs.constants.R_OK);
         await fs.promises.copyFile(library, path.join(device.mountpoint, 'gyro_lib.py'));
     }
-    await fs.promises.copyFile(document.uri.fsPath, destination);
-    vscode.window.showInformationMessage('Загружен файл ' + path.basename(document.uri.fsPath) + ' на ' + device.label + ' (' + device.mountpoint + ').');
+    if(devices.getSelectedDevice() !== device)throw new Error('Выбранное USB-устройство изменилось. Повторите загрузку.');
+    await fs.promises.writeFile(destination, program.source, 'utf8');
+    vscode.window.showInformationMessage('Загружен файл ' + program.name + ' на ' + device.label + ' (' + device.mountpoint + ').');
 }
 export async function openExampleFile(exampleName: unknown, extensionPath: string, language: 'python' | 'c' = 'python'): Promise<void> {
     const catalog: ReadonlyArray<{file: string; legacyFile?: string}> = language === 'c' ? C_PROGRAM_EXAMPLES : PROGRAM_EXAMPLES;

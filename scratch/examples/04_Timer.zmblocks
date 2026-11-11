@@ -1,0 +1,8 @@
+{
+  "format": "zmrobo-blocks",
+  "version": 1,
+  "controller": "E6",
+  "workspace": {
+    "xml": "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><variables></variables><block type=\"rc_start\" id=\"-_/DN2J+uBy])fa9@C0}\" x=\"45\" y=\"55\"><field name=\"DEVICE\">E6RCU</field><field name=\"TASK\">1</field><next><block type=\"rc_timer_reset\" id=\"4vFBZpU12KejvkJ@zU+I\"><next><block type=\"rc_motor_run\" id=\"C7Fb{-F,FrN_X8LDUqu=\"><field name=\"M\">1</field><value name=\"S\"><shadow type=\"math_number\" id=\"[nz88Y24=cCtmZ7_(m5n\"><field name=\"NUM\">50</field></shadow></value><next><block type=\"rc_motor_run\" id=\"5n1]U.kpG-7?FWhH,lH}\"><field name=\"M\">3</field><value name=\"S\"><shadow type=\"math_number\" id=\"c$W-Ai,h#C?V+KHSMM[E\"><field name=\"NUM\">50</field></shadow></value><next><block type=\"control_wait_until\" id=\"(#L/5A}/p={=Z@%wR_fV\"><value name=\"CONDITION\"><block type=\"operator_gt\" id=\"bZnOpr96NU;UZSJ/Mspv\"><value name=\"OPERAND1\"><block type=\"rc_timer\" id=\"b;70cPj/6{+KcQD1EQ|V\"></block></value><value name=\"OPERAND2\"><shadow type=\"text\" id=\"b9TJ(LV^(nkb%i|6bly6\"><field name=\"TEXT\">1000</field></shadow></value></block></value><next><block type=\"rc_motor_stop\" id=\"E1u(?ZH9@-`}RXU#se`G\"><field name=\"M\">1</field><next><block type=\"rc_motor_stop\" id=\"DD)ZU5!z][hS!~Hjv#7}\"><field name=\"M\">3</field></block></next></block></next></block></next></block></next></block></next></block></next></block></xml>"
+  }
+}

@@ -4,6 +4,7 @@ exports.deactivate = exports.activate = void 0;
 const vscode = require("vscode");
 const path = require("path");
 const fs = require("fs");
+const BlockConnections_1 = require("./BlockConnections");
 const CCommands_1 = require("./CCommands");
 const CDocuments_1 = require("./CDocuments");
 const CPortSettings_1 = require("./CPortSettings");
@@ -210,6 +211,47 @@ function activate(context) {
             uploading = false;
         }
     };
+    // Explicit snapshots let custom editors use the existing connections without
+    // depending on activeTextEditor or simulating editor focus.
+    const checkProgram = (program) => {
+        if (!vscode.workspace.isTrusted)
+            throw new Error('Откройте доверенную папку.');
+        if (!program || typeof program.source !== 'string' || Buffer.byteLength(program.source) > 400000 || typeof program.name !== 'string' || (0, FileOperations_1.validFileName)(program.name) || !/\.py$/i.test(program.name))
+            throw new Error('Некорректная Python-программа.');
+        const expected = currentSet === 'E-RCU' ? 'E6' : currentSet === 'E7' ? 'E7' : 'H';
+        if (program.controller !== expected && !(program.controller === 'M6' && expected === 'E6'))
+            throw new Error('В панели расширения выберите контроллер ' + program.controller + '. Сейчас выбран ' + expected + '.');
+        if (changingConnection || uploading)
+            throw new Error('Дождитесь завершения текущей операции.');
+    };
+    context.subscriptions.push(vscode.commands.registerCommand('extension.uploadProgram', async (program) => {
+        checkProgram(program);
+        uploading = true;
+        try {
+            if (selectedTransport === 'bluetooth')
+                await bluetooth.upload(program);
+            else if (devices.getSelectedDevice())
+                await (0, FileOperations_1.uploadProgramSnapshot)(devices, context.extensionPath, program);
+            else
+                await usbDebug.upload(program);
+        }
+        finally {
+            uploading = false;
+        }
+    }), vscode.commands.registerCommand('extension.playProgram', async (program) => {
+        checkProgram(program);
+        if (selectedTransport === 'bluetooth')
+            await bluetooth.play(program);
+        else if (usbDebug.connectedAddress)
+            await usbDebug.play(program);
+        else
+            throw new Error('Для запуска подключите USB COM или Bluetooth. При загрузке на USB-накопитель запускайте файл в меню робота.');
+    }), vscode.commands.registerCommand('extension.stopProgram', async () => {
+        if (selectedTransport === 'bluetooth' && bluetooth.connectedAddress)
+            await bluetooth.stop();
+        else if (usbDebug.connectedAddress)
+            await usbDebug.stop();
+    }));
     register('extension.uploadFile', () => upload());
     register('extension.uploadFileToDevice', () => upload());
     register('extension.uploadUSB', (device) => switchConnection('usb', async () => {
@@ -218,7 +260,7 @@ function activate(context) {
         selectedTransport = 'usb';
         await upload('usb');
     }));
-    register('extension.connectUSBDevice', (device) => switchConnection('usb', async () => {
+    const connectUsbDevice = (device) => switchConnection('usb', async () => {
         var _a, _b, _c, _d;
         if (!device.mountpoint && !((_a = device.serialDevices) === null || _a === void 0 ? void 0 : _a.length))
             throw new Error('Выберите USB-контроллер.');
@@ -234,7 +276,8 @@ function activate(context) {
             if (port)
                 await usbDebug.connect(port);
         }
-    }));
+    });
+    register('extension.connectUSBDevice', connectUsbDevice);
     register('extension.connectUSBSerial', (device) => {
         if (!(device === null || device === void 0 ? void 0 : device.address))
             return usbDebug.scan();
@@ -260,6 +303,54 @@ function activate(context) {
         return switchConnection('bluetooth', () => bluetooth.connect(device));
     });
     register('extension.disconnectBluetooth', () => bluetooth.disconnect());
+    (0, BlockConnections_1.registerBlockConnections)(context, {
+        state: () => {
+            const bt = selectedTransport === 'bluetooth', disk = devices.getSelectedDevice();
+            const address = bt ? bluetooth.connectedAddress : usbDebug.connectedAddress;
+            return { transport: selectedTransport, connected: !!(address || (!bt && disk)), name: bt ? 'Bluetooth' : address ? 'USB COM' : disk ? String(disk.label) : 'USB', address: address || (!bt ? disk === null || disk === void 0 ? void 0 : disk.mountpoint : undefined), canRun: !!address };
+        },
+        busy: () => changingConnection || uploading,
+        scan: async (transport) => {
+            if (transport === 'bluetooth') {
+                await bluetooth.scan();
+                return bluetoothTree.getChildren().filter(row => { var _a; return ((_a = row.command) === null || _a === void 0 ? void 0 : _a.command) === 'extension.connectBluetooth'; }).map(row => ({ label: String(row.label), description: String(row.description || ''), device: row.command.arguments[0] }));
+            }
+            const scans = await Promise.all([
+                () => devices.detectDevices(),
+                () => usbDebug.scan()
+            ].map(async (scan) => {
+                try {
+                    await scan();
+                    return { failed: false, message: '' };
+                }
+                catch (error) {
+                    return { failed: true, message: (0, FileOperations_1.errorMessage)(error) };
+                }
+            }));
+            const failures = scans.filter(result => result.failed);
+            if (failures.length === scans.length)
+                throw new Error(failures.map(result => result.message).join(' '));
+            for (const result of failures)
+                vscode.window.showWarningMessage(result.message);
+            return devices.getChildren().filter(row => { var _a; return row.mountpoint || ((_a = row.serialDevices) === null || _a === void 0 ? void 0 : _a.length); }).map(row => ({ label: String(row.label), description: [row.mountpoint, ...(row.serialDevices || []).map(p => p.address)].filter(Boolean).join(' · '), device: row }));
+        },
+        connect: async (transport, device) => {
+            if (transport === 'usb')
+                await connectUsbDevice(device);
+            else
+                await switchConnection('bluetooth', () => bluetooth.connect(device));
+        },
+        disconnect: async (transport) => {
+            if (transport === 'bluetooth')
+                await bluetooth.disconnect();
+            else {
+                await usbDebug.disconnect();
+                devices.clearSelection();
+            }
+        },
+        controller: async (controller) => { const target = controller === 'E7' ? 'E7' : 'E-RCU'; if (currentSet !== target)
+            await selectSet(target); }
+    });
     register('extension.uploadBluetooth', async () => upload('bluetooth'));
     register('extension.playBluetooth', async () => { if (cMode)
         throw new Error('Запустите собранный .bin в меню E6.'); return bluetooth.play(await (0, BluetoothOperations_1.captureBluetoothProgram)(false)); });

@@ -866,10 +866,10 @@ task1()
         <br><strong>Пример:</strong><br>
         <pre><code>
 import rcu
-import gyro
+import gyro_lib
 import motor
 
-gyro = gyro.Gyro(1)          # гироскоп на 1-м порту
+gyro = gyro_lib.Gyro(1)          # гироскоп на 1-м порту
 gyro.CalibrateGyro()          # калибровка
 
 while True:
@@ -1259,7 +1259,7 @@ trace.SetTraceV2I2AllColor(4, 2)
             <br><strong>Пример:</strong><br>
         <pre><code>
 trace.SetTraceV2I2Threshold(4, 5)
-# устанавливаем порог в 5 секунд
+# калибруем порог в течение 5 секунд
 </code></pre>
         </p>
     </div>

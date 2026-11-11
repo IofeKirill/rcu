@@ -49,6 +49,9 @@ class Robot:
     def get_bluetooth(self):
         return call('get_bluetooth')
 
+    def device(self,*args):
+        return call('device',*args)
+
     def motor(self,*args):
         return call('motor',*args)
     def read(self,*args):

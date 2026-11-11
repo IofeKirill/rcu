@@ -23,5 +23,5 @@ try {
     const at=process.argv.indexOf('--out');
     if(at>=0&&process.argv[at+1]){const file=path.resolve(root,process.argv[at+1]);if(fs.existsSync(file)&&fs.statSync(file).isFile())found.add(file);}
     if(!found.size)throw Error('Упаковка завершилась, но новый VSIX не найден. Проверьте его явно: npm run check:simulator -- --vsix ПУТЬ_К_VSIX');
-    for(const file of found){fail(checkVsix(file));console.log('Проверен VSIX с 2D-моделью: '+file);}
+    for(const file of found){fail(checkVsix(file));require('./check-blocks').checkVsix(file);console.log('Проверен VSIX с 2D-моделью: '+file);}
 } catch(error){console.error(error.message);process.exitCode=1;}

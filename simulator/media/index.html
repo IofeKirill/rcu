@@ -14,11 +14,16 @@
   <span>Время</span><output id="timer" aria-label="Время симуляции">0,000 с</output><span id="source" class="source">Выбери Python-файл</span>
 </header>
 <div class="fieldbar setup">
-  <label>Шаблон <select id="preset"><option value="empty" selected>Пустое поле</option><option value="loop">Кольцевая трасса</option><option value="maze">Лабиринт 5×5</option><option value="ring">Кегельринг 1 м</option><option value="macro">Кегельринг макро 1,5 м</option><option value="snake">Слалом</option><option value="checker">Инверсная линия</option><option value="contour">Эстафета</option><option value="narrow">Узкая линия 1 см</option><option value="crossings">Линия с перекрёстками</option><option value="bigtravel">Большое путешествие</option><option value="rally">Ралли: коридор</option></select></label>
+  <label>Шаблон <select id="preset"><option value="empty" selected>Пустое поле</option><option value="loop">Линия S</option><option value="maze">Лабиринт 5×5</option><option value="ring">Кегельринг 1 м</option><option value="macro">Кегельринг макро 1,5 м</option><option value="snake">Слалом</option><option value="checker">Инверсная линия</option><option value="contour">Эстафета</option><option value="narrow">Узкая линия 1 см</option><option value="crossings">Линия с перекрёстками</option><option value="bigtravel">Большое путешествие</option><option value="tennis">Теннис · 2 робота</option><option value="rally">Ралли: коридор</option></select></label>
   <button id="apply">Загрузить</button>
-  <button id="realism" aria-pressed="false" title="Погрешности моторов и датчиков">Реалистичность</button>
+
 
 </div>
+<img id="deviceTouch" src="{{deviceTouch}}" hidden alt="">
+<img id="deviceIr" src="{{deviceIr}}" hidden alt="">
+<img id="deviceGyro" src="{{deviceGyro}}" hidden alt="">
+<img id="deviceLine" src="{{deviceLine}}" hidden alt="">
+<img id="deviceEye" src="{{deviceEye}}" hidden alt="">
 <img id="deviceLight" src="{{deviceLight}}" hidden alt="">
 <img id="deviceLed" src="{{deviceLed}}" hidden alt="">
 <img id="robotCar" src="{{robotCar}}" hidden alt="">
@@ -27,9 +32,13 @@
 <img id="robotM6" src="{{robotM6}}" hidden alt="">
 <img id="deviceLaser" src="{{deviceLaser}}" hidden alt="">
 <img id="deviceSonar" src="{{deviceSonar}}" hidden alt="">
+<script id="kickerData" type="application/json" nonce="{{nonce}}">{{kickerData}}</script>
 <script id="clawData" type="application/json" nonce="{{nonce}}">{{clawData}}</script>
 <script id="bigTravelData" type="application/json" nonce="{{nonce}}">{{bigTravelData}}</script>
 <img id="beamStraight" src="{{beamStraight}}" hidden alt="">
+<img id="kickerMedium" src="{{kickerMedium}}" hidden alt="">
+<img id="kickerLong" src="{{kickerLong}}" hidden alt="">
+<img id="kickerExtraLong" src="{{kickerExtraLong}}" hidden alt="">
 <img id="beamAngle" src="{{beamAngle}}" hidden alt="">
 <img id="clawStraight" src="{{clawStraight}}" hidden alt="">
 <img id="clawSmall" src="{{clawSmall}}" hidden alt="">
@@ -54,6 +63,7 @@
       <button id="undo" class="edit-tool" title="Отменить · Ctrl+Z" aria-label="Отменить правку поля"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 10h10a5 5 0 1 1 0 10h-4M8 6l-4 4 4 4" stroke="#eeb45c" stroke-width="2"/></svg></button>
       <button id="redo" class="edit-tool" title="Вернуть · Ctrl+Y" aria-label="Вернуть действие">↷</button>
       <div class="run-tools" aria-label="Управление программой">
+        <button id="training" aria-pressed="false" title="Тренировочный режим: без проверки задания и баллов" aria-label="Тренировочный режим">⚑</button>
         <button id="reset" title="На старт" aria-label="На старт">↶</button>
         <button id="stop" title="Стоп" aria-label="Стоп" disabled>■</button>
         <button id="run" class="primary" title="Запуск" aria-label="Запуск">▶</button>
@@ -61,6 +71,7 @@
     </nav>
     <div class="field">
       <div class="options">
+        <button id="lockField" aria-pressed="false" title="Заблокировать рисунок поля" aria-label="Заблокировать поле">🔓</button>
         <label><input id="grid" type="checkbox" checked> Сетка</label><span title="Сторона клетки на поле">Масштаб: 1 клетка = 10 см</span>
         <label><input id="showRegions" type="checkbox" checked> Регионы</label>
         <label><input id="snapGrid" type="checkbox"> Привязка к сетке</label>
@@ -69,6 +80,7 @@
         <label id="paintOption" class="setup" hidden>Цвет <input id="paint" type="color" value="#202020"></label>
         <label id="widthOption" class="setup" hidden>Толщина <input id="width" type="number" value="4" min="1" max="50"> см</label>
       </div>
+      <div class="map-controls"><span id="modeLabel" hidden>Тренировочный режим — без оценки</span><button id="realism" class="edit-tool" aria-pressed="false" title="Погрешности моторов и датчиков">Реалистичность</button></div>
       <div id="viewport"><canvas id="world" width="800" height="500" tabindex="0" aria-label="Поле симулятора"></canvas>
       <div id="fieldMenu" role="menu" hidden><button id="load" role="menuitem">Открыть полигон XML…</button><button id="save" role="menuitem">Сохранить полигон XML…</button></div></div>
       <div id="hint" class="hint"></div>
@@ -81,13 +93,16 @@
       <button data-tab="readings" aria-pressed="true">Показания</button>
       <button data-tab="robot" aria-pressed="false">Робот</button>
       <button data-tab="memory" aria-pressed="false">Память</button>
-      <button data-tab="variables" aria-pressed="false">Переменные</button>
       <button data-tab="task" aria-pressed="false">Задание</button>
       <button data-tab="output" aria-pressed="false">Вывод</button>
     </div>
     <section id="readings" class="tab">
+      <button id="readSensors">Прочитать показания</button><p id="sensorStatus" role="status"></p>
       <h2>Датчики и энкодеры</h2><div id="carReadings" hidden></div>
       <table><thead><tr><th>Порт</th><th>Устройство</th><th>Значение</th></tr></thead><tbody id="telemetry"></tbody></table>
+      <h2 class="variables-title">Переменные</h2>
+      <table><thead><tr><th>Имя</th><th>Значение</th></tr></thead><tbody id="variableRows"></tbody></table>
+      <p id="noVariables">Значения появятся после запуска программы.</p>
     </section>
     <section id="robot" class="tab" hidden>
       <div class="config setup">
@@ -108,56 +123,48 @@
         </div>
         <div id="mechanismPortRow" class="config setup" hidden><label for="mechanismPort">Мотор механизма</label><select id="mechanismPort"></select></div>
         <div id="maxOpeningRow" class="config setup" hidden><label for="maxOpening">Макс. раскрытие</label><span><input id="maxOpening" type="number" min="0" max="180" step="1" value="50" aria-label="Максимальный угол между балками захвата"> °</span></div>
+        <div id="kickerLengthRow" class="config setup" hidden><label for="kickerLength">Длина пиналки</label><select id="kickerLength"><option value="short">Короткая</option><option value="medium">Средняя</option><option value="long">Длинная</option><option value="extraLong">Очень длинная</option></select></div>
         <div id="initialAngleRow" class="config setup" hidden><label for="initialAngle">Начальный угол</label><span><input id="initialAngle" type="number" min="0" max="360" step="1" value="0" aria-label="Начальный угол пиналки; ноль — вперёд"> °</span></div>
       </details>
       <details open><summary>Датчики по портам</summary>
         <table class="ports"><thead><tr><th>Порт</th><th>Устройство</th><th>Высота, см</th></tr></thead><tbody id="sensors" class="setup"></tbody></table>
+      </details>
+      <details id="sensorSettings" class="setup" hidden open><summary>Подсветка датчика</summary>
+        <label>Порт <select id="deviceSettingsPort" aria-label="Порт настройки подсветки"></select></label>
+        <div id="deviceSettingsFields"></div>
       </details>
     </section>
     <section id="memory" class="tab" hidden>
       <div class="pager"><button id="prevPage" aria-label="Предыдущие ячейки">←</button><span id="page"></span><button id="nextPage" aria-label="Следующие ячейки">→</button></div>
       <div id="memoryGrid"><div id="cells" class="setup"></div></div>
     </section>
-    <section id="variables" class="tab" hidden>
-      <table><thead><tr><th>Имя</th><th>Значение</th></tr></thead><tbody id="variableRows"></tbody></table>
-      <p id="noVariables">Значения появятся после запуска программы.</p>
-    </section>
     <section id="task" class="tab" hidden>
+      <h2 id="taskTitle">Задание</h2><p id="taskDescription"></p>
+      <div class="task-actions setup"><button id="editTask">Редактировать задание</button><button id="previewTask" aria-pressed="false">Проверить вручную</button></div>
+      <p id="previewHelp" hidden>Перемещайте робота и предметы по полю. Проверка выполняется после отпускания мыши. Для проверки выдержки времени нажмите «Проверить условия».</p>
+      <div id="previewControls" hidden><button id="previewCheck">Проверить условия (+1 с)</button><button id="previewReset">Начать проверку заново</button></div>
+      <div id="tennisControls" hidden>
+        <h2>Матч до двух побед</h2><p id="tennisMatchScore"></p><p id="tennisSetScore"></p>
+        <pre id="tennisHistory"></pre>
+        <div class="task-actions"><button id="tennisStop">Завершить сет</button><button id="tennisNext">Следующий сет</button><button id="tennisReplay">Переиграть сет</button><button id="tennisNew">Новый матч</button></div>
+        <details><summary>Решение судьи</summary><p>Для клинча, спорного аута или ничьей. Решение заменяет результат текущего сета.</p><label>Результат <select id="tennisDecision"><option value="score">По текущему счёту</option><option value="0">Победа слева</option><option value="1">Победа справа</option><option value="draw">Ничья / переигровка</option></select></label><button id="tennisJudge">Применить решение</button></details>
+        <details><summary>Как учитывается регламент</summary><p>Поле до линий аута — 200 × 100 см, по 50 см за аутами. Чёрные линии — 5 см, между ними — 15 см. Зелёные полосы — 15 см. Шесть мячей диаметром 5,7 см. Между краями соседних мячей — 10 см (между центрами — 15,7 см). Зазор от крайнего мяча до зелёной полосы — 12,5 см, до чёрной линии — 2,5 см.</p><p>Сет — до 60 с, матч — до двух побед. Мячи на своей половине, пропущенные голы, собственные ауты и штрафы дают очки сопернику. Нейтральные мячи не учитываются. При равенстве очков преимущество у голов за линией аута.</p><p>Робот с датчиками должен сохранять размеры не более 20 × 20 см. Клешни и пиналки запрещены. Нет движения 5 с после старта или робот полностью на чужом поле — поражение. Наезд на чужую чёрную линию — один штраф за каждый новый заезд. Более 5 с за границей своей зоны, в том числе в нейтральной зоне, — поражение.</p><p>Клинч без движения 5 с и отсутствие движения обоих роботов более 15 с останавливают симуляцию для решения судьи. Гол фиксируется после полного пересечения мячом линии аута. Для положения мяча на половинах используется его центр; мячи на чёрных полосах не засчитываются. Спорные эпизоды решает судья.</p></details>
+      </div>
       <h2>Результат</h2><p id="taskResult"></p><p id="taskReason"></p>
+      <ol id="taskProgress"></ol>
       <pre id="taskCounters"></pre><pre id="taskMessages"></pre>
       <details><summary>События</summary><pre id="taskEvents"></pre></details>
-      <div class="setup">
-        <h2>Регионы</h2><p>Вход засчитывается, когда в регионе находится хотя бы половина площади проекции объекта. Штриховка не видна датчикам.</p>
+      <details class="setup"><summary>Зоны на поле</summary>
+        <p>Зона учитывается, когда внутри не менее половины площади объекта. Разметка зон не видна датчикам.</p>
         <button id="regionsShowAll">Показать все</button><button id="regionsHideAll">Скрыть все</button>
         <div id="regionList"></div>
         <div id="regionFields" hidden>
-          <p>ID: <code id="regionId"></code></p>
           <label>Название <input id="regionName" maxlength="100"></label>
           <label>Цвет <input id="regionColor" type="color" value="#bb55aa"></label>
           <label><input id="regionVisible" type="checkbox" checked> Отображать</label>
-          <p>Перетаскивай регион и угловые точки на поле. Delete удаляет выделенный регион.</p>
+          <p>Перетаскивайте зону и её угловые точки на поле. Delete удаляет выделенную зону.</p>
         </div>
-        <h2>Правила</h2>
-        <label>Лимит времени, с <input id="taskLimit" type="number" min="0" value="0" step="any"></label>
-        <div id="ruleList"></div>
-        <details><summary>Добавить правило</summary>
-          <div class="task-form">
-            <label>Имя <input id="ruleName" maxlength="100"></label>
-            <label>Объект <select id="ruleObject"></select></label>
-            <label>Условие <select id="ruleCondition"><option value="inside">В регионе</option><option value="outside">Вне региона</option></select></label>
-            <label>Регион <select id="ruleRegion"></select></label>
-            <label>Баллы <input id="rulePoints" type="number" value="0" step="any"></label>
-            <label>Сообщение <input id="ruleMessage" maxlength="1000"></label>
-            <label>Включить событие <select id="ruleNext"></select></label>
-            <label>Завершение <select id="ruleOutcome"><option value="">Продолжить</option><option value="success">Успех</option><option value="fail">Нарушение</option></select></label>
-            <label><input id="ruleEnabled" type="checkbox" checked> Активно при старте</label>
-            <label><input id="ruleOnce" type="checkbox" checked> Один раз (сними для повтора при новом входе)</label>
-            <button id="ruleAdd">Добавить</button>
-          </div>
-        </details>
-        <details><summary>Сложные правила · JSON</summary><p>Общий формат правил для редактора и импорта. Здесь доступны счётчики, логические условия, таймеры и действия.</p><textarea id="taskCode" rows="16" spellcheck="false" aria-label="Правила задания JSON"></textarea><button id="taskApplyCode">Применить правила</button></details>
-        <p id="taskEditStatus" role="status"></p>
-      </div>
+      </details>
     </section>
     <section id="output" class="tab" hidden>
       <h2>Экран робота</h2><pre id="display"></pre>
@@ -165,7 +172,15 @@
     </section>
   </aside>
 </main>
+<dialog id="taskDialog" aria-labelledby="taskDialogTitle">
+  <div class="dialog-heading"><h1 id="taskDialogTitle">Редактор задания</h1><button id="closeTaskDialog" aria-label="Закрыть редактор">×</button></div>
+  <div id="taskDraftBody"></div>
+  <p id="taskDraftErrors" role="alert"></p>
+  <footer><button id="cancelTaskDraft">Отмена</button><button id="saveTaskDraft" class="primary">Сохранить задание</button></footer>
+</dialog>
+<script nonce="{{nonce}}" src="{{builderJs}}"></script>
 <script nonce="{{nonce}}" src="{{taskJs}}"></script>
+<script nonce="{{nonce}}" src="{{tennisJs}}"></script>
 <script nonce="{{nonce}}" src="{{js}}"></script>
 </body>
 </html>

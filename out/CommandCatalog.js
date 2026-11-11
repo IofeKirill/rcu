@@ -277,7 +277,7 @@ exports.COMMANDS = {
     "rcu.SetInSound": {
         "label": "SetInSound()",
         "snippet": "rcu.SetInSound(${1:1047}, ${2:5})",
-        "description": "Установка частоты звука в Гц. Параметры: частота в Гц, длительность в мс. Пример: SetInSound(512, 500)"
+        "description": "Установка частоты звука в Гц. Параметры: частота в Гц, длительность в секундах. Пример: SetInSound(512, 0.5)"
     },
     "rcu.SetInBeep": {
         "label": "SetInBeep()",
@@ -472,7 +472,7 @@ exports.COMMANDS = {
     "trace.LineForBmp": {
         "label": "LineForBmp()",
         "snippet": "trace.LineForBmp(${1:speed}, ${2:encoder})",
-        "description": "Движение по линии на заданной скорости до угла поворота энкодера. Пример: LineMillisecond(70, 360)"
+        "description": "Движение по линии на заданной скорости до угла поворота энкодера. Пример: LineForBmp(70, 360)"
     },
     "trace.LineTurnEncounterline": {
         "label": "LineTurnEncounterline()",

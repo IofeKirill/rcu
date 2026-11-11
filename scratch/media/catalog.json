@@ -1,0 +1,6328 @@
+[
+  {
+    "id": "sensor.SetNFC",
+    "name": "sensor.SetNFC",
+    "label": "Запустить операцию NFC",
+    "description": "Запустить операцию NFC. Параметры: Порт датчика (1–8). Пример: sensor.SetNFC(1)",
+    "args": [
+      {
+        "label": "1",
+        "value": 1
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Датчики",
+      "E7": "Датчики",
+      "M6": "Датчики"
+    },
+    "sim": false
+  },
+  {
+    "id": "sensor.GetNFCStatus",
+    "name": "sensor.GetNFCStatus",
+    "label": "Получить статус операции NFC",
+    "description": "Получить статус операции NFC. Параметры: Порт датчика (1–8). Пример: sensor.SetNFC(1)\nstatus = sensor.GetNFCStatus(1)\nif status == 1:\n    print(\"NFC: успешно\")",
+    "args": [
+      {
+        "label": "1",
+        "value": 1
+      }
+    ],
+    "output": true,
+    "sets": {
+      "E6": "Датчики",
+      "E7": "Датчики",
+      "M6": "Датчики"
+    },
+    "sim": false
+  },
+  {
+    "id": "sensor.GetRainfall",
+    "name": "sensor.GetRainfall",
+    "label": "Считать значение датчика дождя",
+    "description": "Считать значение датчика дождя. Параметры: Порт датчика (1–8). Пример: value = sensor.GetRainfall(1)\nprint(value)",
+    "args": [
+      {
+        "label": "1",
+        "value": 1
+      }
+    ],
+    "output": true,
+    "sets": {
+      "E6": "Датчики",
+      "E7": "Датчики",
+      "M6": "Датчики"
+    },
+    "sim": false
+  },
+  {
+    "id": "sensor.GetAirQuality",
+    "name": "sensor.GetAirQuality",
+    "label": "Считать значение датчика качества воздуха",
+    "description": "Считать значение датчика качества воздуха. Параметры: Порт датчика (1–8). Пример: value = sensor.GetAirQuality(1)\nprint(value)",
+    "args": [
+      {
+        "label": "1",
+        "value": 1
+      }
+    ],
+    "output": true,
+    "sets": {
+      "E6": "Датчики",
+      "E7": "Датчики",
+      "M6": "Датчики"
+    },
+    "sim": false
+  },
+  {
+    "id": "display.SetDisplayLatticePic",
+    "name": "display.SetDisplayLatticePic",
+    "label": "Показать изображение на матричном экране",
+    "description": "Показать изображение на матричном экране. Параметры: Порт; строка изображения в шестнадцатеричном формате; яркость. Пример: display.SetDisplayLatticePic(1, \"00003c3c6666424242420000000000000000000004200c301818f00f00000000\", 10)",
+    "args": [
+      {
+        "label": "1",
+        "value": 1
+      },
+      {
+        "label": "\"00003c3c6666424242420000000000000000000004200c301818f00f00000000\"",
+        "value": "00003c3c6666424242420000000000000000000004200c301818f00f00000000"
+      },
+      {
+        "label": "10",
+        "value": 10
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Матричный экран",
+      "E7": "Матричный экран",
+      "M6": "Матричный экран"
+    },
+    "sim": false
+  },
+  {
+    "id": "display.SetDisplayLattice",
+    "name": "display.SetDisplayLattice",
+    "label": "Показать текст на матричном экране",
+    "description": "Показать текст на матричном экране. Параметры: Порт; строка; яркость. Пример: display.SetDisplayLattice(1, \"A\", 10)",
+    "args": [
+      {
+        "label": "1",
+        "value": 1
+      },
+      {
+        "label": "\"A\"",
+        "value": "A"
+      },
+      {
+        "label": "10",
+        "value": 10
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Матричный экран",
+      "E7": "Матричный экран",
+      "M6": "Матричный экран"
+    },
+    "sim": false
+  },
+  {
+    "id": "display.SetDisplayLatticeXY",
+    "name": "display.SetDisplayLatticeXY",
+    "label": "Управлять точкой матричного экрана",
+    "description": "Управлять точкой матричного экрана. Параметры: Порт; координата X; координата Y; состояние точки; яркость. Пример использует состояние 1. Пример: display.SetDisplayLatticeXY(1, 10, 10, 1, 10)",
+    "args": [
+      {
+        "label": "1",
+        "value": 1
+      },
+      {
+        "label": "10",
+        "value": 10
+      },
+      {
+        "label": "10",
+        "value": 10
+      },
+      {
+        "label": "1",
+        "value": 1
+      },
+      {
+        "label": "10",
+        "value": 10
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Матричный экран",
+      "E7": "Матричный экран",
+      "M6": "Матричный экран"
+    },
+    "sim": false
+  },
+  {
+    "id": "display.SetDisplayLatticeString",
+    "name": "display.SetDisplayLatticeString",
+    "label": "Показать движущуюся строку на матричном экране",
+    "description": "Показать движущуюся строку на матричном экране. Параметры: Порт; текст; направление (0 — влево, 1 — вправо, 2 — вверх, 3 — вниз); скорость; яркость. Пример: display.SetDisplayLatticeString(1, \"hello\", 0, 100, 10)",
+    "args": [
+      {
+        "label": "1",
+        "value": 1
+      },
+      {
+        "label": "\"hello\"",
+        "value": "hello"
+      },
+      {
+        "label": "0",
+        "value": 0
+      },
+      {
+        "label": "100",
+        "value": 100
+      },
+      {
+        "label": "10",
+        "value": 10
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Матричный экран",
+      "E7": "Матричный экран",
+      "M6": "Матричный экран"
+    },
+    "sim": false
+  },
+  {
+    "id": "display.SetDisplayLatticeClear",
+    "name": "display.SetDisplayLatticeClear",
+    "label": "Очистить матричный экран",
+    "description": "Очистить матричный экран. Параметры: Порт экрана. Пример: display.SetDisplayLatticeClear(1)",
+    "args": [
+      {
+        "label": "1",
+        "value": 1
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Матричный экран",
+      "E7": "Матричный экран",
+      "M6": "Матричный экран"
+    },
+    "sim": false
+  },
+  {
+    "id": "actuator.SetPump",
+    "name": "actuator.SetPump",
+    "label": "Управлять насосом",
+    "description": "Управлять насосом. Параметры: Порт; состояние (пример: 1 — включение). Пример: actuator.SetPump(1, 1)",
+    "args": [
+      {
+        "label": "1",
+        "value": 1
+      },
+      {
+        "label": "1",
+        "value": 1
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Исполнительные устройства",
+      "E7": "Исполнительные устройства",
+      "M6": "Исполнительные устройства"
+    },
+    "sim": false
+  },
+  {
+    "id": "actuator.SetElectromagnet",
+    "name": "actuator.SetElectromagnet",
+    "label": "Включить или выключить электромагнит",
+    "description": "Включить или выключить электромагнит. Параметры: Порт; состояние: 1 — включить, 0 — выключить. Пример: actuator.SetElectromagnet(1, 1)\n# Для выключения:\nactuator.SetElectromagnet(1, 0)",
+    "args": [
+      {
+        "label": "1",
+        "value": 1
+      },
+      {
+        "label": "1",
+        "value": 1
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Исполнительные устройства",
+      "E7": "Исполнительные устройства",
+      "M6": "Исполнительные устройства"
+    },
+    "sim": false
+  },
+  {
+    "id": "actuator.SetElectromagnetPower",
+    "name": "actuator.SetElectromagnet",
+    "label": "Установить мощность электромагнита",
+    "description": "Установить мощность электромагнита. Параметры: Порт; мощность в процентах (0–100). Пример: actuator.SetElectromagnet(1, 100)",
+    "args": [
+      {
+        "label": "1",
+        "value": 1
+      },
+      {
+        "label": "100",
+        "value": 100
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Исполнительные устройства",
+      "E7": "Исполнительные устройства",
+      "M6": "Исполнительные устройства"
+    },
+    "sim": false
+  },
+  {
+    "id": "rf.GetRFModuleRemoteBit",
+    "name": "rf.GetRFModuleRemoteBit",
+    "label": "Проверить кнопку радиопульта",
+    "description": "Проверить кнопку радиопульта. Параметры: Порт; номер кнопки. Пример: pressed = rf.GetRFModuleRemoteBit(1, 1)\nif pressed == 1:\n    print(\"Кнопка нажата\")",
+    "args": [
+      {
+        "label": "1",
+        "value": 1
+      },
+      {
+        "label": "1",
+        "value": 1
+      }
+    ],
+    "output": true,
+    "sets": {
+      "E6": "Радиосвязь",
+      "E7": "Радиосвязь",
+      "M6": "Радиосвязь"
+    },
+    "sim": false
+  },
+  {
+    "id": "rf.GetRFModuleRemoteButton",
+    "name": "rf.GetRFModuleRemoteButton",
+    "label": "Получить значение кнопки радиопульта",
+    "description": "Получить значение кнопки радиопульта. Параметры: Порт. Пример: button = rf.GetRFModuleRemoteButton(1)",
+    "args": [
+      {
+        "label": "1",
+        "value": 1
+      }
+    ],
+    "output": true,
+    "sets": {
+      "E6": "Радиосвязь",
+      "E7": "Радиосвязь",
+      "M6": "Радиосвязь"
+    },
+    "sim": false
+  },
+  {
+    "id": "rf.GetRFModuleRemoteCode",
+    "name": "rf.GetRFModuleRemoteCode",
+    "label": "Получить код кнопок радиопульта",
+    "description": "Получить код кнопок радиопульта. Параметры: Порт. Пример: code = rf.GetRFModuleRemoteCode(1)",
+    "args": [
+      {
+        "label": "1",
+        "value": 1
+      }
+    ],
+    "output": true,
+    "sets": {
+      "E6": "Радиосвязь",
+      "E7": "Радиосвязь",
+      "M6": "Радиосвязь"
+    },
+    "sim": false
+  },
+  {
+    "id": "rf.GetRFModuleRemoteGravity",
+    "name": "rf.GetRFModuleRemoteGravity",
+    "label": "Считать компоненту наклона радиопульта",
+    "description": "Считать компоненту наклона радиопульта. Параметры: Порт; ось: X — 0, Y — 1, Z — 2. Пример: x = rf.GetRFModuleRemoteGravity(1, 0)",
+    "args": [
+      {
+        "label": "1",
+        "value": 1
+      },
+      {
+        "label": "0",
+        "value": 0
+      }
+    ],
+    "output": true,
+    "sets": {
+      "E6": "Радиосвязь",
+      "E7": "Радиосвязь",
+      "M6": "Радиосвязь"
+    },
+    "sim": false
+  },
+  {
+    "id": "rf.GetRFModuleRemoteRocker",
+    "name": "rf.GetRFModuleRemoteRocker",
+    "label": "Получить значение оси джойстика радиопульта",
+    "description": "Получить значение оси джойстика радиопульта. Параметры: Порт; джойстик: 0 — левый, 1 — правый; ось: 0 — X, 1 — Y. Пример: left_x = rf.GetRFModuleRemoteRocker(1, 0, 0)\nleft_y = rf.GetRFModuleRemoteRocker(1, 0, 1)\nright_x = rf.GetRFModuleRemoteRocker(1, 1, 0)\nright_y = rf.GetRFModuleRemoteRocker(1, 1, 1)",
+    "args": [
+      {
+        "label": "1",
+        "value": 1
+      },
+      {
+        "label": "0",
+        "value": 0
+      },
+      {
+        "label": "0",
+        "value": 0
+      }
+    ],
+    "output": true,
+    "sets": {
+      "E6": "Радиосвязь",
+      "E7": "Радиосвязь",
+      "M6": "Радиосвязь"
+    },
+    "sim": false
+  },
+  {
+    "id": "rf.GetRFModuleRemoteKnob",
+    "name": "rf.GetRFModuleRemoteKnob",
+    "label": "Получить значение энкодера радиопульта",
+    "description": "Получить значение энкодера радиопульта. Параметры: Порт. Пример: value = rf.GetRFModuleRemoteKnob(1)",
+    "args": [
+      {
+        "label": "1",
+        "value": 1
+      }
+    ],
+    "output": true,
+    "sets": {
+      "E6": "Радиосвязь",
+      "E7": "Радиосвязь",
+      "M6": "Радиосвязь"
+    },
+    "sim": false
+  },
+  {
+    "id": "rf.GetRFModuleByte",
+    "name": "rf.GetRFModuleByte",
+    "label": "Получить данные от радиомодуля",
+    "description": "Получить данные от радиомодуля. Параметры: Порт. Пример: value = rf.GetRFModuleByte(1)",
+    "args": [
+      {
+        "label": "1",
+        "value": 1
+      }
+    ],
+    "output": true,
+    "sets": {
+      "E6": "Радиосвязь",
+      "E7": "Радиосвязь",
+      "M6": "Радиосвязь"
+    },
+    "sim": false
+  },
+  {
+    "id": "rf.SetRFPassWord",
+    "name": "rf.SetRFPassWord",
+    "label": "Задать пароль радиомодуля",
+    "description": "Задать пароль радиомодуля. Параметры: Порт; пароль. Пример: rf.SetRFPassWord(1, 1234567)",
+    "args": [
+      {
+        "label": "1",
+        "value": 1
+      },
+      {
+        "label": "1234567",
+        "value": 1234567
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Радиосвязь",
+      "E7": "Радиосвязь",
+      "M6": "Радиосвязь"
+    },
+    "sim": false
+  },
+  {
+    "id": "rf.SetRFModuleByte",
+    "name": "rf.SetRFModuleByte",
+    "label": "Отправить данные через радиомодуль",
+    "description": "Отправить данные через радиомодуль. Параметры: Порт; передаваемое значение. Пример: rf.SetRFModuleByte(1, 255)",
+    "args": [
+      {
+        "label": "1",
+        "value": 1
+      },
+      {
+        "label": "255",
+        "value": 255
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Радиосвязь",
+      "E7": "Радиосвязь",
+      "M6": "Радиосвязь"
+    },
+    "sim": false
+  },
+  {
+    "id": "rf.SetRFModuleRemoteKnob",
+    "name": "rf.SetRFModuleRemoteKnob",
+    "label": "Установить значение энкодера радиопульта",
+    "description": "Установить значение энкодера радиопульта. Параметры: Порт; новое значение. Пример: rf.SetRFModuleRemoteKnob(1, 0)",
+    "args": [
+      {
+        "label": "1",
+        "value": 1
+      },
+      {
+        "label": "0",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Радиосвязь",
+      "E7": "Радиосвязь",
+      "M6": "Радиосвязь"
+    },
+    "sim": false
+  },
+  {
+    "id": "iot.SetIOTConfig",
+    "name": "iot.SetIOTConfig",
+    "label": "Настроить подключение модуля IoT",
+    "description": "Настроить подключение модуля IoT. Параметры: Порт; имя Wi-Fi (SSID); пароль Wi-Fi; Iot_id; Iot_pwd; сервер. Пример: iot.SetIOTConfig(1, \"WIFI_NAME\", \"WIFI_PASSWORD\", \"IOT_ID\", \"IOT_PASSWORD\", \"iot.zmrobo.com\")",
+    "args": [
+      {
+        "label": "1",
+        "value": 1
+      },
+      {
+        "label": "\"\"",
+        "value": ""
+      },
+      {
+        "label": "\"\"",
+        "value": ""
+      },
+      {
+        "label": "\"\"",
+        "value": ""
+      },
+      {
+        "label": "\"\"",
+        "value": ""
+      },
+      {
+        "label": "\"iot.zmrobo.com\"",
+        "value": "iot.zmrobo.com"
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "IoT",
+      "E7": "IoT",
+      "M6": "IoT"
+    },
+    "sim": false
+  },
+  {
+    "id": "iot.SetIOTTopic",
+    "name": "iot.SetIOTTopic",
+    "label": "Задать тему обмена IoT",
+    "description": "Задать тему обмена IoT. Параметры: Порт; строка темы. Topic_0–Topic_9 в Робокоде — слоты настройки; в Python передаётся строка темы. Пример: iot.SetIOTTopic(1, \"class/robot\")",
+    "args": [
+      {
+        "label": "1",
+        "value": 1
+      },
+      {
+        "label": "\"topic\"",
+        "value": "topic"
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "IoT",
+      "E7": "IoT",
+      "M6": "IoT"
+    },
+    "sim": false
+  },
+  {
+    "id": "iot.SetIOTData",
+    "name": "iot.SetIOTData",
+    "label": "Отправить число в тему IoT",
+    "description": "Отправить число в тему IoT. Параметры: Порт; строка темы; число. Пример: iot.SetIOTData(1, \"class/robot\", 10)",
+    "args": [
+      {
+        "label": "1",
+        "value": 1
+      },
+      {
+        "label": "\"topic\"",
+        "value": "topic"
+      },
+      {
+        "label": "10",
+        "value": 10
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "IoT",
+      "E7": "IoT",
+      "M6": "IoT"
+    },
+    "sim": false
+  },
+  {
+    "id": "iot.SetIOTDataStr",
+    "name": "iot.SetIOTDataStr",
+    "label": "Отправить строку в тему IoT",
+    "description": "Отправить строку в тему IoT. Параметры: Порт; строка темы; строка сообщения. Пример: iot.SetIOTDataStr(1, \"class/robot\", \"hello\")",
+    "args": [
+      {
+        "label": "1",
+        "value": 1
+      },
+      {
+        "label": "\"topic\"",
+        "value": "topic"
+      },
+      {
+        "label": "\"hello\"",
+        "value": "hello"
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "IoT",
+      "E7": "IoT",
+      "M6": "IoT"
+    },
+    "sim": false
+  },
+  {
+    "id": "iot.GetIOTData",
+    "name": "iot.GetIOTData",
+    "label": "Проверить получение указанного сообщения IoT",
+    "description": "Проверить получение указанного сообщения IoT. Параметры: Порт; строка темы; ожидаемая строка сообщения. Пример: if iot.GetIOTData(1, \"class/robot\", \"run\"):\n    print(\"Получено run\")",
+    "args": [
+      {
+        "label": "1",
+        "value": 1
+      },
+      {
+        "label": "\"topic\"",
+        "value": "topic"
+      },
+      {
+        "label": "\"run\"",
+        "value": "run"
+      }
+    ],
+    "output": true,
+    "sets": {
+      "E6": "IoT",
+      "E7": "IoT",
+      "M6": "IoT"
+    },
+    "sim": false
+  },
+  {
+    "id": "aicam.SetAICamCmd",
+    "name": "aicam.SetAICamCmd",
+    "label": "Переключить ИИ-камеру в выбранный режим после её загрузки",
+    "description": "Переключить ИИ-камеру в выбранный режим после её загрузки. Параметры: Порт P7 или P8; режим — строка в кавычках, в нижнем регистре. camera — камера; face — лица; apriltag — метки AprilTag; qrcode — QR-коды; detector — объекты; color — цвета; road — дорога; gesture — жесты; human — ключевые точки тела; classifier — классификация объектов; image — классификация изображений. Пример: aicam.SetAICamCmd(7, \"face\")",
+    "args": [
+      {
+        "label": "7",
+        "value": 7
+      },
+      {
+        "label": "\"camera\"",
+        "value": "camera"
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E7": "ИИ-камера"
+    },
+    "sim": false
+  },
+  {
+    "id": "aicam.SetWaitAICamCmd",
+    "name": "aicam.SetWaitAICamCmd",
+    "label": "Дождаться загрузки ИИ-камеры и переключения в выбранный режим",
+    "description": "Дождаться загрузки ИИ-камеры и переключения в выбранный режим. Команда блокирует дальнейшее выполнение до завершения переключения. Параметры: Порт P7 или P8; режим — строка в кавычках, в нижнем регистре. camera — камера; face — лица; apriltag — метки AprilTag; qrcode — QR-коды; detector — объекты; color — цвета; road — дорога; gesture — жесты; human — ключевые точки тела; classifier — классификация объектов; image — классификация изображений. Пример: aicam.SetWaitAICamCmd(7, \"face\")",
+    "args": [
+      {
+        "label": "7",
+        "value": 7
+      },
+      {
+        "label": "\"camera\"",
+        "value": "camera"
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E7": "ИИ-камера"
+    },
+    "sim": false
+  },
+  {
+    "id": "aicam.GetAICam",
+    "name": "aicam.GetAICam",
+    "label": "Получить числовой параметр цели по её номеру на экране",
+    "description": "Получить числовой параметр цели по её номеру на экране. Параметры: Порт 7/8; номер цели 1–20 (слева направо); параметр: 1 — ID, 2 — X, 3 — Y, 4 — ширина, 5 — высота, 6 — размер, 7 — уверенность. Пример: target_id = aicam.GetAICam(7, 1, 1)\nx = aicam.GetAICam(7, 1, 2)",
+    "args": [
+      {
+        "label": "7",
+        "value": 7
+      },
+      {
+        "label": "1",
+        "value": 1
+      },
+      {
+        "label": "1",
+        "value": 1
+      }
+    ],
+    "output": true,
+    "sets": {
+      "E7": "ИИ-камера"
+    },
+    "sim": false
+  },
+  {
+    "id": "aicam.GetAICamStr",
+    "name": "aicam.GetAICamStr",
+    "label": "Получить строку цели по её номеру на экране",
+    "description": "Получить строку цели по её номеру на экране. Параметры: Порт 7/8; номер цели 1–20 (слева направо). Пример: name = aicam.GetAICamStr(7, 1)\nprint(name)",
+    "args": [
+      {
+        "label": "7",
+        "value": 7
+      },
+      {
+        "label": "1",
+        "value": 1
+      }
+    ],
+    "output": true,
+    "sets": {
+      "E7": "ИИ-камера"
+    },
+    "sim": false
+  },
+  {
+    "id": "aicam.GetAICamIDData",
+    "name": "aicam.GetAICamIDData",
+    "label": "Получить числовой параметр цели с заданным ID",
+    "description": "Получить числовой параметр цели с заданным ID. Параметры: Порт 7/8; ID цели (в таблице руководства: 1–20); параметр: 1 — X, 2 — Y, 3 — ширина, 4 — высота, 5 — размер, 6 — уверенность. Для AprilTag руководство отдельно указывает ID 0–255; доступ к ним через эту команду требует проверки. Пример: x = aicam.GetAICamIDData(7, 1, 1)\ny = aicam.GetAICamIDData(7, 1, 2)",
+    "args": [
+      {
+        "label": "7",
+        "value": 7
+      },
+      {
+        "label": "1",
+        "value": 1
+      },
+      {
+        "label": "1",
+        "value": 1
+      }
+    ],
+    "output": true,
+    "sets": {
+      "E7": "ИИ-камера"
+    },
+    "sim": false
+  },
+  {
+    "id": "aicam.GetAICamIDStr",
+    "name": "aicam.GetAICamIDStr",
+    "label": "Получить строку цели с заданным ID",
+    "description": "Получить строку цели с заданным ID. Параметры: Порт 7/8; ID цели (в таблице руководства: 1–20). Пример: name = aicam.GetAICamIDStr(7, 1)\nprint(name)",
+    "args": [
+      {
+        "label": "7",
+        "value": 7
+      },
+      {
+        "label": "1",
+        "value": 1
+      }
+    ],
+    "output": true,
+    "sets": {
+      "E7": "ИИ-камера"
+    },
+    "sim": false
+  },
+  {
+    "id": "motor.SetMotor",
+    "name": "motor.SetMotor",
+    "label": "Мотор: вращать",
+    "description": "Установка скорости мотора. Параметры: № мотора, скорость в %. Пример: SetMotor(1, 100)",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      },
+      {
+        "label": "скорость",
+        "value": 50
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Моторы",
+      "E7": "Моторы",
+      "M6": "Моторы"
+    },
+    "sim": true
+  },
+  {
+    "id": "motor.SetMotorStop",
+    "name": "motor.SetMotorStop",
+    "label": "Остановить мотор",
+    "description": "Остановка выбранного мотора",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Моторы",
+      "E7": "Моторы",
+      "M6": "Моторы"
+    },
+    "sim": true
+  },
+  {
+    "id": "motor.SetMotorCode",
+    "name": "motor.SetMotorCode",
+    "label": "Сбросить энкодер мотора",
+    "description": "Обнуление энкодера. Параметр - № мотора. Пример: SetMotorCode(1)",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Моторы",
+      "E7": "Моторы",
+      "M6": "Моторы"
+    },
+    "sim": true
+  },
+  {
+    "id": "motor.GetMotorCode",
+    "name": "motor.GetMotorCode",
+    "label": "Энкодер мотора",
+    "description": "Получение показаний с энкодера. Параметр - № мотора. Пример: GetMotorCode(1)",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      }
+    ],
+    "output": true,
+    "sets": {
+      "E6": "Моторы",
+      "E7": "Моторы",
+      "M6": "Моторы"
+    },
+    "sim": true
+  },
+  {
+    "id": "motor.SetMotorSecond",
+    "name": "motor.SetMotorSecond",
+    "label": "Мотор: вращать заданное время",
+    "description": "Включение мотора с указанной скоростью на определённое время. Параметры: № мотора, скорость, время. Пример: SetMotorSecond(1, 50, 2)",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      },
+      {
+        "label": "скорость",
+        "value": 50
+      },
+      {
+        "label": "секунды",
+        "value": 1
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Моторы",
+      "E7": "Моторы",
+      "M6": "Моторы"
+    },
+    "sim": true
+  },
+  {
+    "id": "motor.SetMotorAngleDelay",
+    "name": "motor.SetMotorAngleDelay",
+    "label": "Мотор: повернуть и ждать",
+    "description": "Включение мотора с указанной скоростью до определённого угла поворота с зависанием, пока не достигнут угол. Параметры: № мотора, скорость, угол. Пример: SetMotorAngleDelay(1, 50, 180)",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      },
+      {
+        "label": "скорость",
+        "value": 50
+      },
+      {
+        "label": "угол",
+        "value": 90
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Моторы",
+      "E7": "Моторы",
+      "M6": "Моторы"
+    },
+    "sim": true
+  },
+  {
+    "id": "motor.SetMotorConstSpeed",
+    "name": "motor.SetMotorConstSpeed",
+    "label": "Установка неизменной скорости мотора",
+    "description": "Установка неизменной скорости мотора. Параметры: № мотора, скорость в %. Пример: SetMotorConstSpeed(1, 100)",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      },
+      {
+        "label": "скорость",
+        "value": 50
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Моторы",
+      "E7": "Моторы",
+      "M6": "Моторы"
+    },
+    "sim": true
+  },
+  {
+    "id": "motor.SetMotorAngle",
+    "name": "motor.SetMotorAngle",
+    "label": "Мотор: задать угол",
+    "description": "Включение мотора с указанной скоростью до определённого угла поворота. Параметры: № мотора, скорость, угол. Пример: SetMotorAngle(1, 50, 180)",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      },
+      {
+        "label": "скорость",
+        "value": 50
+      },
+      {
+        "label": "угол",
+        "value": 90
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Моторы",
+      "E7": "Моторы",
+      "M6": "Моторы"
+    },
+    "sim": true
+  },
+  {
+    "id": "motor.SetMotorDirection",
+    "name": "motor.SetMotorDirection",
+    "label": "Установка вращения мотора в конкретную сторону",
+    "description": "Установка вращения мотора в конкретную сторону. Параметры: № мотора, сторона. Пример: SetMotorDirection(1,0)",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      },
+      {
+        "label": "направление",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Моторы",
+      "E7": "Моторы",
+      "M6": "Моторы"
+    },
+    "sim": false
+  },
+  {
+    "id": "move.SetMoveRunSecond",
+    "name": "move.SetMoveRunSecond",
+    "label": "Запуск двух моторов в указанную сторону с выбранной скоростью на определённое время",
+    "description": "Запуск двух моторов в указанную сторону с выбранной скоростью на определённое время. Пример: SetMoveRunSecond(\"forward\", 50, 1)",
+    "args": [
+      {
+        "label": "\"forward\"",
+        "value": "forward"
+      },
+      {
+        "label": "скорость",
+        "value": 50
+      },
+      {
+        "label": "секунды",
+        "value": 1
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Колёсная база",
+      "E7": "Колёсная база",
+      "M6": "Колёсная база"
+    },
+    "sim": false
+  },
+  {
+    "id": "move.SetMoveRunAngle",
+    "name": "move.SetMoveRunAngle",
+    "label": "Запуск двух моторов в указанную сторону с выбранной скоростью на определённый градус поворота",
+    "description": "Запуск двух моторов в указанную сторону с выбранной скоростью на определённый градус поворота. Пример: SetMoveRunAngle(\"forward\", 50, 180)",
+    "args": [
+      {
+        "label": "\"forward\"",
+        "value": "forward"
+      },
+      {
+        "label": "скорость",
+        "value": 50
+      },
+      {
+        "label": "угол",
+        "value": 90
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Колёсная база",
+      "E7": "Колёсная база",
+      "M6": "Колёсная база"
+    },
+    "sim": false
+  },
+  {
+    "id": "move.SetMoveRun",
+    "name": "move.SetMoveRun",
+    "label": "Запуск двух моторов в указанную сторону с выбранной скоростью",
+    "description": "Запуск двух моторов в указанную сторону с выбранной скоростью. Пример: SetMoveRun(\"forward\", 50)",
+    "args": [
+      {
+        "label": "\"forward\"",
+        "value": "forward"
+      },
+      {
+        "label": "скорость",
+        "value": 50
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Колёсная база",
+      "E7": "Колёсная база",
+      "M6": "Колёсная база"
+    },
+    "sim": false
+  },
+  {
+    "id": "move.SetMoveStop",
+    "name": "move.SetMoveStop",
+    "label": "Остановка моторов",
+    "description": "Остановка моторов. Пример: SetMoveStop( )",
+    "args": [],
+    "output": false,
+    "sets": {
+      "E6": "Колёсная база",
+      "E7": "Колёсная база",
+      "M6": "Колёсная база"
+    },
+    "sim": false
+  },
+  {
+    "id": "move.SetMoveSpeedSecond",
+    "name": "move.SetMoveSpeedSecond",
+    "label": "Запуск двух моторов с разной скоростью на определённое время",
+    "description": "Запуск двух моторов с разной скоростью на определённое время. Пример: SetMoveSpeedSecond(30, 50, 1)",
+    "args": [
+      {
+        "label": "слева",
+        "value": 50
+      },
+      {
+        "label": "справа",
+        "value": 50
+      },
+      {
+        "label": "секунды",
+        "value": 1
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Колёсная база",
+      "E7": "Колёсная база",
+      "M6": "Колёсная база"
+    },
+    "sim": false
+  },
+  {
+    "id": "move.SetMoveSpeed",
+    "name": "move.SetMoveSpeed",
+    "label": "Запуск двух моторов с разной скоростью",
+    "description": "Запуск двух моторов с разной скоростью. Пример: SetMoveSpeed(30, 50)",
+    "args": [
+      {
+        "label": "слева",
+        "value": 50
+      },
+      {
+        "label": "справа",
+        "value": 50
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Колёсная база",
+      "E7": "Колёсная база",
+      "M6": "Колёсная база"
+    },
+    "sim": false
+  },
+  {
+    "id": "move.SetMovePower",
+    "name": "move.SetMovePower",
+    "label": "Запуск двух моторов с разной мощностью",
+    "description": "Запуск двух моторов с разной мощностью. Пример: SetMovePower(10, 80)",
+    "args": [
+      {
+        "label": "powerLeft",
+        "value": 0
+      },
+      {
+        "label": "powerRight",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Колёсная база",
+      "E7": "Колёсная база",
+      "M6": "Колёсная база"
+    },
+    "sim": false
+  },
+  {
+    "id": "move.SetMotorPower",
+    "name": "move.SetMotorPower",
+    "label": "Запуск четырёх моторов с разной мощностью",
+    "description": "Запуск четырёх моторов с разной мощностью. Пример: SetMotorPower(10, 80, 20, 70)",
+    "args": [
+      {
+        "label": "power1",
+        "value": 0
+      },
+      {
+        "label": "power2",
+        "value": 0
+      },
+      {
+        "label": "power3",
+        "value": 0
+      },
+      {
+        "label": "power4",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Колёсная база",
+      "E7": "Колёсная база",
+      "M6": "Колёсная база"
+    },
+    "sim": false
+  },
+  {
+    "id": "move.SetMoveInitialize",
+    "name": "move.SetMoveInitialize",
+    "label": "Инициализация моторов для использования остальных команд этого раздела",
+    "description": "Инициализация моторов для использования остальных команд этого раздела. Ставится в начале программы. Параметры: № левого мотора, № правого мотора, реверс. Пример: SetMoveInitialize(1, 2, \"no_reversal\")",
+    "args": [
+      {
+        "label": "левый мотор",
+        "value": 1
+      },
+      {
+        "label": "правый мотор",
+        "value": 2
+      },
+      {
+        "label": "реверс",
+        "value": "no_reversal"
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Колёсная база",
+      "E7": "Колёсная база",
+      "M6": "Колёсная база"
+    },
+    "sim": false
+  },
+  {
+    "id": "servo.SetSeeringEngine",
+    "name": "servo.SetSeeringEngine",
+    "label": "Установить маленький серовпривод в указанное положение",
+    "description": "Установить маленький серовпривод в указанное положение. Параметры: канал, угол.",
+    "args": [
+      {
+        "label": "канал",
+        "value": 1
+      },
+      {
+        "label": "угол",
+        "value": 90
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Сервоприводы",
+      "E7": "Сервоприводы",
+      "M6": "Сервоприводы"
+    },
+    "sim": false
+  },
+  {
+    "id": "servo.SetSeeringEngineTime",
+    "name": "servo.SetSeeringEngineTime",
+    "label": "Установить маленький серовпривод в указанное положение по времени",
+    "description": "Установить маленький серовпривод в указанное положение по времени. Параметры: канал, угол, время.",
+    "args": [
+      {
+        "label": "канал",
+        "value": 1
+      },
+      {
+        "label": "угол",
+        "value": 90
+      },
+      {
+        "label": "time",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Сервоприводы",
+      "E7": "Сервоприводы",
+      "M6": "Сервоприводы"
+    },
+    "sim": false
+  },
+  {
+    "id": "servo.SetServoMotor",
+    "name": "servo.SetServoMotor",
+    "label": "Повернуть маленький серовпривод на определённый угол",
+    "description": "Повернуть маленький серовпривод на определённый угол. Параметры: канал, угол.",
+    "args": [
+      {
+        "label": "канал",
+        "value": 1
+      },
+      {
+        "label": "угол",
+        "value": 90
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Сервоприводы",
+      "E7": "Сервоприводы",
+      "M6": "Сервоприводы"
+    },
+    "sim": false
+  },
+  {
+    "id": "servo.SetServo",
+    "name": "servo.SetServo",
+    "label": "Установить обычный серовпривод в указанное положение",
+    "description": "Установить обычный серовпривод в указанное положение. Параметры: канал, угол.",
+    "args": [
+      {
+        "label": "канал",
+        "value": 1
+      },
+      {
+        "label": "угол",
+        "value": 90
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Сервоприводы",
+      "E7": "Сервоприводы",
+      "M6": "Сервоприводы"
+    },
+    "sim": false
+  },
+  {
+    "id": "servo.SetServoTime",
+    "name": "servo.SetServoTime",
+    "label": "Установить обычный серовпривод в указанное положение по времени",
+    "description": "Установить обычный серовпривод в указанное положение по времени. Параметры: канал, угол, время.",
+    "args": [
+      {
+        "label": "канал",
+        "value": 1
+      },
+      {
+        "label": "угол",
+        "value": 90
+      },
+      {
+        "label": "time",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Сервоприводы",
+      "E7": "Сервоприводы",
+      "M6": "Сервоприводы"
+    },
+    "sim": false
+  },
+  {
+    "id": "servo.SetMagneticServoSoftReset",
+    "name": "servo.SetMagneticServoSoftReset",
+    "label": "Мягкая перезагрузка сервопривода",
+    "description": "Мягкая перезагрузка сервопривода. Параметры: порт",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Сервоприводы",
+      "E7": "Сервоприводы",
+      "M6": "Сервоприводы"
+    },
+    "sim": false
+  },
+  {
+    "id": "servo.SetMagneticServoState",
+    "name": "servo.SetMagneticServoState",
+    "label": "Установка состояния сервопривода",
+    "description": "Установка состояния сервопривода. Параметры: порт, перезапуск при включении(1/0), начальная скорость, начальный угол ",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      },
+      {
+        "label": "res?",
+        "value": 0
+      },
+      {
+        "label": "скорость",
+        "value": 50
+      },
+      {
+        "label": "угол",
+        "value": 90
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Сервоприводы",
+      "E7": "Сервоприводы",
+      "M6": "Сервоприводы"
+    },
+    "sim": false
+  },
+  {
+    "id": "servo.SetMagneticServoDegreeTime",
+    "name": "servo.SetMagneticServoDegreeTime",
+    "label": "Режим сервопривода",
+    "description": "Режим сервопривода. Параметры: порт, угол, время.",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      },
+      {
+        "label": "угол",
+        "value": 90
+      },
+      {
+        "label": "time",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Сервоприводы",
+      "E7": "Сервоприводы",
+      "M6": "Сервоприводы"
+    },
+    "sim": false
+  },
+  {
+    "id": "servo.SetMagneticServoDegreeSpeed",
+    "name": "servo.SetMagneticServoDegreeSpeed",
+    "label": "Режим сервопривода",
+    "description": "Режим сервопривода. Параметры: порт, угол, скорость.",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      },
+      {
+        "label": "угол",
+        "value": 90
+      },
+      {
+        "label": "скорость",
+        "value": 50
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Сервоприводы",
+      "E7": "Сервоприводы",
+      "M6": "Сервоприводы"
+    },
+    "sim": false
+  },
+  {
+    "id": "servo.SetMagneticServoCodeMotor",
+    "name": "servo.SetMagneticServoCodeMotor",
+    "label": "Режим управления по энкодеру",
+    "description": "Режим управления по энкодеру. Параметры: порт, угол, скорость.",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      },
+      {
+        "label": "угол",
+        "value": 90
+      },
+      {
+        "label": "скорость",
+        "value": 50
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Сервоприводы",
+      "E7": "Сервоприводы",
+      "M6": "Сервоприводы"
+    },
+    "sim": false
+  },
+  {
+    "id": "servo.SetMagneticServoMotor",
+    "name": "servo.SetMagneticServoMotor",
+    "label": "Режим мотор-редуктора",
+    "description": "Режим мотор-редуктора. Параметры: порт, скорость.",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      },
+      {
+        "label": "скорость",
+        "value": 50
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Сервоприводы",
+      "E7": "Сервоприводы",
+      "M6": "Сервоприводы"
+    },
+    "sim": false
+  },
+  {
+    "id": "servo.SetMagneticServoPowerDown",
+    "name": "servo.SetMagneticServoPowerDown",
+    "label": "Остановка выходного крутящего момента",
+    "description": "Остановка выходного крутящего момента. Параметры: порт.",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Сервоприводы",
+      "E7": "Сервоприводы",
+      "M6": "Сервоприводы"
+    },
+    "sim": false
+  },
+  {
+    "id": "servo.GetMagneticServoDegree",
+    "name": "servo.GetMagneticServoDegree",
+    "label": "Считать угол сервопривода",
+    "description": "Считать угол сервопривода. Параметры: порт.",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      }
+    ],
+    "output": true,
+    "sets": {
+      "E6": "Сервоприводы",
+      "E7": "Сервоприводы",
+      "M6": "Сервоприводы"
+    },
+    "sim": false
+  },
+  {
+    "id": "servo.SetMagneticServoEncoder",
+    "name": "servo.SetMagneticServoEncoder",
+    "label": "Сбросить показания энкодера",
+    "description": "Сбросить показания энкодера. Параметры: порт.",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Сервоприводы",
+      "E7": "Сервоприводы",
+      "M6": "Сервоприводы"
+    },
+    "sim": false
+  },
+  {
+    "id": "servo.GetMagneticServoEncoder",
+    "name": "servo.GetMagneticServoEncoder",
+    "label": "Прочитать показания энкодера",
+    "description": "Прочитать показания энкодера. Параметры: порт.",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      }
+    ],
+    "output": true,
+    "sets": {
+      "E6": "Сервоприводы",
+      "E7": "Сервоприводы",
+      "M6": "Сервоприводы"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetWaitForTime",
+    "name": "rcu.SetWaitForTime",
+    "label": "Ждать, секунд",
+    "description": "Вставляет шаблон команды. Подробное описание пока не заполнено.",
+    "args": [
+      {
+        "label": "time",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Контроллер",
+      "E7": "Контроллер",
+      "M6": "Контроллер"
+    },
+    "sim": true
+  },
+  {
+    "id": "rcu.GetLeftButton",
+    "name": "rcu.GetLeftButton",
+    "label": "Чтение состояния левой кнопки",
+    "description": "Чтение состояния левой кнопки. Пример: GetLeftButton()",
+    "args": [],
+    "output": true,
+    "sets": {
+      "E6": "Контроллер",
+      "E7": "Контроллер",
+      "M6": "Контроллер"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetRightButton",
+    "name": "rcu.GetRightButton",
+    "label": "Чтение состояния правой кнопки",
+    "description": "Чтение состояния правой кнопки. Пример: GetRightButton()",
+    "args": [],
+    "output": true,
+    "sets": {
+      "E6": "Контроллер",
+      "E7": "Контроллер",
+      "M6": "Контроллер"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.WaitLeftButtonPressed",
+    "name": "rcu.WaitLeftButtonPressed",
+    "label": "Ожидание нажатия левой кнопки",
+    "description": "Ожидание нажатия левой кнопки. Пример: WaitLeftButtonPressed()",
+    "args": [],
+    "output": false,
+    "sets": {
+      "E6": "Контроллер",
+      "E7": "Контроллер",
+      "M6": "Контроллер"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.WaitRightButtonPressed",
+    "name": "rcu.WaitRightButtonPressed",
+    "label": "Ожидание нажатия правой кнопки",
+    "description": "Ожидание нажатия правой кнопки. Пример: WaitRightButtonPressed()",
+    "args": [],
+    "output": false,
+    "sets": {
+      "E6": "Контроллер",
+      "E7": "Контроллер",
+      "M6": "Контроллер"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.WaitRightButtonReleased",
+    "name": "rcu.WaitRightButtonReleased",
+    "label": "Ожидание отпускания правой кнопки",
+    "description": "Ожидание отпускания правой кнопки. Пример: WaitRightButtonReleased()",
+    "args": [],
+    "output": false,
+    "sets": {
+      "E6": "Контроллер",
+      "E7": "Контроллер",
+      "M6": "Контроллер"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.WaitLeftButtonReleased",
+    "name": "rcu.WaitLeftButtonReleased",
+    "label": "Ожидание отпускания левой кнопки",
+    "description": "Ожидание отпускания левой кнопки. Пример: WaitLeftButtonReleased()",
+    "args": [],
+    "output": false,
+    "sets": {
+      "E6": "Контроллер",
+      "E7": "Контроллер",
+      "M6": "Контроллер"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetRcuStop",
+    "name": "rcu.SetRcuStop",
+    "label": "Остановка всех функций",
+    "description": "Остановка всех функций",
+    "args": [],
+    "output": false,
+    "sets": {
+      "E6": "Контроллер",
+      "E7": "Контроллер",
+      "M6": "Контроллер"
+    },
+    "sim": true
+  },
+  {
+    "id": "rcu.GetRandom",
+    "name": "rcu.GetRandom",
+    "label": "Генерация случайного числа в указанном диапазоне",
+    "description": "Генерация случайного числа в указанном диапазоне",
+    "args": [
+      {
+        "label": "min",
+        "value": 0
+      },
+      {
+        "label": "max",
+        "value": 0
+      }
+    ],
+    "output": true,
+    "sets": {
+      "E6": "Контроллер",
+      "E7": "Контроллер",
+      "M6": "Контроллер"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetRGB",
+    "name": "rcu.GetRGB",
+    "label": " Задайте три цвета в диапазоне от 0 до 255 и получите любой оттенок",
+    "description": " Задайте три цвета в диапазоне от 0 до 255 и получите любой оттенок",
+    "args": [
+      {
+        "label": "red",
+        "value": 0
+      },
+      {
+        "label": "green",
+        "value": 0
+      },
+      {
+        "label": "blue",
+        "value": 0
+      }
+    ],
+    "output": true,
+    "sets": {
+      "E6": "Контроллер",
+      "E7": "Контроллер",
+      "M6": "Контроллер"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetMcuID",
+    "name": "rcu.GetMcuID",
+    "label": "Получить идентификатор чипа контроллера",
+    "description": "Получить идентификатор чипа контроллера",
+    "args": [],
+    "output": true,
+    "sets": {
+      "E6": "Контроллер",
+      "E7": "Контроллер",
+      "M6": "Контроллер"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetSysVersion",
+    "name": "rcu.GetSysVersion",
+    "label": "Получить номер версии прошивки контроллера",
+    "description": "Получить номер версии прошивки контроллера",
+    "args": [],
+    "output": true,
+    "sets": {
+      "E6": "Контроллер",
+      "E7": "Контроллер",
+      "M6": "Контроллер"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetSysLanguage",
+    "name": "rcu.GetSysLanguage",
+    "label": "Получить язык системы контроллера",
+    "description": "Получить язык системы контроллера",
+    "args": [],
+    "output": true,
+    "sets": {
+      "E6": "Контроллер",
+      "E7": "Контроллер",
+      "M6": "Контроллер"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetSysTime",
+    "name": "rcu.SetSysTime",
+    "label": "Сбросить таймер",
+    "description": "Обнуление встроенного таймера программы. Пример: SetSysTime()",
+    "args": [],
+    "output": false,
+    "sets": {
+      "E6": "Контроллер",
+      "E7": "Контроллер",
+      "M6": "Контроллер"
+    },
+    "sim": true
+  },
+  {
+    "id": "rcu.GetSysTime",
+    "name": "rcu.GetSysTime",
+    "label": "Таймер, мс",
+    "description": "Чтение времени от начала программы. Пример: GetSysTime()",
+    "args": [],
+    "output": true,
+    "sets": {
+      "E6": "Контроллер",
+      "E7": "Контроллер",
+      "M6": "Контроллер"
+    },
+    "sim": true
+  },
+  {
+    "id": "rcu.GetInMic",
+    "name": "rcu.GetInMic",
+    "label": "Чтение уровня громкости микрофона",
+    "description": "Чтение уровня громкости микрофона. Пример: GetInMic()",
+    "args": [],
+    "output": true,
+    "sets": {
+      "E6": "Контроллер",
+      "E7": "Контроллер",
+      "M6": "Контроллер"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetData",
+    "name": "rcu.SetData",
+    "label": "Запись данных по адресу",
+    "description": "Запись данных по адресу. Параметры: адрес, данные. Пример: SetData(50, 50)",
+    "args": [
+      {
+        "label": "address",
+        "value": 0
+      },
+      {
+        "label": "data",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Контроллер",
+      "E7": "Контроллер",
+      "M6": "Контроллер"
+    },
+    "sim": true
+  },
+  {
+    "id": "rcu.GetData",
+    "name": "rcu.GetData",
+    "label": "Чтение данных по адресу",
+    "description": "Чтение данных по адресу. Параметр: адрес. Пример: GetData(50)",
+    "args": [
+      {
+        "label": "address",
+        "value": 0
+      }
+    ],
+    "output": true,
+    "sets": {
+      "E6": "Контроллер",
+      "E7": "Контроллер",
+      "M6": "Контроллер"
+    },
+    "sim": true
+  },
+  {
+    "id": "rcu.SetUartData",
+    "name": "rcu.SetUartData",
+    "label": "Отправка Serial-данных",
+    "description": "Отправка Serial-данных. Параметры: данные, скорость в бод. Пример: SetUartData(255, 9600)",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      },
+      {
+        "label": "скорость",
+        "value": 50
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Контроллер",
+      "E7": "Контроллер",
+      "M6": "Контроллер"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetUartData",
+    "name": "rcu.GetUartData",
+    "label": "Получение Serial-данных",
+    "description": "Получение Serial-данных. Параметр: скорость в бод. Пример: GetUartData(9600)",
+    "args": [
+      {
+        "label": "скорость",
+        "value": 50
+      }
+    ],
+    "output": true,
+    "sets": {
+      "E6": "Контроллер",
+      "E7": "Контроллер",
+      "M6": "Контроллер"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetInVotage",
+    "name": "rcu.GetInVotage",
+    "label": "Чтение уровня напряжения батареи",
+    "description": "Чтение уровня напряжения батареи. Пример: GetInVoltage()",
+    "args": [],
+    "output": true,
+    "sets": {
+      "E6": "Контроллер",
+      "E7": "Контроллер",
+      "M6": "Контроллер"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetInSound",
+    "name": "rcu.SetInSound",
+    "label": "Установка частоты звука в Гц",
+    "description": "Установка частоты звука в Гц. Параметры: частота в Гц, длительность в секундах. Пример: SetInSound(512, 0.5)",
+    "args": [
+      {
+        "label": "1047",
+        "value": 1047
+      },
+      {
+        "label": "5",
+        "value": 5
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Звуки",
+      "E7": "Звуки",
+      "M6": "Звуки"
+    },
+    "sim": true
+  },
+  {
+    "id": "rcu.SetInBeep",
+    "name": "rcu.SetInBeep",
+    "label": "Включение/выключение зуммера",
+    "description": "Включение/выключение зуммера. Параметр: 0 - выключить, 1 - включить. Пример: SetInBeep(1)",
+    "args": [
+      {
+        "label": "0",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Звуки",
+      "E7": "Звуки",
+      "M6": "Звуки"
+    },
+    "sim": true
+  },
+  {
+    "id": "rcu.SoundStartBeep",
+    "name": "rcu.SoundStartBeep",
+    "label": "1 - light, 2 - siren, 3 - deep",
+    "description": "1 - light, 2 - siren, 3 - deep",
+    "args": [
+      {
+        "label": "1",
+        "value": 1
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Звуки",
+      "E7": "Звуки",
+      "M6": "Звуки"
+    },
+    "sim": true
+  },
+  {
+    "id": "rcu.SetMp3Play",
+    "name": "rcu.SetMp3Play",
+    "label": "Включение конкретного звука",
+    "description": "Включение конкретного звука. Параметры: папка, файл. В папке 1 есть 14 встроенных звуков. Можно создавать свои папки и загружать свои звуки. Пример: SetMp3Play(2, 3)",
+    "args": [
+      {
+        "label": "folder",
+        "value": 0
+      },
+      {
+        "label": "file",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Звуки",
+      "E7": "Звуки",
+      "M6": "Звуки"
+    },
+    "sim": true
+  },
+  {
+    "id": "rcu.SoundMp3",
+    "name": "rcu.SoundMp3",
+    "label": "Включение конкретного звука на указанное время",
+    "description": "Включение конкретного звука на указанное время. Параметры: папка, файл, время в секундах",
+    "args": [
+      {
+        "label": "folder",
+        "value": 0
+      },
+      {
+        "label": "file",
+        "value": 0
+      },
+      {
+        "label": "секунды",
+        "value": 1
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Звуки",
+      "E7": "Звуки",
+      "M6": "Звуки"
+    },
+    "sim": true
+  },
+  {
+    "id": "rcu.SetMp3Suspend",
+    "name": "rcu.SetMp3Suspend",
+    "label": "Остановить музыку",
+    "description": "Остановить музыку. Пример: SetMp3Suspend()",
+    "args": [],
+    "output": false,
+    "sets": {
+      "E6": "Звуки",
+      "E7": "Звуки",
+      "M6": "Звуки"
+    },
+    "sim": true
+  },
+  {
+    "id": "rcu.SetMp3Sound",
+    "name": "rcu.SetMp3Sound",
+    "label": "Установка громкости",
+    "description": "Установка громкости. Параметр: громкость (0-28). Пример: SetMp3Sound(28)",
+    "args": [
+      {
+        "label": "volume",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Звуки",
+      "E7": "Звуки",
+      "M6": "Звуки"
+    },
+    "sim": true
+  },
+  {
+    "id": "sensor.Set3CLed",
+    "name": "sensor.Set3CLed",
+    "label": "Управление лампой",
+    "description": "Управление лампой. Параметры: порт, цвет (0-7). Цвета: Выкл, Красный, Зеленый, Синий, Жёлтый, Фиолетовый, Голубой, Белый. Пример: Set3CLED(4, 6)",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      },
+      {
+        "label": "цвет",
+        "value": 1
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Датчики",
+      "E7": "Датчики",
+      "M6": "Датчики"
+    },
+    "sim": true
+  },
+  {
+    "id": "sensor.GetLightSensorData",
+    "name": "sensor.GetLightSensorData",
+    "label": "Получение показаний датчика света ниже порогового значения",
+    "description": "Получение показаний датчика света ниже порогового значения. Параметр: порт. Пример: GetLightSensorData(4)",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      }
+    ],
+    "output": true,
+    "sets": {
+      "E6": "Датчики",
+      "E7": "Датчики",
+      "M6": "Датчики"
+    },
+    "sim": true
+  },
+  {
+    "id": "sensor.GetLightSensor",
+    "name": "sensor.GetLightSensor",
+    "label": "Освещённость",
+    "description": "Получение показаний с датчика света. Параметр: порт. Пример: GetLightSensor(4)",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      }
+    ],
+    "output": true,
+    "sets": {
+      "E6": "Датчики",
+      "E7": "Датчики",
+      "M6": "Датчики"
+    },
+    "sim": true
+  },
+  {
+    "id": "sensor.GetColorSensor",
+    "name": "sensor.GetColorSensor",
+    "label": "Получение показаний с датчика цвета",
+    "description": "Получение показаний с датчика цвета. Параметры: порт, режим. Режимы: 1-G, 2-R, 3-B, 4-Color, 9-Light, 15-Hue, 16-Saturation, 17-Luminance. Пример: GetColorSensor(5, 1)",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      },
+      {
+        "label": "режим",
+        "value": 1
+      }
+    ],
+    "output": true,
+    "sets": {
+      "E6": "Датчики",
+      "E7": "Датчики",
+      "M6": "Датчики"
+    },
+    "sim": true
+  },
+  {
+    "id": "sensor.GetTouch",
+    "name": "sensor.GetTouch",
+    "label": "Датчик касания",
+    "description": "Проверка нажатия кнопки. Параметр: порт. Пример: GetTouch(2)",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      }
+    ],
+    "output": true,
+    "sets": {
+      "E6": "Датчики",
+      "E7": "Датчики",
+      "M6": "Датчики"
+    },
+    "sim": true
+  },
+  {
+    "id": "sensor.GetUltrasound",
+    "name": "sensor.GetUltrasound",
+    "label": "Расстояние, см",
+    "description": "Получение показаний с УЗ датчика расстояния (в см). Параметр: порт. Пример: GetUltrasound(5)",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      }
+    ],
+    "output": true,
+    "sets": {
+      "E6": "Датчики",
+      "E7": "Датчики",
+      "M6": "Датчики"
+    },
+    "sim": true
+  },
+  {
+    "id": "sensor.SetUltrasoundled",
+    "name": "sensor.SetUltrasoundled",
+    "label": "Установка цвета УЗ датчика расстояния",
+    "description": "Установка цвета УЗ датчика расстояния. Параметр: порт, цвет. Пример: SetUltrasoundled(1, 1)",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      },
+      {
+        "label": "режим",
+        "value": 1
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Датчики",
+      "E7": "Датчики",
+      "M6": "Датчики"
+    },
+    "sim": false
+  },
+  {
+    "id": "sensor.GetShortIRDist",
+    "name": "sensor.GetShortIRDist",
+    "label": "Получение показаний с ИК датчика расстояния",
+    "description": "Получение показаний с ИК датчика расстояния. Параметр: порт. Пример: GetShortIRDist(8)",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      }
+    ],
+    "output": true,
+    "sets": {
+      "E6": "Датчики",
+      "E7": "Датчики",
+      "M6": "Датчики"
+    },
+    "sim": true
+  },
+  {
+    "id": "sensor.GetLaserDist",
+    "name": "sensor.GetLaserDist",
+    "label": "Получение показаний с лазерного датчика расстояния (в мм)",
+    "description": "Получение показаний с лазерного датчика расстояния (в мм). Параметры: порт, режим (обычный/большая дальность). Пример: GetLaserDist(7)",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      },
+      {
+        "label": "режим",
+        "value": 1
+      }
+    ],
+    "output": true,
+    "sets": {
+      "E6": "Датчики",
+      "E7": "Датчики",
+      "M6": "Датчики"
+    },
+    "sim": true
+  },
+  {
+    "id": "sensor.SetAHRS",
+    "name": "sensor.SetAHRS",
+    "label": "Калибровка гироскопа",
+    "description": "Калибровка гироскопа. Параметры: порт, режим (1/2). Пример: SetAHRS(2, 1)",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      },
+      {
+        "label": "режим",
+        "value": 1
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Датчики",
+      "E7": "Датчики",
+      "M6": "Датчики"
+    },
+    "sim": true
+  },
+  {
+    "id": "sensor.GetAHRS",
+    "name": "sensor.GetAHRS",
+    "label": "Получение показаний с гироскопа",
+    "description": "Получение показаний с гироскопа. Параметры: порт, режим, пустой. Режимы: 1-крен, 2-наклон, 3-рысканье, 4-aX, 5-aY, 6-aZ, 7-gX, 8-gY, 9-gZ. Пример: GetAHRS(2, 3, 0)",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      },
+      {
+        "label": "режим",
+        "value": 1
+      },
+      {
+        "label": "ось",
+        "value": 0
+      }
+    ],
+    "output": true,
+    "sets": {
+      "E6": "Датчики",
+      "E7": "Датчики",
+      "M6": "Датчики"
+    },
+    "sim": true
+  },
+  {
+    "id": "gyro.ReadGyro",
+    "name": "gyro.ReadGyro",
+    "label": "Получение показаний с гироскопа",
+    "description": "Получение показаний с гироскопа",
+    "args": [],
+    "output": true,
+    "sets": {
+      "E6": "Датчики",
+      "E7": "Датчики",
+      "M6": "Датчики"
+    },
+    "sim": false
+  },
+  {
+    "id": "sensor.GetGesture",
+    "name": "sensor.GetGesture",
+    "label": "Определяет жесты и возвращает соответствующее значение.",
+    "description": "Определяет жесты и возвращает соответствующее значение.",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      }
+    ],
+    "output": true,
+    "sets": {
+      "E6": "Датчики",
+      "E7": "Датчики",
+      "M6": "Датчики"
+    },
+    "sim": false
+  },
+  {
+    "id": "sensor.GetAirPressure",
+    "name": "sensor.GetAirPressure",
+    "label": "Измеряет давление окружающего воздуха и возвращает соответствующее значение",
+    "description": "Измеряет давление окружающего воздуха и возвращает соответствующее значение",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      }
+    ],
+    "output": true,
+    "sets": {
+      "E6": "Датчики",
+      "E7": "Датчики",
+      "M6": "Датчики"
+    },
+    "sim": false
+  },
+  {
+    "id": "sensor.GetSht30",
+    "name": "sensor.GetSht30",
+    "label": "Измеряет температуру и влажность окружающей среды и возвращает соответствующее значение",
+    "description": "Измеряет температуру и влажность окружающей среды и возвращает соответствующее значение",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      },
+      {
+        "label": "режим",
+        "value": 1
+      }
+    ],
+    "output": true,
+    "sets": {
+      "E6": "Датчики",
+      "E7": "Датчики",
+      "M6": "Датчики"
+    },
+    "sim": false
+  },
+  {
+    "id": "sensor.GetMagnetic",
+    "name": "sensor.GetMagnetic",
+    "label": "Возвращает силу и направление магнитного поля",
+    "description": "Возвращает силу и направление магнитного поля",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      },
+      {
+        "label": "режим",
+        "value": 1
+      }
+    ],
+    "output": true,
+    "sets": {
+      "E6": "Датчики",
+      "E7": "Датчики",
+      "M6": "Датчики"
+    },
+    "sim": false
+  },
+  {
+    "id": "sensor.SetSmartEyeMode",
+    "name": "sensor.SetSmartEyeMode",
+    "label": "Установка режима работы Умного глаза",
+    "description": "Установка режима работы Умного глаза",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      },
+      {
+        "label": "режим",
+        "value": 1
+      },
+      {
+        "label": "цвет",
+        "value": 1
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Датчики",
+      "E7": "Датчики",
+      "M6": "Датчики"
+    },
+    "sim": true
+  },
+  {
+    "id": "sensor.SetSmartEyeAllLed",
+    "name": "sensor.SetSmartEyeAllLed",
+    "label": "Ручная установка цветов на Умном глазе",
+    "description": "Ручная установка цветов на Умном глазе",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      },
+      {
+        "label": "color1",
+        "value": 0
+      },
+      {
+        "label": "color2",
+        "value": 0
+      },
+      {
+        "label": "color3",
+        "value": 0
+      },
+      {
+        "label": "color4",
+        "value": 0
+      },
+      {
+        "label": "color5",
+        "value": 0
+      },
+      {
+        "label": "color6",
+        "value": 0
+      },
+      {
+        "label": "color7",
+        "value": 0
+      },
+      {
+        "label": "color8",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Датчики",
+      "E7": "Датчики",
+      "M6": "Датчики"
+    },
+    "sim": true
+  },
+  {
+    "id": "sensor.SetSmartEyeIRcode",
+    "name": "sensor.SetSmartEyeIRcode",
+    "label": "Передачи ИК сигнала через Умный глаз",
+    "description": "Передачи ИК сигнала через Умный глаз",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      },
+      {
+        "label": "code",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Датчики",
+      "E7": "Датчики",
+      "M6": "Датчики"
+    },
+    "sim": true
+  },
+  {
+    "id": "sensor.GetSmartEyeIRcode",
+    "name": "sensor.GetSmartEyeIRcode",
+    "label": "Получение ИК сигнала через Умный глаз",
+    "description": "Получение ИК сигнала через Умный глаз",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      }
+    ],
+    "output": true,
+    "sets": {
+      "E6": "Датчики",
+      "E7": "Датчики",
+      "M6": "Датчики"
+    },
+    "sim": true
+  },
+  {
+    "id": "sensor.GetSmartEyeDist",
+    "name": "sensor.GetSmartEyeDist",
+    "label": "Получение расстояния до объекта, испускающего или получающего ИК сигнал",
+    "description": "Получение расстояния до объекта, испускающего или получающего ИК сигнал",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      }
+    ],
+    "output": true,
+    "sets": {
+      "E6": "Датчики",
+      "E7": "Датчики",
+      "M6": "Датчики"
+    },
+    "sim": true
+  },
+  {
+    "id": "trace.GetTraceV2I2C",
+    "name": "trace.GetTraceV2I2C",
+    "label": "Получение показаний с линейки датчиков света",
+    "description": "Получение показаний с линейки датчиков света. Параметры: порт, целевой датчик  (1-7). Пример: GetTraceV2I2C(7, 1)",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      },
+      {
+        "label": "sensor",
+        "value": 0
+      }
+    ],
+    "output": true,
+    "sets": {
+      "E6": "Датчики",
+      "E7": "Датчики",
+      "M6": "Датчики"
+    },
+    "sim": true
+  },
+  {
+    "id": "trace.GetTraceV2I2CState",
+    "name": "trace.GetTraceV2I2CState",
+    "label": "Проверка состояний с линейки датчиков",
+    "description": "Проверка состояний с линейки датчиков. Параметры: порт, целевой датчик (1-7). Пример: GetTraceV2I2CState(7, 2)",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      },
+      {
+        "label": "sensor",
+        "value": 0
+      }
+    ],
+    "output": true,
+    "sets": {
+      "E6": "Датчики",
+      "E7": "Датчики",
+      "M6": "Датчики"
+    },
+    "sim": true
+  },
+  {
+    "id": "trace.GetTraceV2I2CChxState",
+    "name": "trace.GetTraceV2I2CChxState",
+    "label": "Проверка обнаружения чёрной линии различными датчиками",
+    "description": "Проверка обнаружения чёрной линии различными датчиками. Параметры: порт, состояния. Пример: GetTraceV2I2CChxState(7, 1)",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      },
+      {
+        "label": "state",
+        "value": 0
+      }
+    ],
+    "output": true,
+    "sets": {
+      "E6": "Датчики",
+      "E7": "Датчики",
+      "M6": "Датчики"
+    },
+    "sim": true
+  },
+  {
+    "id": "trace.SetTraceV2I2AllColor",
+    "name": "trace.SetTraceV2I2AllColor",
+    "label": "Включение подсветки на всей линейке датчиков",
+    "description": "Включение подсветки на всей линейке датчиков. Параметры: порт, цвет. Пример: SetTraceV2I2AllColor(7, 3)",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      },
+      {
+        "label": "цвет",
+        "value": 1
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Датчики",
+      "E7": "Датчики",
+      "M6": "Датчики"
+    },
+    "sim": true
+  },
+  {
+    "id": "trace.SetTraceV2I2Color",
+    "name": "trace.SetTraceV2I2Color",
+    "label": "Включение подсветки на каждом из датчиков линейки",
+    "description": "Включение подсветки на каждом из датчиков линейки. Параметры: порт, цвета для каждого датчика. Пример: SetTraceV2I2Color(7, 1, 2, 4, 4, 3, 2, 1)",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      },
+      {
+        "label": "color1",
+        "value": 0
+      },
+      {
+        "label": "color2",
+        "value": 0
+      },
+      {
+        "label": "color3",
+        "value": 0
+      },
+      {
+        "label": "color4",
+        "value": 0
+      },
+      {
+        "label": "color5",
+        "value": 0
+      },
+      {
+        "label": "color6",
+        "value": 0
+      },
+      {
+        "label": "color7",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Датчики",
+      "E7": "Датчики",
+      "M6": "Датчики"
+    },
+    "sim": true
+  },
+  {
+    "id": "trace.SetTraceV2I2Threshold",
+    "name": "trace.SetTraceV2I2Threshold",
+    "label": "Автоматическая установка порога на заданное время",
+    "description": "Автоматическая установка порога на заданное время. Параметры: порт, время (сек). Пример: SetTraceV2I2Threshold(7, 5)",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      },
+      {
+        "label": "time",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Датчики",
+      "E7": "Датчики",
+      "M6": "Датчики"
+    },
+    "sim": true
+  },
+  {
+    "id": "trace.LineSetInitialize",
+    "name": "trace.LineSetInitialize",
+    "label": "Инициализация линейки датчиков света",
+    "description": "Инициализация линейки датчиков света. Устанавливается в начале программы. Параметры: порт, цвет линии, тип колёс. Пример: LineSetInitialize(1,\"black\",\"wheeledchassis\")",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      },
+      {
+        "label": "\"black\"",
+        "value": "black"
+      },
+      {
+        "label": "\"wheeledchassis\"",
+        "value": "wheeledchassis"
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Датчики",
+      "E7": "Датчики",
+      "M6": "Датчики"
+    },
+    "sim": true
+  },
+  {
+    "id": "trace.LineIntersectionStop",
+    "name": "trace.LineIntersectionStop",
+    "label": "Движение по линии на заданной скорости до перекрёстка определённого типа",
+    "description": "Движение по линии на заданной скорости до перекрёстка определённого типа. Пример: LineIntersectionStop(70, 17)",
+    "args": [
+      {
+        "label": "скорость",
+        "value": 50
+      },
+      {
+        "label": "intersectionType",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Датчики",
+      "E7": "Датчики",
+      "M6": "Датчики"
+    },
+    "sim": true
+  },
+  {
+    "id": "trace.LineMillisecond",
+    "name": "trace.LineMillisecond",
+    "label": "Движение по линии на заданной скорости определённое время",
+    "description": "Движение по линии на заданной скорости определённое время. Пример: LineMillisecond(70, 1500)",
+    "args": [
+      {
+        "label": "скорость",
+        "value": 50
+      },
+      {
+        "label": "time",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Датчики",
+      "E7": "Датчики",
+      "M6": "Датчики"
+    },
+    "sim": true
+  },
+  {
+    "id": "trace.LineForBmp",
+    "name": "trace.LineForBmp",
+    "label": "Движение по линии на заданной скорости до угла поворота энкодера",
+    "description": "Движение по линии на заданной скорости до угла поворота энкодера. Пример: LineForBmp(70, 360)",
+    "args": [
+      {
+        "label": "скорость",
+        "value": 50
+      },
+      {
+        "label": "encoder",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Датчики",
+      "E7": "Датчики",
+      "M6": "Датчики"
+    },
+    "sim": true
+  },
+  {
+    "id": "trace.LineTurnEncounterline",
+    "name": "trace.LineTurnEncounterline",
+    "label": "Поворот по линейке датчиков, пока конкретный датчик не увидит линию",
+    "description": "Поворот по линейке датчиков, пока конкретный датчик не увидит линию. Параметры: скорость слева, скорость спарва, № датчика. Пример: LineTurnEncounterline(70, 20, 7)",
+    "args": [
+      {
+        "label": "слева",
+        "value": 50
+      },
+      {
+        "label": "справа",
+        "value": 50
+      },
+      {
+        "label": "sensorNumber",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Датчики",
+      "E7": "Датчики",
+      "M6": "Датчики"
+    },
+    "sim": true
+  },
+  {
+    "id": "trace.LineBasis",
+    "name": "trace.LineBasis",
+    "label": "Движение по линии на заданной скорости",
+    "description": "Движение по линии на заданной скорости. Параметры: скорость. Пример: LineBasis(70)",
+    "args": [
+      {
+        "label": "скорость",
+        "value": 50
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Датчики",
+      "E7": "Датчики",
+      "M6": "Датчики"
+    },
+    "sim": true
+  },
+  {
+    "id": "ai.SetAICamData",
+    "name": "ai.SetAICamData",
+    "label": "Эта функция имеет множество применений",
+    "description": "Эта функция имеет множество применений. СМ подробную инструкцию.",
+    "args": [
+      {
+        "label": "режим",
+        "value": 1
+      },
+      {
+        "label": "0",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Датчики",
+      "E7": "Датчики",
+      "M6": "Датчики"
+    },
+    "sim": false
+  },
+  {
+    "id": "ai.SetWaitForAICamData",
+    "name": "ai.SetWaitForAICamData",
+    "label": "Ожидание переключения камеры в установленный режим.",
+    "description": "Ожидание переключения камеры в установленный режим.",
+    "args": [
+      {
+        "label": "режим",
+        "value": 1
+      },
+      {
+        "label": "0",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Датчики",
+      "E7": "Датчики",
+      "M6": "Датчики"
+    },
+    "sim": false
+  },
+  {
+    "id": "ai.SetAICamLED",
+    "name": "ai.SetAICamLED",
+    "label": "Включение/выключение подсветки на камере",
+    "description": "Включение/выключение подсветки на камере. Пример: SetAICamLED(1)",
+    "args": [
+      {
+        "label": "1",
+        "value": 1
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Датчики",
+      "E7": "Датчики",
+      "M6": "Датчики"
+    },
+    "sim": false
+  },
+  {
+    "id": "ai.GetAICamData",
+    "name": "ai.GetAICamData",
+    "label": "Эта функция имеет множество применений",
+    "description": "Эта функция имеет множество применений. СМ подробную инструкцию.",
+    "args": [
+      {
+        "label": "режим",
+        "value": 1
+      }
+    ],
+    "output": true,
+    "sets": {
+      "E6": "Датчики",
+      "E7": "Датчики",
+      "M6": "Датчики"
+    },
+    "sim": false
+  },
+  {
+    "id": "ai.GetAICamVoice",
+    "name": "ai.GetAICamVoice",
+    "label": "Получить инструкции по распознаванию голоса",
+    "description": "Получить инструкции по распознаванию голоса. Параметр: № инструкции. Пример: GetAICamVoice(1023)",
+    "args": [
+      {
+        "label": "commandNumber",
+        "value": 0
+      }
+    ],
+    "output": true,
+    "sets": {
+      "E6": "Датчики",
+      "E7": "Датчики",
+      "M6": "Датчики"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetTouchScreen",
+    "name": "rcu.GetTouchScreen",
+    "label": "Проверка касания экрана",
+    "description": "Проверка касания экрана. Пример: GetTouchScreen()",
+    "args": [],
+    "output": true,
+    "sets": {
+      "E6": "Экран",
+      "E7": "Экран",
+      "M6": "Экран"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetTouchScreenX",
+    "name": "rcu.GetTouchScreenX",
+    "label": "Получение X-координаты касания экрана",
+    "description": "Получение X-координаты касания экрана. Пример: GetTouchScreenX()",
+    "args": [],
+    "output": true,
+    "sets": {
+      "E6": "Экран",
+      "E7": "Экран",
+      "M6": "Экран"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetTouchScreenY",
+    "name": "rcu.GetTouchScreenY",
+    "label": "Получение Y-координаты касания экрана",
+    "description": "Получение Y-координаты касания экрана. Пример: GetTouchScreenY()",
+    "args": [],
+    "output": true,
+    "sets": {
+      "E6": "Экран",
+      "E7": "Экран",
+      "M6": "Экран"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetLCDClear",
+    "name": "rcu.SetLCDClear",
+    "label": "Очистка экрана выбранным цветом",
+    "description": "Очистка экрана выбранным цветом. Параметр: цвет в шестнадцатиричной системе. Пример: SetLCDClear(0x0000)",
+    "args": [
+      {
+        "label": "0x0000",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Экран",
+      "E7": "Экран",
+      "M6": "Экран"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetFontSize",
+    "name": "rcu.SetFontSize",
+    "label": "Установка размера шрифта",
+    "description": "Установка размера шрифта. Параметр: размер (0-4). Пример: SetFontSize(2)",
+    "args": [
+      {
+        "label": "0",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Экран",
+      "E7": "Экран",
+      "M6": "Экран"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetDisplayVar",
+    "name": "rcu.SetDisplayVar",
+    "label": "Вывод числа в строке",
+    "description": "Вывод числа в строке. Параметры: строка, число, цвет текста, цвет фона. Пример: SetDisplayVar(1, 10, 0xFFE0, 0x0000)",
+    "args": [
+      {
+        "label": "line",
+        "value": 0
+      },
+      {
+        "label": "number",
+        "value": 0
+      },
+      {
+        "label": "textColor",
+        "value": 0
+      },
+      {
+        "label": "bgColor",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Экран",
+      "E7": "Экран",
+      "M6": "Экран"
+    },
+    "sim": true
+  },
+  {
+    "id": "rcu.SetDisplayString",
+    "name": "rcu.SetDisplayString",
+    "label": "Вывод текста в строке",
+    "description": "Вывод текста в строке. Параметры: строка, \"текст\", цвет текста, цвет фона. Вместо текста могут быть и числа. Пример: rcu.SetDisplayString(1,str(5 + 3),0xFFE0,0x0000). Пример2 : rcu.SetDisplayString(1,str(\"\".join((\"Speed = \",str(50)))),0xFFE0,0x0000)",
+    "args": [
+      {
+        "label": "1",
+        "value": 1
+      },
+      {
+        "label": "\"text = \" + str(var)",
+        "value": 0
+      },
+      {
+        "label": "0xFFE0",
+        "value": 0
+      },
+      {
+        "label": "0x0000",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Экран",
+      "E7": "Экран",
+      "M6": "Экран"
+    },
+    "sim": true
+  },
+  {
+    "id": "rcu.SetDisplayPicture",
+    "name": "rcu.SetDisplayPicture",
+    "label": "Вывод картинки на экран в заданных координатах",
+    "description": "Вывод картинки на экран в заданных координатах. Параметры: x, y, картинка, масштаб. Пример: SetDisplayPicture(10, 10, \"a.jpg\", 0)",
+    "args": [
+      {
+        "label": "x",
+        "value": 0
+      },
+      {
+        "label": "y",
+        "value": 0
+      },
+      {
+        "label": "\"image.jpg\"",
+        "value": "image.jpg"
+      },
+      {
+        "label": "scale",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Экран",
+      "E7": "Экран",
+      "M6": "Экран"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetDisplayVarXY",
+    "name": "rcu.SetDisplayVarXY",
+    "label": "Вывод числа на экран в заданных координатах",
+    "description": "Вывод числа на экран в заданных координатах. Параметры: x, y, число, цвет текста, цвет фона. Пример: SetDisplayVarXY(1, 1, 10, 0xFFE0, 0x0000)",
+    "args": [
+      {
+        "label": "x",
+        "value": 0
+      },
+      {
+        "label": "y",
+        "value": 0
+      },
+      {
+        "label": "number",
+        "value": 0
+      },
+      {
+        "label": "textColor",
+        "value": 0
+      },
+      {
+        "label": "bgColor",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Экран",
+      "E7": "Экран",
+      "M6": "Экран"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetDisplayStringXY",
+    "name": "rcu.SetDisplayStringXY",
+    "label": "Вывод текста на экран в заданных координатах",
+    "description": "Вывод текста на экран в заданных координатах. Параметры: x, y, \"текст\", цвет текста, цвет фона. Пример: SetDisplayStringXY(1, 1, \"Hello\", 0xFFE0, 0x0000, 1)",
+    "args": [
+      {
+        "label": "x",
+        "value": 0
+      },
+      {
+        "label": "y",
+        "value": 0
+      },
+      {
+        "label": "\"text\"",
+        "value": "text"
+      },
+      {
+        "label": "textColor",
+        "value": 0
+      },
+      {
+        "label": "bgColor",
+        "value": 0
+      },
+      {
+        "label": "scale",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Экран",
+      "E7": "Экран",
+      "M6": "Экран"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetDisplayVarU32",
+    "name": "rcu.SetDisplayVarU32",
+    "label": "Вывод 10-значного числа на экран в строке",
+    "description": "Вывод 10-значного числа на экран в строке. Параметры: строка, число, цвет текста, цвет фона. Пример: SetDisplayVarU32(1, 1234567890, 0xFFE0, 0x0000)",
+    "args": [
+      {
+        "label": "line",
+        "value": 0
+      },
+      {
+        "label": "number",
+        "value": 0
+      },
+      {
+        "label": "textColor",
+        "value": 0
+      },
+      {
+        "label": "bgColor",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Экран",
+      "E7": "Экран",
+      "M6": "Экран"
+    },
+    "sim": true
+  },
+  {
+    "id": "rcu.SetLCDDot",
+    "name": "rcu.SetLCDDot",
+    "label": "Нарисовать точку по координатам",
+    "description": "Нарисовать точку по координатам. Параметры: x, y, цвет. Пример: SetLCDDot(10, 10, 0xFFE0)",
+    "args": [
+      {
+        "label": "x",
+        "value": 0
+      },
+      {
+        "label": "y",
+        "value": 0
+      },
+      {
+        "label": "цвет",
+        "value": 1
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Экран",
+      "E7": "Экран",
+      "M6": "Экран"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetLCDSolidCircle",
+    "name": "rcu.SetLCDSolidCircle",
+    "label": "Нарисовать круг по координатам",
+    "description": "Нарисовать круг по координатам. Параметры: x, y, радиус, цвет. Пример: SetLCDSolidCircle(10, 10, 5, 0xFFE0)",
+    "args": [
+      {
+        "label": "x",
+        "value": 0
+      },
+      {
+        "label": "y",
+        "value": 0
+      },
+      {
+        "label": "radius",
+        "value": 0
+      },
+      {
+        "label": "цвет",
+        "value": 1
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Экран",
+      "E7": "Экран",
+      "M6": "Экран"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetLCDLine",
+    "name": "rcu.SetLCDLine",
+    "label": "Нарисовать линию по координатам",
+    "description": "Нарисовать линию по координатам. Параметры: x, y, угол, длина, цвет. Пример: SetLCDLine(10, 10, 45, 10, 0xFFE0)",
+    "args": [
+      {
+        "label": "x1",
+        "value": 0
+      },
+      {
+        "label": "y1",
+        "value": 0
+      },
+      {
+        "label": "угол",
+        "value": 90
+      },
+      {
+        "label": "length",
+        "value": 0
+      },
+      {
+        "label": "цвет",
+        "value": 1
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Экран",
+      "E7": "Экран",
+      "M6": "Экран"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetLCDFilledRectangle2",
+    "name": "rcu.SetLCDFilledRectangle2",
+    "label": "Нарисовать сплошной прямоугольник по координатам",
+    "description": "Нарисовать сплошной прямоугольник по координатам. Параметры: x, y, ширина, высота, цвет. Пример: SetLCDFilledRectangle2(10, 10, 50, 50, 0xFFE0)",
+    "args": [
+      {
+        "label": "x",
+        "value": 0
+      },
+      {
+        "label": "y",
+        "value": 0
+      },
+      {
+        "label": "width",
+        "value": 0
+      },
+      {
+        "label": "height",
+        "value": 0
+      },
+      {
+        "label": "цвет",
+        "value": 1
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Экран",
+      "E7": "Экран",
+      "M6": "Экран"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetLCDRectangle2",
+    "name": "rcu.SetLCDRectangle2",
+    "label": "Нарисовать прямоугольник по координатам",
+    "description": "Нарисовать прямоугольник по координатам. Параметры: x, y, ширина, высота, толщина линии, цвет. Пример: SetLCDRectangle2(10, 10, 50, 50, 2, 0xFFE0)",
+    "args": [
+      {
+        "label": "x",
+        "value": 0
+      },
+      {
+        "label": "y",
+        "value": 0
+      },
+      {
+        "label": "width",
+        "value": 0
+      },
+      {
+        "label": "height",
+        "value": 0
+      },
+      {
+        "label": "thickness",
+        "value": 0
+      },
+      {
+        "label": "цвет",
+        "value": 1
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Экран",
+      "E7": "Экран",
+      "M6": "Экран"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetBluetoothData",
+    "name": "rcu.SetBluetoothData",
+    "label": "Передать данные с контроллера",
+    "description": "Передать данные с контроллера. Параметр: данные. Пример: SetBluetoothData(50)",
+    "args": [
+      {
+        "label": "data",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "E6": "Bluetooth",
+      "E7": "Bluetooth",
+      "M6": "Bluetooth"
+    },
+    "sim": true
+  },
+  {
+    "id": "rcu.GetBluetoothData",
+    "name": "rcu.GetBluetoothData",
+    "label": "Получить данные по Bluetooth",
+    "description": "Получить данные по Bluetooth. Пример: GetBluetoothData()",
+    "args": [],
+    "output": true,
+    "sets": {
+      "E6": "Bluetooth",
+      "E7": "Bluetooth",
+      "M6": "Bluetooth"
+    },
+    "sim": true
+  },
+  {
+    "id": "rcu.GetBluetoothControl",
+    "name": "rcu.GetBluetoothControl",
+    "label": "Получить код ключа",
+    "description": "Получить код ключа. Пример: GetBluetoothControl()",
+    "args": [],
+    "output": true,
+    "sets": {
+      "E6": "Bluetooth",
+      "E7": "Bluetooth",
+      "M6": "Bluetooth"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetBluetoothControlData",
+    "name": "rcu.GetBluetoothControlData",
+    "label": "Получить ключ телефона",
+    "description": "Получить ключ телефона. Пример: GetBluetoothControlData()",
+    "args": [],
+    "output": true,
+    "sets": {
+      "E6": "Bluetooth",
+      "E7": "Bluetooth",
+      "M6": "Bluetooth"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetBTModuleRemoteButton",
+    "name": "rcu.GetBTModuleRemoteButton",
+    "label": "Получить значение ключа Bluetooth-пульта",
+    "description": "Получить значение ключа Bluetooth-пульта. Пример: GetBTModuleRemoteButton()",
+    "args": [],
+    "output": true,
+    "sets": {
+      "E6": "Bluetooth",
+      "E7": "Bluetooth",
+      "M6": "Bluetooth"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetBTModuleRemoteCode",
+    "name": "rcu.GetBTModuleRemoteCode",
+    "label": "Получить код ключа Bluetooth-пульта",
+    "description": "Получить код ключа Bluetooth-пульта. Пример: GetBTModuleRemoteCode()",
+    "args": [],
+    "output": true,
+    "sets": {
+      "E6": "Bluetooth",
+      "E7": "Bluetooth",
+      "M6": "Bluetooth"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetBTModuleRemoteRocker",
+    "name": "rcu.GetBTModuleRemoteRocker",
+    "label": "Получить направление джойстика Bluetooth-пульта",
+    "description": "Получить направление джойстика Bluetooth-пульта. Параметры: джойстик (0/1), ось (0/1). Пример: GetBTModuleRemoteRocker(0, 1)",
+    "args": [
+      {
+        "label": "направление",
+        "value": 0
+      },
+      {
+        "label": "ось",
+        "value": 0
+      }
+    ],
+    "output": true,
+    "sets": {
+      "E6": "Bluetooth",
+      "E7": "Bluetooth",
+      "M6": "Bluetooth"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetComVoice",
+    "name": "rcu.GetComVoice",
+    "label": "Голосовая команда",
+    "description": "Голосовая команда. Параметр: текст. Пример: GetComVoice(\"Hello\")",
+    "args": [
+      {
+        "label": "\"text\"",
+        "value": "text"
+      }
+    ],
+    "output": true,
+    "sets": {
+      "E6": "Bluetooth",
+      "E7": "Bluetooth",
+      "M6": "Bluetooth"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetMotorH",
+    "name": "rcu.SetMotor",
+    "label": "Установка скорости мотора",
+    "description": "Установка скорости мотора. Параметры: № мотора, скорость в %. Пример: SetMotor(1, 100)",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      },
+      {
+        "label": "скорость",
+        "value": 50
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Моторы"
+    },
+    "sim": true
+  },
+  {
+    "id": "rcu.StopMotorH",
+    "name": "rcu.StopMotor",
+    "label": "Вставляет шаблон команды",
+    "description": "Вставляет шаблон команды. Подробное описание пока не заполнено.",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Моторы"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetMotorCodeH",
+    "name": "rcu.SetMotorCode",
+    "label": "Обнуление энкодера",
+    "description": "Обнуление энкодера. Параметр - № мотора. Пример: SetMotorCode(1)",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Моторы"
+    },
+    "sim": true
+  },
+  {
+    "id": "rcu.GetMotorCodeH",
+    "name": "rcu.GetMotorCode",
+    "label": "Получение показаний с энкодера",
+    "description": "Получение показаний с энкодера. Параметр - № мотора. Пример: GetMotorCode(1)",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      }
+    ],
+    "output": true,
+    "sets": {
+      "H": "Моторы"
+    },
+    "sim": true
+  },
+  {
+    "id": "rcu.WaitMotorTo",
+    "name": "rcu.WaitMotorTo",
+    "label": "Ожидание поворота мотора с указанной скоростью на определённое число по одному из параметров(об",
+    "description": "Ожидание поворота мотора с указанной скоростью на определённое число по одному из параметров(обороты, градусы, секнуды). Параметры: № мотора, скорость, число, параметр. Пример: WaitMotorTo(1, 50, 1, 1)",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      },
+      {
+        "label": "percent",
+        "value": 0
+      },
+      {
+        "label": "номер",
+        "value": 1
+      },
+      {
+        "label": "type",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Моторы"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetMotorVByOther",
+    "name": "rcu.SetMotorVByOther",
+    "label": "Включение мотора с указанной скоростью на определённое число по одному из параметров(обороты, г",
+    "description": "Включение мотора с указанной скоростью на определённое число по одному из параметров(обороты, градусы, секнуды). Параметры: № мотора, скорость, число, параметр. Пример: SetMotorVByOther(1, 50, 1, 1)",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      },
+      {
+        "label": "percent",
+        "value": 0
+      },
+      {
+        "label": "номер",
+        "value": 1
+      },
+      {
+        "label": "type",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Моторы"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetMotorV",
+    "name": "rcu.GetMotorV",
+    "label": "Получение скорости мотора",
+    "description": "Получение скорости мотора. Параметры: № мотора. Пример: GetMotorV(1)",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      }
+    ],
+    "output": true,
+    "sets": {
+      "H": "Моторы"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetMotorAngleH",
+    "name": "rcu.GetMotorAngle",
+    "label": "Вставляет шаблон команды",
+    "description": "Вставляет шаблон команды. Подробное описание пока не заполнено.",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      }
+    ],
+    "output": true,
+    "sets": {
+      "H": "Моторы"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetSteeringAngle",
+    "name": "rcu.SetSteeringAngle",
+    "label": "Установить вращение мотора по указанному направлению",
+    "description": "Установить вращение мотора по указанному направлению. Параметры: № мотора, направление, угол, время. Пример: SetSteeringAngle(1, 2, 50, 3)",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      },
+      {
+        "label": "type",
+        "value": 0
+      },
+      {
+        "label": "degree",
+        "value": 0
+      },
+      {
+        "label": "seconds",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Моторы"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetStartMotorLorR",
+    "name": "rcu.SetStartMotorLorR",
+    "label": "Установка портов для робота",
+    "description": "Установка портов для робота. Параметры: левый мотор, правый мотор. Пример: SetStartMotorLorR(1, 2)",
+    "args": [
+      {
+        "label": "portL",
+        "value": 0
+      },
+      {
+        "label": "portR",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Колёсная база"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetMotorsByTime",
+    "name": "rcu.SetMotorsByTime",
+    "label": "Движение с заданной скоростью указанное время",
+    "description": "Движение с заданной скоростью указанное время. Параметры: скорость, время. Пример: SetMotorsByTime(50, 1)",
+    "args": [
+      {
+        "label": "скорость",
+        "value": 50
+      },
+      {
+        "label": "sec",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Колёсная база"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetMotors",
+    "name": "rcu.SetMotors",
+    "label": "Движение с заданной скоростью",
+    "description": "Движение с заданной скоростью. Параметры: скорость. Пример: SetMotors(70)",
+    "args": [
+      {
+        "label": "скорость",
+        "value": 50
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Колёсная база"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetMotorsByLength",
+    "name": "rcu.SetMotorsByLength",
+    "label": "Движение с заданной скоростью на указанное расстояние",
+    "description": "Движение с заданной скоростью на указанное расстояние. Параметры: скорость, расстояние. Пример: SetMotorsByLength(50, 100)",
+    "args": [
+      {
+        "label": "скорость",
+        "value": 50
+      },
+      {
+        "label": "cm",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Колёсная база"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetOneCircleSize",
+    "name": "rcu.SetOneCircleSize",
+    "label": "Установка длины окружности шин",
+    "description": "Установка длины окружности шин. Параметры: см. Пример: SetOneCircleSize(20.7)",
+    "args": [
+      {
+        "label": "SizeWheelInCm",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Колёсная база"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetMotorsAngle",
+    "name": "rcu.SetMotorsAngle",
+    "label": "Поворот в указанную сторону с указанной скоростью в течении определенного времени",
+    "description": "Поворот в указанную сторону с указанной скоростью в течении определенного времени. Параметры: скорость, сторона, время. Пример: SetMotorsAngle(50, 1, 2)",
+    "args": [
+      {
+        "label": "скорость",
+        "value": 50
+      },
+      {
+        "label": "side(1/2)",
+        "value": 0
+      },
+      {
+        "label": "sec",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Колёсная база"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.StopMotorRun",
+    "name": "rcu.StopMotorRun",
+    "label": "Остановка движения",
+    "description": "Остановка движения. Пример: StopMotorRun()",
+    "args": [
+      {
+        "label": "speedL",
+        "value": 0
+      },
+      {
+        "label": "speedR",
+        "value": 0
+      },
+      {
+        "label": "sec",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Колёсная база"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.WaitMotorByPercent",
+    "name": "rcu.WaitMotorByPercent",
+    "label": "Движение каждого мотора с указанной скоростью в течении определенного времени",
+    "description": "Движение каждого мотора с указанной скоростью в течении определенного времени. Параметры: скороть правого мотора, скорость левого мотора, время. Пример: WaitMotorByPercent(50, -50, 5)",
+    "args": [
+      {
+        "label": "speedL",
+        "value": 0
+      },
+      {
+        "label": "speedR",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Колёсная база"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetMotorByPercent",
+    "name": "rcu.SetMotorByPercent",
+    "label": "Установка скорости каждого из моторов",
+    "description": "Установка скорости каждого из моторов. Параметры: скороть правого мотора, скорость левого мотора. Пример: SetMotorByPercent(50, 20)",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      },
+      {
+        "label": "скорость",
+        "value": 50
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Колёсная база"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.Set3CLedH",
+    "name": "rcu.Set3CLed",
+    "label": "Вставляет шаблон команды",
+    "description": "Вставляет шаблон команды. Подробное описание пока не заполнено.",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      },
+      {
+        "label": "цвет",
+        "value": 1
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Датчики"
+    },
+    "sim": true
+  },
+  {
+    "id": "rcu.SetLightByRGB",
+    "name": "rcu.SetLightByRGB",
+    "label": "Включение подсветки датчика цвета",
+    "description": "Включение подсветки датчика цвета. Параметры: красный, зеленый, синий. Пример: SetLightByRGB(5, 50, 250)",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      },
+      {
+        "label": "R",
+        "value": 0
+      },
+      {
+        "label": "G",
+        "value": 0
+      },
+      {
+        "label": "B",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Датчики"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetElcLightIfData",
+    "name": "rcu.SetElcLightIfData",
+    "label": "Усановка порога срабатывания для датчика света",
+    "description": "Усановка порога срабатывания для датчика света. Параметры: порт, порог. Пример: SetElcLightIfData(1, 1000)",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      },
+      {
+        "label": "threshold",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Датчики"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.WaitNewColor",
+    "name": "rcu.WaitNewColor",
+    "label": "Ожидание нового цвета",
+    "description": "Ожидание нового цвета. Параметры: порт. Пример: WaitNewColor(1)",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Датчики"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.WaitThisColor",
+    "name": "rcu.WaitThisColor",
+    "label": "Ожидание конкретного цвета",
+    "description": "Ожидание конкретного цвета. Параметры: порт, цвет. Пример: WaitThisColor(1, 3)",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      },
+      {
+        "label": "цвет",
+        "value": 1
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Датчики"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetLightSensorH",
+    "name": "rcu.GetLightSensor",
+    "label": "Получение показаний с датчика света",
+    "description": "Получение показаний с датчика света. Параметр: порт. Пример: GetLightSensor(4)",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      },
+      {
+        "label": "type",
+        "value": 0
+      }
+    ],
+    "output": true,
+    "sets": {
+      "H": "Датчики"
+    },
+    "sim": true
+  },
+  {
+    "id": "rcu.IsColor",
+    "name": "rcu.IsColor",
+    "label": "Проверка соответствия цвета заложенному",
+    "description": "Проверка соответствия цвета заложенному. Параметры: порт, цвет. Пример: IsColor(1, 5)",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      },
+      {
+        "label": "null",
+        "value": 0
+      }
+    ],
+    "output": true,
+    "sets": {
+      "H": "Датчики"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetColorSensorH",
+    "name": "rcu.GetColorSensor",
+    "label": "Получение показаний с датчика цвета",
+    "description": "Получение показаний с датчика цвета. Параметры: порт, режим. Режимы: 1-G, 2-R, 3-B, 4-Color, 9-Light, 15-Hue, 16-Saturation, 17-Luminance. Пример: GetColorSensor(5, 1)",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      },
+      {
+        "label": "цвет",
+        "value": 1
+      }
+    ],
+    "output": true,
+    "sets": {
+      "H": "Датчики"
+    },
+    "sim": true
+  },
+  {
+    "id": "rcu.IsElectedData",
+    "name": "rcu.IsElectedData",
+    "label": "Проверка соответствия показания датчика заложенному значению",
+    "description": "Проверка соответствия показания датчика заложенному значению. Параметры: порт, больше/меньше(1/2), значение. Пример: IsElectedData(1, 1, 1000)",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      },
+      {
+        "label": "sign",
+        "value": 0
+      },
+      {
+        "label": "value",
+        "value": 0
+      }
+    ],
+    "output": true,
+    "sets": {
+      "H": "Датчики"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetTempAndHumData",
+    "name": "rcu.GetTempAndHumData",
+    "label": "Получения значения с дачтика влажности и температуры",
+    "description": "Получения значения с дачтика влажности и температуры. Параметры: порт, режим. Пример: GetTempAndHumData(8, 1)",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      },
+      {
+        "label": "value",
+        "value": 0
+      }
+    ],
+    "output": true,
+    "sets": {
+      "H": "Датчики"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetGyroscopeData",
+    "name": "rcu.GetGyroscopeData",
+    "label": "Получение угловой скорости",
+    "description": "Получение угловой скорости. Параметры: ось. Пример: GetGyroscopeData(1)",
+    "args": [
+      {
+        "label": "Axis",
+        "value": 0
+      }
+    ],
+    "output": true,
+    "sets": {
+      "H": "Датчики"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetAccData",
+    "name": "rcu.GetAccData",
+    "label": "Получение ускорения",
+    "description": "Получение ускорения. Параметры: ось. Пример: GetAccData(1)",
+    "args": [
+      {
+        "label": "Axis",
+        "value": 0
+      }
+    ],
+    "output": true,
+    "sets": {
+      "H": "Датчики"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetAttitudeData",
+    "name": "rcu.GetAttitudeData",
+    "label": "Получение значения с гироскопа",
+    "description": "Получение значения с гироскопа. Параметры: тип данных. Пример: GetAttitudeData(1)",
+    "args": [
+      {
+        "label": "Side",
+        "value": 0
+      }
+    ],
+    "output": true,
+    "sets": {
+      "H": "Датчики"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetRcuTimeTo0",
+    "name": "rcu.SetRcuTimeTo0",
+    "label": "Обнуление встроенного таймера программы",
+    "description": "Обнуление встроенного таймера программы. Пример: SetRcuTimeTo0()",
+    "args": [],
+    "output": false,
+    "sets": {
+      "H": "Контроллер"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetRcuTime",
+    "name": "rcu.GetRcuTime",
+    "label": "Чтение времени от начала программы",
+    "description": "Чтение времени от начала программы. Пример: GetRcuTime()",
+    "args": [],
+    "output": true,
+    "sets": {
+      "H": "Контроллер"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetDataH",
+    "name": "rcu.SetData",
+    "label": "Запись данных по адресу",
+    "description": "Запись данных по адресу. Параметры: адрес, данные. Пример: SetData(50, 50)",
+    "args": [
+      {
+        "label": "min",
+        "value": 0
+      },
+      {
+        "label": "max",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Контроллер"
+    },
+    "sim": true
+  },
+  {
+    "id": "rcu.GetDataH",
+    "name": "rcu.GetData",
+    "label": "Чтение данных по адресу",
+    "description": "Чтение данных по адресу. Параметр: адрес. Пример: GetData(50)",
+    "args": [
+      {
+        "label": "номер",
+        "value": 1
+      }
+    ],
+    "output": true,
+    "sets": {
+      "H": "Контроллер"
+    },
+    "sim": true
+  },
+  {
+    "id": "rcu.SavePic",
+    "name": "rcu.SavePic",
+    "label": "Сохраниние скриншота экрана",
+    "description": "Сохраниние скриншота экрана. Партаметр: Имя файла. Пример: SavePic(\"FileName\")",
+    "args": [
+      {
+        "label": "FileName",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Контроллер"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetChangeValue",
+    "name": "rcu.GetChangeValue",
+    "label": "Получение заряда батареи",
+    "description": "Получение заряда батареи. Пример: GetChangeValue()",
+    "args": [],
+    "output": true,
+    "sets": {
+      "H": "Контроллер"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetMaiVoice",
+    "name": "rcu.GetMaiVoice",
+    "label": "Чтение уровня громкости микрофона",
+    "description": "Чтение уровня громкости микрофона. Пример: GetMaiVoice()",
+    "args": [],
+    "output": true,
+    "sets": {
+      "H": "Контроллер"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetCcrrentDate",
+    "name": "rcu.GetCcrrentDate",
+    "label": "Получение даты и времени",
+    "description": "Получение даты и времени. Пример: GetCcrrentDate()",
+    "args": [],
+    "output": true,
+    "sets": {
+      "H": "Контроллер"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetSaveStudyDataToFile",
+    "name": "rcu.SetSaveStudyDataToFile",
+    "label": "Запись экспериментальных данных в файл",
+    "description": "Запись экспериментальных данных в файл. Параметры: Данные, Имя файла. Пример: SetSaveStudyDataToFile(1, \"FileName\")",
+    "args": [
+      {
+        "label": "номер",
+        "value": 1
+      },
+      {
+        "label": "\"FileName\"",
+        "value": "FileName"
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Контроллер"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetShowFileData",
+    "name": "rcu.SetShowFileData",
+    "label": "Показать эксперементальные данные",
+    "description": "Показать эксперементальные данные. Партаметр: Имя файла. Пример: SetShowFileData(\"FileName\")",
+    "args": [
+      {
+        "label": "\"FileName\"",
+        "value": "FileName"
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Контроллер"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetDeleteStudyFile",
+    "name": "rcu.SetDeleteStudyFile",
+    "label": "Удаление файла с эксперементальными данными",
+    "description": "Удаление файла с эксперементальными данными. Партаметр: Имя файла. Пример: SetDeleteStudyFile(\"FileName\")",
+    "args": [
+      {
+        "label": "\"FileName\"",
+        "value": "FileName"
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Контроллер"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetEditView",
+    "name": "rcu.SetEditView",
+    "label": "Отображение поля ввода на экране контроллера по осям",
+    "description": "Отображение поля ввода на экране контроллера по осям. Параметры: Х, У, описание. Пример: SetEditView(1, 1, \"Text\")",
+    "args": [
+      {
+        "label": "x",
+        "value": 0
+      },
+      {
+        "label": "y",
+        "value": 0
+      },
+      {
+        "label": "\"data\"",
+        "value": "data"
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Контроллер"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetEditViewData",
+    "name": "rcu.GetEditViewData",
+    "label": "Получить данные из поля для ввода",
+    "description": "Получить данные из поля для ввода. Пример: GetEditViewData()",
+    "args": [],
+    "output": true,
+    "sets": {
+      "H": "Контроллер"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetSaveStrToFile",
+    "name": "rcu.SetSaveStrToFile",
+    "label": "Сохранение текста в файл",
+    "description": "Сохранение текста в файл. Параметры: Текст, Имя файла. Пример: SetSaveStrToFile(\"hello\", \"FileName\")",
+    "args": [
+      {
+        "label": "\"text\"",
+        "value": "text"
+      },
+      {
+        "label": "\"FileName\"",
+        "value": "FileName"
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Контроллер"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetStrForFile",
+    "name": "rcu.GetStrForFile",
+    "label": "Получение строки из файла",
+    "description": "Получение строки из файла. Параметры: строка, Имя файла. Пример: GetStrForFile(1, \"FileName\")",
+    "args": [
+      {
+        "label": "\"FileName\"",
+        "value": "FileName"
+      },
+      {
+        "label": "line",
+        "value": 0
+      }
+    ],
+    "output": true,
+    "sets": {
+      "H": "Контроллер"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GoneGifExpression",
+    "name": "rcu.GoneGifExpression",
+    "label": "Стирание гифку с эмоцией",
+    "description": "Стирание гифку с эмоцией. Пример: GoneGifExpression()",
+    "args": [],
+    "output": false,
+    "sets": {
+      "H": "Контроллер"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.ShowList",
+    "name": "rcu.ShowList",
+    "label": "Показать список",
+    "description": "Показать список. Параметры: Х, У, Размер, Название. Пример: ShowList(1, 2, 2000, \"Title\")",
+    "args": [
+      {
+        "label": "x",
+        "value": 0
+      },
+      {
+        "label": "y",
+        "value": 0
+      },
+      {
+        "label": "length",
+        "value": 0
+      },
+      {
+        "label": "\"title\"",
+        "value": "title"
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Контроллер"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetListItem",
+    "name": "rcu.SetListItem",
+    "label": "Установить название указанного элемента списка",
+    "description": "Установить название указанного элемента списка. Все элементы до него появятся с названием null. Пример: SetListItem(2, \"Hello\")",
+    "args": [
+      {
+        "label": "1",
+        "value": 1
+      },
+      {
+        "label": "\"FileName\"",
+        "value": "FileName"
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Контроллер"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.InitIot",
+    "name": "rcu.InitIot",
+    "label": "Инициализация модуля IoT",
+    "description": "Инициализация модуля IoT. Пример: InitIot()",
+    "args": [],
+    "output": false,
+    "sets": {
+      "H": "IoT"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetIotDeviceData",
+    "name": "rcu.SetIotDeviceData",
+    "label": "Отправка данных на устройство",
+    "description": "Отправка данных на устройство. Параметр: число, имя устройства. Пример: SetIotDeviceData(1, \"IoT\")",
+    "args": [
+      {
+        "label": "\"Message\"",
+        "value": "Message"
+      },
+      {
+        "label": "\"-\"",
+        "value": "-"
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "IoT"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.ResetIotResult",
+    "name": "rcu.ResetIotResult",
+    "label": "Сброс локального кэша модуля IoT",
+    "description": "Сброс локального кэша модуля IoT. Пример: ResetIotResult()",
+    "args": [],
+    "output": false,
+    "sets": {
+      "H": "IoT"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.IsIotDeviceData",
+    "name": "rcu.IsIotDeviceData",
+    "label": "Сравнение информации с устройства с указанным значением",
+    "description": "Сравнение информации с устройства с указанным значением. Параметры: имя устройства, значение. Пример: IsIotDeviceData(\"IoT\", 5)",
+    "args": [
+      {
+        "label": "\"-\"",
+        "value": "-"
+      },
+      {
+        "label": "\"0\"",
+        "value": "0"
+      }
+    ],
+    "output": true,
+    "sets": {
+      "H": "IoT"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetIotDeviceData",
+    "name": "rcu.GetIotDeviceData",
+    "label": "Получение информационных данных, отправленных на устрйоство",
+    "description": "Получение информационных данных, отправленных на устрйоство. Параметр: имя устройства. Пример: GetIotDeviceData(\"IoT\")",
+    "args": [
+      {
+        "label": "\"-\"",
+        "value": "-"
+      }
+    ],
+    "output": true,
+    "sets": {
+      "H": "IoT"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetWifiData",
+    "name": "rcu.SetWifiData",
+    "label": "Отправка данных в локальную сеть",
+    "description": "Отправка данных в локальную сеть. Параметр: данные. Пример: SetWifiData(1)",
+    "args": [
+      {
+        "label": "\"Data\"",
+        "value": "Data"
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "WiFi"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetWifiData",
+    "name": "rcu.GetWifiData",
+    "label": "Получение данных из локальной сети",
+    "description": "Получение данных из локальной сети. Параметр: № мотора. Пример: GetWifiData()",
+    "args": [],
+    "output": true,
+    "sets": {
+      "H": "WiFi"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetRcuBluetoothData",
+    "name": "rcu.SetRcuBluetoothData",
+    "label": "Передача данных по Bluetooth",
+    "description": "Передача данных по Bluetooth. Параметр:данные. Пример: SetRcuBluetoothData(1)",
+    "args": [
+      {
+        "label": "\"Data\"",
+        "value": "Data"
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "WiFi"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetRcuBluetoothData",
+    "name": "rcu.GetRcuBluetoothData",
+    "label": "Получение данных по Bluetooth",
+    "description": "Получение данных по Bluetooth. Параметр - № мотора. Пример: GetRcuBluetoothData()",
+    "args": [],
+    "output": true,
+    "sets": {
+      "H": "WiFi"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.OpenCameraForPhone",
+    "name": "rcu.OpenCameraForPhone",
+    "label": "Включение/отключение камеры",
+    "description": "Включение/отключение камеры. Параметры: вкл/выкл. Пример: OpenCameraForPhone(1)",
+    "args": [
+      {
+        "label": "0/1",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "WiFi"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SendWifiBtnDescribe",
+    "name": "rcu.SendWifiBtnDescribe",
+    "label": "Отправка команды с контроллера для установки описания указанной кнопки, отображаемой в приложен",
+    "description": "Отправка команды с контроллера для установки описания указанной кнопки, отображаемой в приложении дистанционного управления. Параметры: кнопка (1-4), \"имя\". Пример: SendWifiBtnDescribe(1, \"Up\")",
+    "args": [
+      {
+        "label": "Button",
+        "value": 0
+      },
+      {
+        "label": "\"name\"",
+        "value": "name"
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "WiFi"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.IsPhoneWiFiYGData",
+    "name": "rcu.IsPhoneWiFiYGData",
+    "label": "Проверка нажатия кнопки в приложении дистанционного управления",
+    "description": "Проверка нажатия кнопки в приложении дистанционного управления. Параметры: кнопка. Пример: IsPhoneWiFiYGData(1)",
+    "args": [
+      {
+        "label": "Rocker",
+        "value": 0
+      },
+      {
+        "label": "Position",
+        "value": 0
+      }
+    ],
+    "output": true,
+    "sets": {
+      "H": "WiFi"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.IsPhoneWiFiBtnData",
+    "name": "rcu.IsPhoneWiFiBtnData",
+    "label": "Проверка, находится ли указанный джойстик в указанном направлении в приложении дистанционного у",
+    "description": "Проверка, находится ли указанный джойстик в указанном направлении в приложении дистанционного управления. Параметры: джойстик, направление. Пример: IsPhoneWiFiBtnData(1, 1)",
+    "args": [
+      {
+        "label": "Button",
+        "value": 0
+      }
+    ],
+    "output": true,
+    "sets": {
+      "H": "WiFi"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetPhoneWiFiYGData",
+    "name": "rcu.GetPhoneWiFiYGData",
+    "label": "Получение координат указанного джойстика, по указанной оси в приложении дистанционного управлен",
+    "description": "Получение координат указанного джойстика, по указанной оси в приложении дистанционного управления. Параметры: джойстик, ось. Пример: GetPhoneWiFiYGData(1, 1)",
+    "args": [
+      {
+        "label": "Joystik",
+        "value": 0
+      },
+      {
+        "label": "Axis",
+        "value": 0
+      }
+    ],
+    "output": true,
+    "sets": {
+      "H": "WiFi"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetRoadHsv",
+    "name": "rcu.SetRoadHsv",
+    "label": "Настройка распознавания линии по системе HSV",
+    "description": "Настройка распознавания линии по системе HSV. Устанавливает верхний лимит. Параметры: H(тон), S(насыщенность), V(яркость). Пример: SetRoadHsv(180, 255, 50)",
+    "args": [
+      {
+        "label": "hue",
+        "value": 0
+      },
+      {
+        "label": "saturation",
+        "value": 0
+      },
+      {
+        "label": "value",
+        "value": 0
+      },
+      {
+        "label": "limit",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "AI"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.IsRoadBlack",
+    "name": "rcu.IsRoadBlack",
+    "label": "Проверка",
+    "description": "Проверка. распознаёт ли камера чёрную линию. Пример: IsRoadBlack()",
+    "args": [],
+    "output": true,
+    "sets": {
+      "H": "AI"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetRoadAngle",
+    "name": "rcu.GetRoadAngle",
+    "label": "Получение угла между направлением движения робота и линией",
+    "description": "Получение угла между направлением движения робота и линией. Пример: GetRoadAngle()",
+    "args": [],
+    "output": true,
+    "sets": {
+      "H": "AI"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetFaceRegister",
+    "name": "rcu.SetFaceRegister",
+    "label": "Запись лица для распознания",
+    "description": "Запись лица для распознания. Параметр: \"Имя\", Пример: SetFaceRegister(\"Kirill\")",
+    "args": [
+      {
+        "label": "\"name\"",
+        "value": "name"
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "AI"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetCameraShow",
+    "name": "rcu.SetCameraShow",
+    "label": "Включить/отключить демонстрацию изображения с камеры на экран контроллера",
+    "description": "Включить/отключить демонстрацию изображения с камеры на экран контроллера. Параметры: вкл/выкл(1-2). Пример: SetCameraShow(1)",
+    "args": [
+      {
+        "label": "show/hide(1/2)",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "AI"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetTTSSpeack",
+    "name": "rcu.SetTTSSpeack",
+    "label": "Прочитать текст",
+    "description": "Прочитать текст. Параметры: \"Текст\". Пример: SetTTSSpeack(\"Hello\")",
+    "args": [
+      {
+        "label": "\"text\"",
+        "value": "text"
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "AI"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.ResetAiResult",
+    "name": "rcu.ResetAiResult",
+    "label": "Сбросить все результаты",
+    "description": "Сбросить все результаты. Пример: ResetAiResult()",
+    "args": [],
+    "output": false,
+    "sets": {
+      "H": "AI"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetPoseData",
+    "name": "rcu.GetPoseData",
+    "label": "Проверка, соответсвует ли жест на камере указанному",
+    "description": "Проверка, соответсвует ли жест на камере указанному. Пример: GetPoseData(1)",
+    "args": [
+      {
+        "label": "pose",
+        "value": 0
+      }
+    ],
+    "output": true,
+    "sets": {
+      "H": "AI"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetSimplePoseList",
+    "name": "rcu.GetSimplePoseList",
+    "label": "Получение координат точек лица для распознования",
+    "description": "Получение координат точек лица для распознования. Параметры: точка, x/y(1/2). Пример: GetSimplePoseList(5, 1)",
+    "args": [
+      {
+        "label": "BodyPart",
+        "value": 0
+      },
+      {
+        "label": "x/y",
+        "value": 0
+      }
+    ],
+    "output": true,
+    "sets": {
+      "H": "AI"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetWeather",
+    "name": "rcu.GetWeather",
+    "label": "Получение данных о погоде в указанном городе",
+    "description": "Получение данных о погоде в указанном городе. Параметры: город, параметр Пример: GetWeather(\"北京\", 1)",
+    "args": [
+      {
+        "label": "citi",
+        "value": 0
+      },
+      {
+        "label": "weather",
+        "value": 0
+      }
+    ],
+    "output": true,
+    "sets": {
+      "H": "AI"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetAiData",
+    "name": "rcu.GetAiData",
+    "label": "Получиение заданных результатов распознания через камеру",
+    "description": "Получиение заданных результатов распознания через камеру. Параметр: требуемы результат(1-5). Пример: GetAiData(1)",
+    "args": [
+      {
+        "label": "data",
+        "value": 0
+      }
+    ],
+    "output": true,
+    "sets": {
+      "H": "AI"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetZxing",
+    "name": "rcu.GetZxing",
+    "label": "Получение результатов чтения QR кода",
+    "description": "Получение результатов чтения QR кода. Пример: GetZxing()",
+    "args": [],
+    "output": true,
+    "sets": {
+      "H": "AI"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetBlackLineData",
+    "name": "rcu.GetBlackLineData",
+    "label": "Получение результатов распознания чёрной линии",
+    "description": "Получение результатов распознания чёрной линии. Пример: GetBlackLineData()",
+    "args": [],
+    "output": true,
+    "sets": {
+      "H": "AI"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.StartOnnxCamera",
+    "name": "rcu.StartOnnxCamera",
+    "label": "Запуск/остановка работы альтернативного алгоритма AI",
+    "description": "Запуск/остановка работы альтернативного алгоритма AI. Параметры: Вкл/выкл(1-2), имя модели, показать/скрыть результат. Пример: StartOnnxCamera(1,\"model.onnx\",1)",
+    "args": [
+      {
+        "label": "run/close(1/2)",
+        "value": 0
+      },
+      {
+        "label": "\"model.onnx\"",
+        "value": "model.onnx"
+      },
+      {
+        "label": "show/hide(1/2)",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "AI"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetOnnxZXD",
+    "name": "rcu.GetOnnxZXD",
+    "label": "Установка уровня достоверности результата",
+    "description": "Установка уровня достоверности результата. Параметр: уровень остоверности. Пример: GetOnnxZXD(1)",
+    "args": [
+      {
+        "label": "ConfidenceLevel",
+        "value": 0
+      }
+    ],
+    "output": true,
+    "sets": {
+      "H": "AI"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetOnnxResult",
+    "name": "rcu.GetOnnxResult",
+    "label": "Получение результатов распознания по альтернативному алгоритму",
+    "description": "Получение результатов распознания по альтернативному алгоритму. Параметр: результат/уровень достоверности Пример: GetOnnxResult()",
+    "args": [
+      {
+        "label": "Custom/ConfidenceLevel(1/2)",
+        "value": 0
+      }
+    ],
+    "output": true,
+    "sets": {
+      "H": "AI"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.IsOnnxResult",
+    "name": "rcu.IsOnnxResult",
+    "label": "Вставляет шаблон команды",
+    "description": "Вставляет шаблон команды. Подробное описание пока не заполнено.",
+    "args": [
+      {
+        "label": "1",
+        "value": 1
+      }
+    ],
+    "output": true,
+    "sets": {
+      "H": "AI"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.StartBDApi",
+    "name": "rcu.StartBDApi",
+    "label": "Вставляет шаблон команды",
+    "description": "Вставляет шаблон команды. Подробное описание пока не заполнено.",
+    "args": [
+      {
+        "label": "\"run/close(1/2)\"",
+        "value": "run/close(1/2)"
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "AI Cloud"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetTextRecognize",
+    "name": "rcu.SetTextRecognize",
+    "label": "Вставляет шаблон команды",
+    "description": "Вставляет шаблон команды. Подробное описание пока не заполнено.",
+    "args": [],
+    "output": false,
+    "sets": {
+      "H": "AI Cloud"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetTextRecognizeResult",
+    "name": "rcu.GetTextRecognizeResult",
+    "label": "Вставляет шаблон команды",
+    "description": "Вставляет шаблон команды. Подробное описание пока не заполнено.",
+    "args": [],
+    "output": true,
+    "sets": {
+      "H": "AI Cloud"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.StartBDVoiceRecognize",
+    "name": "rcu.StartBDVoiceRecognize",
+    "label": "Вставляет шаблон команды",
+    "description": "Вставляет шаблон команды. Подробное описание пока не заполнено.",
+    "args": [
+      {
+        "label": "sec",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "AI Cloud"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.StartBDVoiceRecognizeOnce",
+    "name": "rcu.StartBDVoiceRecognizeOnce",
+    "label": "Вставляет шаблон команды",
+    "description": "Вставляет шаблон команды. Подробное описание пока не заполнено.",
+    "args": [],
+    "output": false,
+    "sets": {
+      "H": "AI Cloud"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetVoiceData",
+    "name": "rcu.GetVoiceData",
+    "label": "Вставляет шаблон команды",
+    "description": "Вставляет шаблон команды. Подробное описание пока не заполнено.",
+    "args": [],
+    "output": true,
+    "sets": {
+      "H": "AI Cloud"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.InitXhSDK",
+    "name": "rcu.InitXhSDK",
+    "label": "Вставляет шаблон команды",
+    "description": "Вставляет шаблон команды. Подробное описание пока не заполнено.",
+    "args": [
+      {
+        "label": "\"url\"",
+        "value": "url"
+      },
+      {
+        "label": "\"key\"",
+        "value": "key"
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "AI Cloud"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.UseInsetChatUi",
+    "name": "rcu.UseInsetChatUi",
+    "label": "Вставляет шаблон команды",
+    "description": "Вставляет шаблон команды. Подробное описание пока не заполнено.",
+    "args": [],
+    "output": false,
+    "sets": {
+      "H": "AI Cloud"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.StartDSTTSSpeack",
+    "name": "rcu.StartDSTTSSpeack",
+    "label": "Вставляет шаблон команды",
+    "description": "Вставляет шаблон команды. Подробное описание пока не заполнено.",
+    "args": [],
+    "output": false,
+    "sets": {
+      "H": "AI Cloud"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.IsFinishTTS",
+    "name": "rcu.IsFinishTTS",
+    "label": "Вставляет шаблон команды",
+    "description": "Вставляет шаблон команды. Подробное описание пока не заполнено.",
+    "args": [],
+    "output": true,
+    "sets": {
+      "H": "AI Cloud"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.StartChat",
+    "name": "rcu.StartChat",
+    "label": "Вставляет шаблон команды",
+    "description": "Вставляет шаблон команды. Подробное описание пока не заполнено.",
+    "args": [
+      {
+        "label": "\"text\"",
+        "value": "text"
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "AI Cloud"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.AddActionCode",
+    "name": "rcu.AddActionCode",
+    "label": "Вставляет шаблон команды",
+    "description": "Вставляет шаблон команды. Подробное описание пока не заполнено.",
+    "args": [
+      {
+        "label": "\"action\"",
+        "value": "action"
+      },
+      {
+        "label": "\"code\"",
+        "value": "code"
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "AI Cloud"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.ResetXHCash",
+    "name": "rcu.ResetXHCash",
+    "label": "Вставляет шаблон команды",
+    "description": "Вставляет шаблон команды. Подробное описание пока не заполнено.",
+    "args": [],
+    "output": false,
+    "sets": {
+      "H": "AI Cloud"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetChatReceive",
+    "name": "rcu.GetChatReceive",
+    "label": "Вставляет шаблон команды",
+    "description": "Вставляет шаблон команды. Подробное описание пока не заполнено.",
+    "args": [],
+    "output": true,
+    "sets": {
+      "H": "AI Cloud"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetChatListData",
+    "name": "rcu.GetChatListData",
+    "label": "Вставляет шаблон команды",
+    "description": "Вставляет шаблон команды. Подробное описание пока не заполнено.",
+    "args": [],
+    "output": true,
+    "sets": {
+      "H": "AI Cloud"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetChatListSize",
+    "name": "rcu.GetChatListSize",
+    "label": "Вставляет шаблон команды",
+    "description": "Вставляет шаблон команды. Подробное описание пока не заполнено.",
+    "args": [],
+    "output": true,
+    "sets": {
+      "H": "AI Cloud"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetChatAllReceive",
+    "name": "rcu.GetChatAllReceive",
+    "label": "Вставляет шаблон команды",
+    "description": "Вставляет шаблон команды. Подробное описание пока не заполнено.",
+    "args": [],
+    "output": true,
+    "sets": {
+      "H": "AI Cloud"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetAiDoInstructionSize",
+    "name": "rcu.GetAiDoInstructionSize",
+    "label": "Вставляет шаблон команды",
+    "description": "Вставляет шаблон команды. Подробное описание пока не заполнено.",
+    "args": [],
+    "output": true,
+    "sets": {
+      "H": "AI Cloud"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetAiDoInstruction",
+    "name": "rcu.GetAiDoInstruction",
+    "label": "Вставляет шаблон команды",
+    "description": "Вставляет шаблон команды. Подробное описание пока не заполнено.",
+    "args": [
+      {
+        "label": "номер",
+        "value": 1
+      }
+    ],
+    "output": true,
+    "sets": {
+      "H": "AI Cloud"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetIsTouchH",
+    "name": "rcu.GetIsTouch",
+    "label": "Вставляет шаблон команды",
+    "description": "Вставляет шаблон команды. Подробное описание пока не заполнено.",
+    "args": [],
+    "output": true,
+    "sets": {
+      "H": "Экран"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetTouchScreenXYH",
+    "name": "rcu.GetTouchScreenXY",
+    "label": "Вставляет шаблон команды",
+    "description": "Вставляет шаблон команды. Подробное описание пока не заполнено.",
+    "args": [
+      {
+        "label": "ось",
+        "value": 0
+      }
+    ],
+    "output": true,
+    "sets": {
+      "H": "Экран"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetLCDClearH",
+    "name": "rcu.SetLCDClear",
+    "label": "Вставляет шаблон команды",
+    "description": "Вставляет шаблон команды. Подробное описание пока не заполнено.",
+    "args": [
+      {
+        "label": "\"#F80000\"",
+        "value": "#F80000"
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Экран"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetAlphaH",
+    "name": "rcu.SetAlpha",
+    "label": "Вставляет шаблон команды",
+    "description": "Вставляет шаблон команды. Подробное описание пока не заполнено.",
+    "args": [
+      {
+        "label": "0.5",
+        "value": 0.5
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Экран"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetFontSizeH",
+    "name": "rcu.SetFontSize",
+    "label": "Вставляет шаблон команды",
+    "description": "Вставляет шаблон команды. Подробное описание пока не заполнено.",
+    "args": [
+      {
+        "label": "0",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Экран"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetDisplayStringH",
+    "name": "rcu.SetDisplayString",
+    "label": "Вставляет шаблон команды",
+    "description": "Вставляет шаблон команды. Подробное описание пока не заполнено.",
+    "args": [
+      {
+        "label": "1",
+        "value": 1
+      },
+      {
+        "label": "\"text\"",
+        "value": "text"
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Экран"
+    },
+    "sim": true
+  },
+  {
+    "id": "rcu.SetDisplayStringXYSH",
+    "name": "rcu.SetDisplayStringXYS",
+    "label": "Вставляет шаблон команды",
+    "description": "Вставляет шаблон команды. Подробное описание пока не заполнено.",
+    "args": [
+      {
+        "label": "X",
+        "value": 0
+      },
+      {
+        "label": "Y",
+        "value": 0
+      },
+      {
+        "label": "\"text\"",
+        "value": "text"
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Экран"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetZxingH",
+    "name": "rcu.SetZxing",
+    "label": "Вставляет шаблон команды",
+    "description": "Вставляет шаблон команды. Подробное описание пока не заполнено.",
+    "args": [
+      {
+        "label": "\"text\"",
+        "value": "text"
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Экран"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetDisplayPictureH",
+    "name": "rcu.SetDisplayPicture",
+    "label": "Вставляет шаблон команды",
+    "description": "Вставляет шаблон команды. Подробное описание пока не заполнено.",
+    "args": [
+      {
+        "label": "X",
+        "value": 0
+      },
+      {
+        "label": "Y",
+        "value": 0
+      },
+      {
+        "label": "\"a.jpg\"",
+        "value": "a.jpg"
+      },
+      {
+        "label": "\"scale\"",
+        "value": "scale"
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Экран"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetLCDDotH",
+    "name": "rcu.SetLCDDot",
+    "label": "Вставляет шаблон команды",
+    "description": "Вставляет шаблон команды. Подробное описание пока не заполнено.",
+    "args": [
+      {
+        "label": "X",
+        "value": 0
+      },
+      {
+        "label": "Y",
+        "value": 0
+      },
+      {
+        "label": "\"#F80000\"",
+        "value": "#F80000"
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Экран"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetLCDLineH",
+    "name": "rcu.SetLCDLine",
+    "label": "Вставляет шаблон команды",
+    "description": "Вставляет шаблон команды. Подробное описание пока не заполнено.",
+    "args": [
+      {
+        "label": "X",
+        "value": 0
+      },
+      {
+        "label": "Y",
+        "value": 0
+      },
+      {
+        "label": "угол",
+        "value": 90
+      },
+      {
+        "label": "length",
+        "value": 0
+      },
+      {
+        "label": "\"#F80000\"",
+        "value": "#F80000"
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Экран"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetLCDSolidCircleH",
+    "name": "rcu.SetLCDSolidCircle",
+    "label": "Вставляет шаблон команды",
+    "description": "Вставляет шаблон команды. Подробное описание пока не заполнено.",
+    "args": [
+      {
+        "label": "X",
+        "value": 0
+      },
+      {
+        "label": "Y",
+        "value": 0
+      },
+      {
+        "label": "radius",
+        "value": 0
+      },
+      {
+        "label": "\"#F80000\"",
+        "value": "#F80000"
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Экран"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetLCDFilledRectangle2H",
+    "name": "rcu.SetLCDFilledRectangle2",
+    "label": "Вставляет шаблон команды",
+    "description": "Вставляет шаблон команды. Подробное описание пока не заполнено.",
+    "args": [
+      {
+        "label": "X",
+        "value": 0
+      },
+      {
+        "label": "Y",
+        "value": 0
+      },
+      {
+        "label": "width",
+        "value": 0
+      },
+      {
+        "label": "height",
+        "value": 0
+      },
+      {
+        "label": "\"#F80000\"",
+        "value": "#F80000"
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Экран"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetLCDRectangle2H",
+    "name": "rcu.SetLCDRectangle2",
+    "label": "Вставляет шаблон команды",
+    "description": "Вставляет шаблон команды. Подробное описание пока не заполнено.",
+    "args": [
+      {
+        "label": "X",
+        "value": 0
+      },
+      {
+        "label": "Y",
+        "value": 0
+      },
+      {
+        "label": "width",
+        "value": 0
+      },
+      {
+        "label": "height",
+        "value": 0
+      },
+      {
+        "label": "lineWidth",
+        "value": 0
+      },
+      {
+        "label": "\"#F80000\"",
+        "value": "#F80000"
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Экран"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.StartMp3ByPaiH",
+    "name": "rcu.StartMp3ByPai",
+    "label": "Вставляет шаблон команды",
+    "description": "Вставляет шаблон команды. Подробное описание пока не заполнено.",
+    "args": [
+      {
+        "label": "\"Note\"",
+        "value": "Note"
+      },
+      {
+        "label": "beat",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Звуки"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.StartMp3ByPathH",
+    "name": "rcu.StartMp3ByPath",
+    "label": "Вставляет шаблон команды",
+    "description": "Вставляет шаблон команды. Подробное описание пока не заполнено.",
+    "args": [
+      {
+        "label": "\"music.mp3\"",
+        "value": "music.mp3"
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Звуки"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.WaitMp3ByPathH",
+    "name": "rcu.WaitMp3ByPath",
+    "label": "Вставляет шаблон команды",
+    "description": "Вставляет шаблон команды. Подробное описание пока не заполнено.",
+    "args": [
+      {
+        "label": "\"music.mp3\"",
+        "value": "music.mp3"
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Звуки"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetMp3SuspendH",
+    "name": "rcu.SetMp3Suspend",
+    "label": "Вставляет шаблон команды",
+    "description": "Вставляет шаблон команды. Подробное описание пока не заполнено.",
+    "args": [],
+    "output": false,
+    "sets": {
+      "H": "Звуки"
+    },
+    "sim": true
+  },
+  {
+    "id": "rcu.StartRecordH",
+    "name": "rcu.StartRecord",
+    "label": "Вставляет шаблон команды",
+    "description": "Вставляет шаблон команды. Подробное описание пока не заполнено.",
+    "args": [
+      {
+        "label": "sec",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Звуки"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.PlayRecordH",
+    "name": "rcu.PlayRecord",
+    "label": "Вставляет шаблон команды",
+    "description": "Вставляет шаблон команды. Подробное описание пока не заполнено.",
+    "args": [],
+    "output": false,
+    "sets": {
+      "H": "Звуки"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.AddVoiceSpeedH",
+    "name": "rcu.AddVoiceSpeed",
+    "label": "Вставляет шаблон команды",
+    "description": "Вставляет шаблон команды. Подробное описание пока не заполнено.",
+    "args": [
+      {
+        "label": "percent",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Звуки"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetVoiceSpeedH",
+    "name": "rcu.SetVoiceSpeed",
+    "label": "Вставляет шаблон команды",
+    "description": "Вставляет шаблон команды. Подробное описание пока не заполнено.",
+    "args": [
+      {
+        "label": "percent",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Звуки"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.AddVoiceValueH",
+    "name": "rcu.AddVoiceValue",
+    "label": "Вставляет шаблон команды",
+    "description": "Вставляет шаблон команды. Подробное описание пока не заполнено.",
+    "args": [
+      {
+        "label": "percent",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Звуки"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetVoiceValueH",
+    "name": "rcu.SetVoiceValue",
+    "label": "Вставляет шаблон команды",
+    "description": "Вставляет шаблон команды. Подробное описание пока не заполнено.",
+    "args": [
+      {
+        "label": "percent",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Звуки"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.StopAllVoiceH",
+    "name": "rcu.StopAllVoice",
+    "label": "Вставляет шаблон команды",
+    "description": "Вставляет шаблон команды. Подробное описание пока не заполнено.",
+    "args": [],
+    "output": false,
+    "sets": {
+      "H": "Звуки"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetVoiceValueH",
+    "name": "rcu.GetVoiceValue",
+    "label": "Вставляет шаблон команды",
+    "description": "Вставляет шаблон команды. Подробное описание пока не заполнено.",
+    "args": [],
+    "output": true,
+    "sets": {
+      "H": "Звуки"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetVoiceSpeedH",
+    "name": "rcu.GetVoiceSpeed",
+    "label": "Вставляет шаблон команды",
+    "description": "Вставляет шаблон команды. Подробное описание пока не заполнено.",
+    "args": [],
+    "output": true,
+    "sets": {
+      "H": "Звуки"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetMecanumwheel",
+    "name": "rcu.SetMecanumwheel",
+    "label": "Установка портов для робота на Mecanum колёсах",
+    "description": "Установка портов для робота на Mecanum колёсах. Параметры: левое-переднее, правое-переднее, левое-заднее, правое-заднее. Пример: SetMecanumwheel(1, 2, 3, 4)",
+    "args": [
+      {
+        "label": "PortLeftF",
+        "value": 0
+      },
+      {
+        "label": "PortRightF",
+        "value": 0
+      },
+      {
+        "label": "PortLeftB",
+        "value": 0
+      },
+      {
+        "label": "PortRightB",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Mecanum колёса"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetMecanumSpeed",
+    "name": "rcu.SetMecanumSpeed",
+    "label": "Установка скорости вращения каждого из колёс",
+    "description": "Установка скорости вращения каждого из колёс. Параметры: левое-переднее, правое-переднее, левое-заднее, правое-заднее. Пример: SetMecanumSpeed(50, -50, 50, -50)",
+    "args": [
+      {
+        "label": "SpeedLF",
+        "value": 0
+      },
+      {
+        "label": "SpeedRF",
+        "value": 0
+      },
+      {
+        "label": "SpeedLB",
+        "value": 0
+      },
+      {
+        "label": "SpeedRB",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Mecanum колёса"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetMecanumMoveLR",
+    "name": "rcu.SetMecanumMoveLR",
+    "label": "Движение указанное время с указанной скоростью в нужную сторону",
+    "description": "Движение указанное время с указанной скоростью в нужную сторону. Параметры: скорость, сторона, время. Пример: SetMecanumMoveLR(50, 1 , 90)",
+    "args": [
+      {
+        "label": "Speed",
+        "value": 0
+      },
+      {
+        "label": "Sec",
+        "value": 0
+      },
+      {
+        "label": "Side",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Mecanum колёса"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetCarSpeed",
+    "name": "rcu.SetCarSpeed",
+    "label": "Установка скорости робота",
+    "description": "Установка скорости робота. Параметры: скорость. Пример: SetCarSpeed(70)",
+    "args": [
+      {
+        "label": "Speed",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Mecanum колёса"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetCarStop",
+    "name": "rcu.SetCarStop",
+    "label": "Остановка движения",
+    "description": "Остановка движения. Пример: SetCarStop()",
+    "args": [
+      {
+        "label": "",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Mecanum колёса"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetCarToAngleTime",
+    "name": "rcu.SetCarToAngleTime",
+    "label": "Поворот указанное время на указанное число градусов",
+    "description": "Поворот указанное время на указанное число градусов. Параметры: угол, время. Пример: SetCarToAngleTime(30, 1)",
+    "args": [
+      {
+        "label": "Deg",
+        "value": 0
+      },
+      {
+        "label": "Sec",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Mecanum колёса"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetCarToAngle",
+    "name": "rcu.SetCarToAngle",
+    "label": "Поворот на указанный угол",
+    "description": "Поворот на указанный угол. Параметры:угол . Пример: SetCarToAngle(90)",
+    "args": [
+      {
+        "label": "Deg",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Mecanum колёса"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetCarToRLTime",
+    "name": "rcu.SetCarToRLTime",
+    "label": "Поворот в указанную сторону на определенное время",
+    "description": "Поворот в указанную сторону на определенное время. Параметры: сторона, время. Пример: SetCarToRLTime(1, 30)",
+    "args": [
+      {
+        "label": "Side",
+        "value": 0
+      },
+      {
+        "label": "Sec",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Mecanum колёса"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SetCarToRL",
+    "name": "rcu.SetCarToRL",
+    "label": "Поворот в указанную сторону",
+    "description": "Поворот в указанную сторону. Параметр: сторона. Пример: SetCarToRL(1)",
+    "args": [
+      {
+        "label": "Side",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Mecanum колёса"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.StartMFBtn",
+    "name": "rcu.StartMFBtn",
+    "label": "Вставляет шаблон команды",
+    "description": "Вставляет шаблон команды. Подробное описание пока не заполнено.",
+    "args": [],
+    "output": false,
+    "sets": {
+      "H": "Кубик Рубика"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.UpdateRcuUi",
+    "name": "rcu.UpdateRcuUi",
+    "label": "Обновить состояние програсса сборки",
+    "description": "Обновить состояние програсса сборки. Параметры: текущее значение, максимум . Пример: UpdateRcuUi(5, 100)",
+    "args": [
+      {
+        "label": "Value",
+        "value": 0
+      },
+      {
+        "label": "MaxValue",
+        "value": 0
+      }
+    ],
+    "output": false,
+    "sets": {
+      "H": "Кубик Рубика"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.IsMfConnect",
+    "name": "rcu.IsMfConnect",
+    "label": "Проверка, начата ли сборка",
+    "description": "Проверка, начата ли сборка. Пример: IsMfConnect()",
+    "args": [],
+    "output": true,
+    "sets": {
+      "H": "Кубик Рубика"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetMFExist",
+    "name": "rcu.GetMFExist",
+    "label": "Проверка, существует ли кубик Рубика",
+    "description": "Проверка, существует ли кубик Рубика. Пример: GetMFExist()",
+    "args": [],
+    "output": true,
+    "sets": {
+      "H": "Кубик Рубика"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetMfChaos",
+    "name": "rcu.GetMfChaos",
+    "label": "Проверка, не перемещён ли кубик случайно",
+    "description": "Проверка, не перемещён ли кубик случайно. Пример: GetMfChaos()",
+    "args": [],
+    "output": true,
+    "sets": {
+      "H": "Кубик Рубика"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.SeRunNexttCarToRL",
+    "name": "rcu.RunNext",
+    "label": "Вставляет вызов rcu.RunNext()",
+    "description": "Вставляет вызов rcu.RunNext(). Старый идентификатор команды сохранён для совместимости.",
+    "args": [],
+    "output": false,
+    "sets": {
+      "H": "Кубик Рубика"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.MfStepNum",
+    "name": "rcu.MfStepNum",
+    "label": "Узнать количество выполненных шагов по сборке",
+    "description": "Узнать количество выполненных шагов по сборке. Пример: MfStepNum()",
+    "args": [],
+    "output": false,
+    "sets": {
+      "H": "Кубик Рубика"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.MfUseTime",
+    "name": "rcu.MfUseTime",
+    "label": "Получить текущее время сборки",
+    "description": "Получить текущее время сборки. Пример: MfUseTime()",
+    "args": [],
+    "output": false,
+    "sets": {
+      "H": "Кубик Рубика"
+    },
+    "sim": false
+  },
+  {
+    "id": "rcu.GetTouchH",
+    "name": "rcu.GetTouch",
+    "label": "Команда H-RCU",
+    "description": "Команда H-RCU. Вставляет rcu.GetTouch(). Подробное описание пока не заполнено.",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      }
+    ],
+    "output": true,
+    "sets": {
+      "H": "Датчики"
+    },
+    "sim": true
+  },
+  {
+    "id": "rcu.GetUltrasoundH",
+    "name": "rcu.GetUltrasound",
+    "label": "Команда H-RCU",
+    "description": "Команда H-RCU. Вставляет rcu.GetUltrasound(). Подробное описание пока не заполнено.",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      }
+    ],
+    "output": true,
+    "sets": {
+      "H": "Датчики"
+    },
+    "sim": true
+  },
+  {
+    "id": "rcu.IsUltraH",
+    "name": "rcu.IsUltra",
+    "label": "Команда H-RCU",
+    "description": "Команда H-RCU. Вставляет rcu.IsUltra(). Подробное описание пока не заполнено.",
+    "args": [
+      {
+        "label": "порт",
+        "value": 1
+      },
+      {
+        "label": "sign",
+        "value": 0
+      },
+      {
+        "label": "dist",
+        "value": 0
+      }
+    ],
+    "output": true,
+    "sets": {
+      "H": "Датчики"
+    },
+    "sim": false
+  },
+  {
+    "id": "sensor.SetLightSensorLed",
+    "name": "sensor.SetLightSensorLed",
+    "label": "sensor.SetLightSensorLed",
+    "description": "Команда из исходного RoboCode.",
+    "args": [
+      {
+        "label": "",
+        "value": 1
+      },
+      {
+        "label": "",
+        "value": 1
+      }
+    ],
+    "sets": {
+      "E6": "Дополнительные датчики",
+      "E7": "Дополнительные датчики",
+      "M6": "Дополнительные датчики"
+    },
+    "sim": true
+  },
+  {
+    "id": "sensor.GetScanCamera",
+    "name": "sensor.GetScanCamera",
+    "label": "sensor.GetScanCamera",
+    "description": "Команда из исходного RoboCode.",
+    "args": [],
+    "sets": {
+      "E6": "Дополнительные датчики",
+      "E7": "Дополнительные датчики",
+      "M6": "Дополнительные датчики"
+    },
+    "sim": false
+  },
+  {
+    "id": "sensor.WriteRFID522",
+    "name": "sensor.WriteRFID522",
+    "label": "sensor.WriteRFID522",
+    "description": "Команда из исходного RoboCode.",
+    "args": [
+      {
+        "label": "",
+        "value": 1
+      },
+      {
+        "label": "",
+        "value": 1
+      }
+    ],
+    "sets": {
+      "E6": "Дополнительные датчики",
+      "E7": "Дополнительные датчики",
+      "M6": "Дополнительные датчики"
+    },
+    "sim": false
+  },
+  {
+    "id": "sensor.GetRFID522",
+    "name": "sensor.GetRFID522",
+    "label": "sensor.GetRFID522",
+    "description": "Команда из исходного RoboCode.",
+    "args": [
+      {
+        "label": "",
+        "value": 1
+      }
+    ],
+    "sets": {
+      "E6": "Дополнительные датчики",
+      "E7": "Дополнительные датчики",
+      "M6": "Дополнительные датчики"
+    },
+    "sim": false
+  },
+  {
+    "id": "sensor.ReadRFID522",
+    "name": "sensor.ReadRFID522",
+    "label": "sensor.ReadRFID522",
+    "description": "Команда из исходного RoboCode.",
+    "args": [
+      {
+        "label": "",
+        "value": 1
+      }
+    ],
+    "sets": {
+      "E6": "Дополнительные датчики",
+      "E7": "Дополнительные датчики",
+      "M6": "Дополнительные датчики"
+    },
+    "sim": false
+  },
+  {
+    "id": "sensor.WriteRFID522Sector",
+    "name": "sensor.WriteRFID522Sector",
+    "label": "sensor.WriteRFID522Sector",
+    "description": "Команда из исходного RoboCode.",
+    "args": [
+      {
+        "label": "",
+        "value": 1
+      },
+      {
+        "label": "",
+        "value": 1
+      },
+      {
+        "label": "",
+        "value": 1
+      },
+      {
+        "label": "",
+        "value": 1
+      }
+    ],
+    "sets": {
+      "E6": "Дополнительные датчики",
+      "E7": "Дополнительные датчики",
+      "M6": "Дополнительные датчики"
+    },
+    "sim": false
+  },
+  {
+    "id": "sensor.ReadRFID522Sector",
+    "name": "sensor.ReadRFID522Sector",
+    "label": "sensor.ReadRFID522Sector",
+    "description": "Команда из исходного RoboCode.",
+    "args": [
+      {
+        "label": "",
+        "value": 1
+      },
+      {
+        "label": "",
+        "value": 1
+      },
+      {
+        "label": "",
+        "value": 1
+      }
+    ],
+    "sets": {
+      "E6": "Дополнительные датчики",
+      "E7": "Дополнительные датчики",
+      "M6": "Дополнительные датчики"
+    },
+    "sim": false
+  },
+  {
+    "id": "sensor.GetSoilmoisture",
+    "name": "sensor.GetSoilmoisture",
+    "label": "sensor.GetSoilmoisture",
+    "description": "Команда из исходного RoboCode.",
+    "args": [
+      {
+        "label": "",
+        "value": 1
+      }
+    ],
+    "sets": {
+      "E6": "Дополнительные датчики",
+      "E7": "Дополнительные датчики",
+      "M6": "Дополнительные датчики"
+    },
+    "sim": false
+  }
+]

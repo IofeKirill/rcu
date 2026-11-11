@@ -1,0 +1,8 @@
+{
+  "format": "zmrobo-blocks",
+  "version": 1,
+  "controller": "E6",
+  "workspace": {
+    "xml": "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><variables></variables><block type=\"rc_start\" id=\"Ei.BtQ^=pqj`?8r^1WGH\" x=\"50\" y=\"50\"><field name=\"DEVICE\">E6RCU</field><field name=\"TASK\">1</field><next><block type=\"rc_motor_run\" id=\"3J50etC*dpF?M:T;KVDC\"><field name=\"M\">1</field><value name=\"S\"><shadow type=\"math_number\" id=\"g+r$!GK+{x+5-Zd!]a~f\"><field name=\"NUM\">50</field></shadow></value><next><block type=\"rc_motor_run\" id=\"afQHST]pA4U}*cG_vo`.\"><field name=\"M\">3</field><value name=\"S\"><shadow type=\"math_number\" id=\"4sPR8eSE2NC/hIc?XTZ,\"><field name=\"NUM\">50</field></shadow></value><next><block type=\"rc_saved_statement\" id=\"HP[)J$%iH/,3;_4uxJ.;\"><field name=\"LABEL\">rcu.SetWaitForTime</field><data>{\"type\":\"command\",\"id\":\"rcu.SetWaitForTime\",\"args\":[{\"type\":\"literal\",\"value\":1,\"blockId\":\"arv}9egdeB3E.pK?xN08\"}],\"blockId\":\"t}|m.IfIO[Ft-aWmJv7e\"}</data><next><block type=\"rc_motor_stop\" id=\"(@V2VZ]*JU)2Ru)6r@AY\"><field name=\"M\">1</field><next><block type=\"rc_motor_stop\" id=\"5^@Kz_,/$/^A-l)D_w~f\"><field name=\"M\">3</field></block></next></block></next></block></next></block></next></block></next></block></xml>"
+  }
+}

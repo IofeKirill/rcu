@@ -43,7 +43,7 @@ def worlds(scene):
 
 def run(request, remainder=b''):
     robots = worlds(request['scene'])
-    judge=Judge(request['scene'],robots)
+    judge=Judge(dict(request['scene'],task=None) if request.get('training') else request['scene'],robots)
     rate = number(request.get('rate',1),1,8)
     children,active,pending = {},set(),{}
     events = queue.Queue()
@@ -86,12 +86,27 @@ def run(request, remainder=b''):
                 text=True,encoding='utf8',creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0),cwd=str(Path(program['filename']).parent))
             children[key] = proc
             active.add(key)
-            reply(key,program=program,robot={k:getattr(w,k) for k in ('count','sensor_count','sensors','light_min','light_max')})
+            reply(key,program=program,robot={k:getattr(w,k) for k in ('count','sensor_count','sensors','light_min','light_max','left','right','reversed','left_mount_sign')})
             threading.Thread(target=read,args=(key,proc.stdout),daemon=True).start()
         frame()
-        while active:
+        clock_wall=time.monotonic()
+        while active or (getattr(judge,'players',None) and judge.status=='running'):
+            if getattr(judge,'players',None) and active!=pending.keys() and time.monotonic()-clock_wall>=TICK/rate:
+                # Memory/button polling can produce continuous protocol messages
+                # without an advance request. It must not freeze a tennis set.
+                dt=min(TICK,max(0,min(pending.values())-elapsed)) if pending else TICK
+                if dt:
+                    for w in robots.values():w.step(dt)
+                    next(iter(robots.values())).advance_props(dt)
+                    elapsed+=dt;judge.tick(elapsed)
+                    clock_wall=time.monotonic()
+                    if judge.status in ('success','failed'):terminal_frame();return
+                clock_wall=time.monotonic()
+                if elapsed>=next_frame:frame();next_frame=elapsed+.04*rate
+                for key,end in list(pending.items()):
+                    if end<=elapsed+1e-9:del pending[key];reply(key,result=None)
             if active == pending.keys() and events.empty():
-                goal = min(pending.values())
+                goal = min(pending.values()) if pending else elapsed+TICK
                 dt = min(TICK,max(0,goal-elapsed))
                 if dt:
                     for w in robots.values():
@@ -99,6 +114,7 @@ def run(request, remainder=b''):
                     next(iter(robots.values())).advance_props(dt)
                     elapsed += dt
                     judge.tick(elapsed)
+                    clock_wall=time.monotonic()
                     if judge.status in ('success','failed'):
                         terminal_frame();return
                     if request.get('interactive'):
@@ -111,7 +127,22 @@ def run(request, remainder=b''):
                         del pending[key]
                         reply(key,result=None)
                 continue
-            key,msg = events.get()
+            try:
+                key,msg = events.get(timeout=TICK/rate if getattr(judge,'players',None) else None)
+            except queue.Empty:
+                # Tennis clocks also run when user code computes forever without
+                # calling a robot API. Other task modes retain their old clock.
+                dt=min(TICK,max(0,min(pending.values())-elapsed)) if pending else TICK
+                if dt:
+                    for w in robots.values():w.step(dt)
+                    next(iter(robots.values())).advance_props(dt)
+                    elapsed+=dt;judge.tick(elapsed)
+                    clock_wall=time.monotonic()
+                    if judge.status in ('success','failed'):terminal_frame();return
+                if elapsed>=next_frame:frame();next_frame=elapsed+.04*rate
+                for key,end in list(pending.items()):
+                    if end<=elapsed+1e-9:del pending[key];reply(key,result=None)
+                continue
             if key is None:
                 judge.finish()
                 if judge.status=='incomplete':judge.reason='Остановлено пользователем'
@@ -135,7 +166,7 @@ def run(request, remainder=b''):
                 if op == 'advance':
                     pending[key] = elapsed+number(args[0],0,3600)
                     continue
-                if op in ('motor','read','set_lamp','set_light_led','light_threshold','system_time','set_bluetooth','get_bluetooth'):
+                if op in ('motor','read','set_lamp','set_light_led','light_threshold','system_time','set_bluetooth','get_bluetooth','device'):
                     result = getattr(w,op)(*args)
                 else:
                     name,i,*val = args

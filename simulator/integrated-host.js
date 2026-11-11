@@ -41,6 +41,7 @@ addSimulatorRow(require.cache[entry]);
 exports.activate = async context => {
     const api = await original.activate(context);
     simulator.activate(context);
+    require('../scratch/extension.js').activate(context);
     return api;
 };
 exports.deactivate = () => original.deactivate?.();

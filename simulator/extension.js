@@ -1,6 +1,7 @@
 'use strict';
 const vscode = require('vscode');
 const clawData = require('./media/claws.json');
+const kickerData = require('./media/kickers.json');
 const bigTravelData = require('./media/big-travel.json');
 const { spawn } = require('node:child_process');
 const { createInterface } = require('node:readline');
@@ -10,7 +11,8 @@ const path = require('node:path');
 const { randomBytes } = require('node:crypto');
 
 function activate(context) {
-    let panel, child, selected, opening, launchId=0;
+    let panel, child, selected, opening, launchId=0, panelReady=false;
+    const externalRequests = new Map(), externalPrograms = new Map();
     const select = editor => {
         if (editor?.document.languageId === 'python' && ['file','untitled'].includes(editor.document.uri.scheme)) {
             selected = editor.document;
@@ -18,6 +20,7 @@ function activate(context) {
         }
     };
     function stop() {
+        for(const r of externalRequests.values()){clearTimeout(r.timer);r.reject(new Error('Запуск отменён.'));}externalRequests.clear();
         ++launchId;
         if (child) child.stdin.end('stop\n');
         else panel?.webview.postMessage({kind:'stopped'});
@@ -48,14 +51,21 @@ function activate(context) {
             proc.stdin.end(data);
         });
     }
-    async function launch(scene,rate,current) {
+    async function launch(scene,rate,current,training=false,override) {
         if (!vscode.workspace.isTrusted) throw new Error('Для запуска Python открой доверенную папку.');
         if (child) throw new Error('Дождись остановки предыдущего запуска.');
         const generation=++launchId;
         const programs={};
         const folder=vscode.workspace.workspaceFolders?.[0]?.uri.fsPath || context.extensionPath;
         try {
+            if(override && !scene.robots.some(r=>r.id===override.robot))throw new Error('Выбранный робот отсутствует на поле.');
             for (const robot of scene.robots) {
+                if(override && robot.id===override.robot){
+                    programs[robot.id]={filename:override.program.filename,source:override.program.source};
+                    continue;
+                }
+                const assigned=externalPrograms.get(robot.id);
+                if(assigned && !robot.program){programs[robot.id]={filename:assigned.filename,source:assigned.source};continue;}
                 let doc;
                 if (robot.program) {
                     if (!path.isAbsolute(robot.program)||path.extname(robot.program).toLowerCase()!=='.py')
@@ -78,7 +88,7 @@ function activate(context) {
         }
         if (generation!==launchId || panel!==current) return;
         const [executable,args]=python('multi_runner.py');
-        const request=JSON.stringify({scene,rate,programs,interactive:true});
+        const request=JSON.stringify({scene,rate,programs,interactive:true,training:training===true});
         if (Buffer.byteLength(request)>12_000_000) throw new Error('Поле или программы слишком большие.');
         const proc=spawn(executable,args,{cwd:folder,windowsHide:true,shell:false,stdio:'pipe'});
         child=proc;
@@ -106,7 +116,34 @@ function activate(context) {
         proc.stdin.write(request+'\n');
     }
     context.subscriptions.push(vscode.window.onDidChangeActiveTextEditor(select),
-        vscode.commands.registerCommand('zmrobo2d.open', async () => {
+        vscode.commands.registerCommand('zmrobo2d.stopSource',stop),
+        vscode.commands.registerCommand('zmrobo2d.setSource',async program=>{
+            if(!vscode.workspace.isTrusted)throw new Error('Открой доверенную папку.');
+            if(!program||typeof program.source!=='string'||Buffer.byteLength(program.source)>400_000||typeof program.filename!=='string'||!path.isAbsolute(program.filename)||path.extname(program.filename).toLowerCase()!=='.py')throw new Error('Некорректная Python-программа.');
+            if(child||externalRequests.size)throw new Error('Сначала останови текущий запуск.');
+            await vscode.commands.executeCommand('zmrobo2d.open');
+            if(!panel)throw new Error('Не удалось открыть модель.');
+            return new Promise((resolve,reject)=>{
+                const id=randomBytes(12).toString('hex');
+                const timer=setTimeout(()=>{externalRequests.delete(id);reject(new Error('Модель не ответила. Повтори запуск.'));},15000);
+                externalRequests.set(id,{program,resolve,reject,timer,kind:'externalProgram'});
+                if(panelReady)panel.webview.postMessage({kind:'externalProgram',requestId:id,name:program.name});
+            });
+        }),
+        vscode.commands.registerCommand('zmrobo2d.runSource',async program=>{
+            if(!vscode.workspace.isTrusted)throw new Error('Открой доверенную папку.');
+            if(!program||typeof program.source!=='string'||Buffer.byteLength(program.source)>400_000||typeof program.filename!=='string'||!path.isAbsolute(program.filename)||path.extname(program.filename).toLowerCase()!=='.py')throw new Error('Некорректная Python-программа.');
+            if(child||externalRequests.size)throw new Error('Сначала останови текущий запуск.');
+            await vscode.commands.executeCommand('zmrobo2d.open');
+            if(!panel)throw new Error('Не удалось открыть модель.');
+            return new Promise((resolve,reject)=>{
+                const id=randomBytes(12).toString('hex');
+                const timer=setTimeout(()=>{externalRequests.delete(id);reject(new Error('Модель не ответила. Повтори запуск.'));},15000);
+                externalRequests.set(id,{program,resolve,reject,timer,kind:'externalRun'});
+                if(panelReady)panel.webview.postMessage({kind:'externalRun',requestId:id,name:program.name});
+            });
+        }),
+        vscode.commands.registerCommand('zmrobo2d.open' , async () => {
             select(vscode.window.activeTextEditor);
             if (panel) { panel.reveal(panel.viewColumn,false); return; }
             if (opening) return;
@@ -122,12 +159,50 @@ function activate(context) {
             panel.webview.onDidReceiveMessage(async msg => {
                 try {
                     if (msg.kind === 'ready') {
+                        panelReady=true;
+                        for(const [id,r]of externalRequests)current.webview.postMessage({kind:r.kind,requestId:id,name:r.program.name});
                         if (selected) current.webview.postMessage({kind:'source',name:path.basename(selected.fileName)});
-                    } else if (msg.kind === 'run') await launch(msg.scene,msg.rate,current);
+                     } else if (msg.kind === 'bindExternalProgram') {
+                        const r=externalRequests.get(msg.requestId);
+                        if(!r || r.kind!=='externalProgram')throw new Error('Запрос передачи программы устарел.');
+                        if(typeof msg.robot!=='string'||!msg.robot)throw new Error('Не выбран робот на поле.');
+                        externalPrograms.set(msg.robot,r.program);
+                        clearTimeout(r.timer);externalRequests.delete(msg.requestId);r.resolve();
+                     } else if (msg.kind === 'run') {
+                        if(msg.externalRequestId){
+                            const r=externalRequests.get(msg.externalRequestId);
+                            if(!r)throw new Error('Запрос запуска устарел. Повтори запуск из блоков.');
+                            try {await launch(msg.scene,msg.rate,current,msg.training,{robot:msg.robot,program:r.program});externalPrograms.set(msg.robot,r.program);r.resolve();}
+                            catch(error){r.reject(error);throw error;}
+                            finally{clearTimeout(r.timer);externalRequests.delete(msg.externalRequestId);}
+                        }else await launch(msg.scene,msg.rate,current,msg.training);
+                    } else if(msg.kind==='externalRunError'){
+                        const r=externalRequests.get(msg.requestId);if(r){clearTimeout(r.timer);r.reject(new Error(msg.text));externalRequests.delete(msg.requestId);}
+                    }
+                    else if (msg.kind === 'inspect') {
+                        if(child) throw new Error('Сначала останови программу.');
+                        const request=JSON.stringify({scene:msg.scene,requestId:msg.requestId,judge:msg.judge===true,checkpoint:msg.checkpoint,advance:msg.advance,deviceStates:msg.deviceStates});
+                        if(Buffer.byteLength(request)>12_100_000) throw new Error('Запрос слишком большой.');
+                        const [exe,args]=python('inspect_scene.py');
+                        await new Promise((resolve,reject)=>{
+                            const proc=spawn(exe,args,{windowsHide:true,shell:false,stdio:'pipe'});
+                            let output='',errors='';
+                            const timer=setTimeout(()=>{proc.kill();reject(new Error('Чтение показаний заняло слишком много времени.'));},15000);
+                            proc.stdout.on('data',b=>{output+=b;if(output.length>2_000_000)proc.kill();});
+                            proc.stderr.on('data',b=>{errors=(errors+b).slice(-2000);});
+                            proc.stdin.on('error',()=>{});
+                            proc.on('error',e=>{clearTimeout(timer);reject(e);});
+                            proc.on('close',code=>{
+                                clearTimeout(timer);
+                                try{const data=JSON.parse(output);data.requestId=msg.requestId;current.webview.postMessage(data);resolve();}
+                                catch{reject(new Error(errors||'Не удалось прочитать показания.'));}
+                            });proc.stdin.end(request);
+                        }).catch(e=>current.webview.postMessage({kind:'inspectionError',requestId:msg.requestId,text:e.message}));
+                    }
                     else if (msg.kind === 'stop') stop();
                     else if (msg.kind === 'chooseProgram') {
                         const [uri]=await vscode.window.showOpenDialog({filters:{Python:['py']},openLabel:'Назначить роботу',canSelectMany:false})||[];
-                        if(uri?.scheme==='file') current.webview.postMessage({kind:'program',robot:msg.robot,path:uri.fsPath});
+                        if(uri?.scheme==='file'){externalPrograms.delete(msg.robot);current.webview.postMessage({kind:'program',robot:msg.robot,path:uri.fsPath});}
                     } else if (msg.kind === 'save') {
                         const uri=await vscode.window.showSaveDialog({filters:{'Полигон XML':['xml']},saveLabel:'Сохранить полигон XML'});
                         if (uri?.scheme==='file') {
@@ -146,6 +221,7 @@ function activate(context) {
                         if(uri?.scheme==='file') {
                             if((await vscode.workspace.fs.stat(uri)).size>4_000_000) throw new Error('XML должен быть не больше 4 МБ.');
                             const result=JSON.parse((await convert(await vscode.workspace.fs.readFile(uri),'load')).toString('utf8'));
+                            externalPrograms.clear();
                             if (result.scene) {
                                 for(const r of result.scene.robots) if(r.program) r.program=path.resolve(path.dirname(uri.fsPath),r.program);
                                 current.webview.postMessage({kind:'scene',scene:result.scene});
@@ -153,15 +229,22 @@ function activate(context) {
                         }
                     }
                 } catch (error) {
+                    if(msg.kind==='inspect'){current.webview.postMessage({kind:'inspectionError',requestId:msg.requestId,text:error.message});return;}
                     current.webview.postMessage({kind:'error',text:error.message});
                     if (!child) current.webview.postMessage({kind:'finished'});
                 }
             });
-            panel.onDidDispose(() => { panel = undefined; stop(); });
+            panel.onDidDispose(() => { panelReady=false;externalPrograms.clear();panel = undefined; stop();for(const r of externalRequests.values()){clearTimeout(r.timer);r.reject(new Error('Модель закрыта.'));}externalRequests.clear(); });
             panel.webview.html = html.replaceAll('{{nonce}}',nonce).replaceAll('{{source}}',panel.webview.cspSource)
                 .replace('{{js}}',panel.webview.asWebviewUri(vscode.Uri.joinPath(media,'view.js')).toString())
                 .replace('{{clawData}}',JSON.stringify(clawData))
+                .replace('{{kickerData}}',JSON.stringify(kickerData))
+                .replace('{{kickerMedium}}',panel.webview.asWebviewUri(vscode.Uri.joinPath(media,'kicker-medium.png')).toString())
+                .replace('{{kickerLong}}',panel.webview.asWebviewUri(vscode.Uri.joinPath(media,'kicker-long.png')).toString())
+                .replace('{{kickerExtraLong}}',panel.webview.asWebviewUri(vscode.Uri.joinPath(media,'kicker-extra-long.png')).toString())
                 .replace('{{bigTravelData}}',JSON.stringify(bigTravelData).replaceAll('<','\\u003c'))
+                .replace('{{builderJs}}',panel.webview.asWebviewUri(vscode.Uri.joinPath(media,'task-builder.js')).toString())
+                .replace('{{tennisJs}}',panel.webview.asWebviewUri(vscode.Uri.joinPath(media,'tennis.js')).toString())
                 .replace('{{taskJs}}',panel.webview.asWebviewUri(vscode.Uri.joinPath(media,'task-editor.js')).toString())
                 .replace('{{beamStraight}}',panel.webview.asWebviewUri(vscode.Uri.joinPath(media,'beam-straight.png')).toString())
                 .replace('{{beamAngle}}',panel.webview.asWebviewUri(vscode.Uri.joinPath(media,'beam-angle.png')).toString())
@@ -169,6 +252,11 @@ function activate(context) {
                 .replace('{{clawSmall}}',panel.webview.asWebviewUri(vscode.Uri.joinPath(media,'claw-small.png')).toString())
                 .replace('{{clawLarge}}',panel.webview.asWebviewUri(vscode.Uri.joinPath(media,'claw-large.png')).toString())
                 .replace('{{clawNarrow}}',panel.webview.asWebviewUri(vscode.Uri.joinPath(media,'claw-narrow.png')).toString())
+                .replace('{{deviceTouch}}',panel.webview.asWebviewUri(vscode.Uri.joinPath(media,'device-touch.png')).toString())
+                .replace('{{deviceIr}}',panel.webview.asWebviewUri(vscode.Uri.joinPath(media,'device-ir.png')).toString())
+                .replace('{{deviceGyro}}',panel.webview.asWebviewUri(vscode.Uri.joinPath(media,'device-gyro.png')).toString())
+                .replace('{{deviceLine}}',panel.webview.asWebviewUri(vscode.Uri.joinPath(media,'device-line.png')).toString())
+                .replace('{{deviceEye}}',panel.webview.asWebviewUri(vscode.Uri.joinPath(media,'device-eye.png')).toString())
                 .replace('{{deviceLight}}',panel.webview.asWebviewUri(vscode.Uri.joinPath(media,'device-light.png')).toString())
                 .replace('{{deviceLed}}',panel.webview.asWebviewUri(vscode.Uri.joinPath(media,'device-led.png')).toString())
                 .replace('{{robotM6}}',panel.webview.asWebviewUri(vscode.Uri.joinPath(media,'robot-m6.png')).toString())

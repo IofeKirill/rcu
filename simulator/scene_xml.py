@@ -10,6 +10,7 @@ from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parent))
 from polygon_import import read_world
 from task_rules import validate
+from devices import validate_settings
 
 LIMIT = 4_000_000
 
@@ -26,8 +27,10 @@ def serialize(scene):
     validate(scene.get('regions',[]),scene.get('task'))
     ids=scene.get('propIds',[])
     if ids and (len(ids)!=len(scene.get('props',[])) or len(set(ids))!=len(ids)):raise ValueError('Некорректные идентификаторы предметов.')
-    root = ET.Element('zmrobo-scene',version='1.0',realistic=str(bool(scene.get('realistic',False))).lower())
-    field = ET.SubElement(root,'field')
+    root = ET.Element('zmrobo-scene',version='1.0',realistic=str(bool(scene.get('realistic',False))).lower(),fieldLocked=str(bool(scene.get('fieldLocked',False))).lower())
+    diameter=float(scene.get('ballDiameter',6.7))
+    if not math.isfinite(diameter) or not 5.6<=diameter<=6.7:raise ValueError('Некорректный диаметр мяча.')
+    field = ET.SubElement(root,'field',ballDiameter=str(diameter))
     if scene.get('background'):
         image = ET.SubElement(field,'image',format='png')
         if scene.get('backgroundRect'):
@@ -47,7 +50,7 @@ def serialize(scene):
     for row in scene['shapes']:
         attrs = dict(type=row['kind'],points=csv(v for p in row['points'] for v in p),
                      width=str(row['width']),stroke=row['stroke'])
-        for name in ('fill','dash','guide'):
+        for name in ('fill','dash','guide','lineCap'):
             if row.get(name):
                 attrs[name] = str(row[name])
         ET.SubElement(field,'shape',attrs)
@@ -70,9 +73,14 @@ def serialize(scene):
                 el.set('maxOpening',str(claw.get('maxOpening',50)))
             if claw['kind']=='kicker':
                 el.set('initialAngle',str(claw.get('initialAngle',0)))
+                length=claw.get('length','short')
+                if length not in ('short','medium','long','extraLong'):raise ValueError('Неизвестная длина пиналки.')
+                el.set('length',length)
+        if r.get('deviceSettings'):
+            ET.SubElement(robot,'device-settings').text=json.dumps(validate_settings(r['deviceSettings'],r['sensors']))
         for p,(kind,*pose) in r['sensors'].items():
             el = ET.SubElement(robot,'sensor',port=p,type=kind,pose=csv(pose[:3]))
-            if kind in ('light','color') and len(pose)>3:
+            if kind in ('light','color','line') and len(pose)>3:
                 el.set('height',str(pose[3]))
         memory = ET.SubElement(robot,'memory')
         for i,v in r['cells'].items():
@@ -92,6 +100,8 @@ def parse(data):
     if root.get('version') != '1.0' or root.find('field') is None:
         raise ValueError('Неподдерживаемый формат сцены ZMROBO.')
     field = root.find('field')
+    diameter=float(field.get('ballDiameter','6.7'))
+    if not math.isfinite(diameter) or not 5.6<=diameter<=6.7:raise ValueError('Некорректный диаметр мяча.')
     scene = {name:[nums(row.attrib['coords'],length) for row in field.findall(tag)]
              for name,tag,length in [('walls','wall',4),('segments','segment',5),('circles','circle',3)]}
     if sum(map(len,scene.values())) > 200:
@@ -99,6 +109,9 @@ def parse(data):
     if root.get('realistic','false') not in ('true','false'):
         raise ValueError('Некорректный режим реалистичности.')
     scene['realistic'] = root.get('realistic','false')=='true'
+    if root.get('fieldLocked','false') not in ('true','false'):raise ValueError('Некорректная блокировка поля.')
+    scene['fieldLocked']=root.get('fieldLocked','false')=='true'
+    scene['ballDiameter']=diameter
     scene['regions']=[dict(id=e.attrib['id'],name=e.get('name',e.attrib['id']),kind=e.attrib['kind'],rect=nums(e.attrib['rect'],4),color=e.get('color','#bb55aa'),visible=e.get('visible','true')=='true') for e in field.findall('region')]
     scene['task']=json.loads(root.findtext('task')) if root.find('task') is not None else None
     validate(scene['regions'],scene['task'])
@@ -135,9 +148,10 @@ def parse(data):
         if any(not re.fullmatch(r'#[0-9a-fA-F]{6}(?:[0-9a-fA-F]{2})?',c) for c in [color]+([fill] if fill else [])):
             raise ValueError('Некорректный цвет.')
         width, = nums(row.attrib['width'],1)
-        if not 0 < width <= 800:
+        if not (0 < width <= 800 or (width==0 and fill and kind in ('rectangle','ellipse'))):
             raise ValueError('Некорректная толщина.')
-        scene['shapes'].append(dict(kind=kind,points=[pts[i:i+2] for i in range(0,len(pts),2)],
+        if row.get('lineCap','butt') not in ('butt','round','square'):raise ValueError('Неизвестный стык линии.')
+        scene['shapes'].append(dict(lineCap=row.get('lineCap','butt'),kind=kind,points=[pts[i:i+2] for i in range(0,len(pts),2)],
             width=width,stroke=color,fill=fill,dash=row.get('dash','solid'),guide=row.get('guide')=='True'))
     if len(scene['shapes']) > 4000:
         raise ValueError('Слишком много фигур.')
@@ -183,6 +197,8 @@ def parse(data):
                 if not math.isfinite(initial) or not 0<=initial<=360:
                     raise ValueError('Начальный угол пиналки должен быть от 0° до 360°.')
                 claw['initialAngle']=initial
+                claw['length']=item.get('length','short')
+                if claw['length'] not in ('short','medium','long','extraLong'):raise ValueError('Неизвестная длина пиналки.')
         if model=='Car' and a.get('differential','true') not in ('true','false'):
             raise ValueError('Некорректный режим дифференциала.')
         sensors,cells = {},{}
@@ -190,10 +206,10 @@ def parse(data):
             p = int(sensor.attrib['port'])
             f,r,angle = nums(sensor.attrib['pose'],3)
             kind = sensor.attrib['type']
-            if not 1<=p<=8 or max(abs(f),abs(r))>100 or abs(angle)>360 or kind not in ('light','color','laser','sonar','led'):
+            if not 1<=p<=8 or max(abs(f),abs(r))>100 or abs(angle)>360 or kind not in ('light','color','laser','sonar','led','touch','ir','gyro','line','eye'):
                 raise ValueError('Некорректные настройки датчика.')
             sensors[str(p)] = [kind,f,r,angle]
-            if kind in ('light','color') and 'height' in sensor.attrib:
+            if kind in ('light','color','line') and 'height' in sensor.attrib:
                 height = int(sensor.attrib['height'])
                 if not 1<=height<=5:
                     raise ValueError('Высота датчика должна быть от 1 до 5 см.')
@@ -204,7 +220,7 @@ def parse(data):
                 raise ValueError('Некорректная ячейка памяти.')
             cells[str(i)] = v
         scene['robots'].append(dict(id=key,name=a.get('name','Робот')[:80],model=model,bodySize=size,wheelDiameter=diameter,
-            wear=wear,claw=claw,motorType=motor_type,wheels=wheels,reversed=list(map(bool,rev)),start=start,sensors=sensors,cells=cells,program=a.get('program','')))
+            wear=wear,claw=claw,motorType=motor_type,wheels=wheels,reversed=list(map(bool,rev)),start=start,sensors=sensors,cells=cells,deviceSettings=validate_settings(json.loads(el.findtext('device-settings') or '{}'),sensors),program=a.get('program','')))
         if model=='Car':
             scene['robots'][-1]['differential']=a.get('differential','true')=='true'
     if not 1 <= len(seen) <= 8:

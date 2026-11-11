@@ -1,0 +1,178 @@
+{
+  "format": "zmrobo-blocks",
+  "version": 1,
+  "controller": "E6",
+  "workspace": {
+    "blocks": {
+      "languageVersion": 0,
+      "blocks": [
+        {
+          "type": "zm_start",
+          "id": "xi3]Pyvm}A5Kv~pQ].:m",
+          "x": 0,
+          "y": 0,
+          "next": {
+            "block": {
+              "type": "zm_forever",
+              "id": "%lp~d-a}C0#2~3Zw~Q}j",
+              "inputs": {
+                "DO": {
+                  "block": {
+                    "type": "controls_if",
+                    "id": "Q{TL;O-d@+4[,3NFtI.|",
+                    "extraState": {
+                      "hasElse": true
+                    },
+                    "inputs": {
+                      "IF0": {
+                        "block": {
+                          "type": "logic_compare",
+                          "id": "^E^yDnQG{uBZv=}W6%%Q",
+                          "fields": {
+                            "OP": "LT"
+                          },
+                          "inputs": {
+                            "A": {
+                              "block": {
+                                "type": "zm_sensor_GetLightSensor",
+                                "id": "zR0841+K6){#xn=z%V3t",
+                                "inputs": {
+                                  "ARG0": {
+                                    "block": {
+                                      "type": "math_number",
+                                      "id": "5fva_ndd0vy/X~V@DnPM",
+                                      "fields": {
+                                        "NUM": 5
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "B": {
+                              "block": {
+                                "type": "math_number",
+                                "id": "!Pe~)0LYTv8}|u6252cb",
+                                "fields": {
+                                  "NUM": 50
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "DO0": {
+                        "block": {
+                          "type": "zm_motor_SetMotor",
+                          "id": "4DjxbB-H^puk7O(8:%aa",
+                          "inputs": {
+                            "ARG0": {
+                              "block": {
+                                "type": "math_number",
+                                "id": "JF5TwudmNPzEckQ]pjxW",
+                                "fields": {
+                                  "NUM": 1
+                                }
+                              }
+                            },
+                            "ARG1": {
+                              "block": {
+                                "type": "math_number",
+                                "id": "vOy,J$]D`DA?fDc/k)O1",
+                                "fields": {
+                                  "NUM": 20
+                                }
+                              }
+                            }
+                          },
+                          "next": {
+                            "block": {
+                              "type": "zm_motor_SetMotor",
+                              "id": "pG+==LI*Z-kJPPh{nzr1",
+                              "inputs": {
+                                "ARG0": {
+                                  "block": {
+                                    "type": "math_number",
+                                    "id": "IZZ!:kqT$$O;it:i}5%@",
+                                    "fields": {
+                                      "NUM": 3
+                                    }
+                                  }
+                                },
+                                "ARG1": {
+                                  "block": {
+                                    "type": "math_number",
+                                    "id": "`Up0Oa4-z#H?9|kFJ(;Z",
+                                    "fields": {
+                                      "NUM": 50
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "ELSE": {
+                        "block": {
+                          "type": "zm_motor_SetMotor",
+                          "id": "v#dpkntao~+v+#4N7:)*",
+                          "inputs": {
+                            "ARG0": {
+                              "block": {
+                                "type": "math_number",
+                                "id": "%?Q`k:b0)Q.8v)Kn6k1)",
+                                "fields": {
+                                  "NUM": 1
+                                }
+                              }
+                            },
+                            "ARG1": {
+                              "block": {
+                                "type": "math_number",
+                                "id": "!(d{7Rm8e)`;Cf/:~N4n",
+                                "fields": {
+                                  "NUM": 50
+                                }
+                              }
+                            }
+                          },
+                          "next": {
+                            "block": {
+                              "type": "zm_motor_SetMotor",
+                              "id": "euVvVH;gbZ_b9]SlBy!D",
+                              "inputs": {
+                                "ARG0": {
+                                  "block": {
+                                    "type": "math_number",
+                                    "id": "t6;1UP%9Lu6iIjJ@h6:j",
+                                    "fields": {
+                                      "NUM": 3
+                                    }
+                                  }
+                                },
+                                "ARG1": {
+                                  "block": {
+                                    "type": "math_number",
+                                    "id": "S^ie=([B$Vlun4/kyj:+",
+                                    "fields": {
+                                      "NUM": 20
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

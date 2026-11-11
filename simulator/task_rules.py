@@ -2,7 +2,7 @@
 import copy
 import math
 
-TAGS=set('init timelimit constraint event condition conditions not inside count equals notEqual greater less settedUp dropped timer int double bool string variableValue objectState typeOf sum difference min max abs minus triggers trigger setter message replace setUp drop success fail'.split())
+TAGS=set('init timelimit constraint event condition conditions not inside stationary count equals notEqual greater less settedUp dropped timer int double bool string variableValue objectState typeOf sum difference min max abs minus triggers trigger setter message replace setUp drop success fail'.split())
 
 def xml_node(element):
     return dict(tag=element.tag,attrs=dict(element.attrib),children=[xml_node(c) for c in element if isinstance(c.tag,str)])
@@ -18,6 +18,9 @@ def validate(regions,task):
         if len(rect)!=4 or any(type(v) not in (int,float) or not math.isfinite(v) for v in rect) or max(abs(rect[0]),abs(rect[1]))>5000 or not all(.1<=v<=4000 for v in rect[2:]): raise ValueError('Некорректные размеры региона '+key)
     if len(regions)>100: raise ValueError('Допускается до 100 регионов.')
     if task is None: return
+    if isinstance(task,dict) and task.get('kind')=='tennis':
+        from tennis_rules import validate_spec
+        validate_spec(task);return
     if not isinstance(task,dict) or not isinstance(task.get('nodes'),list): raise ValueError('У задания должен быть список nodes.')
     if not isinstance(task.get('aliases',{}),dict) or any(not isinstance(k,str) or not isinstance(v,str) for k,v in task.get('aliases',{}).items()):raise ValueError('Некорректные псевдонимы роботов.')
     count=[0];events=set();refs=[]
@@ -34,11 +37,15 @@ def validate(regions,task):
             try:value=float(a.get('value',0))
             except (ValueError,TypeError):raise ValueError('Некорректное число в '+n['tag'])
             if not math.isfinite(value) or (n['tag']=='timelimit' and value<0):raise ValueError('Некорректное число в '+n['tag'])
+        if n['tag']=='stationary':
+            try: seconds=float(a.get('seconds',1))
+            except (ValueError,TypeError): raise ValueError('Некорректная длительность остановки.')
+            if not math.isfinite(seconds) or seconds<.1: raise ValueError('Длительность остановки должна быть от 0,1 с.')
         if n['tag']=='event':
             key=a.get('id')
             if not isinstance(key,str) or not key or key in events:raise ValueError('У событий должны быть уникальные ID.')
             events.add(key)
-        if n['tag'] in ('inside','count') and a.get('regionId') and a['regionId'] not in seen:raise ValueError('Не найден регион: '+a['regionId'])
+        if n['tag'] in ('inside','stationary','count') and a.get('regionId') and a['regionId'] not in seen:raise ValueError('Не найден регион: '+a['regionId'])
         if n['tag'] in ('setUp','drop','settedUp','dropped'):refs.append(str(a.get('id','')))
         for c in children:visit(c,depth+1)
     for n in task['nodes']:
@@ -101,6 +108,7 @@ def projection(w):
     polys=[list(p) for p in w.corners]
     sizes={'light':(-2,-1,3,2,0),'laser':(-1,-2,2,3,-math.pi/2),'sonar':(-3,-2.5,6,5,-math.pi/2),'led':(-1,-1,2,3,math.pi/2)}
     sizes['color']=sizes['light']
+    sizes.update(touch=(-1.5,-1,3.21,2,0),ir=(-1.5,-1,3,2,0),gyro=(-1.5,-1,3,2,0),line=(-.5,-6.5,1,13,0),eye=(-2,-2,4,4,0))
     for kind,f,r,angle in w.sensors.values():
         if kind not in sizes:continue
         x,y,ww,hh,offset=sizes[kind];a=math.radians(angle)+offset;c,s=math.cos(a),math.sin(a)
@@ -109,7 +117,12 @@ def projection(w):
     return [[(w.x+c*x-s*y,w.y+s*x+c*y) for x,y in p] for p in polys]
 
 class Judge:
-    def __init__(self,scene,robots):
+    def __new__(cls,scene,robots,checkpoint=None):
+        if cls is Judge and (scene.get('task')or{}).get('kind')=='tennis':
+            from tennis_rules import TennisJudge
+            return TennisJudge(scene,robots,checkpoint)
+        return super().__new__(cls)
+    def __init__(self,scene,robots,checkpoint=None):
         self.regions={r['id']:r for r in scene.get('regions',[])}
         self.spec=scene.get('task');validate(scene.get('regions',[]),self.spec)
         self.robots=robots;self.props=next(iter(robots.values())).props
@@ -125,7 +138,7 @@ class Judge:
             if key in self.objects:raise ValueError('Повторяется ID объекта: '+key)
             self.objects[key]=(obj.kind,obj)
         self.vars={};self.events=[];self.messages=[];self.fired=[];self.cache={};self.geometry_cache={};self.area_cache={};self.region_shapes={key:region_polygon(r) for key,r in self.regions.items()};self.time=0.;self.current=None
-        self.status='running' if self.spec and self.spec.get('nodes') else 'none';self.reason='';self.limit=None
+        self.status='running' if self.spec and self.spec.get('nodes') else 'none';self.reason='';self.limit=None;self.stationary={}
         if self.status=='none':return
         for n in self.spec['nodes']:
             if n['tag']=='event':
@@ -149,7 +162,8 @@ class Judge:
         for n in self.spec['nodes']:references(n)
         for n in self.spec['nodes']:
             if n['tag']=='init':self.actions(n.get('children',[]))
-        self.tick(0)
+        if checkpoint is None:self.tick(0)
+        else:self.restore(checkpoint)
 
     @staticmethod
     def flag(attrs,key,default=False):return str(attrs.get(key,str(default))).lower()=='true'
@@ -187,6 +201,17 @@ class Judge:
         if t=='conditions':return (all if a.get('glue','and')=='and' else any)(self.value(c) for c in cs)
         if t=='not':return not self.value(cs[0])
         if t=='inside':return self.inside(a['objectId'],a['regionId'])
+        if t=='stationary':
+            key=a['objectId'];_,obj=self.get_object(key)
+            token=(self.current['id'] if self.current else '')+'|'+key+'|'+a['regionId']
+            location=[obj.x,obj.y,getattr(obj,'heading',0)]
+            record=self.stationary.get(token)
+            moving=any(abs(v)>.01 for v in getattr(obj,'speeds',[]))
+            if not self.inside(key,a['regionId']) or moving:
+                self.stationary.pop(token,None);return False
+            if record is None or math.hypot(location[0]-record[1][0],location[1]-record[1][1])>.05 or abs(location[2]-record[1][2])>.005:
+                record=[self.time,location];self.stationary[token]=record
+            return self.time-record[0]+1e-9>=float(a.get('seconds',1))
         if t=='count':
             return sum(1 for key,(kind,obj) in self.objects.items() if kind in ('can','ball') and (a.get('type','all') in ('all',kind)) and (not a.get('regionId') or self.inside(key,a['regionId'])!=self.flag(a,'outside')))
         if t in ('int','double'):return (int if t=='int' else float)(a.get('value',0))
@@ -261,6 +286,16 @@ class Judge:
         self.current=None
     def finish(self):
         if self.status=='running':self.status='incomplete';self.reason='Программа завершена до выполнения задания'
+    def checkpoint(self):
+        return dict(variables=self.vars,events=[{k:e[k] for k in ('id','target','enabled','since','last')} for e in self.events],
+                    messages=self.messages,fired=self.fired,status=self.status,reason=self.reason,time=self.time,stationary=self.stationary)
+    def restore(self,data):
+        self.vars=data['variables'];self.messages=data['messages'];self.fired=data['fired']
+        self.status=data['status'];self.reason=data['reason'];self.time=data['time'];self.stationary=data.get('stationary',{})
+        stored={(e['id'],e['target']):e for e in data['events']}
+        for e in self.events:
+            prev=stored.get((e['id'],e['target']))
+            if prev:e.update({k:prev[k] for k in ('enabled','since','last')})
     def snapshot(self):
         if self.status=='none':return None
         return dict(status=self.status,reason=self.reason,score=self.vars.get('total_score',self.vars.get('score',0)),variables=self.vars.copy(),messages=self.messages[:],events=self.fired[:],time=round(self.time,3),limit=self.limit)
