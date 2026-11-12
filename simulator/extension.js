@@ -68,8 +68,16 @@ function activate(context) {
                 if(assigned && !robot.program){programs[robot.id]={filename:assigned.filename,source:assigned.source};continue;}
                 let doc;
                 if (robot.program) {
-                    if (!path.isAbsolute(robot.program)||path.extname(robot.program).toLowerCase()!=='.py')
-                        throw new Error(robot.name+': выбери локальный файл Python.');
+                    const extension=path.extname(robot.program).toLowerCase();
+                    if(!path.isAbsolute(robot.program)||!['.py','.zmblocks'].includes(extension))throw new Error(robot.name+': выбери локальный файл .py или .zmblocks.');
+                    if(extension==='.zmblocks'){
+                        const snapshot=await vscode.commands.executeCommand('zmroboBlocks.compileFile',vscode.Uri.file(robot.program));
+                        if(!snapshot||typeof snapshot.source!=='string'||Buffer.byteLength(snapshot.source)>400_000)throw new Error(robot.name+': не удалось получить программу из блоков (Python до 400 КБ).');
+                        if(snapshot.controller!==robot.model)throw new Error(robot.name+': в проекте выбран '+snapshot.controller+', а у робота '+robot.model+'.');
+                        if(snapshot.unsupported?.length)throw new Error(robot.name+': в симуляторе недоступны '+snapshot.unsupported.join(', ')+'.');
+                        programs[robot.id]={filename:snapshot.filename,source:snapshot.source};
+                        continue;
+                    }
                     try {
                         const uri=vscode.Uri.file(robot.program);
                         if ((await vscode.workspace.fs.stat(uri)).size>400_000) throw new Error();
@@ -78,7 +86,7 @@ function activate(context) {
                         throw new Error(robot.name+': не удалось открыть '+path.basename(robot.program)+' (файл до 400 КБ).');
                     }
                 } else if (scene.robots.length===1 && selected && !selected.isClosed) doc=selected;
-                if (!doc) throw new Error(robot.name+': назначь Python-файл во вкладке «Робот».');
+                if (!doc) throw new Error(robot.name+': назначь файл .py или .zmblocks во вкладке «Робот».');
                 const filename=doc.isUntitled?path.join(folder,'program.py'):doc.uri.fsPath;
                 programs[robot.id]={filename,source:doc.getText()};
             }
@@ -87,6 +95,7 @@ function activate(context) {
             return;
         }
         if (generation!==launchId || panel!==current) return;
+        current.reveal?.(undefined,false);
         const [executable,args]=python('multi_runner.py');
         const request=JSON.stringify({scene,rate,programs,interactive:true,training:training===true});
         if (Buffer.byteLength(request)>12_000_000) throw new Error('Поле или программы слишком большие.');
@@ -201,7 +210,7 @@ function activate(context) {
                     }
                     else if (msg.kind === 'stop') stop();
                     else if (msg.kind === 'chooseProgram') {
-                        const [uri]=await vscode.window.showOpenDialog({filters:{Python:['py']},openLabel:'Назначить роботу',canSelectMany:false})||[];
+                        const [uri]=await vscode.window.showOpenDialog({filters:{'Программы ZMROBO':['py','zmblocks'],Python:['py'],'ZMROBO Блоки':['zmblocks']},openLabel:'Назначить роботу',canSelectMany:false})||[];
                         if(uri?.scheme==='file'){externalPrograms.delete(msg.robot);current.webview.postMessage({kind:'program',robot:msg.robot,path:uri.fsPath});}
                     } else if (msg.kind === 'save') {
                         const uri=await vscode.window.showSaveDialog({filters:{'Полигон XML':['xml']},saveLabel:'Сохранить полигон XML'});

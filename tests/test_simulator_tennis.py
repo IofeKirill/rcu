@@ -34,6 +34,15 @@ class Tennis(unittest.TestCase):
  def test_reject_tool_size_and_bad_starts(self):
   for change,reason in [(lambda r:r.update(claw=dict(kind='kicker',motor=2,forward=7,right=0,angle=0)), 'пиналки'),(lambda r:r.update(bodySize=40),'20 × 20'),(lambda r:r.update(start=[340,250,0]),'старт')]:
    s=tennis();change(s['robots'][0]);j=Judge(s,worlds(s));self.assertEqual(j.result,'invalid');self.assertIn(reason,j.reason.lower()if reason=='старт'else j.reason)
+ def test_fixed_claws_are_allowed_but_motor_tools_are_not(self):
+  for kind in ('small','large','narrow','straight'):
+   s=tennis();s['robots'][0]['claw']=dict(kind=kind,forward=0,right=0,angle=0)
+   ws=worlds(s);j=Judge(s,ws);self.assertEqual(j.status,'running',(kind,j.reason))
+  s=tennis();s['robots'][0]['claw']=dict(kind='gripper',motor=2,forward=0,right=0,angle=0,maxOpening=50)
+  j=Judge(s,worlds(s));self.assertEqual(j.result,'invalid');self.assertIn('моторные',j.reason)
+  # Fixed attachments still count towards the same 20 x 20 cm envelope.
+  s=tennis();s['robots'][0]['claw']=dict(kind='small',forward=20,right=0,angle=0)
+  j=Judge(s,worlds(s));self.assertEqual(j.result,'invalid');self.assertIn('20 × 20',j.reason)
  def test_goals_latched_once_even_if_ball_returns(self):
   j,ws,s=judge();moved(j,ws);p=ws['r1'].props[0];p.x=296;j.tick(1);self.assertEqual(j.goals,[1,0]);p.x=380;j.tick(2);self.assertEqual(j.goals,[1,0]);self.assertEqual(j.tally()[0],[2,3])
  def test_full_ball_must_cross_out(self):

@@ -1,5 +1,5 @@
 'use strict';
-const tennisDescription='Перекати мячи на половину соперника или за его линию аута. Толкать можно только корпусом. Сет длится до 60 секунд, матч — до двух побед. Назначь программу каждому роботу; старты и шесть мячей расставлены по регламенту.';
+const tennisDescription='Перекати мячи на половину соперника или за его линию аута. Разрешены неподвижные клешни в пределах конструкции 20 × 20 см; моторные захваты и пиналки запрещены. Сет длится до 60 секунд, матч — до двух побед. Назначь программу каждому роботу; старты и шесть мячей расставлены по регламенту.';
 let tennisRoundId=0,tennisRecorded=null;
 function tennisTask(left,right){tennisRoundId++;tennisRecorded=null;return {kind:'tennis',version:1,nodes:[],aliases:{},tennis:{field:[300,200,200,100],players:[left,right]},match:{sets:[]}};}
 function tennisHistory(){return taskSpec?.match?.sets??[];}

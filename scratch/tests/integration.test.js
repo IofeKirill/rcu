@@ -70,5 +70,23 @@ test('generated source reaches the real multi_runner through the simulator comma
     await commands.get('zmrobo2d.runSource')({ filename: path.join(ROOT, 'scratch/examples/timer-test.py'), name: 'timer.py', source: timerSource });
     await done;
     assert.equal(messages.filter(m => m.kind === 'error').length, 0);
+    const blockPath=path.join(ROOT,'scratch/examples/01_Forward.zmblocks');
+    let pickerOptions;mock.window.showOpenDialog=async options=>{pickerOptions=options;return [uri(blockPath)];};
+    await receiver({kind:'chooseProgram',robot:'r1'});
+    assert.ok(pickerOptions.filters['Программы ZMROBO'].includes('zmblocks'));assert.equal(messages.at(-1).path,blockPath);
+    scene.robots[0].program=blockPath;
+    scene.robots.push({...scene.robots[0],id:'r2',name:'Second',start:[180,120,0],program:path.join(ROOT,'scratch/examples/04_Timer.zmblocks')});
+    const compiled=[];commands.set('zmroboBlocks.compileFile',async project=>{
+      compiled.push(project.fsPath);
+      return {controller:'E6',filename:project.fsPath.replace(/\.zmblocks$/,'.py'),source:'import rcu\nrcu.SetWaitForTime(0.02)\n',unsupported:[]};
+    });
+    for(let attempt=0;attempt<2;++attempt){
+      done=new Promise(resolve=>{finish=resolve;});await receiver({kind:'run',scene,rate:8,training:true});await done;
+    }
+    assert.deepEqual(compiled,[blockPath,scene.robots[1].program,blockPath,scene.robots[1].program],'each robot recompiles its assigned blocks file on every run');
+    assert.equal(messages.filter(m=>m.kind==='error').length,0,JSON.stringify(messages.filter(m=>m.kind==='error')));
+    commands.set('zmroboBlocks.compileFile',async()=>({controller:'E6',filename:path.join(ROOT,'scratch/examples/bad.py'),source:'pass',unsupported:['Camera']}));
+    const started=messages.filter(m=>m.kind==='started').length;
+    await receiver({kind:'run',scene,rate:8,training:true});assert.equal(messages.filter(m=>m.kind==='started').length,started);assert.match(messages.filter(m=>m.kind==='error').at(-1).text,/Camera/);
     disposePanel();
 });

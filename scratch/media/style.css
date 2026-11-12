@@ -14,3 +14,5 @@ body.palette-expanded #workspace{overflow:visible;z-index:70}body.palette-expand
 /* The live field editor is HTML, separate from the rendered SVG label. */
 .dark .blocklyWidgetDiv .blocklyHtmlInput{color:#202431!important;-webkit-text-fill-color:#202431!important;caret-color:#202431!important;background:#fff!important;opacity:1!important}
 .dark dialog input{color:var(--text);background:var(--canvas);caret-color:var(--text)}
+
+#toggleFullscreen{white-space:nowrap}#toggleFullscreen[aria-pressed="true"]{background:#ffffff25}.runbar{flex-wrap:wrap;height:auto;min-height:39px}.runbar #simulate{font-weight:bold}@media(max-width:1200px){#toggleFullscreen span{display:none}#toggleFullscreen{font-size:20px;padding:4px 8px}}

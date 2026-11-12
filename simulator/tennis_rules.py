@@ -70,7 +70,7 @@ class TennisJudge:
         for i,w in enumerate(self.worlds):
             polys,b=self.geometry(w);size=self.size(w,polys);self.dimensions.append(size)
             if max(size)>20+1e-6:errors.append(self.names[i]+': конструкция с датчиками превышает 20 × 20 см.')
-            if w.claw:errors.append(self.names[i]+': регламент запрещает клешни и пиналки; толкай мячи корпусом.')
+            if w.claw and w.claw.get('kind') not in ('small','large','narrow','straight'):errors.append(self.names[i]+': моторные захваты и пиналки запрещены; разрешены только неподвижные клешни.')
             edge=b[0]if i==0 else b[2];expected=self.x if i==0 else self.x+200
             angle=abs(math.atan2(math.sin(w.heading-i*math.pi),math.cos(w.heading-i*math.pi)))
             expected_y=left_y if i==0 else right_y

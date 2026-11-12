@@ -1,7 +1,7 @@
 * { box-sizing:border-box; }
 [hidden] { display:none !important; }
 :root { color-scheme:light dark; --line:var(--vscode-panel-border,#767676); }
-body { margin:0; color:var(--vscode-foreground); background:var(--vscode-editor-background); font:var(--vscode-font-size,13px) var(--vscode-font-family,sans-serif); }
+body { height:100vh;display:flex;flex-direction:column;overflow:hidden;margin:0; color:var(--vscode-foreground); background:var(--vscode-editor-background); font:var(--vscode-font-size,13px) var(--vscode-font-family,sans-serif); }
 .top,.fieldbar,.options,.tabs,.actions { display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
 .top,.fieldbar { padding:8px 10px; border-bottom:1px solid var(--line); }
 .top { gap:12px; }
@@ -15,21 +15,21 @@ button.primary { background:var(--vscode-button-background,#176bc2); color:var(-
 input[type=checkbox] { vertical-align:middle; }
 input[type=number] { width:5.5ch; }
 input[type=color] { width:36px; vertical-align:middle; }
-main { display:grid; grid-template-columns:minmax(0,1fr) minmax(230px,29%); min-height:0; }
-.workspace { display:grid; grid-template-columns:40px minmax(0,1fr); }
+main { flex:1;overflow:hidden;display:grid; grid-template-columns:minmax(0,1fr) minmax(230px,29%); min-height:0; }
+.workspace { min-height:0;display:grid; grid-template-columns:40px minmax(0,1fr); }
 #tools { display:flex; flex-direction:column; gap:5px; padding:7px 4px; border-right:1px solid var(--line); }
 #tools button { font-size:17px; line-height:1.2; min-height:31px; padding:2px; }
 #tools button[aria-pressed=true] { outline:1px solid var(--vscode-focusBorder,#2788df); }
-.field { min-width:0; }
+.field { min-width:0;min-height:0;display:flex;flex-direction:column;position:relative; }
 .options { min-height:38px; padding:5px 7px; }
-#viewport { position:relative; height:clamp(280px,calc(100vh - 185px),850px); overflow:auto; background:var(--vscode-sideBar-background,#252526); border-block:1px solid var(--line); }
+#viewport { position:relative; flex:1;min-height:0; overflow:auto; background:var(--vscode-sideBar-background,#252526); border-block:1px solid var(--line); }
 canvas { display:block; width:var(--canvas-width,100%); height:auto; margin-inline:auto; touch-action:none; cursor:crosshair; }
 canvas[data-tool=pan] { cursor:grab; }
 canvas[data-tool=pan]:active { cursor:grabbing; }
 .hint,#status { min-height:22px; padding:4px 8px; }
 .hint { color:var(--vscode-descriptionForeground); font-size:.92em; }
 #status { border-top:1px solid var(--line); }
-aside { min-width:0; border-left:1px solid var(--line); background:var(--vscode-sideBar-background,var(--vscode-editor-background)); }
+aside { overflow:auto;min-width:0; border-left:1px solid var(--line); background:var(--vscode-sideBar-background,var(--vscode-editor-background)); }
 .tabs { gap:3px; padding:6px; border-bottom:1px solid var(--line); }
 .tabs button { flex:1; }
 .tab { padding:8px; overflow:auto; max-height:calc(100vh - 125px); }
@@ -44,7 +44,7 @@ details { margin-top:10px; }
 summary { cursor:pointer; font-weight:bold; margin-bottom:6px; }
 pre { white-space:pre-wrap; overflow-wrap:anywhere; margin:0 0 10px; min-height:2em; }
 .memory input { width:100%; margin:4px 0 7px; }
-@media (max-width:650px) { main { grid-template-columns:minmax(0,1fr); } aside { border-left:0; border-top:1px solid var(--line); } .tab { max-height:none; } #viewport { height:clamp(230px,55vh,520px); } }
+@media (max-width:650px) { body {height:auto;min-height:100vh;overflow:auto;} main { overflow:auto;flex:none;grid-template-columns:minmax(0,1fr); } aside { border-left:0; border-top:1px solid var(--line); } .tab { max-height:none; } #viewport { flex:none;height:clamp(230px,55vh,520px); } }
 input[type=number] { width:7.5ch; }
 .config label { min-width:0; }
 .config label > span { white-space:nowrap; }
@@ -105,7 +105,9 @@ canvas { width:100%; height:100%; margin:0; }
 #tools > button { flex-shrink:0; }
 .run-tools { position:sticky; bottom:0; background:var(--vscode-editor-background,#252526); }
 
-.map-controls {display:flex;align-items:center;justify-content:flex-end;gap:12px;padding:5px 8px;border-top:1px solid var(--line);}
+.preset-controls {display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.map-controls > #realism {margin-left:auto;}
+.map-controls {display:flex;align-items:center;flex-wrap:wrap;gap:8px;padding:5px 8px;border-top:1px solid var(--line);}
 #modeLabel {margin-right:auto;color:var(--vscode-editorWarning-foreground,#e5aa44);font-weight:bold;}
 #training[aria-pressed=true] {background:#a36615;color:white;outline:1px solid #e5aa44;}
 .variables-title {margin-top:22px;}
@@ -145,3 +147,6 @@ canvas { width:100%; height:100%; margin:0; }
 #sensorSettings {margin-top:15px;}
 #lockField[aria-pressed=true] {outline:1px solid var(--vscode-focusBorder,#2788df);background:#785724;color:#fff;}
 #deviceSettingsFields>label {display:flex;align-items:center;gap:8px;margin-top:8px;}
+
+/* Notices overlay the field without taking canvas height. */
+#status {position:absolute;bottom:8px;left:8px;right:8px;z-index:5;min-height:0;padding:8px 12px;border:1px solid var(--vscode-inputValidation-warningBorder,#997b32);border-radius:4px;background:var(--vscode-editorWidget-background,#252526);cursor:pointer;}

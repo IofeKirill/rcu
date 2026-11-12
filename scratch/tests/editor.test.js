@@ -197,7 +197,7 @@ test('sgn is second, palette expands as overlay, map opens and navigates without
  const e=w.RoboEditor,ws=e.workspace,d=w.document;ws.getToolbox().setSelectedCategoryById('operators');
  const op=ws.getFlyout().getWorkspace().getAllBlocks().find(b=>b.type==='operator_mathop');assert.deepEqual(Array.from(op.getField('OPERATOR').getOptions().slice(0,2),o=>o[1]),['abs','sgn']);
  const fly=ws.getFlyout(),blocks=fly.getWorkspace().getTopBlocks();const width=e.layout.prefs.palette,toolboxWidth=ws.getToolbox().getWidth();
- const target=blocks[0],old=target.getHeightWidth;target.getHeightWidth=()=>({width:900,height:40});e.layout.expandPalette(true);assert.ok(fly.getWidth()>width);assert.equal(ws.getToolbox().getWidth(),toolboxWidth);e.layout.expandPalette(false);assert.equal(fly.getWidth(),width);
+ const target=blocks[0],old=target.getHeightWidth;target.getHeightWidth=()=>({width:900,height:40});const background=fly.svgBackground_.getAttribute('d');e.layout.expandPalette(true);assert.equal(fly.getWidth(),width);assert.equal(fly.svgBackground_.getAttribute('d'),background);assert.ok(parseFloat(fly.clipRect_.getAttribute('width'))>width);fly.clipRect_.setAttribute('width',width+'px');await new Promise(r=>setTimeout(r,0));assert.ok(parseFloat(fly.clipRect_.getAttribute('width'))>width);assert.equal(ws.getToolbox().getWidth(),toolboxWidth);e.layout.expandPalette(false);assert.equal(fly.getWidth(),width);
  fly.svgGroup_.dispatchEvent(new w.Event('pointerenter'));assert.equal(e.layout.paletteExpanded,true);fly.svgGroup_.dispatchEvent(new w.Event('pointerleave'));await new Promise(r=>setTimeout(r,220));assert.equal(e.layout.paletteExpanded,false);target.getHeightWidth=old;
  const before=e.project().workspace.xml;d.getElementById('toggleMap').click();assert.equal(e.navigation.open,true);assert.equal(d.getElementById('projectMap').hidden,false);assert.ok(d.querySelector('#mapSvg .mapViewport'));
  const previousFrame=d.querySelector('#mapSvg .mapViewport').getAttribute('x'),oldScroll=ws.scrollX;ws.scrollX-=50;await new Promise(r=>setTimeout(r,150));assert.notEqual(d.querySelector('#mapSvg .mapViewport').getAttribute('x'),previousFrame);ws.scrollX=oldScroll;
@@ -247,7 +247,7 @@ test('light comparison, dynamic motor ports and one arithmetic selector generate
  e.load({format:'zmrobo-blocks',version:1,controller:'M6',workspace:{xml}});assert.match(e.compile().source,/motor.SetMotor\(\(port \+ 1\), 50\)/);
  const before=e.compile().source,p=e.project();e.load(w.RoboBlocks.defaultProject());e.load(p);assert.equal(e.compile().source,before);
  e.load({format:'zmrobo-blocks',version:1,controller:'E6',workspace:{xml:'<xml><block type="rc_motor_run"><field name="M">3</field></block></xml>'}});assert.equal(ws.getTopBlocks()[0].getInputTargetBlock('M').getFieldValue('PORT'),'3');assert.match(e.compile().source,/motor.SetMotor\(3, 50\)/);
- ws.getToolbox().setSelectedCategoryById('operators');const fly=ws.getFlyout().getWorkspace();assert.equal(fly.getAllBlocks().filter(b=>b.type==='rc_arithmetic').length,1);assert.ok(!fly.getAllBlocks().some(b=>['operator_add','operator_subtract','operator_multiply','operator_divide'].includes(b.type)));
+ ws.getToolbox().setSelectedCategoryById('operators');const fly=ws.getFlyout().getWorkspace();assert.equal(fly.getAllBlocks().filter(b=>b.type==='rc_arithmetic').length,1);assert.equal(fly.getAllBlocks().find(b=>b.type==='rc_arithmetic').getField('OP').getOptions().find(o=>o[1]==='/')[0],'÷');assert.ok(!fly.getAllBlocks().some(b=>['operator_add','operator_subtract','operator_multiply','operator_divide'].includes(b.type)));
  for(const [op,result]of [['+',7],['-',3],['*',10],['/',2.5]]){
   e.load({format:'zmrobo-blocks',version:1,controller:'E6',workspace:{xml:'<xml><block type="rc_print"><value name="VALUE"><block type="rc_arithmetic"><field name="OP">'+op+'</field><value name="NUM1"><shadow type="math_number"><field name="NUM">5</field></shadow></value><value name="NUM2"><shadow type="math_number"><field name="NUM">2</field></shadow></value></block></value></block></xml>'}});
   const run=require('node:child_process').spawnSync('python3',['-c',e.compile().source],{encoding:'utf8'});assert.equal(run.status,0,run.stderr);assert.equal(Number(run.stdout.trim()),result);
@@ -291,3 +291,32 @@ test('adding a function parameter supplies editable fields in existing statement
  for(const call of ws.getAllBlocks().filter(b=>['procedures_call','rc_procedure_value'].includes(b.type))){assert.equal(call.getInputTargetBlock('arg_0_ReadLight').getFieldValue('TEXT'),'5');const added=call.getInputTargetBlock('arg_1_ReadLight');assert.ok(added);assert.equal(added.type,'text');added.setFieldValue('10','TEXT');}
  const p=e.project(),count=ws.getAllBlocks().length;e.load(w.RoboBlocks.defaultProject());e.load(p);assert.equal(ws.getAllBlocks().length,count);assert.deepEqual(errors,[]);
 }finally{dom.window.close();}});
+
+test('context menus translate both dictionary entries and original hard-coded collapse labels', {timeout:15000}, async()=>{
+ const {dom,w,errors}=await editor();try{
+  const block=w.RoboEditor.workspace.getTopBlocks()[0];
+  block.showContextMenu_(new w.MouseEvent('contextmenu',{clientX:50,clientY:50}));
+  let text=w.Blockly.WidgetDiv.DIV.textContent;
+  assert.doesNotMatch(text,/Duplicate|收起|展开/);assert.match(text,/Дублировать/);assert.match(text,/Свернуть/);
+  w.Blockly.ContextMenu.hide();block.setCollapsed(true);
+  block.showContextMenu_(new w.MouseEvent('contextmenu',{clientX:50,clientY:50}));
+  text=w.Blockly.WidgetDiv.DIV.textContent;assert.match(text,/Развернуть/);assert.doesNotMatch(text,/展开/);
+  assert.deepEqual(errors,[]);
+ }finally{dom.window.close();}
+});
+test('fullscreen has a visible exit and a single simulator transfer button', {timeout:15000}, async()=>{
+ const {dom,w,messages,errors}=await editor({vscode:true});try{
+  const button=w.document.getElementById('toggleFullscreen');button.click();
+  assert.equal(messages.at(-1).kind,'fullscreen');assert.equal(messages.at(-1).enabled,true);
+  w.dispatchEvent(new w.MessageEvent('message',{data:{kind:'fullscreenStatus',enabled:true}}));
+  assert.equal(button.getAttribute('aria-pressed'),'true');assert.match(button.textContent,/Вернуть окна/);
+  w.document.dispatchEvent(new w.KeyboardEvent('keydown',{key:'Escape',bubbles:true}));
+  assert.equal(messages.at(-1).kind,'fullscreen');assert.equal(messages.at(-1).enabled,false);
+  assert.equal(w.document.getElementById('openSimulator'),null);
+  w.dispatchEvent(new w.MessageEvent('message',{data:{kind:'result'}}));
+  w.document.getElementById('simulate').click();assert.equal(messages.at(-1).kind,'simulate');assert.equal(messages.at(-1).ast.controller,'E6');
+  w.dispatchEvent(new w.MessageEvent('message',{data:{kind:'compileRequest',requestId:'tennis-left'}}));
+  assert.equal(messages.at(-1).kind,'compileResult');assert.equal(messages.at(-1).requestId,'tennis-left');assert.equal(messages.at(-1).ast.controller,'E6');
+  assert.deepEqual(errors,[]);
+ }finally{dom.window.close();}
+});

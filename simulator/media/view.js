@@ -1,8 +1,10 @@
 'use strict';
-const BUILD_VERSION='0.18';
+const BUILD_VERSION='0.20';
 const CAR_LENGTH=39.2;
 const vscode = acquireVsCodeApi();
 const $ = id => document.getElementById(id);
+function setStatus(text,notice=false){const el=$('status');el.textContent=text;el.hidden=!notice;}
+$('status').onclick=()=>{$('status').hidden=true;};
 const CLAWS=JSON.parse($('clawData').textContent);
 const KICKERS=JSON.parse($('kickerData').textContent);
 const rallyVehicles=new Map();
@@ -136,7 +138,7 @@ function refreshOptions(sync=false) {
     for(const id of ['paint','width','radius'])$(id).disabled=busy||fieldLocked;
 }
 function selectTool(id) {
-    if(fieldLocked&&id!=='pan'){$('status').textContent='Поле заблокировано.';return;}
+    if(fieldLocked&&id!=='pan'){setStatus('Поле заблокировано.',true);return;}
     selectedClaw=false;selectedObject=selectedSensor=selectedPose=undefined;
     tool=id; canvas.dataset.tool=id;
     $('hint').textContent=hints[id];
@@ -656,7 +658,7 @@ function draw() {
 }
 function blank() { ground.fillStyle = '#fff'; ground.fillRect(0,0,W,H); }
 function preset(name) {
-    if(fieldLocked){$('status').textContent='Сначала снимите блокировку поля.';return;}
+    if(fieldLocked){setStatus('Сначала снимите блокировку поля.',true);return;}
     const vehicleKeys=['model','bodySize','wheelDiameter','motorType','wheels','reversed','differential'];
     if(name==='rally'&&active.model!=='Car')rallyVehicles.set(active.id,Object.fromEntries(vehicleKeys.filter(k=>k in active).map(k=>[k,structuredClone(active[k])])));
     if(name!=='rally'&&active.model==='Car'){
@@ -830,7 +832,7 @@ function preset(name) {
     switchRobot(active,true);refreshPicker();refreshProgram();refreshOptions();refreshTaskEditor();reset();changeZoom(0);
 }
 function reset() {
-    inspectionEpoch++;previewCheckpoint=null;states.clear();taskState=null;renderTaskResult(); elapsed=0; renderTimer(); $('status').textContent='Готово · 2D '+BUILD_VERSION;draw();
+    inspectionEpoch++;previewCheckpoint=null;states.clear();taskState=null;renderTaskResult(); elapsed=0; renderTimer(); setStatus('Готово · 2D '+BUILD_VERSION);draw();
 }
 function renderTimer() { $('timer').textContent=elapsed.toFixed(3).replace('.',',')+' с'; }
 function lock(value) {
@@ -997,7 +999,7 @@ canvas.addEventListener('pointerdown',ev=>{
     if(!busy&&handleTaskPick(x,y))return;
     canvas.setPointerCapture(ev.pointerId);
     if(!busy&&Object.hasOwn(PROP_RADIUS,tool)) {
-        if(props.length>=64) {$('status').textContent='На поле допускается до 64 подвижных объектов.';return;}
+        if(props.length>=64) {setStatus('На поле допускается до 64 подвижных объектов.',true);return;}
         const row=[...gridPoint([x,y]),tool],list=props;
         list.push(row);propId(row);record(()=>list.splice(list.indexOf(row),1),()=>list.push(row));refreshTaskEditor();draw();return;
     }
@@ -1166,7 +1168,7 @@ canvas.addEventListener('pointerup',ev=>{
             const list=segments,row=[d.x,d.y,x,y,width];list.push(row);record(()=>list.splice(list.indexOf(row),1),()=>list.push(row));
         }
     } else if(['regionRect','regionEllipse'].includes(kind)) {
-        if(regions.length>=100){$('status').textContent='Допускается до 100 регионов.';draw();return;}
+        if(regions.length>=100){setStatus('Допускается до 100 регионов.',true);draw();return;}
         const row={id:newObjectId('region'),name:'Регион '+(regions.length+1),kind:kind==='regionEllipse'?'ellipse':'rectangle',rect:[Math.min(x,d.x),Math.min(y,d.y),Math.abs(x-d.x),Math.abs(y-d.y)],color:'#bb55aa',visible:true},list=regions;
         list.push(row);record(()=>list.splice(list.indexOf(row),1),()=>list.push(row));
         $('showRegions').checked=true;selectTool('pan');selectTarget({obj:{key:'region',list,row}});refreshTaskEditor();showTab('task');
@@ -1296,7 +1298,7 @@ $('image').onchange=async ev=>{
         record(()=>{ground.putImageData(previous,0,0);background=had;},
                ()=>{ground.putImageData(after,0,0);background=[...rect];});
         selectTarget();reset();changeZoom(0);
-    } catch (err) { $('status').textContent=err.message; }
+    } catch (err) { setStatus(err.message,true); }
 };
 function rasterize() {
     let [a,b,c,d]=drawingBounds(1,false), w=c-a,h=d-b;
@@ -1353,7 +1355,7 @@ function refreshProgram() {
 function switchRobot(robot,force=false) {
     if (!robot) return;
     if (!force && !busy && !stash(false)) {
-        $('status').textContent='Исправь настройки выбранного робота.';$('activeRobot').value=active.id;return;
+        setStatus('Исправь настройки выбранного робота.',true);$('activeRobot').value=active.id;return;
     }
     active=robot;start=active.start;changeBody(active.bodySize);selectedSensor=undefined;selectedClaw=false;
     $('robotName').value=active.name;$('model').value=active.model;$('wheelDiameter').value=active.wheelDiameter;
@@ -1413,7 +1415,7 @@ function showMemory() {
         cell.onchange=()=>{
             if (cell.value===''||!cell.validity.valid||!Number.isInteger(+cell.value)) {
                 cell.value=owner.cells[i]??0;
-                $('status').textContent='Ячейка '+i+': нужно целое число от 0 до 4095.';
+                setStatus('Ячейка '+i+': нужно целое число от 0 до 4095.',true);
             } else if (+cell.value) owner.cells[i]=+cell.value;
             else delete owner.cells[i];
         };
@@ -1476,9 +1478,9 @@ function loadPolygon(data) {
     start=active.start=data.start;currentPoses.delete(active.id);changeBody(data.bodySize??17.5,true);selectedObject=selectedPose=selectedSensor=undefined;refreshOptions();
     if(data.sensors)configureSensors(data.sensors);
     refreshTaskEditor();reset();changeZoom(0);
-    $('status').textContent='Полигон открыт · стен: '+segments.length+' · объектов: '+props.length+' · регионов: '+regions.length+
+    setStatus('Полигон открыт · стен: '+segments.length+' · объектов: '+props.length+' · регионов: '+regions.length+
         (data.reduced?' · большой рисунок уменьшен при импорте':'')+
-        (data.skipped.length?' · пропущено: '+data.skipped.join(', '):'');
+        (data.skipped.length?' · пропущено: '+data.skipped.join(', '):''));
 }
 function sendScene(kind,externalRequestId) {
     try {
@@ -1493,10 +1495,10 @@ function sendScene(kind,externalRequestId) {
             manualPreview=false;previewCheckpoint=null;
             variables.clear();outputs.clear();showVariables();showOutput();
             for (const robot of data.robots) currentPoses.set(robot.id,robot.start);
-            reset();error=false;lock(true);$('status').textContent='Запуск…';
+            reset();error=false;lock(true);setStatus('Запуск…');
         }
         vscode.postMessage({kind,scene:data,rate:+$('rate').value,training,externalRequestId,robot:active.id});
-    } catch (err) { $('status').textContent=err.message;if(externalRequestId)vscode.postMessage({kind:'externalRunError',requestId:externalRequestId,text:err.message}); }
+    } catch (err) { setStatus(err.message,true);if(externalRequestId)vscode.postMessage({kind:'externalRunError',requestId:externalRequestId,text:err.message}); }
 }
 $('run').onclick=()=>sendScene('run');
 $('stop').onclick=()=>vscode.postMessage({kind:'stop'});
@@ -1530,22 +1532,22 @@ function showOutput() {
 }
 window.addEventListener('message',async ({data:m})=>{
     switch(m.kind) {
-        case 'externalProgram': active.program='';active.blockProgramName=m.name;refreshProgram();$('source').textContent='Блоки: '+m.name;$('status').textContent='Программа готова. Нажми ▶ для запуска.';vscode.postMessage({kind:'bindExternalProgram',requestId:m.requestId,robot:active.id});break;
+        case 'externalProgram': active.program='';active.blockProgramName=m.name;refreshProgram();$('source').textContent='Блоки: '+m.name;setStatus('Программа готова. Нажми ▶ для запуска.');vscode.postMessage({kind:'bindExternalProgram',requestId:m.requestId,robot:active.id});break;
         case 'externalRun': active.program='';active.blockProgramName=m.name;refreshProgram();$('source').textContent='Блоки: '+m.name;sendScene('run',m.requestId);break;
         case 'source': $('source').textContent='Открыт: '+m.name; break;
         case 'program': {
             const r=robots.find(r=>r.id===m.robot);if(r){r.program=m.path;delete r.blockProgramName;}
             refreshProgram();break;
         }
-        case 'saved': $('status').textContent='Полигон сохранён';break;
-        case 'started': $('status').textContent='Модель запущена';break;
+        case 'saved': setStatus('Полигон сохранён');break;
+        case 'started': setStatus('Модель запущена');break;
         case 'inspection':
         case 'inspectionError': {
             if(!inspectionPending||m.requestId!==inspectionPending.id)break;
             const pending=inspectionPending;inspectionPending=null;
             $('readSensors').disabled=busy;$('previewCheck').disabled=busy;
             if(!busy&&pending.epoch===inspectionEpoch){
-                if(m.kind==='inspectionError'){$('sensorStatus').textContent=m.text;$('status').textContent=m.text;}
+                if(m.kind==='inspectionError'){$('sensorStatus').textContent=m.text;setStatus(m.text,true);}
                 else{
                     for(const [id,s]of Object.entries(m.robots)){
                         const previous=states.get(id);states.set(id,{...s,...previous,sensors:s.sensors,lamps:s.lamps});
@@ -1563,7 +1565,7 @@ window.addEventListener('message',async ({data:m})=>{
             taskState=m.task??null;acceptTennisState(taskState);renderTaskResult();
             elapsed=m.time;renderTimer();draw();
             if(taskState&&['success','failed'].includes(taskState.status))showTab('task');
-            if (!error) $('status').textContent=states.get(active.id)?.blocked?'Упор в препятствие':'Модель запущена';
+            if (!error) setStatus(states.get(active.id)?.blocked?'Упор в препятствие':'Модель запущена');
             break;
         case 'variables': variables.set(m.robot,m.values);if (m.robot===active.id)showVariables();break;
         case 'log': {
@@ -1575,19 +1577,19 @@ window.addEventListener('message',async ({data:m})=>{
             error=true;
             if(m.robot&&m.robot!==active.id) switchRobot(robots.find(r=>r.id===m.robot),true);
             const o=output();o.log=(o.log+m.text+'\n').slice(-18000);
-            showOutput();showTab('output');$('status').textContent='Ошибка — смотри вывод';break;
+            showOutput();showTab('output');setStatus('Ошибка — смотри вывод');break;
         }
         case 'stopped':
             if(taskState?.status==='running'){taskState.status='incomplete';taskState.reason='Остановлено пользователем';renderTaskResult();}
-            if(pendingTraining===null)lock(false);$('status').textContent='Остановлено';break;
+            if(pendingTraining===null)lock(false);setStatus('Остановлено');break;
         case 'finished':
             lock(false);
             if(pendingTraining!==null){const value=pendingTraining;pendingTraining=null;setTraining(value);break;}
-            if (!error) $('status').textContent=taskState?$('taskResult').textContent:'Завершено';break;
+            if (!error) setStatus(taskState?$('taskResult').textContent:'Завершено');break;
         case 'polygon':
         case 'scene':
             if (!busy) try {if(m.kind==='polygon')loadPolygon(m.scene);else await load(m.scene);}
-            catch(err){$('status').textContent=err.message;} break;
+            catch(err){setStatus(err.message,true);} break;
     }
 });
 
@@ -1606,7 +1608,7 @@ function syncFieldLock(){
 }
 $('lockField').onclick=()=>{
     if(drag){if(drag.moved)revertDrag(drag);drag=undefined;}pan=undefined;
-    fieldLocked=!fieldLocked;selectTool('pan');syncFieldLock();refreshTaskEditor();$('status').textContent=fieldLocked?'Рисунок поля заблокирован. Роботов и предметы можно перемещать.':'Поле разблокировано';
+    fieldLocked=!fieldLocked;selectTool('pan');syncFieldLock();refreshTaskEditor();setStatus(fieldLocked?'Рисунок поля заблокирован. Роботов и предметы можно перемещать.':'Поле разблокировано');
 };
 
 function deviceConfig(robot=active,p){
@@ -1706,18 +1708,18 @@ function requestInspection(judge=false,advance=.1){
         const id=++inspectionSerial;inspectionPending={id,epoch:inspectionEpoch,judge};
         $('readSensors').disabled=$('previewCheck').disabled=true;$('sensorStatus').textContent='Чтение показаний…';
         vscode.postMessage({kind:'inspect',scene:data,requestId:id,judge:judge&&!training,checkpoint:judge?previewCheckpoint:null,advance,deviceStates:Object.fromEntries(states)});
-    }catch(e){$('sensorStatus').textContent=e.message;$('status').textContent=e.message;}
+    }catch(e){$('sensorStatus').textContent=e.message;setStatus(e.message,true);}
 }
 $('readSensors').onclick=()=>requestInspection(false);
 canvas.addEventListener('pointerup',()=>{inspectionEpoch++;if(manualPreview&&!busy&&!taskPick)requestInspection(true);});
 function setTraining(value){
     training=value;manualPreview=false;previewCheckpoint=null;inspectionQueued=null;
     $('training').setAttribute('aria-pressed',String(value));$('modeLabel').hidden=!value;
-    reset();refreshTaskEditor();$('status').textContent=value?'Тренировочный режим — без оценки':'Готово к новой попытке';
+    reset();refreshTaskEditor();setStatus(value?'Тренировочный режим — без оценки':'Готово к новой попытке');
 }
 $('training').onclick=()=>{
     const value=!(pendingTraining??training);
-    if(busy){pendingTraining=value;vscode.postMessage({kind:'stop'});$('status').textContent='Остановка для смены режима…';}
+    if(busy){pendingTraining=value;vscode.postMessage({kind:'stop'});setStatus('Остановка для смены режима…');}
     else setTraining(value);
 };
 

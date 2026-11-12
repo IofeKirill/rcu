@@ -11,14 +11,9 @@
   <div class="actions">
     <label title="Скорость моделирования">Скорость <select id="rate" aria-label="Скорость моделирования"><option value="1">1×</option><option value="2">2×</option><option value="4">4×</option><option value="8">8×</option></select></label>
   </div>
-  <span>Время</span><output id="timer" aria-label="Время симуляции">0,000 с</output><span id="source" class="source">Выбери Python-файл</span>
+  <span>Время</span><output id="timer" aria-label="Время симуляции">0,000 с</output><span id="source" class="source">Выбери программу .py или .zmblocks</span>
 </header>
-<div class="fieldbar setup">
-  <label>Шаблон <select id="preset"><option value="empty" selected>Пустое поле</option><option value="loop">Линия S</option><option value="maze">Лабиринт 5×5</option><option value="ring">Кегельринг 1 м</option><option value="macro">Кегельринг макро 1,5 м</option><option value="snake">Слалом</option><option value="checker">Инверсная линия</option><option value="contour">Эстафета</option><option value="narrow">Узкая линия 1 см</option><option value="crossings">Линия с перекрёстками</option><option value="bigtravel">Большое путешествие</option><option value="tennis">Теннис · 2 робота</option><option value="rally">Ралли: коридор</option></select></label>
-  <button id="apply">Загрузить</button>
 
-
-</div>
 <img id="deviceTouch" src="{{deviceTouch}}" hidden alt="">
 <img id="deviceIr" src="{{deviceIr}}" hidden alt="">
 <img id="deviceGyro" src="{{deviceGyro}}" hidden alt="">
@@ -80,11 +75,16 @@
         <label id="paintOption" class="setup" hidden>Цвет <input id="paint" type="color" value="#202020"></label>
         <label id="widthOption" class="setup" hidden>Толщина <input id="width" type="number" value="4" min="1" max="50"> см</label>
       </div>
-      <div class="map-controls"><span id="modeLabel" hidden>Тренировочный режим — без оценки</span><button id="realism" class="edit-tool" aria-pressed="false" title="Погрешности моторов и датчиков">Реалистичность</button></div>
+      <div class="map-controls"><div class="preset-controls setup">
+  <label>Шаблон <select id="preset"><option value="empty" selected>Пустое поле</option><option value="loop">Линия S</option><option value="maze">Лабиринт 5×5</option><option value="ring">Кегельринг 1 м</option><option value="macro">Кегельринг макро 1,5 м</option><option value="snake">Слалом</option><option value="checker">Инверсная линия</option><option value="contour">Эстафета</option><option value="narrow">Узкая линия 1 см</option><option value="crossings">Линия с перекрёстками</option><option value="bigtravel">Большое путешествие</option><option value="tennis">Теннис · 2 робота</option><option value="rally">Ралли: коридор</option></select></label>
+  <button id="apply">Загрузить</button>
+
+
+</div><span id="modeLabel" hidden>Тренировочный режим — без оценки</span><button id="realism" class="edit-tool" aria-pressed="false" title="Погрешности моторов и датчиков">Реалистичность</button></div>
       <div id="viewport"><canvas id="world" width="800" height="500" tabindex="0" aria-label="Поле симулятора"></canvas>
       <div id="fieldMenu" role="menu" hidden><button id="load" role="menuitem">Открыть полигон XML…</button><button id="save" role="menuitem">Сохранить полигон XML…</button></div></div>
-      <div id="hint" class="hint"></div>
-      <div id="status" role="status">Готово</div>
+      <div id="hint" class="hint" hidden></div>
+      <div id="status" role="status" hidden>Готово</div>
     </div>
   </section>
   <aside>

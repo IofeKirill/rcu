@@ -3,7 +3,11 @@ const test = require('node:test'), assert = require('node:assert/strict'), Modul
 const ROOT = path.resolve(__dirname, '../..'), B = require('blockly'), Z = require('../media/blocks'), catalog = require('../media/catalog.json');
 Z.register(B, catalog);
 test('custom editor persists blocks and sends generated snapshots, never the active file', async () => {
-    let provider, receive, onChange, lastResult, viewState;
+    let provider, receive, onChange, lastResult, viewState, dispose;
+    const registered=new Map();
+    const zenValues={centerLayout:true,fullScreen:false,showTabs:'multiple',hideStatusBar:false};
+    const originalZen={...zenValues};
+    const zenConfig={inspect:key=>key in originalZen?{defaultValue:originalZen[key],globalValue:zenValues[key]}:{key:'zenMode.'+key},get:key=>zenValues[key],update:async(key,value)=>{assert.ok(key in originalZen,'Cannot write unregistered setting: '+key);zenValues[key]=value;}};
     const commands = [], posts = [];
     let text = JSON.stringify({ format: 'zmrobo-blocks', version: 1, controller: 'E6', workspace: { blocks: { languageVersion: 0, blocks: [{ type: 'zm_start' }] } } });
     const uri = { fsPath: path.join(ROOT, 'scratch/examples/project.zmblocks'), scheme: 'file', toString: () => '/project.zmblocks' };
@@ -12,7 +16,7 @@ test('custom editor persists blocks and sends generated snapshots, never the act
         replace(uri, range, value) { this.value = value; }
     }
     const d = { dispose() { } }, mock = { WorkspaceEdit: Edit, Range: class {
-        }, Uri: { file: fsPath => ({ fsPath, toString: () => fsPath }) }, workspace: { isTrusted: true, applyEdit: async (e) => { text = e.value; onChange({ document }); return true; }, onDidChangeTextDocument: f => (onChange = f, d) }, window: { activeTextEditor: { document: { getText: () => { throw Error('Do not use active editor'); } } }, registerCustomEditorProvider: (_id, p) => (provider = p, d) }, commands: { registerCommand: () => d, executeCommand: async (id, p) => { commands.push({ id, p }); } } };
+        }, Uri: { file: fsPath => ({ fsPath, toString: () => fsPath }) }, ConfigurationTarget:{Global:1,Workspace:2}, workspace: { getConfiguration:()=>zenConfig,isTrusted: true, applyEdit: async (e) => { text = e.value; onChange({ document }); return true; }, onDidChangeTextDocument: f => (onChange = f, d) }, window: { activeTextEditor: { document: { getText: () => { throw Error('Do not use active editor'); } } }, registerCustomEditorProvider: (_id, p) => (provider = p, d) }, commands: { registerCommand: (id,callback) => {registered.set(id,callback);return d;}, executeCommand: async (id, p) => { commands.push({ id, p }); } } };
     const old = Module._load;
     Module._load = function (id, ...args) { return id === 'vscode' ? mock : old.call(this, id, ...args); };
     let extension;
@@ -23,7 +27,7 @@ test('custom editor persists blocks and sends generated snapshots, never the act
         Module._load = old;
     }
     extension.activate({ subscriptions: [] });
-    const panel = { active: true, onDidChangeViewState: f => (viewState=f,d), onDidDispose: () => d, webview: { cspSource: 'test:', asWebviewUri: u => u, onDidReceiveMessage: f => (receive = f, d), postMessage: m => {
+    const panel = { active: true, visible:true, onDidChangeViewState: f => (viewState=f,d), onDidDispose: callback => (dispose=callback,d), webview: { cspSource: 'test:', asWebviewUri: u => u, onDidReceiveMessage: f => (receive = f, d), postMessage: m => {
                 posts.push(m);
                 if (m.kind === 'result'||m.kind==='connectionResult')
                     lastResult?.(m);
@@ -66,5 +70,16 @@ test('custom editor persists blocks and sends generated snapshots, never the act
     assert.equal(posts.at(-1).kind, 'load');
     assert.equal(posts.at(-1).project.controller, 'E7');
     const previousText=text;const connected=new Promise(resolve=>lastResult=resolve);receive({kind:'connect',transport:'usb',controller:'E7'});await connected;assert.equal(commands.at(-1).id,'extension.chooseBlockConnection');assert.deepEqual(commands.at(-1).p,{transport:'usb',controller:'E7'});assert.equal(text,previousText);
+    result=await action('openSimulator');assert.equal(result.error,undefined);assert.equal(commands.at(-1).id,'zmrobo2d.open');
+    // A file picker can request compilation without relying on the active Python editor.
+    const compileFile=registered.get('zmroboBlocks.compileFile');assert.equal(typeof compileFile,'function');
+    const compilation=compileFile(uri);receive({kind:'ready'});await new Promise(resolve=>setImmediate(resolve));
+    const request=posts.find(m=>m.kind==='compileRequest');assert.ok(request);
+    receive({kind:'compileResult',requestId:request.requestId,project,ast});
+    const compiled=await compilation;assert.match(compiled.source,/motor.SetMotor\(1, 50\)/);assert.equal(compiled.controller,'E6');assert.equal(compiled.name,'project.py');
+    commands.length=0;receive({kind:'fullscreen',enabled:true});await new Promise(resolve=>setImmediate(resolve));
+    assert.deepEqual(commands.map(c=>c.id),['workbench.action.exitZenMode','workbench.action.toggleZenMode']);assert.equal(posts.at(-1).enabled,true);assert.equal(zenValues.centerLayout,false);assert.equal(zenValues.fullScreen,true);assert.equal(zenValues.showTabs,'none');
+    receive({kind:'fullscreen',enabled:false});await new Promise(resolve=>setImmediate(resolve));assert.equal(commands.at(-1).id,'workbench.action.exitZenMode');assert.equal(posts.at(-1).enabled,false);assert.deepEqual(zenValues,originalZen);
+    const cancelled=compileFile(uri);dispose();await assert.rejects(cancelled,/закрыт/);
     ws.dispose();
 });

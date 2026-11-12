@@ -1,0 +1,8 @@
+{
+  "format": "zmrobo-blocks",
+  "version": 1,
+  "controller": "E6",
+  "workspace": {
+    "xml": "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><variables></variables><block type=\"rc_start\" id=\"IhEY`sL_YCBMLyCG#~y|\" x=\"45\" y=\"55\"><field name=\"DEVICE\">E6RCU</field><field name=\"TASK\">1</field></block></xml>"
+  }
+}

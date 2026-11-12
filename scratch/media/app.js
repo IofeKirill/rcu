@@ -140,7 +140,7 @@ document.addEventListener('click', e => { if (!e.target.closest('.fileMenu'))
     $('fileMenu').hidden = true; });
 function action(kind) {
     $('fileMenu').hidden = true;
-    if (loadError && !['new', 'open', 'stop'].includes(kind))
+    if (loadError && !['new', 'open', 'openSimulator', 'stop'].includes(kind))
         return;
     clearTimeout(timer);
     let ast;
@@ -194,6 +194,27 @@ function action(kind) {
 }
 for (const kind of ['new', 'open', 'save', 'saveAs', 'python', 'export', 'simulate', 'upload', 'play', 'stop'])
     $(kind).onclick = () => action(kind);
+let fullscreen=false;
+function fullscreenStatus(enabled){
+    fullscreen=!!enabled;const button=$('toggleFullscreen');
+    button.setAttribute('aria-pressed',String(fullscreen));
+    button.setAttribute('aria-label',fullscreen?'Выйти из полного экрана':'На весь экран');
+    button.title=fullscreen?'Вернуть окна VS Code · Esc':'На весь экран · Esc — выйти';
+    button.querySelector('span').textContent=fullscreen?'Вернуть окна':'На весь экран';
+}
+function setFullscreen(enabled){
+    if(vscode)vscode.postMessage({kind:'fullscreen',enabled});
+    else if(enabled&&document.documentElement.requestFullscreen)document.documentElement.requestFullscreen().catch(e=>status(e.message,true));
+    else if(!enabled&&document.exitFullscreen)document.exitFullscreen().catch(e=>status(e.message,true));
+    else status('Полноэкранный режим доступен в расширении VS Code.');
+}
+$('toggleFullscreen').onclick=()=>setFullscreen(!fullscreen);
+document.addEventListener('fullscreenchange',()=>fullscreenStatus(!!document.fullscreenElement));
+document.addEventListener('keydown',e=>{
+    if(e.key==='Escape'&&fullscreen&&!document.querySelector('dialog[open]')&&!Blockly.DropDownDiv.isVisible?.()&&!Blockly.WidgetDiv.isVisible?.()){
+        e.preventDefault();e.stopImmediatePropagation();setFullscreen(false);
+    }
+},true);
 // Handle block undo once, before native Blockly and the VS Code host see the key.
 // HTML text editors keep the browser's own character-level undo.
 document.addEventListener('keydown', e => {
@@ -220,7 +241,18 @@ function incoming(p) {
     load(p);
 }
 workspace.addChangeListener(() => {if (deferredLoad && !workspace.isDragging?.()) {const p=deferredLoad;deferredLoad=null;try{load(p);}catch(e){fatal(e.message);}}});
-window.addEventListener('message', ({ data: m }) => { if (m.kind === 'load') {
+window.addEventListener('message', ({ data: m }) => {
+if(m.kind==='fullscreenStatus'){fullscreenStatus(m.enabled);return;}
+if(m.kind==='compileRequest'){
+    try{
+        if(loadError)throw Error('Проект блоков не удалось открыть.');
+        Blockly.Events.fireNow_?.();
+        const result=compile();
+        vscode?.postMessage({kind:'compileResult',requestId:m.requestId,project:project(),ast:result.ast});
+    }catch(e){vscode?.postMessage({kind:'compileResult',requestId:m.requestId,error:e.message});}
+    return;
+}
+if (m.kind === 'load') {
     try {
         incoming(m.project);
     }

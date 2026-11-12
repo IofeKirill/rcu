@@ -27,8 +27,15 @@ root.RoboLayout = function(ws, B, vscode) {
         const available=Math.max(prefs.palette,(window.innerWidth||1600)-rect.left-prefs.category-12);
         return Math.min(natural,available);
     }
-    flyout.getWidth = () => paletteExpanded ? fullPaletteWidth() : prefs.palette;
-    function refreshFlyout(){flyout.position();flyout.setMetrics_?.({});}
+    flyout.getWidth = () => prefs.palette;
+    function revealCommands(){
+        // Keep the panel, background and scrollbar fixed; reveal only the block canvas.
+        const width=(paletteExpanded?fullPaletteWidth():prefs.palette)+'px';
+        if(flyout.clipRect_&&flyout.clipRect_.getAttribute('width')!==width)flyout.clipRect_.setAttribute('width',width);
+        flyout.svgGroup_.style.overflow=paletteExpanded?'visible':'hidden';
+    }
+    if(flyout.clipRect_)new MutationObserver(()=>{if(paletteExpanded)revealCommands();}).observe(flyout.clipRect_,{attributes:true,attributeFilter:['width']});
+    function refreshFlyout(){flyout.position();flyout.setMetrics_?.({});revealCommands();}
     function expandPalette(value){paletteExpanded=!!value;document.body.classList.toggle('palette-expanded',paletteExpanded);refreshFlyout();}
     function collapseLater(){
         clearTimeout(collapseTimer);
@@ -49,7 +56,7 @@ root.RoboLayout = function(ws, B, vscode) {
         this.svgGroup_.setAttribute('width',this.width_); this.svgGroup_.setAttribute('height',this.height_);
         B.utils.setCssTransform(this.svgGroup_,`translate(${prefs.category}px,0px)`);
         if(this.scrollbar_){this.scrollbar_.setOrigin(prefs.category,0);this.scrollbar_.resize();}
-        this.svgGroup_.style.opacity=1;
+        this.svgGroup_.style.opacity=1;revealCommands();
     };
     function apply(){
         prefs.category=clamp(prefs.category,130,300); prefs.palette=clamp(prefs.palette,200,800);prefs.code=clamp(prefs.code,200,900);

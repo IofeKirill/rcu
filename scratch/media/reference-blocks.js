@@ -66,7 +66,7 @@ else
         };
         B.defineBlocksWithJsonArray([{type:'rc_sensor_port',message0:'%1',args0:[{type:'field_dropdown',name:'PORT',options:Array.from({length:8},(_,i)=>['P'+(i+1),String(i+1)])}],colour:'#0BB5D8',colourSecondary:'#0BB5D8',colourTertiary:'#0894B1',extensions:['output_number']}]);
         B.defineBlocksWithJsonArray([{type:'rc_motor_port',message0:'%1',args0:[{type:'field_dropdown',name:'PORT',options:Array.from({length:4},(_,i)=>['M'+(i+1),String(i+1)])}],colour:'#4C97FF',colourSecondary:'#4C97FF',colourTertiary:'#3B77CA',extensions:['output_number']}]);
-        B.defineBlocksWithJsonArray([{type:'rc_arithmetic',message0:'%1 %2 %3',args0:[{type:'input_value',name:'NUM1'},{type:'field_dropdown',name:'OP',options:[['+','+'],['−','-'],['×','*'],[':','/']]},{type:'input_value',name:'NUM2'}],extensions:['colours_operators','output_number']}]);
+        B.defineBlocksWithJsonArray([{type:'rc_arithmetic',message0:'%1 %2 %3',args0:[{type:'input_value',name:'NUM1'},{type:'field_dropdown',name:'OP',options:[['+','+'],['−','-'],['×','*'],['÷','/']]},{type:'input_value',name:'NUM2'}],extensions:['colours_operators','output_number']}]);
         const portInit=B.Blocks.rc_sensor_port.init;
         B.Blocks.rc_sensor_port.init=function(){portInit.call(this);this.getField('PORT').menuGenerator_=()=>sensorPortOptions(this);};
         const prototypeInit=B.Blocks.procedures_prototype.init;
