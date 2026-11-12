@@ -249,23 +249,24 @@ export function activate(context: vscode.ExtensionContext): void {
             const address=bt?bluetooth.connectedAddress:usbDebug.connectedAddress;
             return {transport:selectedTransport,connected:!!(address||(!bt&&disk)),name:bt?'Bluetooth':address?'USB COM':disk?String(disk.label):'USB',address:address||(!bt?disk?.mountpoint:undefined),canRun:!!address};
         },
-        busy:()=>changingConnection||uploading,
-        scan:async transport=>{
+        busy:()=>changingConnection||uploading||usbDebug.isBusy||bluetooth.isBusy,
+        scan:async (transport,publish)=>{
             if(transport==='bluetooth'){
                 await bluetooth.scan();
                 return bluetoothTree.getChildren().filter(row=>row.command?.command==='extension.connectBluetooth').map(row=>({label:String(row.label),description:String(row.description||''),device:row.command!.arguments![0]}));
             }
+            const choices=()=>devices.getChildren().filter(row=>row.mountpoint||row.serialDevices?.length).map(row=>({key:row.mountpoint||row.serialDevices?.[0]?.address,label:String(row.label),description:[row.mountpoint,...(row.serialDevices||[]).map(p=>p.address)].filter(Boolean).join(' · '),device:row}));
             const scans = await Promise.all([
                 () => devices.detectDevices(),
                 () => usbDebug.scan()
             ].map(async scan => {
-                try { await scan(); return { failed: false, message: '' }; }
+                try { await scan(); publish?.(choices()); return { failed: false, message: '' }; }
                 catch (error) { return { failed: true, message: errorMessage(error) }; }
             }));
             const failures = scans.filter(result => result.failed);
             if (failures.length === scans.length) throw new Error(failures.map(result => result.message).join(' '));
             for (const result of failures) vscode.window.showWarningMessage(result.message);
-            return devices.getChildren().filter(row=>row.mountpoint||row.serialDevices?.length).map(row=>({label:String(row.label),description:[row.mountpoint,...(row.serialDevices||[]).map(p=>p.address)].filter(Boolean).join(' · '),device:row}));
+            return choices();
         },
         connect:async(transport,device)=>{
             if(transport==='usb')await connectUsbDevice(device as DeviceTreeItem);

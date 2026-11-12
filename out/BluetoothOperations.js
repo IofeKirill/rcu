@@ -23,6 +23,7 @@ async function captureBluetoothProgram(save) {
 }
 exports.captureBluetoothProgram = captureBluetoothProgram;
 class BluetoothOperations {
+    get isBusy() { return this.busy; }
     constructor(extensionPath, tree, selected, options = {}) {
         this.extensionPath = extensionPath;
         this.tree = tree;

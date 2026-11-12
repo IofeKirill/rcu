@@ -8,8 +8,10 @@ else
     let restoring = false, activeController = 'E6', B, reference, catalog, defs, controllerLabel = 'E6RCU';
     const icons = { wheel: '<circle cx="12" cy="12" r="9" fill="none" stroke="white" stroke-width="2"/><circle cx="12" cy="12" r="3"/><circle cx="12" cy="5" r="2"/><circle cx="5" cy="12" r="2"/><circle cx="19" cy="12" r="2"/><circle cx="12" cy="19" r="2"/>', controller: '<rect x="5" y="2" width="14" height="20" rx="2" fill="none" stroke="white" stroke-width="2"/><path d="M9 18h6" stroke="white" stroke-width="2"/>', eye: '<path d="M2 12q10-13 20 0Q12 25 2 12" fill="none" stroke="white" stroke-width="2"/><circle cx="12" cy="12" r="3"/>', play: '<path d="M6 3v18l15-9z"/>', sensor: '<rect x="2" y="3" width="8" height="18" rx="2"/><path d="M14 7q6 5 0 10m4-14q10 9 0 18" fill="none" stroke="white" stroke-width="2"/>', wifi: '<path d="M2 8q10-10 20 0M6 12q6-6 12 0M9 16q3-3 6 0" stroke="white" stroke-width="3" fill="none"/><circle cx="12" cy="20" r="2"/>', line: '<path d="M1 6h22v10H1z"/><path d="M5 4v16m7-16v16m7-16v16" stroke="white" stroke-width="2"/>', radio: '<path d="M2 8q10-10 20 0M6 12q6-6 12 0" stroke="white" stroke-width="2" fill="none"/><text x="3" y="22" font-size="8">2.4G</text>', bolt: '<path d="M13 1L4 13h7l-1 10 10-15h-7z"/>', ai: '<path d="M6 3h12v18H6z" fill="none" stroke="white" stroke-width="2"/><text x="7" y="15" font-size="9">AI</text>', gear: '<circle cx="12" cy="12" r="8" fill="none" stroke="white" stroke-width="4"/><circle cx="12" cy="12" r="3"/>', control: '<path d="M4 3h16v5H9v8h11v5H4z"/>', operators: '<path d="M3 10h18v4H3zM10 3h4v18h-4z"/>', data: '<circle cx="12" cy="12" r="9"/>', blocks: '<path d="M3 4h18v16H3z"/>' };
     function icon(name) { return 'data:image/svg+xml;base64,' + (typeof btoa === 'function' ? btoa : s => Buffer.from(s).toString('base64'))('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white">' + (icons[name] || icons.sensor) + '</svg>'); }
-    function isPort(a) { return a.kind==='dropdown' && a.options.length && a.options.every(([label,v])=>/^P[1-8]$/.test(label)&&Number.isInteger(v)); }
-    function shadow(a) { if(isPort(a)) return '<value name="'+a.name+'"><shadow type="rc_sensor_port"><field name="PORT">'+a.value+'</field></shadow></value>'; if (a.kind === 'dropdown' || a.kind === 'colour')
+    function isSensorPort(a) { return a.kind==='dropdown' && a.options.length && a.options.every(([label,v])=>/^P[1-8]$/.test(label)&&Number.isInteger(v)); }
+    function isMotorPort(a) { return a.kind==='dropdown' && a.options.length && a.options.every(([label,v])=>/^M[1-4]$/.test(label)&&Number.isInteger(v)); }
+    function isPort(a) { return isSensorPort(a)||isMotorPort(a); }
+    function shadow(a) { if(isPort(a)) return '<value name="'+a.name+'"><shadow type="'+(isMotorPort(a)?'rc_motor_port':'rc_sensor_port')+'"><field name="PORT">'+a.value+'</field></shadow></value>'; if (a.kind === 'dropdown' || a.kind === 'colour')
         return ''; return '<value name="' + a.name + '"><shadow type="' + (a.kind === 'text' ? 'text' : 'math_number') + '"><field name="' + (a.kind === 'text' ? 'TEXT' : 'NUM') + '">' + esc(a.value) + '</field></shadow></value>'; }
     function blockXml(d) { return '<block type="' + d.id + '" gap="16">' + d.args.map(shadow).join('') + '</block>'; }
     function register(blockly, ref, cat) {
@@ -63,6 +65,8 @@ else
             f.menuGenerator_ = [options.find(o=>o[1]==='abs'), ['sgn','sgn'], ...options.filter(o=>!['abs','sgn'].includes(o[1]))];
         };
         B.defineBlocksWithJsonArray([{type:'rc_sensor_port',message0:'%1',args0:[{type:'field_dropdown',name:'PORT',options:Array.from({length:8},(_,i)=>['P'+(i+1),String(i+1)])}],colour:'#0BB5D8',colourSecondary:'#0BB5D8',colourTertiary:'#0894B1',extensions:['output_number']}]);
+        B.defineBlocksWithJsonArray([{type:'rc_motor_port',message0:'%1',args0:[{type:'field_dropdown',name:'PORT',options:Array.from({length:4},(_,i)=>['M'+(i+1),String(i+1)])}],colour:'#4C97FF',colourSecondary:'#4C97FF',colourTertiary:'#3B77CA',extensions:['output_number']}]);
+        B.defineBlocksWithJsonArray([{type:'rc_arithmetic',message0:'%1 %2 %3',args0:[{type:'input_value',name:'NUM1'},{type:'field_dropdown',name:'OP',options:[['+','+'],['−','-'],['×','*'],[':','/']]},{type:'input_value',name:'NUM2'}],extensions:['colours_operators','output_number']}]);
         const portInit=B.Blocks.rc_sensor_port.init;
         B.Blocks.rc_sensor_port.init=function(){portInit.call(this);this.getField('PORT').menuGenerator_=()=>sensorPortOptions(this);};
         const prototypeInit=B.Blocks.procedures_prototype.init;
@@ -73,8 +77,6 @@ else
             domToMutation:function(m){this.updateReturn_(m.getAttribute('returns')==='true');},
             updateReturn_:function(enabled){
                 this.zmReturnsValue=!!enabled;
-                if(enabled&&!this.getInput('RETURN'))this.appendValueInput('RETURN').appendField('вернуть');
-                if(!enabled&&this.getInput('RETURN'))this.removeInput('RETURN');
                 this.data=enabled?'zm:return':null;
             }
         };
@@ -95,6 +97,17 @@ else
                 this.setOutput(true); this.setOutputShape(B.OUTPUT_SHAPE_ROUND);
             }
         });
+        // Flyout callers must offer editable literal shadows. The native XML loader
+        // restores saved children itself; generating them during that restoration
+        // would create a second, detached copy on undo.
+        for(const type of ['procedures_call','rc_procedure_value']) {
+            const original=B.Blocks[type].domToMutation;
+            B.Blocks[type].domToMutation=function(m){
+                const copy=m.cloneNode(true);
+                if(!this.workspace.isFlyout)copy.setAttribute('generateshadows',String(B.Events.isEnabled()&&B.Events.recordUndo));
+                original.call(this,copy);
+            };
+        }
         // Native mutation propagation knows statement calls only. Include expression calls.
         const callers = B.Procedures.getCallers;
         B.Procedures.getCallers = function(code, ws, definition, includeDefinition) {
@@ -130,7 +143,7 @@ else
     function block(type, values = '', gap = 16) { return '<block type="' + type + '" gap="' + gap + '">' + values + '</block>'; }
     const builtin = {
         control: () => block('control_wait', val('math_positive_number', 'DURATION', 1), 36) + block('control_repeat', val('math_whole_number', 'TIMES', 10)) + block('control_forever', '', 36) + block('control_if') + block('control_if_else') + block('control_wait_until') + block('control_repeat_until', '', 36) + block('control_RunPython') + block('control_RunPythonMultiline'),
-        operators: () => ['operator_add', 'operator_subtract', 'operator_multiply', 'operator_divide'].map(type => block(type, val('math_number', 'NUM1', '') + val('math_number', 'NUM2', ''), 8)).join('') + block('operator_random', val('math_number', 'FROM', 1) + val('math_number', 'TO', 10), 36) + ['operator_gt', 'operator_lt', 'operator_equals'].map(type => block(type, val('text', 'OPERAND1', '') + val('text', 'OPERAND2', 50))).join('') + ['operator_and', 'operator_or', 'operator_not'].map(type => block(type)).join('') + block('operator_join', val('text', 'STRING1', 'яблоко') + val('text', 'STRING2', 'банан')) + block('operator_letter_of', val('math_whole_number', 'LETTER', 1) + val('text', 'STRING', 'яблоко')) + block('operator_length', val('text', 'STRING', 'яблоко')) + block('operator_contains', val('text', 'STRING1', 'яблоко') + val('text', 'STRING2', 'я')) + block('operator_mod', val('math_number', 'NUM1', '') + val('math_number', 'NUM2', '')) + block('operator_round', val('math_number', 'NUM', '')) + block('operator_mathop', val('math_number', 'NUM', '')) + block('operator_strToNum', val('text', 'STRING', '')) + block('operator_numToStr', val('math_number', 'NUM', ''))
+        operators: () => block('rc_arithmetic', val('math_number','NUM1',0)+val('math_number','NUM2',0),8) + block('operator_random', val('math_number', 'FROM', 1) + val('math_number', 'TO', 10), 36) + ['operator_gt', 'operator_lt', 'operator_equals'].map(type => block(type, val('text', 'OPERAND1', '') + val('text', 'OPERAND2', 50))).join('') + ['operator_and', 'operator_or', 'operator_not'].map(type => block(type)).join('') + block('operator_join', val('text', 'STRING1', 'яблоко') + val('text', 'STRING2', 'банан')) + block('operator_letter_of', val('math_whole_number', 'LETTER', 1) + val('text', 'STRING', 'яблоко')) + block('operator_length', val('text', 'STRING', 'яблоко')) + block('operator_contains', val('text', 'STRING1', 'яблоко') + val('text', 'STRING2', 'я')) + block('operator_mod', val('math_number', 'NUM1', '') + val('math_number', 'NUM2', '')) + block('operator_round', val('math_number', 'NUM', '')) + block('operator_mathop', val('math_number', 'NUM', '')) + block('operator_strToNum', val('text', 'STRING', '')) + block('operator_numToStr', val('math_number', 'NUM', ''))
     };
     function toolbox(controller = 'E6') {
         activeController = controller;
@@ -173,11 +186,12 @@ else
         mutation.removeAttribute('argumentnames');
         mutation.removeAttribute('argumentdefaults');
         call.appendChild(mutation);
+        mutation.setAttribute('generateshadows','true');
         root.appendChild(call);
         if (returnsValue(def)) {
             const valueCall = call.cloneNode(true); valueCall.setAttribute('type', 'rc_procedure_value'); root.appendChild(valueCall);
         }
-    } return [...root.children]; }
+    } root.appendChild(B.Xml.textToDom('<xml>'+block('rc_return',val('math_number','VALUE',0))+'</xml>').firstChild);return [...root.children]; }
     function returnsValue(def) { return typeof def?.zmReturnsValue==='boolean'?def.zmReturnsValue:def?.data==='zm:return'||def?.getDescendants().some(b=>b.type==='rc_return'); }
     function setReturns(def,enabled) {const old=B.Xml.domToText(def.mutationToDom());def.updateReturn_(enabled);const now=B.Xml.domToText(def.mutationToDom());if(old!==now)B.Events.fire(new B.Events.BlockChange(def,'mutation',null,old,now));}
     function portOptions(a) {
@@ -202,7 +216,7 @@ else
             for(const a of d.args.filter(isPort)) {
                 const f=child(b,'field',a.name);if(!f)continue;
                 if(!child(b,'value',a.name)) {
-                    const v=el('value'),shadow=el('shadow'),field=el('field');v.setAttribute('name',a.name);shadow.setAttribute('type','rc_sensor_port');field.setAttribute('name','PORT');field.textContent=f.textContent;shadow.appendChild(field);v.appendChild(shadow);b.appendChild(v);
+                    const v=el('value'),shadow=el('shadow'),field=el('field');v.setAttribute('name',a.name);shadow.setAttribute('type',isMotorPort(a)?'rc_motor_port':'rc_sensor_port');field.setAttribute('name','PORT');field.textContent=f.textContent;shadow.appendChild(field);v.appendChild(shadow);b.appendChild(v);
                 } f.remove();
             }
         }
@@ -215,13 +229,26 @@ else
             if(!mutation){mutation=el('mutation');mutation.setAttribute('returns',String(legacyReturn));def.insertBefore(mutation,def.firstChild);}
             const next=child(def,'next');
             if(next){let body=child(def,'statement','BODY');if(!body){body=el('statement');body.setAttribute('name','BODY');def.appendChild(body);}while(next.firstChild)body.appendChild(next.firstChild);next.remove();}
-            // A terminal return becomes the definition's own return expression.
-            const body=child(def,'statement','BODY');let tail=body?.firstElementChild;
-            while(tail&&child(tail,'next')?.firstElementChild)tail=child(tail,'next').firstElementChild;
-            if(tail?.getAttribute('type')==='rc_return'&&!child(def,'value','RETURN')) {
-                const value=child(tail,'value','VALUE')||el('value');value.setAttribute('name','RETURN');def.appendChild(value);
-                const holder=tail.parentElement;tail.remove();if(holder?.tagName.toLowerCase()==='next')holder.remove();mutation.setAttribute('returns','true');
+            // Convert 4.5.0's fixed return expression into a movable body block.
+            const value=child(def,'value','RETURN');
+            if(value) {
+                value.setAttribute('name','VALUE');
+                const ret=el('block');ret.setAttribute('type','rc_return');ret.appendChild(value);
+                let body=child(def,'statement','BODY');if(!body){body=el('statement');body.setAttribute('name','BODY');def.appendChild(body);}
+                let tail=body.firstElementChild;
+                if(!tail)body.appendChild(ret);
+                else {while(child(tail,'next')?.firstElementChild)tail=child(tail,'next').firstElementChild;
+                    if(tail.getAttribute('type')!=='rc_return'){const next=el('next');next.appendChild(ret);tail.appendChild(next);}}
+                mutation.setAttribute('returns','true');
             }
+        }
+        // Add missing editable fields only to serialized calls that lack a value.
+        for(const call of xml.querySelectorAll('block[type="procedures_call"],block[type="rc_procedure_value"]')) {
+            const mutation=child(call,'mutation');if(!mutation)continue;
+            const ids=JSON.parse(mutation.getAttribute('argumentids')||'[]');
+            const types=(mutation.getAttribute('proccode')||'').match(/%[snb]/g)||[];
+            ids.forEach((id,i)=>{if(types[i]==='%b'||child(call,'value',id))return;
+                const v=el('value'),sh=el('shadow'),f=el('field');v.setAttribute('name',id);sh.setAttribute('type',types[i]==='%n'?'math_number':'text');f.setAttribute('name',types[i]==='%n'?'NUM':'TEXT');f.textContent=types[i]==='%n'?'0':'';sh.appendChild(f);v.appendChild(sh);call.appendChild(v);});
         }
         return xml;
     }
@@ -266,7 +293,7 @@ else
             const args = Object.fromEntries(d.args.map(a => [a.name, isPort(a)?numeric(input(b,a.name,ctx,a.value)):a.kind === 'dropdown' || a.kind === 'colour' ? fieldValue(b, a) : input(b, a.name, ctx, a.value)]));
             for(const a of d.args.filter(isPort)) {
                 const value=args[a.name];if(value.type!=='literal')continue;
-                if(!Number.isInteger(value.value)||value.value<1||value.value>(controller==='M6'?5:8))fail(b,controller==='M6'?'У M6 доступны порты P1–P5. Выбери другой порт.':'Порт датчика должен быть целым числом от 1 до 8.');
+                if(!Number.isInteger(value.value)||value.value<1||value.value>(isMotorPort(a)?4:controller==='M6'?5:8))fail(b,isMotorPort(a)?'Порт мотора должен быть целым числом от 1 до 4.':controller==='M6'?'У M6 доступны порты P1–P5. Выбери другой порт.':'Порт датчика должен быть целым числом от 1 до 8.');
                 if(d.group==='cameraE7'&&![7,8].includes(value.value))fail(b,'Камера E7 подключается к P7 или P8.');
             }
             if (d.special) {
@@ -291,7 +318,7 @@ else
                 return JSON.parse(b.data);
             if (['math_number', 'math_integer', 'math_positive_number', 'math_whole_number', 'math_angle'].includes(t))
                 return n({ type: 'literal', value: Number(b.getFieldValue('NUM')) });
-            if (t === 'rc_sensor_port')return n({type:'literal',value:Number(b.getFieldValue('PORT'))});
+            if (t === 'rc_sensor_port'||t==='rc_motor_port')return n({type:'literal',value:Number(b.getFieldValue('PORT'))});
             if (t === 'text')
                 return n({ type: 'literal', value: b.getFieldValue('TEXT') });
             if (t === 'colour_picker')
@@ -304,6 +331,7 @@ else
                     fail(b, 'Аргумент вне своего блока: ' + name);
                 return n({ type: 'variable', id: ctx.get(name) });
             }
+            if(t==='rc_arithmetic')return n({type:'binary',op:b.getFieldValue('OP'),left:numeric(input(b,'NUM1',ctx)),right:numeric(input(b,'NUM2',ctx))});
             const binary = { operator_add: ['+', 'NUM1', 'NUM2'], operator_subtract: ['-', 'NUM1', 'NUM2'], operator_multiply: ['*', 'NUM1', 'NUM2'], operator_divide: ['/', 'NUM1', 'NUM2'], operator_gt: ['>', 'OPERAND1', 'OPERAND2'], operator_lt: ['<', 'OPERAND1', 'OPERAND2'], operator_equals: ['==', 'OPERAND1', 'OPERAND2'], operator_and: ['and', 'OPERAND1', 'OPERAND2'], operator_or: ['or', 'OPERAND1', 'OPERAND2'], operator_mod: ['%', 'NUM1', 'NUM2'] };
             if (binary[t]) {
                 const [op, a, c] = binary[t];
@@ -430,7 +458,7 @@ else
         const statements = top.filter(b => b.type !== 'rc_start' && b.type !== 'rc_function' && !b.outputConnection);
         const body = [...(starts[0] ? rows(starts[0].getNextBlock()) : []), ...statements.flatMap(b => rows(b))];
         const functionNodes = functions.map(def => { const proto = def.getInputTargetBlock('custom_block'); if (!proto)
-                fail(def, 'Не заполнено определение блока.'); const m = proto.mutationToDom(), id = m.getAttribute('proccode'), names = JSON.parse(m.getAttribute('argumentnames') || '[]'), name = id.replace(/\s*%[snb]/g, '').trim(), ctx = new Map(names.map((n, i) => [n, 'arg:' + id + ':' + i])); return { id, name, args: names.map(n => ({ id: ctx.get(n), name: n })), body: rows(def.getInputTargetBlock('BODY'), ctx), ...(returnsValue(def)?{result:input(def,'RETURN',ctx,null)}:{}) }; });
+                fail(def, 'Не заполнено определение блока.'); const m = proto.mutationToDom(), id = m.getAttribute('proccode'), names = JSON.parse(m.getAttribute('argumentnames') || '[]'), name = id.replace(/\s*%[snb]/g, '').trim(), ctx = new Map(names.map((n, i) => [n, 'arg:' + id + ':' + i])); return { id, name, args: names.map(n => ({ id: ctx.get(n), name: n })), body: rows(def.getInputTargetBlock('BODY'), ctx) }; });
         function collect(n) { if (!n || typeof n !== 'object') return; if (['variable','set','change'].includes(n.type)) usedVariables.add(n.id); for (const v of Object.values(n)) if (typeof v === 'object') Array.isArray(v) ? v.forEach(collect) : collect(v); }
         collect({body,functions:functionNodes});
         return {version:1,controller,entry:'task1',variables:variables.filter(v => usedVariables.has(v.getId())).map(v => ({id:v.getId(),name:v.name,kind:v.type === 'list' ? 'list' : undefined,initial:0})),body,functions:functionNodes};

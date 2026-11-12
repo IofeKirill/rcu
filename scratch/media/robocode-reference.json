@@ -2819,6 +2819,85 @@
       "output": "number"
     },
     {
+      "id": "rc_light_compare",
+      "group": "sensors",
+      "text": "Значение датчика освещённости {P} {OP} {V}",
+      "args": [
+        {
+          "name": "P",
+          "kind": "dropdown",
+          "options": [
+            [
+              "P1",
+              1
+            ],
+            [
+              "P2",
+              2
+            ],
+            [
+              "P3",
+              3
+            ],
+            [
+              "P4",
+              4
+            ],
+            [
+              "P5",
+              5
+            ],
+            [
+              "P6",
+              6
+            ],
+            [
+              "P7",
+              7
+            ],
+            [
+              "P8",
+              8
+            ]
+          ],
+          "value": 1
+        },
+        {
+          "name": "OP",
+          "kind": "dropdown",
+          "options": [
+            [
+              "<",
+              "<"
+            ],
+            [
+              ">",
+              ">"
+            ],
+            [
+              "=",
+              "=="
+            ]
+          ],
+          "value": "<"
+        },
+        {
+          "name": "V",
+          "kind": "number",
+          "value": 50
+        }
+      ],
+      "call": "sensor.GetLightSensor",
+      "order": [
+        "P"
+      ],
+      "output": "boolean",
+      "compare": {
+        "op": "OP",
+        "right": "V"
+      }
+    },
+    {
       "separator": true,
       "group": "sensors",
       "label": ""

@@ -154,7 +154,8 @@ test('abs and sgn and returning custom blocks generate executable Python',{timeo
     assert.ok(ws.getFlyout().getWorkspace().getAllBlocks().some(b=>b.type==='rc_procedure_value'));
     const def=ws.getTopBlocks().find(b=>b.type==='rc_function');const proto=def.getInputTargetBlock('custom_block');
     const mutation=B.Xml.domToText(proto.mutationToDom());
-    const xml='<xml>'+B.Xml.domToText(B.Xml.blockToDom(def)).replace('</block>','<next><block type="rc_return"><value name="VALUE"><block type="operator_mathop"><field name="OPERATOR">sgn</field><value name="NUM"><block type="argument_reporter_string_number"><field name="VALUE">value</field></block></value></block></value></block></next></block>')+'<block type="rc_print"><value name="VALUE"><block type="rc_procedure_value">'+mutation+'<value name="arg_0_Sign"><shadow type="math_number"><field name="NUM">-5</field></shadow></value></block></value></block></xml>';
+    const defXml=B.Xml.blockToDom(def);const ret=defXml.querySelector('block[type="rc_return"]');ret.querySelector('value').innerHTML='<block type="operator_mathop"><field name="OPERATOR">sgn</field><value name="NUM"><block type="argument_reporter_string_number"><field name="VALUE">value</field></block></value></block>';
+    const xml='<xml>'+B.Xml.domToText(defXml)+'<block type="rc_print"><value name="VALUE"><block type="rc_procedure_value">'+mutation+'<value name="arg_0_Sign"><shadow type="math_number"><field name="NUM">-5</field></shadow></value></block></value></block></xml>';
     e.load({format:'zmrobo-blocks',version:1,controller:'E6',workspace:{xml}});
     const source=e.compile().source;
     assert.match(source,/return sgn\(value\)/);assert.match(source,/print\(Sign\(-5\)\)/);
@@ -170,16 +171,16 @@ test('abs and sgn and returning custom blocks generate executable Python',{timeo
 test('return belongs to its function and sensor ports accept function parameters',{timeout:15000},async()=>{const {dom,w,errors}=await editor();try{
  const e=w.RoboEditor,B=w.Blockly,ws=e.workspace,d=w.document;
  e.createProcedure();d.getElementById('procedureName').value='ReadLight';d.getElementById('procedureArgs').value='port';d.getElementById('procedureReturns').checked=true;d.getElementById('procedureCreate').click();
- const def=ws.getTopBlocks().find(b=>b.type==='rc_function');assert.ok(def.getInput('RETURN'));assert.ok(def.getInput('BODY'));assert.equal(def.nextConnection,null);
+ const def=ws.getTopBlocks().find(b=>b.type==='rc_function');assert.equal(def.getInput('RETURN'),null);assert.equal(def.getInputTargetBlock('BODY').type,'rc_return');assert.ok(def.getInput('BODY'));assert.equal(def.nextConnection,null);
  const sensor=ref.blocks.find(b=>b.call==='sensor.GetLightSensor'&&!b.special);
  const expr=B.Xml.textToDom('<xml><block type="'+sensor.id+'"><value name="P"><block type="argument_reporter_string_number"><field name="VALUE">port</field></block></value></block></xml>');
- const reading=B.Xml.domToBlock(expr.firstChild,ws);def.getInput('RETURN').connection.connect(reading.outputConnection);
+ const reading=B.Xml.domToBlock(expr.firstChild,ws);def.getInputTargetBlock('BODY').getInput('VALUE').connection.connect(reading.outputConnection);
  const proto=def.getInputTargetBlock('custom_block'),mutation=B.Xml.domToText(proto.mutationToDom());
  const print=B.Xml.domToBlock(B.Xml.textToDom('<xml><block type="rc_print"><value name="VALUE"><block type="rc_procedure_value">'+mutation+'<value name="arg_0_ReadLight"><shadow type="text"><field name="TEXT">5</field></shadow></value></block></value></block></xml>').firstChild,ws);
  assert.ok(print);const source=e.compile().source;assert.match(source,/return sensor.GetLightSensor\(port\)/);assert.match(source,/print\(ReadLight\(5\)\)/);
  const prelude='import sys, types\nsensor=types.ModuleType("sensor")\nsensor.GetLightSensor=lambda port: port * 10\nsys.modules["sensor"]=sensor\n';
  const {spawnSync}=require('node:child_process'),result=spawnSync(process.env.PYTHON||'python3',['-c',prelude+source],{encoding:'utf8'});assert.equal(result.status,0,result.stderr);assert.equal(result.stdout.trim(),'50');
- ws.getToolbox().setSelectedCategoryById('procedures');assert.ok(!ws.getFlyout().getWorkspace().getAllBlocks().some(b=>b.type==='rc_return'));
+ ws.getToolbox().setSelectedCategoryById('procedures');assert.ok(ws.getFlyout().getWorkspace().getAllBlocks().some(b=>b.type==='rc_return'));
  // Use the actual context-menu callback, including return/argument state.
  B.Procedures.editProcedureCallback_(def);assert.equal(d.getElementById('procedureReturns').checked,true);assert.equal(d.getElementById('procedureArgs').value,'port');
  d.getElementById('procedureName').value='ReadSensor';d.getElementById('procedureCreate').click();assert.match(e.compile().source,/return sensor.GetLightSensor\(port\)/);assert.match(e.compile().source,/print\(ReadSensor\(5\)\)/);
@@ -208,7 +209,7 @@ test('old function chains migrate into the body and keep the final return expres
  const mutation='<mutation proccode="Echo %s" argumentids="[&quot;arg_0_Echo&quot;]" argumentnames="[&quot;value&quot;]" argumentdefaults="[&quot;&quot;]" warp="false"/>';
  const xml='<xml><block type="procedures_definition"><data>zm:return</data><statement name="custom_block"><shadow type="procedures_prototype">'+mutation+'</shadow></statement><next><block type="rc_print"><value name="VALUE"><shadow type="text"><field name="TEXT">before</field></shadow></value><next><block type="rc_return"><value name="VALUE"><block type="argument_reporter_string_number"><field name="VALUE">value</field></block></value></block></next></block></next></block><block type="rc_print"><value name="VALUE"><block type="rc_procedure_value">'+mutation+'<value name="arg_0_Echo"><shadow type="math_number"><field name="NUM">12</field></shadow></value></block></value></block></xml>';
  e.load({format:'zmrobo-blocks',version:1,controller:'E6',workspace:{xml}});
- const def=e.workspace.getTopBlocks().find(b=>b.type==='rc_function');assert.equal(def.getInputTargetBlock('BODY').type,'rc_print');assert.equal(def.getInputTargetBlock('RETURN').type,'argument_reporter_string_number');assert.ok(!def.getDescendants().some(b=>b.type==='rc_return'));
+ const def=e.workspace.getTopBlocks().find(b=>b.type==='rc_function');assert.equal(def.getInputTargetBlock('BODY').type,'rc_print');assert.equal(def.getInputTargetBlock('BODY').getNextBlock().getInputTargetBlock('VALUE').type,'argument_reporter_string_number');assert.equal(def.getDescendants().filter(b=>b.type==='rc_return').length,1);
  const code=e.compile().source;const {spawnSync}=require('node:child_process');const result=spawnSync(process.env.PYTHON||'python3',['-c',code],{encoding:'utf8'});assert.equal(result.status,0,result.stderr);assert.equal(result.stdout,'before\n12\n');
  const p=e.project();e.load(w.RoboBlocks.defaultProject());e.load(p);assert.equal(e.compile().source,code);assert.deepEqual(errors,[]);
 }finally{dom.window.close();}});
@@ -234,4 +235,59 @@ test('connection dialog exposes USB and Bluetooth through shared host commands',
  assert.ok(d.getElementById('connectionButton').classList.contains('connected'));assert.equal(d.getElementById('connectionDialog').open,false);
  d.getElementById('connectionButton').click();d.getElementById('disconnectRobot').click();assert.equal(messages.at(-1).kind,'disconnect');
  w.dispatchEvent(new w.MessageEvent('message',{data:{kind:'connectionResult',state:{connected:false,transport:'usb'},operation:'disconnect'}}));d.getElementById('connectBluetooth').click();assert.equal(messages.at(-1).transport,'bluetooth');assert.deepEqual(errors,[]);
+}finally{dom.window.close();}});
+test('light comparison, dynamic motor ports and one arithmetic selector generate working Python',{timeout:15000},async()=>{const {dom,w,errors}=await editor();try{
+ const e=w.RoboEditor,B=w.Blockly,ws=e.workspace;
+ for(const op of ['<','>','==']){
+  const xml='<xml><block type="rc_print"><value name="VALUE"><block type="rc_light_compare"><field name="OP">'+w.RoboBlocks.escape(JSON.stringify(op))+'</field><value name="P"><shadow type="rc_sensor_port"><field name="PORT">5</field></shadow></value><value name="V"><shadow type="math_number"><field name="NUM">50</field></shadow></value></block></value></block></xml>';
+  e.load({format:'zmrobo-blocks',version:1,controller:'E6',workspace:{xml}});assert.ok(e.compile().source.includes('sensor.GetLightSensor(5) '+op+' 50'));
+ }
+ const variable='<block type="data_variable"><field name="VARIABLE" id="port">port</field></block>';
+ const xml='<xml><variables><variable type="" id="port">port</variable></variables><block type="rc_motor_run"><value name="M"><block type="rc_arithmetic"><field name="OP">+</field><value name="NUM1">'+variable+'</value><value name="NUM2"><shadow type="math_number"><field name="NUM">1</field></shadow></value></block></value><value name="S"><shadow type="math_number"><field name="NUM">50</field></shadow></value></block></xml>';
+ e.load({format:'zmrobo-blocks',version:1,controller:'M6',workspace:{xml}});assert.match(e.compile().source,/motor.SetMotor\(\(port \+ 1\), 50\)/);
+ const before=e.compile().source,p=e.project();e.load(w.RoboBlocks.defaultProject());e.load(p);assert.equal(e.compile().source,before);
+ e.load({format:'zmrobo-blocks',version:1,controller:'E6',workspace:{xml:'<xml><block type="rc_motor_run"><field name="M">3</field></block></xml>'}});assert.equal(ws.getTopBlocks()[0].getInputTargetBlock('M').getFieldValue('PORT'),'3');assert.match(e.compile().source,/motor.SetMotor\(3, 50\)/);
+ ws.getToolbox().setSelectedCategoryById('operators');const fly=ws.getFlyout().getWorkspace();assert.equal(fly.getAllBlocks().filter(b=>b.type==='rc_arithmetic').length,1);assert.ok(!fly.getAllBlocks().some(b=>['operator_add','operator_subtract','operator_multiply','operator_divide'].includes(b.type)));
+ for(const [op,result]of [['+',7],['-',3],['*',10],['/',2.5]]){
+  e.load({format:'zmrobo-blocks',version:1,controller:'E6',workspace:{xml:'<xml><block type="rc_print"><value name="VALUE"><block type="rc_arithmetic"><field name="OP">'+op+'</field><value name="NUM1"><shadow type="math_number"><field name="NUM">5</field></shadow></value><value name="NUM2"><shadow type="math_number"><field name="NUM">2</field></shadow></value></block></value></block></xml>'}});
+  const run=require('node:child_process').spawnSync('python3',['-c',e.compile().source],{encoding:'utf8'});assert.equal(run.status,0,run.stderr);assert.equal(Number(run.stdout.trim()),result);
+ }assert.deepEqual(errors,[]);
+}finally{dom.window.close();}});
+test('flyout function calls have editable arguments and movable returns work inside conditions',{timeout:15000},async()=>{const {dom,w,errors}=await editor();try{
+ const e=w.RoboEditor,B=w.Blockly,ws=e.workspace,d=w.document;
+ e.createProcedure();d.getElementById('procedureName').value='ReadLight';d.getElementById('procedureArgs').value='port';d.getElementById('procedureReturns').checked=true;d.getElementById('procedureCreate').click();
+ const def=ws.getTopBlocks().find(b=>b.type==='rc_function');const originalReturn=def.getInputTargetBlock('BODY');assert.equal(originalReturn.type,'rc_return');assert.equal(def.getInput('RETURN'),null);
+ originalReturn.unplug();const condition=B.Xml.domToBlock(B.Xml.textToDom('<xml><block type="control_if"><value name="CONDITION"><block type="operator_lt"><value name="OPERAND1"><block type="argument_reporter_string_number"><field name="VALUE">port</field></block></value><value name="OPERAND2"><shadow type="text"><field name="TEXT">0</field></shadow></value></block></value></block></xml>').firstChild,ws);def.getInput('BODY').connection.connect(condition.previousConnection);condition.getInput('SUBSTACK').connection.connect(originalReturn.previousConnection);originalReturn.getInputTargetBlock('VALUE').setFieldValue('99','NUM');
+ const finalReturn=B.Xml.domToBlock(B.Xml.textToDom('<xml><block type="rc_return"><value name="VALUE"><block type="rc_light_value"><value name="P"><block type="argument_reporter_string_number"><field name="VALUE">port</field></block></value></block></value></block></xml>').firstChild,ws);condition.nextConnection.connect(finalReturn.previousConnection);
+ ws.getToolbox().setSelectedCategoryById('procedures');const template=ws.getFlyout().getWorkspace().getAllBlocks().find(b=>b.type==='rc_procedure_value');assert.equal(template.getInputTargetBlock('arg_0_ReadLight').type,'text');
+ const call=B.Xml.domToBlock(B.Xml.blockToDom(template),ws);call.getInputTargetBlock('arg_0_ReadLight').setFieldValue('5','TEXT');
+ const print=B.Xml.domToBlock(B.Xml.textToDom('<xml><block type="rc_print"/></xml>').firstChild,ws);print.getInput('VALUE').connection.connect(call.outputConnection);
+ const code=e.compile().source;assert.match(code,/if .*port < 0/);assert.match(code,/return 99/);assert.match(code,/ReadLight\(5\)/);
+ const prelude='import sys,types\nsensor=types.ModuleType("sensor")\nsensor.GetLightSensor=lambda port:port*10\nsys.modules["sensor"]=sensor\n';const run=require('node:child_process').spawnSync('python3',['-c',prelude+code+'\nprint(ReadLight(-1))'],{encoding:'utf8'});assert.equal(run.status,0,run.stderr);assert.equal(run.stdout,'50\n99\n');
+ const saved=e.project();e.load(w.RoboBlocks.defaultProject());e.load(saved);assert.equal(e.compile().source,code);assert.deepEqual(errors,[]);
+}finally{dom.window.close();}});
+test('delete and keyboard undo restore exactly one block with its original editable inputs',{timeout:15000},async()=>{const {dom,w,errors}=await editor();try{
+ const e=w.RoboEditor,B=w.Blockly,ws=e.workspace,d=w.document;
+ e.load({format:'zmrobo-blocks',version:1,controller:'E6',workspace:{xml:'<xml><block type="rc_start"><next><block type="rc_motor_run"><field name="M">3</field><value name="S"><shadow type="math_number"><field name="NUM">42</field></shadow></value><next><block type="control_wait"><value name="DURATION"><shadow type="math_positive_number"><field name="NUM">0.1</field></shadow></value></block></next></block></next></block></xml>'}});
+ const wait=()=>new Promise(resolve=>setTimeout(resolve,30));await wait();const ids=()=>Array.from(ws.getAllBlocks(),b=>b.id).sort();const before=ids(),code=e.compile().source;ws.clearUndo();let forwarded=0;d.addEventListener('keydown',()=>forwarded++);
+ B.Events.setGroup(true);ws.getAllBlocks().find(b=>b.type==='rc_motor_run').dispose(true,true);B.Events.setGroup(false);await wait();
+ for(let i=0;i<3;i++){
+  const undo=new w.KeyboardEvent('keydown',{key:'z',ctrlKey:true,bubbles:true,cancelable:true});d.body.dispatchEvent(undo);await wait();assert.equal(undo.defaultPrevented,true);assert.deepEqual(ids(),before);assert.equal(e.compile().source,code);assert.equal(ws.getAllBlocks().filter(b=>b.type==='rc_motor_run').length,1);
+  if(i<2){d.body.dispatchEvent(new w.KeyboardEvent('keydown',{key:'z',ctrlKey:true,shiftKey:true,bubbles:true,cancelable:true}));await wait();assert.equal(ws.getAllBlocks().filter(b=>b.type==='rc_motor_run').length,0);}
+ }assert.equal(forwarded,0);
+ const field=ws.getAllBlocks().find(b=>b.type==='math_number').getField('NUM');field.showEditor_();const input=d.querySelector('.blocklyHtmlInput');assert.ok(input);assert.equal(w.getComputedStyle(input).color,'rgb(32, 36, 49)');assert.equal(w.getComputedStyle(input).backgroundColor,'rgb(255, 255, 255)');B.WidgetDiv.hide();assert.deepEqual(errors,[]);
+}finally{dom.window.close();}});
+test('4.5.0 fixed return migrates into the body without changing generated Python',{timeout:15000},async()=>{const {dom,w,errors}=await editor();try{
+ const e=w.RoboEditor;const xml='<xml>'+w.RoboBlocks.procedureXml('Answer',[]).replace('</block>','<mutation returns="true"/><value name="RETURN"><shadow type="math_number"><field name="NUM">42</field></shadow></value></block>')+'</xml>';
+ e.load({format:'zmrobo-blocks',version:1,controller:'E6',workspace:{xml}});const def=e.workspace.getTopBlocks().find(b=>b.type==='rc_function');assert.equal(def.getInput('RETURN'),null);assert.equal(def.getInputTargetBlock('BODY').type,'rc_return');assert.match(e.compile().source,/return 42/);assert.deepEqual(errors,[]);
+}finally{dom.window.close();}});
+
+test('adding a function parameter supplies editable fields in existing statement and value calls',{timeout:15000},async()=>{const {dom,w,errors}=await editor();try{
+ const e=w.RoboEditor,B=w.Blockly,ws=e.workspace,d=w.document;
+ e.createProcedure();d.getElementById('procedureName').value='ReadLight';d.getElementById('procedureArgs').value='port';d.getElementById('procedureReturns').checked=true;d.getElementById('procedureCreate').click();
+ ws.getToolbox().setSelectedCategoryById('procedures');const fly=ws.getFlyout().getWorkspace();
+ for(const type of ['procedures_call','rc_procedure_value']){const call=B.Xml.domToBlock(B.Xml.blockToDom(fly.getAllBlocks().find(b=>b.type===type)),ws);call.getInputTargetBlock('arg_0_ReadLight').setFieldValue('5','TEXT');}
+ const def=ws.getTopBlocks().find(b=>b.type==='rc_function');B.Procedures.editProcedureCallback_(def);d.getElementById('procedureArgs').value='port, divisor';d.getElementById('procedureCreate').click();
+ for(const call of ws.getAllBlocks().filter(b=>['procedures_call','rc_procedure_value'].includes(b.type))){assert.equal(call.getInputTargetBlock('arg_0_ReadLight').getFieldValue('TEXT'),'5');const added=call.getInputTargetBlock('arg_1_ReadLight');assert.ok(added);assert.equal(added.type,'text');added.setFieldValue('10','TEXT');}
+ const p=e.project(),count=ws.getAllBlocks().length;e.load(w.RoboBlocks.defaultProject());e.load(p);assert.equal(ws.getAllBlocks().length,count);assert.deepEqual(errors,[]);
 }finally{dom.window.close();}});

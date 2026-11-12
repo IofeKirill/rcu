@@ -309,18 +309,20 @@ function activate(context) {
             const address = bt ? bluetooth.connectedAddress : usbDebug.connectedAddress;
             return { transport: selectedTransport, connected: !!(address || (!bt && disk)), name: bt ? 'Bluetooth' : address ? 'USB COM' : disk ? String(disk.label) : 'USB', address: address || (!bt ? disk === null || disk === void 0 ? void 0 : disk.mountpoint : undefined), canRun: !!address };
         },
-        busy: () => changingConnection || uploading,
-        scan: async (transport) => {
+        busy: () => changingConnection || uploading || usbDebug.isBusy || bluetooth.isBusy,
+        scan: async (transport, publish) => {
             if (transport === 'bluetooth') {
                 await bluetooth.scan();
                 return bluetoothTree.getChildren().filter(row => { var _a; return ((_a = row.command) === null || _a === void 0 ? void 0 : _a.command) === 'extension.connectBluetooth'; }).map(row => ({ label: String(row.label), description: String(row.description || ''), device: row.command.arguments[0] }));
             }
+            const choices = () => devices.getChildren().filter(row => { var _a; return row.mountpoint || ((_a = row.serialDevices) === null || _a === void 0 ? void 0 : _a.length); }).map(row => { var _a, _b; return ({ key: row.mountpoint || ((_b = (_a = row.serialDevices) === null || _a === void 0 ? void 0 : _a[0]) === null || _b === void 0 ? void 0 : _b.address), label: String(row.label), description: [row.mountpoint, ...(row.serialDevices || []).map(p => p.address)].filter(Boolean).join(' · '), device: row }); });
             const scans = await Promise.all([
                 () => devices.detectDevices(),
                 () => usbDebug.scan()
             ].map(async (scan) => {
                 try {
                     await scan();
+                    publish === null || publish === void 0 ? void 0 : publish(choices());
                     return { failed: false, message: '' };
                 }
                 catch (error) {
@@ -332,7 +334,7 @@ function activate(context) {
                 throw new Error(failures.map(result => result.message).join(' '));
             for (const result of failures)
                 vscode.window.showWarningMessage(result.message);
-            return devices.getChildren().filter(row => { var _a; return row.mountpoint || ((_a = row.serialDevices) === null || _a === void 0 ? void 0 : _a.length); }).map(row => ({ label: String(row.label), description: [row.mountpoint, ...(row.serialDevices || []).map(p => p.address)].filter(Boolean).join(' · '), device: row }));
+            return choices();
         },
         connect: async (transport, device) => {
             if (transport === 'usb')

@@ -121,6 +121,7 @@ $('procedureCreate').onclick = () => {
     else {
         const xml=Blockly.Xml.textToDom('<xml>' + RoboBlocks.procedureXml(name, args) + '</xml>');
         const m=document.createElement('mutation');m.setAttribute('returns',String($('procedureReturns').checked));xml.firstChild.insertBefore(m,xml.firstChild.firstChild);
+        if($('procedureReturns').checked){const body=Blockly.Xml.textToDom('<xml><statement name="BODY"><block type="rc_return"><value name="VALUE"><shadow type="math_number"><field name="NUM">0</field></shadow></value></block></statement></xml>').firstChild;xml.firstChild.appendChild(body);}
         RoboBlocks.loadXml(xml, workspace);
     }
     $('procedureDialog').close();
@@ -193,6 +194,16 @@ function action(kind) {
 }
 for (const kind of ['new', 'open', 'save', 'saveAs', 'python', 'export', 'simulate', 'upload', 'play', 'stop'])
     $(kind).onclick = () => action(kind);
+// Handle block undo once, before native Blockly and the VS Code host see the key.
+// HTML text editors keep the browser's own character-level undo.
+document.addEventListener('keydown', e => {
+    if(!(e.ctrlKey||e.metaKey)||!['z','y'].includes(e.key.toLowerCase()))return;
+    if(e.target.closest?.('input,textarea,select,[contenteditable="true"]'))return;
+    if(document.querySelector('dialog[open]'))return;
+    e.preventDefault();e.stopImmediatePropagation();
+    Blockly.Events.fireNow_?.();
+    workspace.undo(e.shiftKey||e.key.toLowerCase()==='y');
+},true);
 document.addEventListener('keydown', e => { if (e.key === 'F6' && !vscode) {
     e.preventDefault();
     action('upload');

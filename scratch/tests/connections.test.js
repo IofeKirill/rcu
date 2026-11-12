@@ -2,6 +2,12 @@
 const test=require('node:test'),assert=require('node:assert/strict'),Module=require('node:module');
 const commands=new Map();let pick=choices=>choices[0];
 const vscode={workspace:{isTrusted:true},commands:{registerCommand:(name,fn)=>(commands.set(name,fn),{dispose(){}})},window:{showQuickPick:async choices=>pick(choices)}};
+let lastPicker;
+vscode.window.createQuickPick=()=>{
+ let items=[],accept=()=>{},hide=()=>{},closed=false;
+ const q={busy:false,selectedItems:[],show(){},dispose(){closed=true;},hide(){hide();},onDidAccept(fn){accept=fn;return {dispose(){}};},onDidHide(fn){hide=fn;return {dispose(){}};},get items(){return items;},set items(value){items=value;queueMicrotask(()=>{if(closed)return;const chosen=pick(items);if(chosen){q.selectedItems=[chosen];accept();}else hide();});}};
+ lastPicker=q;return q;
+};
 const load=Module._load;Module._load=function(id,...args){return id==='vscode'?vscode:load.call(this,id,...args);};let register;
 try{register=require('../../out/BlockConnections').registerBlockConnections;}finally{Module._load=load;}
 function setup(overrides={}){
@@ -27,4 +33,17 @@ test('connection rejects a third transport, untrusted folders and overlapping op
 });
 test('scan errors release the chooser and do not report a false connection',async()=>{
  setup({scan:async()=>{throw Error('scan failed');}});await assert.rejects(()=>commands.get('extension.chooseBlockConnection')({transport:'usb',controller:'E6'}),/scan failed/);const state=commands.get('extension.getBlockConnectionState')();assert.equal(state.busy,false);assert.equal(state.connected,false);
+});
+
+test('USB picker shows disk results before the slow COM association completes',async()=>{
+ let finish;const disk={key:'E:',label:'E6',device:{address:'disk'}};
+ const {calls}=setup({scan:async(mode,publish)=>{publish([disk]);return new Promise(resolve=>finish=()=>resolve([disk]));}});
+ const pending=commands.get('extension.chooseBlockConnection')({transport:'usb',controller:'E6'});
+ await new Promise(resolve=>setImmediate(resolve));assert.equal(lastPicker.items[0].key,'E:');assert.equal(calls.filter(c=>c[0]==='connect').length,0);
+ finish();const state=await pending;assert.equal(state.connected,true);
+});
+test('USB picker cancellation leaves the old connection while enumeration finishes',async()=>{
+ let finish;setup({scan:async()=>new Promise(resolve=>finish=resolve)});
+ const pending=commands.get('extension.chooseBlockConnection')({transport:'usb',controller:'E6'});lastPicker.hide();
+ const state=await pending;assert.equal(state.connected,false);finish([]);await new Promise(resolve=>setImmediate(resolve));assert.equal(state.busy,false);
 });

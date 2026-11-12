@@ -29,6 +29,7 @@ export class BluetoothOperations implements vscode.Disposable {
     private bridge: BluetoothBridge;
     private state?: BluetoothState;
     private busy = false;
+    get isBusy(): boolean { return this.busy; }
     private disposed = false;
     private bridgeGeneration = 0;
     constructor(private readonly extensionPath: string, private readonly tree: ConnectionTree,
